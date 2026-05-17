@@ -1,0 +1,5 @@
+NumPy科学计算库课件：
+https://cloud.fynote.com/share/d/7319
+
+pandas数据分析课件：
+https://cloud.fynote.com/share/d/7637
