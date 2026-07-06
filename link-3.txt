@@ -1,1 +1,2 @@
 https://github.com/cobusgreyling/loop-engineering
+https://github.com/langchain-ai/openwiki
