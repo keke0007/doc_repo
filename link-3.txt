@@ -2,3 +2,4 @@ https://github.com/cobusgreyling/loop-engineering
 https://github.com/langchain-ai/openwiki
 https://github.com/Trystan-SA/claude-design-system-prompt
 https://github.com/diegosouzapw/OmniRoute
+https://github.com/affaan-m/ECC
