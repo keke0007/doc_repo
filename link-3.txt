@@ -6,3 +6,4 @@ https://github.com/affaan-m/ECC
 https://github.com/shanraisshan/claude-code-best-practice
 https://x.com/Elara200410/status/2074375999337242891
 https://github.com/harvard-edge/cs249r_book
+https://github.com/msitarzewski/agency-agents
