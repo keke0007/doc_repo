@@ -8,3 +8,4 @@ https://x.com/Elara200410/status/2074375999337242891
 https://github.com/harvard-edge/cs249r_book
 https://github.com/msitarzewski/agency-agents
 https://github.com/byoungd/up
+https://github.com/DevAgentForge/Open-Claude-Cowork
