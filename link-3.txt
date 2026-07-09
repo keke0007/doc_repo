@@ -14,3 +14,4 @@ https://github.com/Ron-dali/vibe-coding-rules
 https://github.com/sohutv/cachecloud
 https://github.com/Tencent/BrowserSkill
 https://github.com/Shubhamsaboo/awesome-llm-apps
+https://github.com/tt-a1i/archify
