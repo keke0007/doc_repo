@@ -10,3 +10,5 @@ https://github.com/msitarzewski/agency-agents
 https://github.com/byoungd/up
 https://github.com/DevAgentForge/Open-Claude-Cowork
 https://github.com/Ron-dali/vibe-coding-rules
+
+https://github.com/sohutv/cachecloud
