@@ -15,3 +15,4 @@ https://github.com/sohutv/cachecloud
 https://github.com/Tencent/BrowserSkill
 https://github.com/Shubhamsaboo/awesome-llm-apps
 https://github.com/tt-a1i/archify
+https://github.com/genkio/slop-review
