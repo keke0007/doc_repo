@@ -12,3 +12,4 @@ https://github.com/DevAgentForge/Open-Claude-Cowork
 https://github.com/Ron-dali/vibe-coding-rules
 
 https://github.com/sohutv/cachecloud
+https://github.com/Tencent/BrowserSkill
