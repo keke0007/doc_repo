@@ -22,3 +22,4 @@ https://github.com/LiaoGuoYin/lixian.online
 https://github.com/WenyuChiou/awesome-agentic-ai-zh/blob/main/README.zh-Hans.md
 https://github.com/systemdesign42/system-design-academy
 https://github.com/walkinglabs/learn-harness-engineering
+https://github.com/unclecode/crawl4ai
