@@ -27,3 +27,4 @@ https://github.com/rohitg00/ai-engineering-from-scratch
 https://github.com/langflow-ai/langflow
 https://github.com/JustVugg/colibri
 https://siuserxiaowei.github.io/hr-agent-reading-hub/
+https://github.com/wonderwhy-er/DesktopCommanderMCP
