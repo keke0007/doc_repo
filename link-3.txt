@@ -20,3 +20,4 @@ https://github.com/duoan/TorchCode
 https://github.com/hangwin/mcp-chrome
 https://github.com/LiaoGuoYin/lixian.online
 https://github.com/WenyuChiou/awesome-agentic-ai-zh/blob/main/README.zh-Hans.md
+https://github.com/systemdesign42/system-design-academy
