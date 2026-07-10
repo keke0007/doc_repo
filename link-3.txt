@@ -24,3 +24,4 @@ https://github.com/systemdesign42/system-design-academy
 https://github.com/walkinglabs/learn-harness-engineering
 https://github.com/unclecode/crawl4ai
 https://github.com/rohitg00/ai-engineering-from-scratch
+https://github.com/langflow-ai/langflow
