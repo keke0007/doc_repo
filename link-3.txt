@@ -17,3 +17,4 @@ https://github.com/Shubhamsaboo/awesome-llm-apps
 https://github.com/tt-a1i/archify
 https://github.com/genkio/slop-review
 https://github.com/duoan/TorchCode
+https://github.com/hangwin/mcp-chrome
