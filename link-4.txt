@@ -4,3 +4,4 @@ https://github.com/biheto/DevAgent-Studio
 https://github.com/phuryn/pm-skills
 https://github.com/iOfficeAI/OfficeCLI
 https://github.com/Shubhamsaboo/awesome-llm-apps
+https://github.com/gregorojstersek/resources-to-become-a-great-engineering-leader
