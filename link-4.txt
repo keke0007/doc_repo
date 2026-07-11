@@ -1,1 +1,2 @@
 https://github.com/mattpocock/skills
+https://github.com/addyosmani/agent-skills
