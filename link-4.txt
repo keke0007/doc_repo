@@ -1,3 +1,4 @@
 https://github.com/mattpocock/skills
 https://github.com/addyosmani/agent-skills
 https://github.com/biheto/DevAgent-Studio
+https://github.com/phuryn/pm-skills
