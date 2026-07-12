@@ -6,3 +6,4 @@ https://github.com/iOfficeAI/OfficeCLI
 https://github.com/Shubhamsaboo/awesome-llm-apps
 https://github.com/gregorojstersek/resources-to-become-a-great-engineering-leader
 https://github.com/ricocc/rico-bookmark-manager
+https://github.com/emilkowalski/skills
