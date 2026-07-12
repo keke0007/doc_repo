@@ -8,3 +8,4 @@ https://github.com/gregorojstersek/resources-to-become-a-great-engineering-leade
 https://github.com/ricocc/rico-bookmark-manager
 https://github.com/emilkowalski/skills
 https://github.com/andrew-shwetzer/career-ops-plugin
+https://github.com/1c7/chinese-independent-developer
