@@ -17,3 +17,4 @@ https://github.com/Studio-Saelix/sencho
 https://github.com/lemma-work/lemma-platform
 https://github.com/byoungd/up
 https://github.com/mate-matt/rag-memory-lab
+https://github.com/router-for-me/CLIProxyAPI
