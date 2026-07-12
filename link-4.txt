@@ -14,3 +14,4 @@ https://github.com/ricocc/rico-bookmark-manager
 https://github.com/zgwl/chinese-buy-us-stock-guide
 https://github.com/home-assistant/core
 https://github.com/Studio-Saelix/sencho
+https://github.com/lemma-work/lemma-platform
