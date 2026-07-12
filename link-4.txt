@@ -10,3 +10,4 @@ https://github.com/emilkowalski/skills
 https://github.com/andrew-shwetzer/career-ops-plugin
 https://github.com/1c7/chinese-independent-developer
 https://openlearninglibrary.mit.edu/courses/course-v1:MITx+6.036+1T2019/about
+https://github.com/ricocc/rico-bookmark-manager
