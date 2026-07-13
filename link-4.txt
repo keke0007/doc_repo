@@ -24,3 +24,5 @@ https://github.com/mattpocock/skills
 https://github.com/microsoft/SkillOpt
 https://github.com/ht426/skillseed
 https://github.com/Cjbuilds/Codex-Orchestration
+
+https://github.com/injaneity/pi-computer-use
