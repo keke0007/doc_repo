@@ -22,3 +22,4 @@ https://github.com/callstack/agent-device
 https://github.com/luongnv89/claude-howto
 https://github.com/mattpocock/skills
 https://github.com/microsoft/SkillOpt
+https://github.com/ht426/skillseed
