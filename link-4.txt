@@ -26,3 +26,4 @@ https://github.com/ht426/skillseed
 https://github.com/Cjbuilds/Codex-Orchestration
 
 https://github.com/injaneity/pi-computer-use
+https://github.com/HKUDS/DeepTutor
