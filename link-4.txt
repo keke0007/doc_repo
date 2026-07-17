@@ -40,3 +40,4 @@ https://github.com/langwatch/kanban-code
 https://github.com/Vink567/agent-orange-book
 https://github.com/2025Emma/vibe-coding-cn
 https://github.com/hefengxian/my-ielts
+https://github.com/Marker-Inc-Korea/AutoRAG
