@@ -38,3 +38,4 @@ https://github.com/oil-oil/codex-dev-team
 https://github.com/bojieli/ai-agent-book
 https://github.com/langwatch/kanban-code
 https://github.com/Vink567/agent-orange-book
+https://github.com/2025Emma/vibe-coding-cn
