@@ -6,3 +6,4 @@ https://github.com/plait-board/drawnix
 https://github.com/cpcc/SkillsPlusPlus
 https://github.com/kuchin/awesome-ceo
 https://github.com/piotrkulpinski/openalternative
+https://github.com/shaom/infocard-skills
