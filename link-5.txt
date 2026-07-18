@@ -5,3 +5,4 @@ https://github.com/Graphify-Labs/graphify
 https://github.com/plait-board/drawnix
 https://github.com/cpcc/SkillsPlusPlus
 https://github.com/kuchin/awesome-ceo
+https://github.com/piotrkulpinski/openalternative
