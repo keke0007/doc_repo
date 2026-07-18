@@ -8,3 +8,4 @@ https://github.com/kuchin/awesome-ceo
 https://github.com/piotrkulpinski/openalternative
 https://github.com/shaom/infocard-skills
 https://github.com/juggler-ai/juggler
+https://github.com/LeoYeAI/teammate-skill
