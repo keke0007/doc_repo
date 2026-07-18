@@ -10,3 +10,4 @@ https://github.com/shaom/infocard-skills
 https://github.com/juggler-ai/juggler
 https://github.com/LeoYeAI/teammate-skill
 https://github.com/jamiepine/voicebox
+https://github.com/awesome-selfhosted/awesome-selfhosted
