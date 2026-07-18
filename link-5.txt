@@ -2,3 +2,4 @@ https://github.com/robotbird/skillkit
 https://github.com/HYYH-code/agent-skill-store
 https://github.com/Yeachan-Heo/oh-my-codex
 https://github.com/Graphify-Labs/graphify
+https://github.com/plait-board/drawnix
