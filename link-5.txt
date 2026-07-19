@@ -21,3 +21,4 @@ https://github.com/Huanshere/VideoLingo
 https://github.com/LoD-Dawn/Fast-Vben-Admin
 https://github.com/bojieli/ai-agent-book
 https://github.com/diet103/claude-code-infrastructure-showcase
+https://github.com/scp3500/pi-manager
