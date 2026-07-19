@@ -20,3 +20,4 @@ https://github.com/Danau5tin/ai-trains-ai
 https://github.com/Huanshere/VideoLingo
 https://github.com/LoD-Dawn/Fast-Vben-Admin
 https://github.com/bojieli/ai-agent-book
+https://github.com/diet103/claude-code-infrastructure-showcase
