@@ -23,3 +23,4 @@ https://github.com/bojieli/ai-agent-book
 https://github.com/diet103/claude-code-infrastructure-showcase
 https://github.com/scp3500/pi-manager
 https://chatgpt.com/c/6a5a53c6-9f34-83ec-a9c9-db982e5d3672
+https://chatgpt.com/share/6a5c6a26-ce2c-83ec-a18b-b112bd21a752
