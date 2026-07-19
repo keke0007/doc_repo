@@ -19,3 +19,4 @@ https://github.com/ZuodaoTech/everyone-can-use-english
 https://github.com/Danau5tin/ai-trains-ai
 https://github.com/Huanshere/VideoLingo
 https://github.com/LoD-Dawn/Fast-Vben-Admin
+https://github.com/bojieli/ai-agent-book
