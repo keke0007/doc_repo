@@ -29,3 +29,5 @@ https://github.com/buchidonggua/dg-ai-notes
 https://github.com/slavakurilyak/awesome-ai-agents
 https://github.com/rasbt/MachineLearning-QandAI-book
 https://github.com/shriram-ethiraj/grayslate
+https://github.com/nicejade/markdown-online-editor
+https://github.com/affaan-m/ECC/tree/main
