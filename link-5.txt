@@ -32,3 +32,5 @@ https://github.com/shriram-ethiraj/grayslate
 https://github.com/nicejade/markdown-online-editor
 https://github.com/affaan-m/ECC/tree/main
 https://github.com/nas5w/interview-guide
+https://github.com/AdventDevInc/kudu
+https://vibe-hub.org/
