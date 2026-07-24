@@ -34,3 +34,4 @@ https://github.com/affaan-m/ECC/tree/main
 https://github.com/nas5w/interview-guide
 https://github.com/AdventDevInc/kudu
 https://vibe-hub.org/
+https://github.com/datawhalechina/deepagents-in-action
