@@ -41,3 +41,4 @@ https://github.com/WEIFENG2333/phistory
 https://github.com/sudokar/openspec-plus
 
 https://github.com/HKUDS/LightRAG
+https://github.com/buchidonggua/dg-ai-notes
