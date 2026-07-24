@@ -36,3 +36,4 @@ https://github.com/AdventDevInc/kudu
 https://vibe-hub.org/
 https://github.com/datawhalechina/deepagents-in-action
 https://github.com/dososo/agent-loop-skill
+https://github.com/tw93/Waza
