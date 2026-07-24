@@ -39,3 +39,5 @@ https://github.com/dososo/agent-loop-skill
 https://github.com/tw93/Waza
 https://github.com/WEIFENG2333/phistory
 https://github.com/sudokar/openspec-plus
+
+https://github.com/HKUDS/LightRAG
