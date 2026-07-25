@@ -44,3 +44,4 @@ https://github.com/HKUDS/LightRAG
 https://github.com/buchidonggua/dg-ai-notes
 https://github.com/shiaho777/web-to-app
 https://github.com/DroneBridge/ESP32
+https://github.com/byoungd/up
