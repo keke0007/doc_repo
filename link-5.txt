@@ -48,3 +48,4 @@ https://github.com/byoungd/up
 https://github.com/slvDev/esp32-ai
 https://github.com/lanerchenbuna/QueryForge
 https://github.com/google-ai-edge/mediapipe
+https://github.com/FoundationAgents/OpenManus
