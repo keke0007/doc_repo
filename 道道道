@@ -140,3 +140,20 @@ graph engineer
 https://x.com/AdrianPunk115/status/2081268706483814605
 
 
+Loop Engineering 和 Graph Engineering 的区别是：
+
+Loop 管一个节点内部。
+
+Agent 怎么思考、调用工具、检查结果，再进入下一轮。
+
+Graph 管节点之间。
+
+谁先做，谁能并行，失败后退回哪里，什么时候汇合，哪一步必须等人批准。
+
+一个 Loop 可以看成最小的流程图。
+
+每个 Agent 内跑 Loop，外部用 Graph 管协作。
+
+一句话：Loop主内，Graph主外。
+
+
