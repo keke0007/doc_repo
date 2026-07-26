@@ -51,3 +51,4 @@ https://github.com/google-ai-edge/mediapipe
 https://github.com/FoundationAgents/OpenManus
 https://github.com/maoruibin/SlideNote
 https://github.com/hahhforest/pi-textbook
+https://github.com/bluegrassiot/mqttprobe
