@@ -55,3 +55,4 @@ https://github.com/bluegrassiot/mqttprobe
 https://github.com/40rbidd3n/Hydro0x01
 https://github.com/kritishmohapatra/100_Days_100_IoT_Projects
 https://github.com/mcp2everything/mcp2mqtt
+https://github.com/jetlinks/jetlinks-community
