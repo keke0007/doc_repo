@@ -52,3 +52,4 @@ https://github.com/FoundationAgents/OpenManus
 https://github.com/maoruibin/SlideNote
 https://github.com/hahhforest/pi-textbook
 https://github.com/bluegrassiot/mqttprobe
+https://github.com/40rbidd3n/Hydro0x01
