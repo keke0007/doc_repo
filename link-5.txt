@@ -58,3 +58,4 @@ https://github.com/mcp2everything/mcp2mqtt
 https://github.com/jetlinks/jetlinks-community
 https://github.com/freezetheflame/NanoHarness
 https://github.com/volcengine/OpenViking
+https://github.com/OtterMind/Chat2DB
