@@ -3,7 +3,7 @@ https://github.com/browser-act/skills
 https://github.com/t8y2/dbx
 https://github.com/didi/LogicFlow
 https://github.com/virgiliojr94/book-to-skill
-
+https://github.com/slothsheepking/jobclaw
 https://github.com/usekaneo/kaneo
 HuggingFace开源了本地语音智能体——STT到TTS全链路，不需要任何外部API。
 7.8k star，一天涨了837。
