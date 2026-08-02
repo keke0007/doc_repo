@@ -155,5 +155,16 @@ Graph 管节点之间。
 每个 Agent 内跑 Loop，外部用 Graph 管协作。
 
 一句话：Loop主内，Graph主外。
+每个软件工程师都该懂的 10 个 System Design 概念：
 
+Load Balancer：流量分发
+Caching：Redis + Cache Aside
+CDN：静态内容加速
+Database Replication：高可用
+Sharding：水平扩展
+Message Queues：Kafka / RabbitMQ
+Rate Limiting：接口保护
+Circuit Breaker：故障隔离
+Health Checks：服务探活
+Observability：Logs + Metrics + Traces
 
