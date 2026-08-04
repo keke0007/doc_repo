@@ -1,6 +1,7 @@
 https://github.com/iOfficeAI/OfficeCLI
 https://github.com/browser-act/skills
 https://github.com/t8y2/dbx
+https://github.com/dlt-hub/dlt
 https://github.com/didi/LogicFlow
 https://github.com/virgiliojr94/book-to-skill
 https://github.com/slothsheepking/jobclaw
