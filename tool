@@ -8,6 +8,7 @@ https://github.com/usekaneo/kaneo
 https://github.com/hcengineering/platform
 https://github.com/blue-idea/linkit
 https://github.com/bettercap/bettercap
+https://github.com/hrithikkoduri/WebRover
 HuggingFace开源了本地语音智能体——STT到TTS全链路，不需要任何外部API。
 7.8k star，一天涨了837。
 
