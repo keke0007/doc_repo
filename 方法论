@@ -5,3 +5,19 @@ herdr 真棒，自从之前推友介绍 agent skills 以后，https://herdr.dev/
 https://github.com/vikingmute/review-forge
 
 可以让 codex 先 review，然后它自动创建两个 agent panel，kimi k3 和 opencode 的 deepseek v4，去 review。然后主 codex 接收到两个 review 结果以后，生成 summary，我汇总 check 以后，再让 kimi 去修 bug，修好以后自动通知让 codex 去 verify， verify 后，kimi 再去读结果来回反复直到所有问题都解决，整个流程除了中间必须让我去 check 哪个 bug 要修之外，其他全都是自动化的，非常非常好用！
+
+LoopX 的切入点很准：它不管模型，只管 agent 长期运行时的状态连续性。目标、门禁、todo、配额、证据都落在本地持久化内核里，agent 每次只跑有界 turn，由配额决定是否继续。
+
+https://github.com/huangruiteng/loopx
+
+这套设计把跨 turn 的延续性从提示词中抽离，变成可审计的确定性状态层。外部副作用要显式授权，运行时不绑定具体 agent，Codex、Claude Code 都能接入。工程权衡很明确：内核保持轻量，复杂度收敛在控制面边缘，后期加新执行端不需要动状态模型本身。适合跑多天、多 agent、需要留痕的工作
+
+https://github.com/aws/context-ontology-accelerator
+ComfyUI 玩家有福了，这套 MiniMax H3 工作流直接抄作业。
+
+有人把 MiniMax H3 的常用玩法整成了一个「导演台」，导入 ComfyUI 就能直接用。
+
+https://github.com/huangserva/ComfyUI_MiniMaxH3_Director
+
+支持 文生视频、图生视频、首尾帧续写、视频换人 等常用工作流，不用自己一堆节点慢慢搭，打开就能开始生成。MiniMax H3
+Show more
