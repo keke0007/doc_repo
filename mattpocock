@@ -1,0 +1,54 @@
+
+meng shao
+@shao__meng
+·
+13h
+AI Skills for Real Engineers (205K 🌟)
+
+@mattpocockuk
+ Skills v1.2 正式发布！
+https://github.com/mattpocock/skills/releases/tag/v1.2.0
+
+v1.2 更新核心三条主线：
+1. 分发渠道扩展（cc 插件市场、Codex 支持）
+2. 文档体系补齐
+3. 多个核心技能的机制级重构
+
+# 分发与生态扩展
+
+1. 原生 Claude Code 插件 
+整套 Skills 已作为托管插件上架 Claude 官方插件市场
+claude plugins install mattpocock-skills
+插件是只读、自动更新的托管包，与 http://skills.sh 的"写入可编辑文件到项目"模式形成互补——前者省心，后者可定制。
+
+2. 完整 Codex 支持
+每个 SKILL.md 旁边新增 agents/openai.yaml，携带 Codex UI 元数据。
+用户触发型技能统一标记 policy.allow_implicit_invocation: false，即 Codex 不会隐式调用这些技能，但显式 $ skill 调用不受影响。
+
+# 三个新 Skills
+
+1. /wizard
+把"只有人能做的步骤"变成引导式 TUI 脚本，解决基础设施配置类痛点：当 agent 遇到必须人工操作的环节（第三方平台开通、凭证配置、CI secrets 写入、一次性迁移），不再往聊天里倾倒编号步骤，而是生成一个交互式 bash 脚本，逐步引导你完成——自动打开 URL、提示点击位置、收集输入值并写入 .env 和 GitHub Actions secrets。
+
+2. /to-questionnaire
+把答不上来的问题变成可转发的问卷，当你被 grilling 问住、问题必须问别人时，它会生成一份 Markdown 问卷，可异步发给相关同事，也可约会议一起过。
+
+3. /wait-what
+一句话纠正模型冗长晦涩的输出，仅三行长的用户触发型 Skill。当模型某条回复没看懂时输入它，agent 会用 ASD-STE100 简化技术英语和你 CONTEXT.md 里的统一语言重新表述。
+
+# 其他重要更新
+
+1. /grilling
+从逐问改为分轮提问（frontier 机制）
+
+2. /prototype 重构
+单 HTML 文件 + 原型作为一手资料，逻辑原型从 TUI 终端应用改为单个自包含 HTML 文件；原型完成使命后不再删除，而是作为可运行的证据保留在 prototype/ 游离分支上，并在实现 issue 中留下指针
+
+3. /writing-great-skills → /writing-for-agents
+适用范围从"写 Skill"扩展到 agent 消费的一切文档（skills、AGENTS.md/CLAUDE.md、被指针引用的文档）
+
+4. /wayfinder
+引入"决策票"（decision ticket）概念
+
+5. /ask-matt
+路由强化。把原来两条的"跨会话"建议扩为五种选项的完整决策树（continue → /clear → /handoff → subagent → /compact），理由写入新的 PHASE-BOUNDARIES.md；wayfinder 路由修正：明确它是最重的流程，一个会话装得下的功能应走 /grill-with-docs；地图清晰后应交接给 /to-spec 而非直接 /implement。
