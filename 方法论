@@ -1,0 +1,7 @@
+https://github.com/vikingmute/review-forge
+herdr 真棒，自从之前推友介绍 agent skills 以后，https://herdr.dev/docs/agent-skill/ 可以在 harness 之间可以互相召唤 互相指挥以后，很多场景都顺了。
+
+如图是我用我的 review-forge 流程 做 code-review，
+https://github.com/vikingmute/review-forge
+
+可以让 codex 先 review，然后它自动创建两个 agent panel，kimi k3 和 opencode 的 deepseek v4，去 review。然后主 codex 接收到两个 review 结果以后，生成 summary，我汇总 check 以后，再让 kimi 去修 bug，修好以后自动通知让 codex 去 verify， verify 后，kimi 再去读结果来回反复直到所有问题都解决，整个流程除了中间必须让我去 check 哪个 bug 要修之外，其他全都是自动化的，非常非常好用！
