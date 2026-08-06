@@ -17,6 +17,7 @@ https://cwiki.apache.org/confluence/plugins/servlet/mobile?contentId=446070971#c
 https://github.com/satnaing/shadcn-admin
 https://github.com/goauthentik/authentik
 https://hermes-agent.nousresearch.com/docs/skills
+https://github.com/jdx/mise
 HuggingFace开源了本地语音智能体——STT到TTS全链路，不需要任何外部API。
 7.8k star，一天涨了837。
 
