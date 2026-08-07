@@ -1,1 +1,11 @@
 https://github.com/cypress-io/cypress
+https://github.com/cloudflare/computer
+https://x.com/xicilion/status/2080552376230887541
+https://github.com/chemark/ai-agent-book
+Claude Code 会话跑到又臭又长时，继续往里塞上下文往往已经没用了。
+
+Bumble 一位后端工程师的做法是：把已经确认的决策写成几百字的 spec，然后直接开新会话。他总结得很直接：500 token 的 spec，比 50K token 的退化上下文更有用。
+
+他还有个习惯我挺认同：让 AI 去「调查」「探索」之前，先把边界写死。比如只查 auth 模块，最多 20 条，按文件路径 + 函数名 + 查询类型返回。
+
+长会话最容易失控的地方，往往不是写代码，而是没有边界的探索。
