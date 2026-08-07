@@ -1,0 +1,106 @@
+To view keyboard shortcuts, press question mark
+View keyboard shortcuts
+Post
+
+See new posts
+Conversation
+烟花老师
+@teach_fireworks
+Loop Engineering 精华文章汇总!
+
+2026 年 Agent 开始聚焦在长任务后，重点慢慢变成了：
+
+如何设计一个能够持续思考、执行、观察、验证和演进的循环系统？
+
+从 Codex 到 Claude Code，从 OpenHands 到各种 Coding Agent。
+
+业余项目和生产级系统之间最大的差距是Harness 工程，包括 Loop。
+
+Agent 能不能持续工作几十分钟甚至几个小时？
+
+能不能在失败后恢复？
+
+能不能控制成本？
+
+能不能知道什么时候停下来？
+
+这些问题，最终都落到了 Loop 设计上。
+
+📚 推荐阅读
+
+1. Loop Engineering — Addy Osmani
+https://addyosmani.com/blog/loop-engineering/
+
+2. Loop Engineering — Firecrawl
+https://firecrawl.dev/blog/loop-engineering
+
+3. What Is the AI Agent Loop? — Oracle
+https://blogs.oracle.com/developers/what-is-the-ai-agent-loop-the-core-architecture-behind-autonomous-ai-systems
+
+4. Harness Engineering — OpenAI
+https://openai.com/index/harness-engineering/
+
+5. Harness Engineering for Coding Agent Users — Martin Fowler
+https://martinfowler.com/articles/harness-engineering.html
+
+6. Agentic Loops: From ReAct to Loop Engineering
+https://datasciencedojo.com/blog/agentic-loops-explained-from-react-to-loop-engineering-2026-guide/
+
+7. Loop Engineering for AI Agents (Memory-First) — Mem0
+https://mem0.ai/blog/loop-engineering-for-ai-agents-memory-first-design
+
+📄 推荐论文
+1. Agentic Harness Engineering
+https://arxiv.org/abs/2604.25850
+
+2. From Agent Loops to Structured Graphs
+https://arxiv.org/abs/2604.11378
+
+🛠 推荐研究的开源项目
+Codex CLI
+https://github.com/openai/codex
+
+OpenHands
+https://github.com/All-Hands-AI/OpenHands
+
+PydanticAI
+https://github.com/pydantic/pydantic-ai
+
+OpenAI Agents SDK
+https://github.com/openai/openai-agents-python
+
+重点研究：
+Loop 如何运行
+Loop 如何停止
+Loop 如何验证
+Loop 如何恢复
+Loop 如何调试
+
+Prompt 决定 Agent 如何开始。
+Context 决定 Agent 能看到什么。
+Loop 决定 Agent 最终能走多远。
+
+Loop Engineering：
+Think
+↓
+Act
+↓
+Observe
+↓
+Verify
+↓
+Evolve
+↓
+Repeat
+
+你设计循环。
+Agent 在循环中持续改进。
+每完成一次循环，系统都会比上一次更接近目标。
+Agent 从来不缺 Loop。
+缺的是 Loop 的工程学。
+10:46 PM · Jun 18, 2026
+·
+166.7K
+ Views
+Relevant
+View quotes
