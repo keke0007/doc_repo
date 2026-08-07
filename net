@@ -1,1 +1,123 @@
 https://github.com/yusing/godoxy
+https://github.com/Edwardxlai/ai-timed-challenge
+最近的研究重心，又回到了模型本身：MoE 专家分工、Router 门控机制、专家裁剪与合并，再到 GGUF 量化与本地推理。
+
+比起不断堆叠 Agent，真正决定智能上限的，依然是模型内部如何路由、激活、压缩与重组知识
+
+
+To view keyboard shortcuts, press question mark
+View keyboard shortcuts
+Post
+
+See new posts
+Conversation
+yibie
+@yibie
+Lexifina 的 Alan Yahya：调优 agent 行为，本质上是在对它手里的资源做升降级。看不见 agent 内部，就修不好它。
+
+《看穿你的 agent 才能修好它》
+
+See Inside Your Agents To Fix Them
+
+行为调优——通过提升、延后或移除 agent 能访问的资源来调优它的行为。
+
+| 资源 | 提升（Promoted） | 延后 / 广告（Deferred / advertised） | 移除 / 不可用（Demoted / unavailable） |
+|------|------------------|--------------------------------------|----------------------------------------|
+| 工具 | 完整 schema 放进模型上下文 | 只广告名字/命名空间；schema 按需加载 | 不暴露 |
+| 记忆 | 相关记忆注入/钉进工作上下文 | 只广告记忆索引/摘要；细节按需检索 | 不搜索、不注入 |
+| 子代理 | agent/交接直接暴露给模型 | 只广告轻量描述；委托时才实例化/加载 | 不作为委托目标暴露 |
+
+降级（Demotion）
+
+• 隐藏：模型不知道它存在。
+• 降秩：模型知道它存在，但另一个资源先赢。
+• 门控：只有满足某个条件后才可用。
+• 饿死：给它更少的 token、调用、时间或上下文预算。
+• 限定范围：只暴露它能力或数据的一部分。
+• 升级审批：另一个决策者、路由器、验证器或人类必须批准它的使用。
+
+提升（Promotion）
+
+• 表面化：让模型知道这个资源以及什么时候用它。
+• 排名：在选择时优先于同类资源。
+• 预加载：在选择之前把它的 schema、指令或数据放进工作上下文。
+• 路由到它：把匹配的任务发给它，而不是等模型自己选。
+• 给预算：给它更多 token、调用、时间或上下文。
+• 扩展：暴露更多能力、数据或范围。
+• 许可：移除门控或提前授予权限。
+• 持久化：让它在多轮、多请求或多会话之间保持可用。
+
+视角（Lenses）
+
+1. 性能：agent 在不同运行之间表现如何？按速度、成本和规模比较用户批准的结果。
+2. 执行：这次运行为什么这么表现？检查模型调用（工具、委托）和上下文（压缩与检索）。
+3. 用户对齐：agent 做了用户要求的事吗？分类意图并检查文档元数据和图表的改动。
+
+证据
+
+| 问题 | 证据 |
+|------|------|
+| 对话 | 整个旅程成功了吗？来源、请求、分支、最终结果 |
+| 请求 | 模型表现是否对齐？指令、父请求、时长、状态 |
+| 模型调用 | 模型收到并返回了什么？模型、上下文大小、缓存使用、延迟、输出 |
+| 工具调用 | 哪个动作跑了，跑通了吗？调用者、参数、结果、错误、重试 |
+| Agent 决定 | 什么改变了执行路径？行为调优：提升与降级 |
+| 制品 | 实际改了什么？文档、版本、精确 diff、审查状态 |
+
+原文：https://lexifina.com/blog/see-inside-your-agents-to-fix-them
+#Agent工程 #Agent可观测性
+From lexifina.com
+5:23 PM · Aug 7, 2026
+·
+304
+ Views
+Discover more
+Sourced from across X
+yibie
+@yibie
+·
+1h
+Vercel 的 Jonathan Hefner：把两类 agent 扩展统一成一种可分发插件的开放标准正式发布了——一个清单文件加固定目录，客户端各自解析，不再为每家客户端重打包。多家大厂一起定的。
+
+《Agent 插件发布》
+
+Introducing Agent Plugins
+
+今天，Agent Plugins 1.0.0 公开发布。Agent Plugins
+Show more
+
+
+https://lexifina.com/blog/see-inside-your-agents-to-fix-them
+
+强烈推荐YC最近做的一系列访谈视频，邀请了包括 
+@sama
+ 
+@JensenHuang
+ 
+@bcherny
+ 
+@JeffDean
+ 
+@alexandr_wang
+ 等一系列AI前沿公司的领军人，谈的很多东西都令人受益匪浅。包括Boris说每6个月清空一次skills，以及Jeff说Taste如何培养等等。还得是YC才能集齐这么多龙珠。
+
+https://m.youtube.com/watch?v=eRrc1pUY5oU&pp=0gcJCcQLAYcqIYzv
+
+
+AI 编程 接下来的趋势是：需求对齐侧会越来越厚，需求实现侧会越来越薄
+
+需求对齐侧：
+从 /grill-me 拷问需求，到 /prototype 画需求原型，这些是“我自己该怎么对齐需求”
+再到 /to-questionnaire 是“为了对齐需求，我需要采访别人什么问题”
+再往下的发展，就是“更多工种（比如 设计、产品）参与其中，作为 需求对齐侧 的一个环节”
+
+需求实现侧：
+随着 Agent 长程执行能力、编码能力 越来越好，很多防御性的流程（比如 Spec 拆成 详细的 Plan）变得没必要
+最终 需求实现 将退化成一个 /goal 命令
+
+
+现在清理到没有几个全局的 skills，只剩下自己的工作流和 matt 的几个，还有 ponytail。ponytail 一直留着是觉得真的挺好用，尤其是配合 codex，减少过度设计效果杠杠的。
+
+什么 caveman，感觉没啥用了，一看官网，好家伙，从一个 skills 扩展到一个创业公司了。
+
+不知道大家还保留着什么 skill 在用？
