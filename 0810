@@ -43,3 +43,644 @@ https://github.com/addyosmani/agent-skills
 https://github.com/bojieli/ai-agent-book
 https://github.com/anthropics/claude-code
 https://books.antinomie.org/pi/
+
+我得找一种方法把经年累月的个人项目和 todo 从 things3 彻底迁移到 codex 上来，自从开始用 agents 管理个人和公司事务后，这些日程完全脱节了。
+
+https://github.com/jetlinks/jetlinks-community
+To view keyboard shortcuts, press question mark
+View keyboard shortcuts
+Post
+
+See new posts
+Conversation
+IndenScale
+@david0520782123
+企业 AI 时代，需要从 Data Governance 走向 Knowledge Governance
+
+过去十年，企业数字化建设围绕一个核心问题展开：
+
+如何让企业已经产生的数据变得可信、可分析、可复用？
+
+因此，企业建设了数据仓库、数据湖、指标体系、主数据管理和数据治理体系。
+
+这套体系极大提升了企业理解自身运行状态的能力。
+
+它帮助企业回答：
+
+过去发生了什么？
+当前业务表现如何？
+哪些指标正在变化？
+
+但进入 AI 时代，一个更深层的问题出现：
+
+企业真正决定未来的能力，是否已经存在于这些结构化数据中？
+
+答案是否定的。
+
+企业最重要的竞争优势，往往不是已经发生的结果，而是推动未来结果发生的信号、判断和经验。
+
+这些内容长期存在于：
+
+客户会议；
+项目复盘；
+管理层讨论；
+销售交流；
+产品评审；
+内部文档；
+群聊和个人经验。
+
+它们构成企业真正的 Know How。
+
+因此，企业 AI 时代需要从 Data Governance（数据治理）走向 Knowledge Governance（知识治理）。
+
+一、数据治理管理的是结果，知识治理管理的是未来
+
+理解这一变化，需要区分企业中的两类指标。
+
+后验指标（Lagging Indicators）
+
+后验指标描述已经发生的事实。
+
+例如：
+
+销售：
+
+Revenue；
+
+ARR；
+Win Rate；
+Churn。
+产品：
+
+DAU；
+
+Retention；
+Conversion。
+运营：
+
+成本；
+
+交付周期；
+服务质量。
+这些指标通常来自企业已经结构化的业务系统：
+
+ERP；
+
+CRM；
+Billing；
+Product Database。
+它们回答：
+
+企业发生了什么？
+
+因此，它们天然适合进入数据湖仓。
+
+先验指标（Leading Indicators）
+
+但真正决定未来结果的，往往是先验指标。
+
+例如：
+
+一个销售机会最终是否成交，可能取决于：
+
+客户内部是否形成共识；
+
+是否有关键高管参与；
+
+是否确认预算来源；
+是否存在竞争风险；
+客户是否已经形成购买意愿。
+一个产品是否成功，可能取决于：
+用户是否产生自然使用习惯；
+
+用户是否主动传播；
+
+是否形成关键场景依赖。
+这些信号并不是不存在。
+问题在于：
+
+它们没有被识别、命名、结构化，并进入企业决策链路。
+
+它们以：
+
+个人记忆；
+
+聊天记录；
+
+会议讨论；
+非正式文档；
+的形式存在。
+因此，企业的问题不是缺少数据。
+
+而是：
+
+决定未来的先验信号，没有被纳入企业知识系统。
+
+二、数据湖仓记录企业执行历史，知识系统记录企业认知历史
+
+传统数据平台有一个隐含假设：
+
+企业事实最终都会进入结构化系统。
+
+但现实中：
+
+结构化数据通常是业务运行之后留下的结果。
+
+它记录：
+
+一个订单是否成交；
+
+一个客户贡献多少收入；
+
+一个项目是否延期。
+
+但它无法天然表达：
+为什么客户选择我们；
+为什么这个项目虽然延期，但战略价值很高；
+
+为什么某个市场机会值得投入；
+
+为什么某种销售方式更有效。
+因此：
+数据记录企业做了什么，知识记录企业为什么这么做。
+Data Warehouse 是企业执行历史的记忆。
+
+Documents、会议、交流和经验，是企业认知历史的记忆。
+
+对于 AI 而言，两者同样重要。
+
+因为 AI 不仅需要知道企业发生了什么，更需要理解企业如何判断、如何决策、如何行动。
+
+三、文档不是知识，而是业务现实的脆弱投影
+
+然而，简单地把所有文档交给 AI，并不能解决问题。
+
+因为文档本身不是知识。
+
+文档只是企业业务现实的一个观察切面。
+
+类似数据库中的 View。
+
+它展示现实的一部分，但并不等同于现实本身。
+
+今天企业中的状态是：
+
+Business Reality
+
+      |
+
+   Document
+
+      |
+
+Human Interpretation
+
+这个切面存在几个根本问题：
+
+第一，缺少业务实体
+
+同一个客户可能存在于：
+
+销售文档：
+这是一个战略客户，有较大的扩展机会。
+
+客户成功文档：
+
+当前存在多个待解决问题。
+
+财务系统：
+
+合同金额 500 万美元。
+CRM：
+
+Renewal Probability 80%。
+
+这些描述都是事实，但它们没有共享同一个业务模型。
+
+第二，内容和结构混合
+
+文档通常同时包含：
+
+样式；
+
+叙事；
+
+判断；
+
+事实。
+
+因此 AI 很难区分：
+
+什么是企业事实。
+
+什么是人的解释。
+
+什么是组织经验。
+
+因此，下一代知识基础设施需要重新拆解文档。
+
+四、从文档到知识：建立企业知识的结构层
+
+未来企业知识系统需要完成几个层次的分解。
+
+1. 产物分解：内容与样式分离
+传统：
+Document
+ |
+ + Content
+ |
+ + Style
+未来：
+
+Document Artifact
+
+ |
+ + Presentation Layer
+
+ |
+ + Knowledge Layer
+
+知识不应该依赖某种文件格式存在。
+
+2. 内容分解：叙事框架与事实引用分离
+
+企业文档通常包含两种信息。
+
+第一类：
+
+Narrative。
+
+包括：
+
+背景；
+
+判断；
+
+推理；
+
+建议。
+
+第二类：
+Fact。
+包括：
+客户；
+产品；
+金额；
+时间；
+
+状态。
+
+例如：
+“由于客户过去三个季度持续增长，我们判断其将在下一季度扩大采购。”
+
+其中：
+“客户过去三个季度持续增长”
+
+是事实。
+“因此判断下一季度扩大采购”
+是组织判断。
+
+两者需要被分别建模。
+
+3. 事实继续拆分：Business Entity 与 Business Concept
+
+事实并不是单一类型。
+
+至少包含两类：
+
+Business Entity：动态业务实体
+
+例如：
+
+Customer
+
+Name: Acme
+
+ARR: 10M
+
+Status: Active
+
+特点：
+有生命周期；
+会变化；
+有确定来源。
+
+因此应该来自：
+
+Source System
+
+      |
+
+      ETL
+
+      |
+
+Business Entity
+
+而不是人工复制。
+
+Business Concept：企业定义
+另一类不是事实，而是企业认知。
+例如：
+什么是：
+Enterprise Customer；
+
+Strategic Account；
+
+Qualified Lead。
+
+这些需要结构化：
+
+Concept Schema
+
+Enterprise Customer:
+
+Criteria:
+
+ARR > 1M
+
+Employee > 1000
+
+它们构成企业知识系统中的 Type System。
+
+五、Assertion：从规则检查到企业诊断系统
+
+企业治理的核心，不应该是简单检查错误。
+
+而应该是在业务状态变化时产生诊断。
+
+传统方式：
+
+Data Created
+
+      |
+
+Quality Check
+
+      |
+
+Issue Report
+
+问题在于：
+
+错误已经发生。
+
+未来：
+
+Business Entity
+
+      |
+
+Assertion Evaluation
+
+      |
+
+Diagnosis
+
+      |
+
+Governance Policy
+
+      |
+
+Action
+
+Assertion 的作用不是决定行动。
+
+Assertion 的作用是：
+判断业务状态是否符合企业认知模型，并产生诊断。
+
+例如：
+
+企业定义：
+
+战略客户必须存在 Executive Sponsor。
+系统发现：
+
+Customer:
+
+Strategic = True
+
+Executive Sponsor = NULL
+
+产生：
+Diagnosis:
+
+Missing Executive Sponsor
+Risk Level: Medium
+之后，根据组织治理配置决定：
+
+是否提醒销售负责人；
+
+是否进入审批流程；
+是否阻止某个阶段推进；
+
+是否仅记录风险。
+
+同一个诊断，在不同业务阶段、不同组织策略下，可以产生不同动作。
+
+这才是企业治理的本质。
+
+六、AI 时代，必须把 Know How 转化为 Executable Knowledge
+为什么 Knowledge Governance 在 AI 时代如此重要？
+
+因为人类组织运行依赖大量隐性机制。
+
+企业员工为什么能够做正确判断？
+
+不仅因为他们读过文档。
+
+更因为组织中存在：
+
+奖励；
+
+惩罚；
+
+反馈；
+文化暗示；
+管理压力；
+
+经验传承。
+
+这些机制不断塑造人的行为。
+但是 AI 不具备这些能力。
+
+AI：
+
+不会因为失败受到惩罚；
+
+不会因为成功获得奖励；
+
+不会理解一句暗示背后的组织含义；
+不会通过多年经验形成直觉。
+
+因此，人类组织中大量依赖人的 Know How，需要被形式化。
+
+从：
+
+Human Experience
+
+      |
+
+Implicit Judgment
+
+转变为：
+
+Concept
+
+      |
+
+Entity
+
+      |
+
+Assertion
+
+      |
+
+Executable Policy
+
+      |
+
+AI Action
+
+只有这样，AI 才能真正进入企业核心价值生产过程。
+
+七、从 Data Governance 到 Knowledge Governance
+Data Governance 的目标：
+
+保证企业数据准确。
+
+Knowledge Governance 的目标：
+
+让企业知识可以被表达、验证、执行和复用。
+
+两者管理对象不同：
+Data GovernanceKnowledge Governance核心对象数据知识基础单位Table / FieldEntity / Concept / Assertion主要来源业务系统业务系统 + 人类经验解决问题数据可信决策可信使用者分析系统AI Agent + 人类组织
+
+未来企业竞争的关键，不只是拥有更多数据。
+
+而是拥有：
+
+更完整的业务实体；
+
+更准确的企业概念；
+更丰富的先验指标；
+
+更成熟的判断规则；
+
+更可执行的组织知识。
+
+结语：企业未来需要的是可计算的知识基础设施
+
+过去十年：
+
+企业把数据变成资产。
+
+未来十年：
+
+企业需要把知识变成基础设施。
+
+数据治理解决：
+企业知道发生了什么。
+
+知识治理解决：
+
+企业知道为什么发生，以及下一步应该如何行动。
+
+最终，企业需要构建：
+
+Business Reality
+
+        |
+
+Knowledge Governance Layer
+
+        |
+
+AI Agents
+
+让企业过去积累的经验、判断和方法论，不再停留在人脑、文档和聊天记录中。
+
+而成为 AI 可以理解、验证和执行的能力。
+
+这将成为企业 AI 时代新的基础设施。
+11:15 AM · Aug 9, 2026
+·
+480
+ Views
+Relevant
+
+
+https://github.com/pguso/ai-agents-from-scratch
+
+Following
+费曼输出群
+
+See new posts
+Your Home Timeline
+
+Show 35 posts
+Vince 聊开发
+@vincemask
+·
+18h
+Claude 用久了，我发现 Prompt 只解决了一半问题。
+
+另一半，是你的文件系统。
+
+文件乱，Claude 的上下文就容易乱。
+
+我现在基本固定成这 5 个目录：
+
+[01] system/
+放规则和约束，Claude 必须遵守。
+
+[02] context/
+放长期稳定上下文，比如工作方式、写作风格、参考资料。
+
+[03] projects/
+放正在推进的任务和项目。
+
+[04] outputs/
+放已经完成的产物。
+
+[99] archive/
+放旧内容。退出活跃上下文，但依然可以搜索。
+
+项目内部再按流程编号：
+
+00_BRIEF
+01_SOURCES
+02_NOTES
+03_DRAFTS
+04_VISUALS
+05_FINAL
+
+这样 Claude 基本不用猜：
+什么最重要、先看什么、哪些还在进行、哪些已经结束。
+
+文件名也别再用：
+
+final.docx
+final_v2.docx
+final_REAL.docx
+
+命名最好直接回答：
+
+什么时候？
+是什么？
+什么状态？
+
+最后记住 5 条就够了：
+
+Markdown 写规则
+数字定义顺序
+名字表达含义
+日期负责检索
+Archive 隔离噪音
+
+AI Agent 的上下文工程，不只发生在 Prompt 里。
+
+文件系统本身，就是 Context Engineering
+https://ecn1dvdwnqas.feishu.cn/docx/Umm9dPLOqo1WPzxBAMScsVqYnsd
