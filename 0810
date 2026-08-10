@@ -1,0 +1,45 @@
+https://github.com/joeseesun/herdr-guide
+我现在开始用 playwright ＋ ai 写软件使用手册。方法是：
+
+一、定义手册覆盖的典型事务
+二、使用 playwright 编写每个事务的全流程测试脚本
+三、根据手册需要在适当位置自动截图，必要是自动加标记
+四、ai 编写手册并插入截图
+
+这样做，既保证主要事务全流程测试覆盖，又确保手册内容与软件随时同步。
+
+卡神分享Coding的2个技巧
+1.第一性原理
+2.对抗式审查
+
+1. 打开你的终端， 
+
+2. 安装命令：  
+ curl -fsSL https://herdr.dev/install.sh | sh  
+
+3. 启动herdr ： 
+ herdr    
+
+4. 打开你的claude code 或者 codex cli  
+
+ 5.输入： 
+
+ read `herdr --skill` then split 10 other panels that make my computer look like some scifi hacker terminal from the movies 
+
+然后就是我截图的的界面， 你应该也就能理解 Herdr 是干什么的了。
+
+输入的提示词来自于shopify 的CEO
+
+
+看上去 herdr 已经流行起来了，这里分享一个我的使用技巧
+
+默认 agents 通讯，会用 pane 编号，以 p{0-9A-Z} 来互相称呼，如果你开了好几个 agents 容易搞不懂说的是谁
+
+可以让其中的主控 Agent 给各个 Pane 都打上 label，比如我常用规则是 $color-$animel
+
+特别启动多个 codex 的时候非常有用
+https://github.com/phuryn/pm-skills
+https://github.com/addyosmani/agent-skills
+https://github.com/bojieli/ai-agent-book
+https://github.com/anthropics/claude-code
+https://books.antinomie.org/pi/
