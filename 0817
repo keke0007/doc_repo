@@ -1,0 +1,114 @@
+https://github.com/yetone/cumora
+https://github.com/ayghri/i-have-adhd
+https://x.com/Huanusa/status/2089131339727716819
+https://x.com/chengyongru/status/2089289757138575737
+https://x.com/laobaishare/status/2089290341992251698
+https://github.com/AQBot-Desktop/AQBot
+https://github.com/gavinkhung/machine-learning-visualized
+
+Agent Loop、Context、Memory、Permissions、Evaluation 和 Multi-Agent，这些机制才值得长期研究。
+https://github.com/hardness1020/awesome-agent-architecture
+https://github.com/Koenkk/zigbee2mqtt
+https://innei.in/posts/tinkering/ai-era-dev-workflow-review-and-verify
+https://github.com/ShadowArcanist/netviz
+https://github.com/liquidslr/system-design-notes
+https://github.com/ykdojo/claude-code-tips
+https://github.com/cordiverse/cordis
+https://github.com/grokability/snipe-it
+https://github.com/AwaisShah75/Real-Time-Person-Elderly-Fall-Detection-System
+今天突然就悟到了，傅立叶变换的谱分析，和振动系统里的共振频率，还有线性代数的矩阵特征向量和特征值，背后是同一套逻辑…
+
+个人感觉也是这样:
+1. 开发涉及的服务全部放到一个workspace下，保证LLM 能读到所有项目代码
+2. 做好可观测性，日志、指标、链路追踪全部做好
+
+然后coding agent(我用的 cursor)就可以根据代码和日志评审运行情况对项目做自进化了，我们有个专门的进化项目每周让cursor自己跑分析，记录问题做自动改进
+
+
+现在给 AI Agent 加能力已经很容易了。Tool、Skill、MCP、Plugin，接一个就多一个能力。
+
+但一个更麻烦的问题开始出现：加进去的东西，怎么干净地拿掉？
+
+刚看到一个 4.7K ⭐️ 的项目 Cordis。它在做一个挺底层的东西：插件加载时产生的事件、服务、监听器、副作用，都跟着生命周期走。
+
+Plugin 加载
+
+→ 注册能力
+→ 依赖自动就绪
+→ 运行
+→ Reload / Remove
+→ 副作用一起撤销
+
+甚至支持 Hot Module Replacement。我觉得这个方向很有意思。
+
+未来 Agent 如果真的长期运行、不断安装 Skill、切换 Tool、加载 Subagent，最难的可能不只是：怎么动态获得能力。
+
+还包括：怎么安全地失去能力。
+
+否则一个跑几天、几个月的 Agent，最后可能变成一团没人知道谁改过什么的状态。
+
+Agent 时代需要的不只是更多插件。还需要一套真正能管理：能力 + 依赖 + 生命周期 + 副作用的运行时。
+
+https://github.com/cordiverse/cordis
+
+10:10 AM · Aug 17, 2026
+·
+1,148
+ Views
+Relevant
+哼嗯
+@bntaizi
+·
+1h
+Agent 工具又往工程化走了，真正省事之前估计还得折腾一阵
+老韭菜南亥
+@daweifs
+·
+59m
+已经非常省时间！
+南山币胜客
+@hungry_twitt
+·
+1h
+又推荐了好东西
+老韭菜南亥
+@daweifs
+·
+1h
+谢谢，用起来😂
+撸毛吃猪脚饭|Gate美股0费率
+@mnmn94253156337
+·
+2h
+给力收藏了在说
+老韭菜南亥
+@daweifs
+·
+2h
+天天说收藏，收毛线，用起来🤣
+M E C I-I
+@Mechsjoke
+·
+2h
+插件生命周期管理确实是个痛点，干净卸载比加功能难多了bro。
+老韭菜南亥
+@daweifs
+·
+2h
+它就是为了解决这个痛点才出的！
+web3 八方
+
+@xx03199
+·
+2h
+摸你，包租公
+老韭菜南亥
+@daweifs
+·
+2h
+666
+king
+@kingzw888
+·
+2h
+Agent越强，生命周期管理越重要
