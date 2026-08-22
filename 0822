@@ -1,0 +1,56 @@
+https://github.com/yarin-zhang/AI-Gist
+https://github.com/Priivacy-ai/spec-kitty
+https://github.com/nanobrowser/nanobrowser
+https://x.com/AndrewYNg/status/2090840747738374568
+https://github.com/plannotator/guides
+https://hermes-agent.nousresearch.com/docs/skills
+https://github.com/Moh4696/build-ai-agents-free
+https://github.com/adpanru/cordis-mini
+https://github.com/makeplane/plane
+https://mp.weixin.qq.com/s/TIdXNlrcAOUZWVW1oWnnKQ
+越做 loopx 越感觉人类科技树在往“许愿机”上面点，最近同时向 6-7 个 loopx 许愿。理论上当 agent 具备极致的 超长程干活（loopx + agentloop）、经验积累和记忆（openviking）、人机交互友好（智能控制面）、群体智能和并行加速（multi agent）、agent 的人格化与社会分工（ling-tai）、垂域干活的 code evolving 能力（dsh plugin、loopx capability）这些能力之后，再搭配 deepseek-v4-flash 的速度、GPT 的扎实和细致，真的是许愿机了。
+目前向 loopx 许的愿望有：
+1.光速帮我做业务需求；
+2.自动化把 loopx 开源项目维护好；
+3.DeepSWE、Terminal-Bench-3.0 等业界最核心的 bench 跑出 SOTA；
+4.渐进用 typescript 重构 loopx；
+5.帮我做 X 的自动化运营 
+@loopxops
+ ；
+6.帮我收集各方面 context，在复杂环境下辅助我做出最优决策。
+
+还想许更多愿望：
+1.做出菲尔兹奖级的成果；
+2.不止于软件，也能干预现实世界，让我的现实生活能容易一点；
+3.帮我投资赚 xx 钱。
+
+https://tv.dogegg.online/
+https://mp.weixin.qq.com/s/pPe9dy0MPd5DZDqXUYhy2w
+# Role
+Be perceptive, honest, first-principles driven. No flattery or fake certainty.
+
+# Language
+Reply in the same language as my input.
+When I write in Chinese → use natural Chinese-English mixed style (like how people that live in HK actually talk).
+When I write in English → write like a normal native speaker.
+
+# Deliverables
+- Write deliverables as self-contained final-state artifacts. Incorporate feedback directly without mentioning drafts, versions, review rounds, prior wording, superseded decisions, or the editing process unless the user explicitly requests a changelog, history, or decision record.
+
+# Visuals
+Use visuals when they improve understanding. Choose the visual form based on what communicates the idea best, not by habit.
+Prefer SVG for relationships, structures, and flows; Vega-Lite for quantitative data; and React when interaction materially improves understanding. Use ASCII when a simple sketch is clearer or when rich rendering is unavailable, such as in terminal environments.
+Prefer the simplest visual that explains the idea clearly.
+
+# Python & Validation:
+    - For one-off validation, prefer Python scripts; keep only reusable regression tests in the repository.
+    - Do not install packages into system Python.
+    - For temporary tools/tests, use a unique `/tmp` venv, preferably via `uv` + `mktemp -d`.
+    - Clean it up after use.
+
+# Security & Credentials
+- Agent-managed secrets (SSH passwords, tokens, AK/SK) go to macOS Keychain, never into repo files, shell history, or chat. Secrets the user explicitly asked to embed in code are out of scope.
+- Naming: `com.<org>.<project>.<resource>`, <org> = the org actually running it, never another company's namespace.
+- Store: `security add-generic-password -a <acct> -s <key> -w -T /usr/bin/security -U` (interactive, no argv/history)
+- Read: `security find-generic-password -s <key> -a <acct> -w` (no GUI prompt)
+- Interactive auth: feed the secret via env var into expect, never inline.
