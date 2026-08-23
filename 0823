@@ -1,0 +1,124 @@
+https://github.com/reorx/envops
+其实Pi 相关网站不用收藏那么多，只要几个就够了。
+
+官网： https://pi.dev
+文档、安装、更新都从这进，不要一上来先搜第三方教程。
+
+Skill 文档： https://pi.dev/docs/latest/skills
+怎么写 SKILL.md、放哪、什么时候加载。重复流程优先写成 Skill，别先上 MCP。
+
+扩展文档： https://pi.dev/docs/latest/extensions
+要加命令、拦危险操作、改状态栏才看这个。Skill 是说明书，扩展是改运行时。
+
+包装安装： https://pi.dev/docs/latest/packages 
+pi install 怎么用。扩展带系统权限，装之前先看安全说明。
+
+插件市场： https://pi.dev/packages
+装包先在这搜，比群里复制命令靠谱。
+
+官方源码 https://github.com/badlogic/pi-mono
+权限拦截、沙箱、subagent 示例都在仓库里。
+
+中文文档： https://pi-doc.com
+英文看着费劲就看这个，快速开始够用。
+
+插件合集： https://github.com/qualisero/awesome-pi-agent
+还想找插件再翻这个，当目录用。
+
+建议你一定要先实操起来，结合文档一起看。不然收藏再多，有没有什么实际的提升。
+
+
+https://github.com/memovai/mimimodel
+https://github.com/supertone-inc/supertonic
+https://github.com/joe960913/Jixu
+https://kongpinglab.feishu.cn/wiki/OEnlwtSLDihsoPkqN8PcoDjWnCt?fromScene=spaceOverview#share-PJvFd76mxo8Th6xDeU2cMlHknXc
+很多人还不知道，这两天突然火起来的 Omarchy 到底是什么？
+
+简单说，它是 DHH 推出的开发者 Linux 系统，基于 Arch Linux 和 Hyprland，内置 Neovim、终端、开发工具，以及 OpenCode、Claude Code 等 AI Coding Agent。
+
+你可以用它写代码、运行项目，通过 Agent 修改代码、执行测试和排查问题；也可以同时运行多个终端、数据库和开发服务，把它当成一台专门的 AI Coding 工作站。
+
+https://github.com/sinyu1012/proxypin-mcp-workbench
+https://github.com/kevin2li/PDF-Guru
+https://github.com/itshen/source-reading-methodology
+https://github.com/akitaonrails/ai-memory
+https://x.com/I_am_oil_oil/status/2080132896447414302
+
+
+
+https://github.com/block/buzz
+https://github.com/AMAP-ML/LongHorizon-Harness
+
+响马
+@xicilion
+·
+6h
+我认为人类为人类写文档只剩下很短暂的过渡期了。AI 普及后，信息交换的瓶颈在 AI 和 人，而非人类和人类。没有人类会再去读另外一个人类写的文档了。
+因此我坚定地站 PlantUML 这样 AI 可以无脑表达得很好，人类可以一眼看明白的语义绘图方式。
+
+
+
+那些真正理解系统和复杂性的开发者，知道如何引导AI产出高质量代码；而对系统缺乏理解的人，只会让AI生成更多错误。
+
+AI是一个伟大的工具，但它仅仅也只是工具。优秀的开发者依然能写出优秀代码，普通开发者依然更容易写出有Bug的代码，这一点在AI时代依然成立。关键在于深刻理解你所构建的系统。
+
+
+
+https://github.com/kritishmohapatra/100_Days_100_IoT_Projects
+刚才试了元 skill
+
+跟 codex 自带的 skill creator比
+
+真的有点惊为天人，规整又稳定！！！
+
+我居然才开始用
+
+https://x.com/GitTrend0x/status/2091047936977494033
+https://github.com/HKUDS/DeepTutor
+
+https://x.com/MaxForAI/status/2091056022551187579
+https://x.com/aigclink/status/2091076588309971118
+https://github.com/harvard-edge/cs249r_book
+
+debating whether we should make it an official plugin, but you can try installing it here to try with these commands:
+
+claude plugin marketplace add anthropics/claude-plugins-community
+
+claude plugin install eli5@claude-community
+
+Pi Agent编程插件列表
+
+我玩了一下午，发现下面这几个插件配合最完美，上一版有兼容性问题
+
+1. pi-web-access: 访问网络资源
+2. pi-mcp-adapter: 访问MCP
+3. pi-grok-cli: 访问Grok API， 蓝V必备
+4. pi-rewind: 每次AI输出的时候都备份一下代码
+5. pi-powerline-footer: 底部显示一些彩色的好看信息
+6. pi-input-hisotry: 最贴近Codex的上键输入体验，和 pi-powerline-footer 插件兼容
+
+
+https://github.com/buchidonggua/dg-ai-notes
+根据大佬们的建议， 我的 Pi Agent只保留下面这些插件，尽量让 Pi Agent原汁原味
+
+1. npm:pi-observability：统计一下Token的各种指标，研发离线DeepSeek模型用
+
+2. npm:pi-web-access：访问Web资料，写代码时有时候查查资料还是有用的
+
+3. npm:pi-mcp-adapter： 调用MCP接口
+
+4. npm:
+@pi
+-lab/input-history： 实现类似 Codex 那种按照项目的方式，按上键可以恢复输入历史，终端环境挂后重启很有用
+
+5. npm:pi-powerline-footer： Pi Agent底部会显示一个状态栏，主要是装逼用
+
+6. npm:pi-grok-cli： 过几天把我X的会员倒进去，测试一下 Grok 的编程能力
+
+7. npm:pi-rewind： 大佬推荐的， 每次AI修改会建立一个 git refs 的 checkout point, 避免AI把代码改坏了同时又没有commit的时候，提升效率
+
+https://x.com/sripathiteja4/status/2090787127877575051
+https://www.freecodecamp.org/news/learn-n8n-to-design-develop-and-deploy-production-grade-ai-agents/
+https://github.com/giswqs/intro-gispro
+https://github.com/buchidonggua/dg-ai-notes
+
