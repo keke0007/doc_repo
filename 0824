@@ -1,0 +1,40 @@
+https://github.com/musoyangrigor/gitx-skill
+
+npx skills add musoyangrigor/gitx-skill
+https://github.com/nettact
+https://github.com/overspace-labs/amber
+https://github.com/Edwardxlai/ai-timed-challenge
+https://github.com/Yeachan-Heo/gajae-code
+https://github.com/furkankly/zoetrope
+https://github.com/ChmaraX/herdr-nvim
+https://github.com/AMAP-ML/LongHorizon-Harness
+那些真正理解系统和复杂性的开发者，知道如何引导AI产出高质量代码；而对系统缺乏理解的人，只会让AI生成更多错误。
+
+AI是一个伟大的工具，但它仅仅也只是工具。优秀的开发者依然能写出优秀代码，普通开发者依然更容易写出有Bug的代码，这一点在AI时代依然成立。关键在于深刻理解你所构建的系统。
+
+
+响马
+@xicilion
+·
+6h
+我认为人类为人类写文档只剩下很短暂的过渡期了。AI 普及后，信息交换的瓶颈在 AI 和 人，而非人类和人类。没有人类会再去读另外一个人类写的文档了。
+因此我坚定地站 PlantUML 这样 AI 可以无脑表达得很好，人类可以一眼看明白的语义绘图方式。
+
+
+Claude Code 用起来没那么顺手，  
+其实差一个设置。
+
+直到你装上这个插件。
+
+它会分析你的项目，  
+直接告诉你该配置哪些东西，才能把 Claude Code 的潜力榨干。
+
+插件名叫 claude-code-setup：
+
+→ 检测你应该创建哪些 skills  
+→ 推荐 hooks、子代理和 MCP 服务器  
+→ 找出你能实现的自动化  
+→ 一步步解释每个元素怎么配置  
+→ 根据项目需求定制 Claude Code
+
+一条命令就能装好，而且完全免费。
