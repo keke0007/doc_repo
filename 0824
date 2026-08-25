@@ -1,3 +1,79 @@
+https://tonybai.com/2026/02/03/russ-cox-15-year-war-on-floating-point-conversion/
+https://github.com/totec448-spec/chat-on-steroids
+https://github.com/pixlcore/xyops
+https://github.com/FradSer/pi-packages
+https://x.com/xicilion/status/2080552376230887541
+最近做了一些 
+@pidotdev
+  package：
+- pi-monitor，减少噪音的 monitor 工具，方便长时间做一些 loop；
+- pi-memory，harness 层的记忆工具，防止信息偏移；
+- pi-utils，一些实用工具的集合，比如让 pi 知道同目录有哪些运行的 session；
+- pi-btw，类似 claude 的 btw，但是支持多轮对话；
+- pi-vision，给文本模型增加多模态能力；
+- pi-recap，类似 claude 的 recap；
+- pi-agent-teams，支持 heartbeat 和使用 prompt 设置模型的 agent teams，目前已经实现自主调度多个 teammate 分工协同，并且由于 pi 可以自主注入提示词，所以设定会比 claude / codex 更激进；
+- pi-git-agent，git-agent 的套壳，因为在 harness 层所有更稳定。
+https://github.com/Vonng/ddia
+https://github.com/leoriczhang/teamEvolver
+又做了一个kafka的动画。供大家参考学习：
+
+Kafka 将消息流组织为 Topic。每个 Topic 在逻辑上是一条命名的事件流，在物理上被切成若干 Partition。Partition 是只追加、按偏移量寻址的日志：新记录写入尾部并获得单调递增的 Offset，既有的记录不被原地修改。
+
+Producer 按 Key 选择分区。相同 Key 被映射到同一 Partition，因此该 Key 上的事件保持先后关系；不同 Key 可以并行落入不同分区，Topic 整体并不保证全局顺序。
+
+日志末端与消费者可见范围并不重合。High Watermark 标出已经完成复制、可以安全读取的位置。记录可以先出现在日志尾部，但在水位推进之前，Consumer 不得读出。这一限制把「已写入」和「已提交可见」分开，避免读到尚未在副本间对齐的数据。
+
+消费以 Consumer Group 为边界。组内任一时刻，一条 Partition 只分配给一个成员，从而避免重复处理；组间彼此独立，可以同时重放同一份日志。成员增减会触发 Rebalance：分区所有权被重新计算，消费短暂中断后按新的分配继续，并从各自已提交的 Offset 恢复。每个分区另有 Leader，写入由 Leader 接受，Follower 复制其后
+https://www.aleksagordic.com/blog/vllm
+https://github.com/addyosmani/agent-skills/blob/HEAD/docs%2Fskill-anatomy.md
+https://dev.limbo101.win/
+https://github.com/feigeCode/navop
+生产级 Agent 排雷实战 https://time.geekbang.org/column/article/1003760
+
+Deep Agents 实战 https://datawhalechina.github.io/deepagents-in-action/
+
+ai-agents-from-zero：https://github.com/didilili/ai-agents-from-zero?utm_source=gold_browser_extension
+https://x.com/BigBazar50630/status/2091527032530501739
+https://github.com/yizhiyanhua-ai/fireworks-open-eli5
+
+柯基是只猫
+@Keji715
+·
+6h
+不能持续迭代的 Skill，说到底只是一次性的 demo。
+
+淘天百补团队写了篇 50+ 个 Skill 的实践总结，最重要的可能就是这一句话。
+
+对于在工业场景如何进行Skill的设计，这篇文章给出了3个非常值得参考的点：
+
+1｜切边界按变化频率，不按功能
+
+他们把 Skill 拆成「本地薄客户端 + 远程 Agent」 虽然跨系统会更脆弱，多一段网络、多一层协议契约、排查要在两个环境来回跑。
+
+但是他们还是拆分了，因为分析逻辑每周都在加，远程有灰度、有可观测、有一键回滚；本地改一次，所有人都得跟着升级。
+
+要保持稳定的，和要高频迭代的，用架构边界在物理上隔开。
+
+2｜给 Agent 运行时，别给它干净示例
+
+拿普通商品调日志搜索一切正常。上线遇到 iPhone 17，一分钟上千条访问记录，默认 5 分钟窗口直接返回爆炸数据量。
+
+脚本报错只丢一行 ErrorMessage 过去，改几轮都修不好。
+
+他们的解法是打包三件套：错误堆栈 + 源码 + 触发这次异常的那份具体输入。
+
+凑齐了，Agent 自己就在「改一版 → 同一份输入回放 → 再改」里收敛。
+
+3｜一次只改一个维度，改完立刻 commit
+
+diff 越小，AI 审查越准，它能明确告诉你这次改动有没有引入信息遗漏。
+
+一个真正好用的Skill 的瓶颈从来不在写作，在维护上。
+
+https://github.com/xianyu110/grok-bot-0.18-reconstructed
+https://github.com/musoyangrigor/gitx-skill
+
 
 https://github.com/xianyu110/grok-bot-0.18-reconstructed
 https://github.com/musoyangrigor/gitx-skill
