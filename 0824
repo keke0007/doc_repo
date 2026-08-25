@@ -1,4 +1,43 @@
+https://github.com/RizRiyz/luvus
+更好的思路：
+描述任务 + 设定约束 + 定义完成标准。
+剩下交给模型自己发挥。
+“Then just go let the model coo
+Herdr 非常好用，但要说出它为什么好用，之前一直没找到一个堪称杀手级的情形。
 
+最近遇到了一个，先交代背景，我用 herdr 开了很多项目，其中一个叫 spec-agents，它类似于 OpenSpec，是规范 Agent 开发行为的，我最近根据自己的认知，给它升级到了新的版本。
+
+然后，我在另外一个项目 A 中使用新版 spec-agents，也算是实战演练，很快就发现了问题，我在项目 A 中跟 Agent 一边调整，一边聊最后让它总结。
+
+那么在项目 A 中，获得的实战经验，如何传递给负责spec-agents 的 Agent 呢？
+
+在 Herdr 里很简单，只需要说，「最近这段开发中，对 spec-agents 升级和改造的经验，麻烦传递给负责 spec-agents 的 Agent。」
+
+然后，你就看着 Agent 自己调用 herdr 的命令，查看 spac-agents 的标签页，然后找到对应的 Agent，将自己总结好的经验发过去了。
+
+这不是简单的省了复制一次两次的事情，而是像这样子，我才觉得像 AI Native 的沟通方式。
+https://github.com/cursor/plugins/blob/main/cursor-team-kit%2Fskills%2Fthermo-nuclear-code-quality-review%2FSKILL.md
+Claude Code 作者亲授：
+
+6 个实用技巧，别一上来就改代码
+
+Claude Code 不是补全工具，是完全 agentic：
+
+写功能、改文件、修 bug。配合现有 IDE 就行。
+
+六个技巧：
+
+先做代码库问答，别一上来就改代码
+大功能先计划，再写；咒语 commit push PR
+接入团队 Bash / MCP，给它反馈闭环
+写短 CLAUDE.md，项目级共享一次全队受益
+把 claude -p 当 Unix 工具塞进 CI / pipeline
+重度玩家用 tmux / worktree 并行多开
+还有首次配置 5 件事和快捷键速查。
+
+讲者 Boris Cherny · 想风整理
+https://github.com/ruvnet/ruflo
+https://www.bilinote.net/sn/f34ZUOsm
 https://github.com/ruvnet/ruflo
 https://www.bilinote.net/sn/f34ZUOsm
 https://github.com/kunchenguid/backpass
