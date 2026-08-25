@@ -1,0 +1,150 @@
+推荐一个维护 AGENTS.md 的思路，觉得还蛮实用的。
+
+题目也很吸引人：AGENTS.md其实是一个神经网络。
+
+很多人的做法都是 Agent 犯一次错，就往 AGENTS.md 里补一条规则。
+
+时间久了文件越来越长，旧规则没删，新规则继续加，最后 Agent 每次都要读一堆已经没什么用的东西。
+
+这篇文章换了个思路：
+
+把项目级 AGENTS.md 当成一个需要「训练」的神经网络。
+
+每一次 Claude Code / Codex session 都是一次 forward pass。
+
+Agent 走过的弯路和被你纠正的地方就是 loss，再定期从这些真实 session 里提取问题，小幅更新 AGENTS.md，相当于做一次 backward pass。
+
+而且要给它固定 Token budget，新增一条规则，就要考虑删掉或移走什么。
+
+作者还直接开源了一个 backpass 工具来自动做这件事。
+
+我还是很喜欢这个思路的。
+
+AGENTS.md 真的不该靠感觉越写越长，而是应该根据 Agent 真正干过的活，一点点「训」出来。
+
+
+
+小墨同学
+@xiaomovps
+·
+8h
+Pi 处理上下文压缩的方式，比我想象中有意思！
+
+先简单说一下，Pi 原生的上下文压缩逻辑，其实非常简单：
+
+Context 快满了 → 总结旧上下文 → 保留最近消息 → 继续工作。
+
+但是社区已经出现了好几种不同的思路：
+
+1. pai-acp：遗忘流派，让 AI 自己决定忘掉什么
+
+不再是等 Context 满了再统一压缩，而是让 Agent 主动去判断哪些历史已经没价值，然后提前压掉；需要时还能搜索甚至恢复。
+
+2. pi-smart-compact：它会重点保留当前目标、修改过的文件、错误、关键决策、未完成事项，更像是一个留给自己的备忘录。
+
+3. pi-context：把上下文当成 Git 管，可以主动 checkpoint、查看 timeline，再选择性 compact。
+
+4. Hypa：设计思路是，最好的压缩，是就是从一开始就不让垃圾进入上下文，这样比单纯的上下文到达上限之后在压缩更省token。
+
+5. pi-press：把压缩流程前置，上下文接近阈值时就提前生成摘要，真正需要 Compact 时可以直接切换，减少 Agent 因压缩产生的停顿。
+
+其实看了这么多插件的设计思路，总结下来就是在合适的实际完成合适的内容选择，可能一开始就不让垃圾数据进入上下文是对的。
+
+也有可能是提前就完成压缩操作，对你来说无感知才是最舒服的，但是需要解决的还是一个最根本的问题，Agent记忆 到底是怎么样的。
+
+现在还没有一个盖棺定论的结论，但是这些启发和思路都是一直都在的。
+
+
+
+
+一个 Skill 写得很漂亮，通过了所有静态检查，真正交给 Agent 用时却可能完全没帮助。
+
+NVIDIA 这篇《Evaluating Skills, Not Just Agents》讨论的就是 Skill 应该怎么评估，适合收藏起来使用。
+
+现在很多 Skill 主要检查 SKILL.md 写得是否规范、描述是否清楚、有没有安全问题。
+
+但真正上线后，还要看 Agent 会不会找到它、能不能正确调用工具、是否按流程执行，以及最终任务有没有做得更好。
+
+作者提出 ACES，直接做一组很简单的对照实验：
+
+同一个任务、模型和环境，一次给 Agent Skill，一次不给，然后比较两条真实执行轨迹。
+
+这个差值被定义为「Skill Lift」。
+
+在 145 个真实 Skill 上，94.5% 都能通过基础结构检查，但不同静态评分之间的相关性只有 0.14。
+
+进一步跑 947 个配对任务后，72.8% 的案例获得正向 Skill Lift，同时也有 87 个案例出现负向效果。
+
+所以这篇工作很适合现在越来越大的 Skill 生态。
+
+我们评价一个 Skill，不能简单的只问「写得好不好」，还要真正跑起来看它到底有没有让 Agent 做得更好。
+
+Skill 也需要像代码一样，有自己的测试集、回归测试和 CI。
+
+
+https://github.com/GitHubDaily/GitHubDaily
+
+MateMatt
+@mate_mattt
+·
+10h
+经过长达 7 个半小时的睡眠后，我想出一个个人在团队里 AI Coding 协作的方案：
+
+1、团队每个人独立于原始代码仓库新开一个仓库，专门放自己的文档，prd，issues，tickets。
+2、做一个专属个人开发的 skill，开头就写上，只看当前仓库的代码，忽略工作空间内的文档，专有文档链接是：例如 https://github.com/aaa/docs/....
+3、过程中如果需要记录文档也请将文档统一整理到刚才的仓库。
+
+这样的好处:
+
+a> 对 AI 来说减少不必要的文档上下文压力，AI 读了代码，可以完全不读文档；除非是那些代码还没同步的新的开发计划或者方向调整，也就是你的个人任务。
+
+b> 多人合作，每个人有自己的节奏和文档管理，即使仓库历史文档很乱，Agent 完全忽略。
+
+c> 个人的 task 可以和自己的 issues 绑定，避免单一仓库多人合作时，issues 和 subissues 混乱。也无需强制每个人使用什么 skill 或者 AI 协作的方式。
+
+d> 责任明确，Review 谁的模块，开谁的个人文档记录仓库，你甚至可以将个人的提示词定期同步到自己的独立仓库。避免多人多轮 AI Coding 后，分不清是谁 push 的 (尽管有 git blame，人多了管理也是难事)。
+
+d> 你完全可以基于自己的个人仓库搞 loop engineering \ graph engineering。
+
+今天睡醒后想到的，准备自己先实施一段时间，试试效果。
+
+
+
+Anthropic 发布：
+AI 原生 SDLC（软件开发生命周期）实施指南
+
+指南按 Plan、Design、Build、Test、Deploy、Maintain 六个阶段，讲解怎样把 Agent 接入软件开发生命周期。
+
+它来自 Anthropic Applied AI 团队的日常实践，也吸收了客户项目经验。
+
+推荐阅读
+
+
+# Visual ELI5
+
+Explain `$ARGUMENTS` as if I know nothing about the topic.
+
+Create a self-contained HTML visual explainer.
+
+Prioritize **seeing over reading**:
+
+* Start with one large visual that communicates the whole mental model.
+* Use diagrams, SVG illustrations, flows, timelines, maps, or spatial layouts instead of paragraphs whenever possible.
+* Show relationships with position, arrows, grouping, scale, and motion.
+* Use very few words. Prefer short labels and one-sentence explanations.
+* Reveal complexity progressively: overview first, then let me inspect details.
+* When useful, make the diagram interactive: hover, click, toggle, animate, or step through the process.
+* Use concrete visual analogies for abstract concepts.
+* For processes, animate or step through the flow from beginning to end.
+* For architecture or code, visually show components, data movement, dependencies, and boundaries.
+* For comparisons, place alternatives side-by-side.
+* Avoid decorative dashboards, unnecessary cards, gradients, and visual clutter.
+
+The page should make sense at a glance before I read any text.
+
+After creating it, check:
+
+1. Can someone understand the main idea in 10 seconds?
+2. Is the most important idea the biggest visual element?
+3. Could any remaining paragraph become a diagram?
+4. Is interaction helping understanding rather than decorating the page?
