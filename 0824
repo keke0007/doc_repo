@@ -1,3 +1,40 @@
+
+https://github.com/ruvnet/ruflo
+https://www.bilinote.net/sn/f34ZUOsm
+https://github.com/kunchenguid/backpass
+eli5 真的如此简单？
+
+1、把我当成 5 岁的孩子解释 how something works
+2、使用 html 格式，内容通过大图 + 少量文字的方式解释
+
+如果这样的话，我基本天天这么用，只不过，我先讨论方案，最后让 codex 使用 imagegen 使用精简手绘线框图，分模块绘制，帮助我理解和日后查阅。效果如图二。
+
+整体来说，我的方案是：自己先和 codex 聊清楚，最后我会按照我的理解完整转述一遍，让 codex 检查我描述错误的地方。最终达成一致后，画图，来加深记忆和理解。
+
+原则：学会的最高境界，就是你自己能完整的讲给别人。
+
+我也试试 eli5 迁移到 codex 的效果。
+https://github.com/owu/wsl-dashboard/releases/tag/v0.11.0
+
+Claude Code 作者亲授：
+
+6 个实用技巧，别一上来就改代码
+
+Claude Code 不是补全工具，是完全 agentic：
+
+写功能、改文件、修 bug。配合现有 IDE 就行。
+
+六个技巧：
+
+先做代码库问答，别一上来就改代码
+大功能先计划，再写；咒语 commit push PR
+接入团队 Bash / MCP，给它反馈闭环
+写短 CLAUDE.md，项目级共享一次全队受益
+把 claude -p 当 Unix 工具塞进 CI / pipeline
+重度玩家用 tmux / worktree 并行多开
+还有首次配置 5 件事和快捷键速查。
+
+讲者 Boris Cherny · 想风整理
 https://tonybai.com/2026/02/03/russ-cox-15-year-war-on-floating-point-conversion/
 https://github.com/totec448-spec/chat-on-steroids
 https://github.com/pixlcore/xyops
