@@ -1,3 +1,22 @@
+5 个最近讨论比较多的 skill：
+
+1/ eli5
+https://github.com/anthropics/claude-plugins-community/blob/main/eli5/skills/eli5/SKILL.md
+
+2/ show-me
+https://github.com/humanlayer/skills/tree/main/plugins/show-me
+
+3/ skill-doctor
+https://github.com/warpdotdev/common-skills/tree/main/.agents/skills/skill-doctor
+
+4/ retro
+https://github.com/mattpocock/skills/blob/main/skills/in-progress/retro/SKILL.md
+
+5/ unslop
+https://github.com/cursor/plugins/tree/main/pstack/skills/unslop
+
+
+
 推荐一个维护 AGENTS.md 的思路，觉得还蛮实用的。
 
 题目也很吸引人：AGENTS.md其实是一个神经网络。
