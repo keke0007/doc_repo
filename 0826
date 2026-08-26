@@ -1,0 +1,200 @@
+https://github.com/shanraisshan/claude-code-best-practice
+
+https://github.com/cordiverse/cordis
+https://github.com/rikkahub/rikkahub
+https://github.com/bestruirui/octopus
+
+https://artificialanalysis.ai/zh/models?models=#intelligence-comparisons
+https://x.com/huoshan007/status/2092568843466289341
+https://github.com/ApodexAI/FrontierAgent
+https://github.com/JonasBaeumer/herdr-file-annotator
+To view keyboard shortcuts, press question mark
+View keyboard shortcuts
+Post
+
+See new posts
+Conversation
+yibie
+@yibie
+
+Translate post
+工具执行前先落盘 intent，执行后再落盘结果，崩溃后靠归约日志恢复现场——prune 分两种：删掉就找不回的，和 spill 到磁盘还能读回的。
+
+libGDX 作者 Mario Zechner 主导的开源编码 agent Pi，官方开发笔记里把各家 coding agent 的 context 管理拿来对比：模型与自家 harness 绑定越来越深。
+
+一个 agent 连续跑 50 个小时，它还知道自己到底干过什么吗？
+
+这是 Pi 官方开发笔记想回答的问题。Pi 在 pi-mono 仓库里公开了 packages/agent/docs/agent-harness.md（AgentHarness 生命周期文档）和配套的 issue #128（修复压缩不足），把一次 agent run 当成接近数据库事务的东西来设计。
+
+一、Prune 分两种：永久丢失，还是可恢复
+
+一切从 issue #128 开始。问题：auto-compaction 触发太晚，导致上下文溢出。先定义术语：
+
+• Turn：整个 agent 循环，从用户输入到最终 assistant 响应（不再有工具调用）
+• Step：turn 内的一个周期：prompt → LLM 响应 → 工具执行（如果有）
+
+一个 turn 可以有多个 step，一个 step 可以有多个并行工具调用。
+
+issue 分析了五种溢出场景，其中四种指向同一个结论——压缩的能力是有限度的：
+
+1. 场景 1：prompt 本身就超过上下文窗口（比如往 200k 窗口里粘 300k 字符）。不可恢复：没有东西可压缩，只能向用户报错。
+2. 场景 2：累积上下文溢出，但最后一 turn 放得下。可恢复：压缩旧内容，保留最后一 turn（摘要 + 50k 拟合）。
+3. 场景 3：turn 中途溢出——工具结果逐步累积，到第 N 个 step 超了。可恢复：保留本 turn 的全部 step。
+4. 场景 4：单个 turn 超过上下文窗口。不可恢复：压缩保留的最后一 turn 本身就超了，压缩完下次调用还是溢出，卡死循环。需要 turn 内修剪。
+5. 场景 5：孤儿工具结果。调查过：正常 abort 流程下不可能发生。
+
+场景 4 是关键。compaction 只会"总结旧的、保留新的"，一旦最新的一 turn 本身就超过窗口，它就无能为力。
+
+解决方案分三层：
+
+• Layer 1 截断（truncation）：给单个工具输出设上限，在 settings.json 里配 toolOutputLimits——bash 30KB、read 100KB、edit 50KB、默认 30KB。截断时给模型附加一条 notice："...(truncated, output exceeded {limit} character limit)"。
+• Layer 2 错误处理：溢出时向 UI 报错。
+• Layer 3 turn 内修剪（within-turn pruning）：当保留的部分（最后一 turn）仍超窗口，从 turn 内部剪掉旧的工具结果，重复直到放下。
+
+issue 明确点名了两家参考：
+
+• OpenCode：prune() 在 turn 结束后移除旧的工具输出内容
+• Codex：compaction 溢出时修剪最老的 history 条目
+
+问题在于，"剪掉"和"剪掉"不一样。Pi 的开发笔记把各家方案摆在一起对比，结论是 prune 分两种：
+
+第一种：永久丢失型。 把工具输出从上下文里删掉，删了就找不回。比如 agent 跑测试吐出 3 万字符日志，真正的错误刚好在第 12000 个字符，压缩完这段就消失了——后面模型再聪明，也没法从空气里重新读出来。Pi 对这类方案的评价是 permanently-lossy pruner。DeepSeek Harness（DSH）的 tool result pruner 就属于这一类：保留开头一段和结尾一段，中间直接裁掉。（注：这个评价出自配套的社区 PR，不是官方文档原文。）
+
+第二种：可恢复型。 context 里依然只放一小段，但完整工具结果同时落到磁盘，context 里留文件路径和 offset。模型需要的时候自己 grep、sed、read 回去。官方实现里有对应的技术事实：shell output capture 返回 Result 并使用 ExecutionEnv，包括 full-output spill via appendFile()——完整输出通过 appendFile 落盘。spill 不是丢，是换地方放。配套的社区 PR 自报过一组数据：19 个真实 session 上 context 占用降低 26%～35%，uncached prefill 降低 72%～88%（社区自报结果，非官方结论）。
+
+truncation + within-turn pruning 是保命手段，但怎么剪，决定了长跑 agent 的"记忆"到底还在不在。
+
+二、模型越来越与自家 harness 绑定
+
+Pi 的开发笔记里还记录了一个观察：新一代 Claude 在第三方 harness 上，反而更容易调错工具。
+
+最典型的例子：Pi 给模型的 edit tool schema 明明写得很清楚，模型却会自己生成 requireUnique、matchCase、oldText2 这种 Pi 根本不存在的参数。
+
+一个合理的猜测：Claude 的后训练越来越适配 Claude Code 自己的 harness 和 tool schema。模型已经学会了 Claude Code 里某个工具应该长什么样，把它放进 Pi，它脑子里还是那一套。
+
+推论很直接：模型越强，模型与 harness 的绑定可能越深。以后评价一个 coding model，单独看模型越来越没意义。Claude + Claude Code、DeepSeek + DSH、GPT + Codex，很可能逐渐变成一个整体。评测 coding model，要连同 harness 一起评测。
+
+三、写 intent，再写结果：AgentHarness 的事务式设计
+
+这正是 AgentHarness 重写的方向。agent-harness.md 里最核心的是状态模型——harness 把状态分成四类：
+
+1. Harness config：应用或扩展设置的最新运行时配置——model、thinking level、tools、active tool names、resources、stream options、system prompt。getter 返回最新配置，不是 in-flight 请求用的快照；setter 立即生效，但只影响下一个 turn 的快照，绝不修改正在运行的 provider request。
+2. Turn snapshot：一次 LLM turn 使用的具体状态，由 createTurnState() 创建：持久化消息、解析后的资源、解析后的 system prompt、model、thinking level、全部工具、stream options、派生 session id。
+3. Session：只包含持久化条目。读取返回持久化状态，不包括排队中的写。
+4. Pending session writes：操作进行中请求的写操作排队为 pending writes。它们总是被持久化，在 save point、操作结算、失败清理时按确定顺序 flush。abort 也不丢弃 pending writes。
+
+配合显式的操作阶段（operation phases）：
+
+• idle / turn / compaction / branch_summary / retry 五种阶段
+• 结构性操作（prompt、skill、promptFromTemplate、compact、navigateTree）要求 phase === idle，busy 时以 AgentHarnessError "busy" 拒绝
+• turn 期间允许：steer、followUp、nextTurn、abort、运行时配置 setter
+
+事务的影子在 save point 和 durable 设计里：
+
+Save point。 一个 assistant turn 及其工具结果消息完成后触发，harness 做三件事：flush pending session writes；如果底层循环还要继续，创建新的 turn snapshot；在下一次 provider request 前应用最新的 model、thinking level、工具、资源、stream option、session id。也就是说，turn 期间改配置，下一个 turn 生效，in-flight 请求永远不会被中途改掉。
+
+Durable 设计。 一个 fully durable 的 harness 不现实——工具实现、模型/认证 provider、扩展、hook 都是宿主应用在运行时提供的 JS 依赖。实际目标是 semi-durable：session 是 durable append-only state tree；harness 把自己拥有的状态写成 session entries；宿主应用负责在恢复时重建不可持久化的依赖；恢复从 durable boundary 重新开始，而不是从 in-flight provider stream 继续——provider stream 本身不可恢复。
+
+事务语义体现在条目设计上：每个被接受的变更，在公开 API resolve 之前必须持久化。工具调用执行前先写 intent（QueueEnqueued、OperationStarted、ToolCallStarted 这类条目），执行结束再写结果（ToolCallFinished）。进程崩溃后，系统通过归约（reduce）session 日志重建状态：当前 leaf、conversation branch、harness config、queues、pending writes、活动中的 operation/turn/tool 状态。
+
+恢复策略是保守的：
+
+• 未完成的 agent turn：标记 interrupted，保留 durable queues/pending writes，回到 idle
+• 未完成的 provider request：标记 interrupted，不自动重试
+• 未完成的 tool call：追加 interrupted/error tool result；只有工具声明 retry-safe/幂等才重试——崩溃后外部副作用可能已经发生，默认不重跑
+• 未完成的 compaction：没有对应 entry 就重跑
+
+崩溃场景分析同样细致：crash 在 queue_enqueued 之前 = 消息从未被接受；之后 = 消息恢复。crash 在 tool call 开始之后 = 副作用可能已经发生，默认不重跑。
+
+这就是"把 agent run 当数据库事务"的完整含义：写 intent → 执行 → 写结果，全程落盘，崩溃后能归约、能恢复、能判断"这个工具到底执行过没有"。
+
+四、Harness 正在变成 AI 时代的操作系统
+
+回过头看现在很多 agent framework：一个 while loop，塞一个模型，塞几个工具，context 快满就总结一下，然后祈祷它一直别挂。跑十分钟当然没什么；agent 开始跑几小时、几天以后，问题全出来了——溢出、状态丢失、崩溃恢复、并发写。
+
+Pi 对扩展的态度也在变。现在大家都喜欢说"一切皆插件"，但插件能力无限扩大，加上 agent 长期运行，状态会变得非常难推理。Pi 强调边界：哪些是 conversation，哪些是 runtime state，哪些是 UI，哪些是 extension，哪些东西能持久化，哪些只能观察。
+
+OpenCode、Claude Code、DSH、Pi 现在看着都是 coding agent，底层其实已经开始走不同路线。harness 这东西，越来越像 AI 时代的操作系统了。
+
+原文：https://github.com/badlogic/pi-mono/blob/137547a4/packages/agent/docs/agent-harness.md
+参考：https://github.com/badlogic/pi-mono/issues/128
+#AgentHarness #上下文工程 #CodingAgent
+From github.com
+7:30 PM · Aug 26, 2026
+·
+1,205
+ Views
+Relevant
+
+
+https://github.com/scanopy/scanopy
+https://github.com/usestrix/strix
+AI 自动化渗透平台跑完一轮，最难交代的就是证据。真去旁路挂一套 Burp 抓流量再截图，部署和维护都太重，有人会想干脆拿 HTML 照着 BurpSuite 的样子画一个假的界面，但是这样始终不真实。amber 把流量直接固化成真正的 .burp 项目文件，字节级读写，生成过程不需要 Burp，也不需要 JVM，旁路抓的 pcap 也能一键转成项目。拿到项目文件，用 Burp 打开就能一步步复现请求和响应，方便截图。
+https://github.com/overspace-labs/amber
+https://x.com/chenchengpro/status/2092608785584115811
+
+Michael Guo
+@Michaelzsguo
+·
+3h
+Lauren Tan 
+@poteto
+ 是 Cursor 的工程师，之前在 Meta 做 React Compiler，也在 Netflix 做过 tech lead 和工程经理。
+
+她加入 Cursor 只有五个月。第一个月还在熟悉代码库，上个月已经合入了 1000 个 PR。这个月才过去 12 天，她又合入了接近 800 个。
+
+这不是 AI slop code，而是你每天都在使用的 Cursor 的代码。
+
+很多人，包括 Claude Code 的 Boris，都提过自己借助 coding agent 达到了类似的效率。但真正愿意把工作方法完整分享出来的人并不多。Lauren 在这个一小时的视频里，几乎是手把手讲了她怎么走到这一步。
+
+她认为，用 AI coding 最大的问题不是生成代码，而是验证代码。
+
+如果 agent 不能自己运行产品、操作界面、读取 CPU trace 和 heap snapshot、打开模拟器并复现问题，那么最后还是要由你来检查结果。你就是整个流程的 verifier，也是无法并行工作的瓶颈。
+
+Lauren 的做法，是先给 agent 建立完整的验证能力：让它能通过 Chrome DevTools 或模拟器实际操作产品，再用 feature map 告诉它每个功能在哪里、怎么进入。这样即使同事只丢来一张截图，或者一句很模糊的 bug 描述，agent 也能找到对应功能，复现问题并验证修复。
+
+每当她发现 agent 在猜测、漏读代码或走错方向，就把这个失败模式写成一条 skill。然后像测试代码一样测试这些 skill：让多个 sub-agent 分别执行任务，由 coordinator 制定 rubric，再让另一个模型交叉检查评分，反复迭代到结果足够稳定。
+
+现在，她甚至允许 agent 自动合并 PR。有一天早上醒来，已经有 20 个 PR 自动进入 main；她直接在 main 上检查，结果都没有问题。
+
+这套方法不是简单的提示词技巧，更像做工程管理：先设计好环境、流程和验收机制，再让团队并行工作。只不过这支团队，现在由几十个 coding agent 组成
+
+https://claude.com/blog/the-ai-native-sdlc-playbook
+https://github.com/LodyAI/Lody
+https://x.com/Michaelzsguo/status/2092578668316864525
+
+Michael Guo
+@Michaelzsguo
+·
+3h
+Lauren Tan 
+@poteto
+ 是 Cursor 的工程师，之前在 Meta 做 React Compiler，也在 Netflix 做过 tech lead 和工程经理。
+
+她加入 Cursor 只有五个月。第一个月还在熟悉代码库，上个月已经合入了 1000 个 PR。这个月才过去 12 天，她又合入了接近 800 个。
+
+这不是 AI slop code，而是你每天都在使用的 Cursor 的代码。
+
+很多人，包括 Claude Code 的 Boris，都提过自己借助 coding agent 达到了类似的效率。但真正愿意把工作方法完整分享出来的人并不多。Lauren 在这个一小时的视频里，几乎是手把手讲了她怎么走到这一步。
+
+她认为，用 AI coding 最大的问题不是生成代码，而是验证代码。
+
+如果 agent 不能自己运行产品、操作界面、读取 CPU trace 和 heap snapshot、打开模拟器并复现问题，那么最后还是要由你来检查结果。你就是整个流程的 verifier，也是无法并行工作的瓶颈。
+
+Lauren 的做法，是先给 agent 建立完整的验证能力：让它能通过 Chrome DevTools 或模拟器实际操作产品，再用 feature map 告诉它每个功能在哪里、怎么进入。这样即使同事只丢来一张截图，或者一句很模糊的 bug 描述，agent 也能找到对应功能，复现问题并验证修复。
+
+每当她发现 agent 在猜测、漏读代码或走错方向，就把这个失败模式写成一条 skill。然后像测试代码一样测试这些 skill：让多个 sub-agent 分别执行任务，由 coordinator 制定 rubric，再让另一个模型交叉检查评分，反复迭代到结果足够稳定。
+
+现在，她甚至允许 agent 自动合并 PR。有一天早上醒来，已经有 20 个 PR 自动进入 main；她直接在 main 上检查，结果都没有问题。
+
+这套方法不是简单的提示词技巧，更像做工程管理：先设计好环境、流程和验收机制，再让团队并行工作。只不过这支团队，现在由几十个 coding agent 组成
+
+阅读蛙 推荐一下， 配个 deepseek falsh 花不了几毛钱一个月 mengxi-ream/read-frog
+
+exa
+
+一个 agent+业务壳子 的基座。可以任意组装不同业务的 agent 应用。
+
+
+https://github.com/hlwhut225/gefei-knowledge-base
+
