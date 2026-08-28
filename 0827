@@ -1,3 +1,84 @@
 https://github.com/browser-use/web-ui
 https://github.com/nanobrowser/nanobrowser
 https://noqa.ai/developers/?utm_source=X&utm_medium=paid_social&utm_campaign=devs&utm_term=narrow&utm_content=gif_cli&twclid=26x3yqw9ve6sdwzje3xjgtsr7x
+
+https://github.com/matomo-org/matomo
+https://github.com/browser-use/browser-use
+https://github.com/OpenHands/OpenHands
+一次 compact 都没做，干完了 4000 行代码
+
+pi可以一个终端一个账号，就是配置麻烦点
+
+外接用nanobot 内置用pi
+一半用pi 一半用nanobot
+https://nanobot.wiki/cn/docs/0.3.0/getting-started/nanobot-overview
+配个路由，无缝衔接所有设备。
+有服务器就用easytier-gui
+zerotier
+组网。。SDWAN啊
+https://github.com/jordanbaird/Ice
+https://github.com/agentconnect-md/agentconnect
+很多人还在把 Subagent 和 Multi-Agent 当成二选一。
+其实它们是同一条「控制权谱系」上的不同刻度：
+
+• Subagent：星型主从，主管全控，子任务用完即毁，只回传压缩结果
+• Handoff：控制权一次性移交，专家直接接管对话
+• Agent Teams：网状自组织，队友可点对点互相 @、讨论甚至质疑
+
+从 Anthropic、Claude Code、OpenAI 官方定义，到 LangChain 的 Supervisor vs Swarm 实现，信息流拓扑、上下文隔离、Token 成本全拆开讲。
+
+多 Agent 不是银弹，是用 Token 换覆盖面的架构。
+
+完整对照手册 + 选型决策树
+
+
+https://github.com/aipayim/codex-proxy
+https://github.com/WenyuChiou/awesome-agentic-ai-zh
+https://github.com/ZuodaoTech/everyone-can-use-english
+
+
+小墨同学
+@xiaomovps
+·
+1h
+Pi 不是难，是很多人把学习顺序搞反了。
+
+很多人都是先研究架构，再回头装软件，收藏夹放的满满当当，电脑里面却空空如也。
+
+其实没那么多复杂的事情，只要跟着下面五个步骤一起做，一天就能干完。
+
+1. 当天只做开通
+去 https://pi.dev 按官方方式装，不要先搜第三方教程。
+
+装完先配一个你有额度的模型，新建Session，丢一件真事进去：改一个函数、写个脚本、排查一段报错。能跑通、能打断、能续上，这一步才算过。
+
+2. 把基本操作摸成肌肉记忆
+记这几个就够：新建 / 切 Session、继续上次任务、/scoped-models 把常用模型收成短名单、Ctrl+P 切换。先固定一个主力模型，别一天换五个。
+
+任务没结束别新开一堆窗口，上下文会散。
+
+3. 加能力只加你会重复用的
+先写或装 Skill：把「每回都要交代一遍」的流程写进 SKILL.md。
+
+再装 Extension：SSH、安全拦截、上下文查看。Skill 是说明书，扩展才改运行时。
+
+装包用 pi install，去官方文档和插件市场搜，群里复制的命令先别用。MCP 先放下。
+
+4. 等窗口满了再调 Context
+连续做一件稍长的事，看 Token、缓存、Compaction 什么时候开始工作。这时再懂为什么 Prompt 短、默认工具少。
+
+爆过一次再决定要不要加压缩、要不要切轻量模型，比先背概念有用。
+
+5. 稳定一周后再玩组合
+日常已经离不开，再试远程、多设备、Sub-agent、一个模型写一个模型审。先单会话做熟，再并行。
+
+并行以前先想清楚：谁负责写、谁负责看、结果放哪，不然只是多开几个窗口。
+
+一定要记住，学习Pi难的不是理解，而是开始动手，只有你真正的进行操作和学习，你才能真正的掌握它。
+
+马上在你的电脑安全使用吧。
+
+https://github.com/JetBrains/thinkrail
+https://github.com/vibheksoni/stealth-browser-mcp
+https://github.com/ShadowArcanist/netviz
+https://github.com/liquidslr/system-design-notes
