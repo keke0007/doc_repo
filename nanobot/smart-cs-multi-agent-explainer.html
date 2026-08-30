@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>smart-cs-multi-agent 一张图看懂 · 智能客服多Agent系统</title>
+<style>
+  :root{
+    --ink:#0f172a; --ink2:#334155; --muted:#64748b; --line:#e2e8f0;
+    --bg:#f8fafc; --card:#ffffff;
+    --accent:#4f46e5; --accent-soft:#eef2ff; --accent-mid:#c7d2fe;
+    --green:#059669; --green-soft:#ecfdf5;
+    --amber:#b45309; --amber-soft:#fffbeb;
+    --violet:#7c3aed; --violet-soft:#f5f3ff;
+    --sky:#0369a1; --sky-soft:#f0f9ff;
+    --red:#dc2626; --red-soft:#fef2f2;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:"Microsoft YaHei","PingFang SC",system-ui,-apple-system,"Segoe UI",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.65; font-size:16px;
+  }
+  .wrap{max-width:1080px; margin:0 auto; padding:0 20px;}
+
+  /* ── 顶部导航 ── */
+  nav{
+    position:sticky; top:0; z-index:50; background:rgba(255,255,255,.92);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex; gap:4px; align-items:center; overflow-x:auto; padding:8px 20px;}
+  nav a{
+    flex-shrink:0; text-decoration:none; color:var(--ink2); font-size:13.5px;
+    padding:5px 12px; border-radius:99px; white-space:nowrap;
+  }
+  nav a:hover{background:var(--accent-soft); color:var(--accent);}
+  nav .logo{font-weight:800; color:var(--accent); margin-right:10px; font-size:14.5px; white-space:nowrap;}
+
+  /* ── Hero ── */
+  header{padding:52px 0 30px; text-align:center;}
+  header .kicker{
+    display:inline-block; background:var(--accent-soft); color:var(--accent);
+    font-size:13px; font-weight:700; padding:4px 14px; border-radius:99px; letter-spacing:1px;
+  }
+  header h1{font-size:clamp(26px,4.5vw,40px); margin:16px 0 10px; letter-spacing:1px;}
+  header h1 .hl{color:var(--accent);}
+  header .sub{color:var(--muted); font-size:16.5px; max-width:760px; margin:0 auto;}
+  .hero-analogy{
+    margin:26px auto 0; max-width:860px; background:var(--card); border:1.5px solid var(--accent-mid);
+    border-radius:16px; padding:18px 22px; text-align:left; font-size:15.5px;
+    box-shadow:0 4px 18px rgba(79,70,229,.07);
+  }
+  .hero-analogy b{color:var(--accent);}
+  .stats{display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin-top:26px;}
+  .stat{
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:12px 22px; text-align:center; min-width:120px;
+  }
+  .stat .n{font-size:26px; font-weight:800; color:var(--accent); line-height:1.2;}
+  .stat .t{font-size:12.5px; color:var(--muted);}
+
+  /* ── 通用 section ── */
+  section{padding:44px 0 8px;}
+  .sec-head{margin-bottom:22px;}
+  .sec-head .no{
+    display:inline-block; font-size:12px; font-weight:800; color:var(--accent);
+    background:var(--accent-soft); padding:2px 10px; border-radius:99px; letter-spacing:2px;
+  }
+  .sec-head h2{font-size:clamp(20px,3vw,27px); margin-top:8px;}
+  .sec-head p{color:var(--muted); margin-top:4px; font-size:14.5px;}
+  .card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:22px;}
+
+  /* ── 架构图 ── */
+  .arch-box{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px 10px 6px;}
+  .arch-svg{width:100%; height:auto; display:block;}
+  .arch-node{cursor:pointer; transition:opacity .2s;}
+  .arch-svg.hovering .arch-node{opacity:.28;}
+  .arch-svg.hovering .arch-node.lit{opacity:1;}
+  .arch-node .box{transition:transform .18s, filter .18s;}
+  .arch-node.lit .box{filter:drop-shadow(0 4px 10px rgba(79,70,229,.25));}
+  .arch-detail{
+    margin:12px auto 10px; max-width:900px; min-height:64px;
+    background:var(--accent-soft); border:1px solid var(--accent-mid); border-radius:12px;
+    padding:12px 18px; font-size:14.5px; color:var(--ink2);
+  }
+  .arch-detail b{color:var(--accent);}
+  .legend{display:flex; flex-wrap:wrap; gap:14px; justify-content:center; padding:8px 0 12px; font-size:12.5px; color:var(--muted);}
+  .legend span{display:inline-flex; align-items:center; gap:6px;}
+  .dot{width:10px; height:10px; border-radius:3px; display:inline-block;}
+
+  /* ── 流程 stepper ── */
+  .stepper-card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px 14px 8px;}
+  .stepper-svg{width:100%; height:auto; display:block;}
+  .st-node{cursor:pointer;}
+  .st-node circle{transition:all .25s;}
+  .st-node.on circle.main{fill:var(--accent); stroke:var(--accent);}
+  .st-node.on text{fill:#fff; font-weight:800;}
+  .st-node.done circle.main{fill:var(--accent-mid); stroke:#a5b4fc;}
+  .st-label{font-size:12.5px; fill:var(--ink2); font-weight:700;}
+  .st-desc-wrap{display:flex; gap:14px; align-items:flex-start; margin:6px auto 16px; max-width:900px; min-height:96px;}
+  .st-desc{
+    flex:1; background:var(--accent-soft); border:1px solid var(--accent-mid);
+    border-radius:12px; padding:14px 18px; font-size:15px;
+  }
+  .st-desc h4{color:var(--accent); font-size:15.5px; margin-bottom:4px;}
+  .st-desc .tech{display:inline-block; margin-top:8px; background:#fff; border:1px solid var(--accent-mid); color:var(--accent); font-size:12px; font-weight:700; padding:2px 10px; border-radius:99px;}
+  .ctrls{display:flex; gap:10px; justify-content:center; padding:10px 0 16px;}
+  .ctrls button{
+    border:1.5px solid var(--accent); background:#fff; color:var(--accent);
+    font-size:14px; font-weight:700; padding:7px 22px; border-radius:99px; cursor:pointer; transition:all .15s;
+  }
+  .ctrls button:hover{background:var(--accent); color:#fff;}
+  .ctrls button.primary{background:var(--accent); color:#fff;}
+  .ctrls button.primary:hover{filter:brightness(1.1);}
+  .step-progress{font-size:12.5px; color:var(--muted); align-self:center;}
+
+  /* ── 模块卡片 ── */
+  .mod-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(310px,1fr)); gap:14px;}
+  .mod{
+    background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px;
+    transition:all .18s; cursor:default;
+  }
+  .mod:hover{border-color:var(--accent-mid); box-shadow:0 6px 16px rgba(79,70,229,.08); transform:translateY(-2px);}
+  .mod .emoji{font-size:26px;}
+  .mod h3{font-size:16.5px; margin:6px 0 2px;}
+  .mod .role{font-size:13px; color:var(--accent); font-weight:700; margin-bottom:8px;}
+  .mod p{font-size:13.5px; color:var(--ink2);}
+  .mod .io{margin-top:10px; font-size:12.5px; color:var(--muted); background:var(--bg); border-radius:8px; padding:8px 10px;}
+  .mod .io b{color:var(--ink2);}
+  .mod .note{margin-top:8px; font-size:12.5px; color:var(--amber); background:var(--amber-soft); border-radius:8px; padding:6px 10px;}
+  .mod .tag{display:inline-block; margin:8px 6px 0 0; background:var(--accent-soft); color:var(--accent); font-size:11.5px; font-weight:700; padding:2px 9px; border-radius:99px;}
+
+  /* ── 记忆 ── */
+  .mem-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px;}
+  .mem{border-radius:14px; padding:18px; border:1px solid var(--line); background:var(--card); position:relative;}
+  .mem .big{font-size:30px;}
+  .mem h3{font-size:16px; margin:6px 0 2px;}
+  .mem .ana{font-size:13px; color:var(--accent); font-weight:700;}
+  .mem table{width:100%; border-collapse:collapse; margin-top:10px; font-size:12.8px;}
+  .mem td{padding:4.5px 2px; border-top:1px dashed var(--line);}
+  .mem td:first-child{color:var(--muted); width:64px;}
+  .mem td:last-child{color:var(--ink2);}
+  .lat-bar{margin-top:12px;}
+  .lat-bar .lab{font-size:12px; color:var(--muted); display:flex; justify-content:space-between;}
+  .lat-bar .rail{height:8px; background:var(--bg); border-radius:99px; margin-top:4px; overflow:hidden;}
+  .lat-bar .fill{height:100%; border-radius:99px;}
+
+  /* ── 技术栈 tabs ── */
+  .tabs{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;}
+  .tab-btn{
+    border:1.5px solid var(--line); background:#fff; color:var(--ink2);
+    padding:8px 20px; border-radius:99px; font-size:14px; font-weight:700; cursor:pointer; transition:all .15s;
+  }
+  .tab-btn.on{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .tab-pane{display:none;}
+  .tab-pane.on{display:block;}
+  .stack-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px;}
+  .stack-cell{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px;}
+  .stack-cell h4{font-size:12.5px; color:var(--muted); font-weight:700; letter-spacing:1px; margin-bottom:8px;}
+  .chip{display:inline-block; background:var(--accent-soft); color:var(--ink2); font-size:13px; padding:4px 11px; border-radius:8px; margin:0 6px 6px 0; font-weight:600;}
+  .chip b{color:var(--accent);}
+  .infra-row{margin-top:14px; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px;}
+  .infra-row h4{font-size:13px; color:var(--muted); letter-spacing:1px; margin-bottom:8px;}
+  .impl-note{margin-top:12px; font-size:13px; color:var(--amber); background:var(--amber-soft); border-radius:10px; padding:10px 14px;}
+
+  /* ── 场景 ── */
+  .pain-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:14px;}
+  .pain{background:var(--card); border:1px solid var(--line); border-radius:14px; overflow:hidden;}
+  .pain .q{padding:13px 16px; background:var(--red-soft); font-size:14px; font-weight:700; color:var(--red); display:flex; gap:8px;}
+  .pain .a{padding:13px 16px; font-size:13.5px; color:var(--ink2);}
+  .pain .a b{color:var(--green);}
+  .scene-tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; justify-content:center;}
+  .scene-tags span{background:var(--sky-soft); color:var(--sky); border:1px solid #bae6fd; font-size:13px; font-weight:700; padding:5px 14px; border-radius:99px;}
+  .position-note{
+    margin-top:18px; background:var(--violet-soft); border:1px solid #ddd6fe; border-radius:12px;
+    padding:13px 18px; font-size:13.5px; color:#5b21b6;
+  }
+
+  /* ── 高并发 ── */
+  .verdict{
+    background:linear-gradient(90deg,var(--amber-soft),#fef9c3); border:1.5px solid #fde68a;
+    border-radius:14px; padding:16px 20px; font-size:15px; margin-bottom:16px;
+  }
+  .verdict b{color:var(--amber);}
+  .cc-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  @media (max-width:760px){.cc-grid{grid-template-columns:1fr;}}
+  .cc{border-radius:14px; padding:18px; border:1px solid var(--line); background:var(--card);}
+  .cc.good{border-top:4px solid var(--green);}
+  .cc.bad{border-top:4px solid var(--red);}
+  .cc h3{font-size:16px; margin-bottom:10px;}
+  .cc.good h3{color:var(--green);}
+  .cc.bad h3{color:var(--red);}
+  .cc ul{list-style:none;}
+  .cc li{font-size:13.5px; color:var(--ink2); padding:6px 0 6px 24px; position:relative; border-top:1px dashed var(--line);}
+  .cc li:first-child{border-top:none;}
+  .cc li::before{position:absolute; left:2px; top:6px;}
+  .cc.good li::before{content:"✅"; font-size:13px;}
+  .cc.bad li::before{content:"⛔"; font-size:13px;}
+  .cc li b{color:var(--ink);}
+  .fixlist{margin-top:14px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:18px;}
+  .fixlist h3{font-size:16px; margin-bottom:12px;}
+  .fix{display:flex; gap:12px; align-items:flex-start; padding:9px 0; border-top:1px dashed var(--line); font-size:13.8px; color:var(--ink2);}
+  .fix:first-of-type{border-top:none;}
+  .fix .num{
+    flex-shrink:0; width:26px; height:26px; border-radius:8px; background:var(--accent);
+    color:#fff; font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center; margin-top:1px;
+  }
+  .fix b{color:var(--ink);}
+
+  footer{margin-top:52px; padding:26px 0 40px; border-top:1px solid var(--line); text-align:center; color:var(--muted); font-size:13px;}
+  footer code{background:var(--accent-soft); color:var(--accent); padding:2px 8px; border-radius:6px; font-size:12.5px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <span class="logo">🤖 smart-cs</span>
+    <a href="#arch">① 架构总览</a>
+    <a href="#flow">② 闭环流程</a>
+    <a href="#modules">③ 模块分工</a>
+    <a href="#memory">④ 三层记忆</a>
+    <a href="#stack">⑤ 技术栈</a>
+    <a href="#scene">⑥ 解决什么问题</a>
+    <a href="#cc">⑦ 高并发吗？</a>
+  </div>
+</nav>
+
+<header class="wrap">
+  <span class="kicker">ELI5 可视化讲解文档</span>
+  <h1>把 <span class="hl">smart-cs-multi-agent</span> 看成一家 <span class="hl">AI 客服公司</span></h1>
+  <p class="sub">一套金融 / 电商场景的「智能客服多 Agent 系统」，用 Python · Java · Go 三种语言实现了同一套架构。下面全部用「一家客服公司怎么运转」来讲。</p>
+  <div class="hero-analogy">
+    💡 <b>10 秒版本：</b>用户来电 → <b>前台主管（Supervisor）</b>接单并判断找谁处理 → <b>资料专家（RAG）</b>或 <b>办事窗口（工单）</b>干活 → 干完必须过 <b>质检员（合规审查）</b>这一关 → 主管汇总话术回复。专家们通过 <b>MCP 标准“内线电话”</b>查订单、建工单；<b>三层记忆</b>让公司记得住刚才聊了什么；<b>Jaeger 全程录像</b>，每一步干了多久都有据可查。
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="n">3</div><div class="t">语言实现<br>Py / Java / Go</div></div>
+    <div class="stat"><div class="n">5</div><div class="t">个 Agent<br>协同工作</div></div>
+    <div class="stat"><div class="n">3</div><div class="t">层记忆<br>便签/笔记/档案</div></div>
+    <div class="stat"><div class="n">4+</div><div class="t">个 MCP 工具<br>订单/工单/风控…</div></div>
+    <div class="stat"><div class="n">9</div><div class="t">步请求闭环<br>可断点续接</div></div>
+  </div>
+</header>
+
+<!-- ═══════════ ① 架构总览 ═══════════ -->
+<section id="arch" class="wrap">
+  <div class="sec-head">
+    <span class="no">01</span>
+    <h2>公司组织架构图（把鼠标放到模块上看介绍）</h2>
+    <p>中间是「一条请求」走的主干道，右边是支持它运转的后勤部门：记忆、工具、监控。</p>
+  </div>
+  <div class="arch-box">
+    <svg class="arch-svg" id="archSvg" viewBox="0 0 980 672" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
+        </marker>
+        <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#6366f1"/>
+        </marker>
+      </defs>
+
+      <!-- 连接线：主干道 -->
+      <g stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#arr)">
+        <line x1="340" y1="66"  x2="340" y2="96"/>                <!-- 用户→API -->
+        <line x1="340" y1="150" x2="340" y2="182"/>               <!-- API→Supervisor -->
+        <path d="M290,262 L170,306"/>                              <!-- Sup→RAG -->
+        <path d="M390,262 L430,306"/>                              <!-- Sup→工单 -->
+        <path d="M165,374 L280,414"/>                              <!-- RAG→合规 -->
+        <path d="M515,374 L400,414"/>                              <!-- 工单→合规 -->
+        <line x1="340" y1="480" x2="340" y2="512"/>               <!-- 合规→汇总 -->
+        <line x1="340" y1="566" x2="340" y2="600"/>               <!-- 汇总→用户 -->
+      </g>
+      <!-- 连接线：后勤 -->
+      <g stroke="#cbd5e1" stroke-width="2" stroke-dasharray="6 5" fill="none" marker-end="url(#arr)">
+        <path d="M415,128 L655,128"/>                              <!-- API→Redis -->
+        <path d="M255,374 L255,398 L500,398 L500,300 L655,300" stroke-dasharray="6 5"/> <!-- RAG→FAISS -->
+        <path d="M515,342 L655,398"/>                              <!-- 工单→MCP -->
+        <path d="M515,446 L655,492" stroke-dasharray="3 5"/>       <!-- 合规→Jaeger -->
+      </g>
+
+      <!-- 主干道节点 -->
+      <g class="arch-node" data-key="user">
+        <rect class="box" x="265" y="16" width="150" height="50" rx="14" fill="#f0f9ff" stroke="#38bdf8" stroke-width="2"/>
+        <text x="340" y="38" text-anchor="middle" font-size="15" font-weight="800" fill="#0369a1">👤 用户</text>
+        <text x="340" y="56" text-anchor="middle" font-size="11" fill="#0369a1">Web / App / API</text>
+      </g>
+
+      <g class="arch-node" data-key="api">
+        <rect class="box" x="255" y="98" width="170" height="52" rx="14" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+        <text x="340" y="120" text-anchor="middle" font-size="14" font-weight="800" fill="#3730a3">🚪 API 网关</text>
+        <text x="340" y="138" text-anchor="middle" font-size="11" fill="#4f46e5">FastAPI · POST /api/chat</text>
+      </g>
+
+      <g class="arch-node" data-key="sup">
+        <rect class="box" x="160" y="184" width="360" height="78" rx="16" fill="#eef2ff" stroke="#4f46e5" stroke-width="2.5"/>
+        <text x="340" y="212" text-anchor="middle" font-size="16" font-weight="800" fill="#312e81">🧭 Supervisor 主管（大脑）</text>
+        <text x="340" y="232" text-anchor="middle" font-size="11.5" fill="#4f46e5">LLM 分析意图 → 决定路由 · 汇总最终回复</text>
+        <text x="340" y="250" text-anchor="middle" font-size="10.5" fill="#6366f1">LangGraph StateGraph ｜ 内置工作记忆 ｜ MemorySaver 检查点</text>
+      </g>
+
+      <g class="arch-node" data-key="rag">
+        <rect class="box" x="70" y="308" width="190" height="66" rx="14" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+        <text x="165" y="334" text-anchor="middle" font-size="14" font-weight="800" fill="#3730a3">📚 知识检索 RAG</text>
+        <text x="165" y="352" text-anchor="middle" font-size="10.5" fill="#4f46e5">改写→检索→重排→带引用生成</text>
+        <text x="165" y="366" text-anchor="middle" font-size="10" fill="#64748b">回复必须标注来源+风险提示</text>
+      </g>
+
+      <g class="arch-node" data-key="ticket">
+        <rect class="box" x="420" y="308" width="190" height="66" rx="14" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+        <text x="515" y="334" text-anchor="middle" font-size="14" font-weight="800" fill="#3730a3">🎫 工单处理</text>
+        <text x="515" y="352" text-anchor="middle" font-size="10.5" fill="#4f46e5">LLM 提取要素 → MCP 建单/查单</text>
+        <text x="515" y="366" text-anchor="middle" font-size="10" fill="#64748b">退款 / 理赔 / 开户 / 投诉</text>
+      </g>
+
+      <g class="arch-node" data-key="comp">
+        <rect class="box" x="180" y="416" width="320" height="64" rx="14" fill="#fff7ed" stroke="#f97316" stroke-width="2.5"/>
+        <text x="340" y="441" text-anchor="middle" font-size="14.5" font-weight="800" fill="#9a3412">🛡️ 合规审查（强制质检站）</text>
+        <text x="340" y="459" text-anchor="middle" font-size="10.5" fill="#c2410c">规则引擎(毫秒级) → LLM 深度审查 → PII 自动打码</text>
+        <text x="340" y="473" text-anchor="middle" font-size="10" fill="#ea580c">不通过 = 拦截 + 转人工</text>
+      </g>
+
+      <g class="arch-node" data-key="syn">
+        <rect class="box" x="265" y="514" width="150" height="52" rx="14" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+        <text x="340" y="536" text-anchor="middle" font-size="14" font-weight="800" fill="#3730a3">📝 汇总回复</text>
+        <text x="340" y="554" text-anchor="middle" font-size="10.5" fill="#4f46e5">Supervisor 拼装最终话术</text>
+      </g>
+
+      <g class="arch-node" data-key="user">
+        <rect class="box" x="265" y="602" width="150" height="44" rx="14" fill="#f0f9ff" stroke="#38bdf8" stroke-width="2"/>
+        <text x="340" y="630" text-anchor="middle" font-size="13.5" font-weight="800" fill="#0369a1">📨 回复送达用户</text>
+      </g>
+
+      <!-- 后勤部门 -->
+      <g class="arch-node" data-key="redis">
+        <rect class="box" x="657" y="96" width="300" height="64" rx="14" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+        <text x="807" y="121" text-anchor="middle" font-size="14" font-weight="800" fill="#065f46">⚡ Redis · 短期记忆</text>
+        <text x="807" y="139" text-anchor="middle" font-size="11" fill="#047857">最近 20 轮对话 · 30 分钟 TTL · LRU</text>
+        <text x="807" y="153" text-anchor="middle" font-size="10" fill="#059669">多实例共享会话的关键</text>
+      </g>
+
+      <g class="arch-node" data-key="faiss">
+        <rect class="box" x="657" y="268" width="300" height="64" rx="14" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+        <text x="807" y="293" text-anchor="middle" font-size="14" font-weight="800" fill="#065f46">🧠 FAISS 向量库 · 长期记忆</text>
+        <text x="807" y="311" text-anchor="middle" font-size="11" fill="#047857">知识库文档 1536 维 · 语义检索 Top-5</text>
+        <text x="807" y="325" text-anchor="middle" font-size="10" fill="#059669">生产环境换 Milvus</text>
+      </g>
+
+      <g class="arch-node" data-key="mcp">
+        <rect class="box" x="657" y="368" width="300" height="64" rx="14" fill="#fffbeb" stroke="#f59e0b" stroke-width="2"/>
+        <text x="807" y="393" text-anchor="middle" font-size="14" font-weight="800" fill="#92400e">🔧 MCP 工具协议层</text>
+        <text x="807" y="411" text-anchor="middle" font-size="11" fill="#b45309">JSON-RPC 2.0 · 工具发现 / 调用</text>
+        <text x="807" y="425" text-anchor="middle" font-size="10" fill="#d97706">order_query · ticket_create · risk_check · kb_search</text>
+      </g>
+
+      <g class="arch-node" data-key="jaeger">
+        <rect class="box" x="657" y="470" width="300" height="64" rx="14" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="2"/>
+        <text x="807" y="495" text-anchor="middle" font-size="14" font-weight="800" fill="#5b21b6">🔭 Jaeger · 全链路追踪</text>
+        <text x="807" y="513" text-anchor="middle" font-size="11" fill="#6d28d9">每个 Agent 每一步 = 一个 Span</text>
+        <text x="807" y="527" text-anchor="middle" font-size="10" fill="#7c3aed">耗时 / 成败 / Token 全记录</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><span class="dot" style="background:#6366f1"></span>请求主干道</span>
+      <span><span class="dot" style="background:#f97316"></span>强制质检（金融合规）</span>
+      <span><span class="dot" style="background:#10b981"></span>记忆系统</span>
+      <span><span class="dot" style="background:#f59e0b"></span>工具协议</span>
+      <span><span class="dot" style="background:#8b5cf6"></span>可观测性</span>
+      <span>─ 实线 = 调用 　- - 虚线 = 读写/上报</span>
+    </div>
+    <div class="arch-detail" id="archDetail">👆 把鼠标移到任意模块上，这里会显示它的人话介绍。</div>
+  </div>
+</section>
+
+<!-- ═══════════ ② 闭环流程 ═══════════ -->
+<section id="flow" class="wrap">
+  <div class="sec-head">
+    <span class="no">02</span>
+    <h2>一次完整请求的 9 步闭环之旅</h2>
+    <p>以真实例子走一遍：用户问「我的订单什么时候到？」。点车站或按播放键，看请求怎么走完全程。</p>
+  </div>
+  <div class="stepper-card">
+    <svg class="stepper-svg" id="stepSvg" viewBox="0 0 980 268" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="sarr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#a5b4fc"/>
+        </marker>
+      </defs>
+      <!-- 轨道 -->
+      <g stroke="#c7d2fe" stroke-width="5" fill="none" stroke-linecap="round" marker-end="url(#sarr)">
+        <line x1="100" y1="70"  x2="740" y2="70"/>
+        <path d="M790,100 L790,140"/>
+        <line x1="790" y1="172" x2="310" y2="172"/>
+      </g>
+      <g font-size="12" fill="#94a3b8">
+        <text x="420" y="52" text-anchor="middle">主干道：问题进来 → 答案出去</text>
+        <text x="560" y="216" text-anchor="middle">返程：质检 → 汇总 → 回复（追踪贯穿全程）</text>
+      </g>
+      <!-- 分叉示意：第4站 -->
+      <g stroke="#c7d2fe" stroke-width="2" stroke-dasharray="4 4" fill="none">
+        <path d="M610,88 L570,116"/>
+        <path d="M610,88 L660,116"/>
+      </g>
+      <g font-size="10.5" fill="#6366f1" font-weight="700">
+        <text x="556" y="130" text-anchor="middle">📚 RAG</text>
+        <text x="672" y="130" text-anchor="middle">🎫 工单</text>
+      </g>
+      <!-- Jaeger 小标 -->
+      <g opacity=".9">
+        <rect x="86" y="148" width="128" height="40" rx="10" fill="#f5f3ff" stroke="#8b5cf6" stroke-width="1.5"/>
+        <text x="150" y="173" text-anchor="middle" font-size="11.5" font-weight="700" fill="#5b21b6">🔭 Jaeger 贯全程</text>
+        <line x1="214" y1="168" x2="230" y2="172" stroke="#8b5cf6" stroke-width="2" stroke-dasharray="3 4"/>
+      </g>
+      <!-- 站点由 JS 生成 -->
+      <g id="stNodes"></g>
+    </svg>
+    <div class="st-desc-wrap">
+      <div class="st-desc" id="stDesc">
+        <h4>▶ 点击「播放」开始</h4>
+        一条用户的提问，将经过 9 个站点完成闭环：接收 → 记忆 → 路由 → 专家处理 → 质检 → 汇总 → 回复，全程被追踪系统录像。
+      </div>
+      <div class="step-progress" id="stProg">0 / 9</div>
+    </div>
+    <div class="ctrls">
+      <button class="primary" id="btnPlay">▶ 播放</button>
+      <button id="btnPrev">← 上一步</button>
+      <button id="btnNext">下一步 →</button>
+      <button id="btnReset">⟲ 重置</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ③ 模块分工 ═══════════ -->
+<section id="modules" class="wrap">
+  <div class="sec-head">
+    <span class="no">03</span>
+    <h2>公司里的 6 个「员工」：谁干什么、和谁配合</h2>
+    <p>每个 Agent 只做一件专业的事（单一职责），由 Supervisor 串起来。这 6 张卡在三语言实现里结构完全一致。</p>
+  </div>
+  <div class="mod-grid">
+    <div class="mod">
+      <div class="emoji">🧭</div>
+      <h3>Supervisor 主管</h3>
+      <div class="role">客服中心大堂经理 · 编排调度</div>
+      <p>接下用户消息后调 LLM 判断「这单归谁管」，把任务分给对应专家；专家干完后由它把结果拼成最终话术。整张 StateGraph 有向图就是它的「排班表」。</p>
+      <div class="io"><b>输入：</b>用户消息 + 全局 AgentState　<b>输出：</b>路由决策 + final_response</div>
+      <div class="tag">LangGraph StateGraph</div><div class="tag">MemorySaver 检查点</div><div class="tag">条件边路由</div>
+    </div>
+    <div class="mod">
+      <div class="emoji">🔎</div>
+      <h3>意图路由 Agent</h3>
+      <div class="role">分诊台 · 意图细分</div>
+      <p>把用户的话拆成：一级意图（咨询 / 投诉 / 交易 / 账户 / 合规）+ 二级意图 + 置信度 + 关键实体（订单号、金额…），并建议该路由给谁。金融规则：涉资金安全→合规、退款理赔→工单、产品咨询→知识库。</p>
+      <div class="io"><b>输入：</b>用户消息　<b>输出：</b>意图标签 + 置信度 + 实体</div>
+      <div class="note">⚠️ 代码事实：这个 Agent 类已完整实现，但主流程图中路由由 Supervisor 节点直接兼任（文档与代码的一个小差异）。</div>
+    </div>
+    <div class="mod">
+      <div class="emoji">📚</div>
+      <h3>知识检索 Agent（RAG）</h3>
+      <div class="role">资料室专家 · 有据可查地回答</div>
+      <p>四步流水线：① Query 改写（口语→检索友好）② FAISS 向量检索 Top-5 ③ LLM 重排取 Top-3 ④ 基于文档生成回答。铁律：不许编造、必须标引用来源、金融话题必带风险提示。</p>
+      <div class="io"><b>输入：</b>用户问题　<b>输出：</b>带引用来源的回答</div>
+      <div class="tag">FAISS</div><div class="tag">Query 改写</div><div class="tag">LLM 重排序</div><div class="tag">防幻觉</div>
+    </div>
+    <div class="mod">
+      <div class="emoji">🎫</div>
+      <h3>工单处理 Agent</h3>
+      <div class="role">业务办理窗口 · 退款/理赔/开户</div>
+      <p>LLM 从用户的话里提取工单要素（类型 / 优先级 / 摘要），然后通过 MCP 协议调 ticket_create 建单或查单。优先级规则：资金安全=urgent、退款超时=high。</p>
+      <div class="io"><b>输入：</b>用户需求　<b>输出：</b>工单号 + 状态说明</div>
+      <div class="note">⚠️ 代码事实：工单目前存在进程内 dict（TicketStore），重启即丢，生产需换数据库。</div>
+      <div class="tag">MCP ticket_create</div><div class="tag">JSON 要素提取</div>
+    </div>
+    <div class="mod">
+      <div class="emoji">🛡️</div>
+      <h3>合规审查 Agent</h3>
+      <div class="role">终审质检员 · 所有回复的必经关卡</div>
+      <p>两道关：① <b>规则引擎</b>（毫秒级）——违禁词「保证收益/零风险」+ 正则抓手机号/身份证/银行卡；② <b>LLM 深审</b>——越权承诺、缺风险提示等软违规。命中即拦截并转人工，PII 自动打码（保留前3后3）。</p>
+      <div class="io"><b>输入：</b>所有子 Agent 的回复　<b>输出：</b>通过/不通过 + 风险等级 + 违规项</div>
+      <div class="tag">正则规则 &lt;2ms</div><div class="tag">LLM 审查 ~600ms</div><div class="tag">PII 脱敏</div>
+    </div>
+    <div class="mod">
+      <div class="emoji">🔧</div>
+      <h3>MCP 工具协议层</h3>
+      <div class="role">对接内部系统的标准「内线电话」</div>
+      <p>Model Context Protocol：Agent 通过 tools/list 发现有哪些工具、tools/call 调用（JSON-RPC 2.0）。新工具注册即可用，Agent 代码不用改。内置：order_query 订单、ticket_create 工单、risk_check 风控、knowledge_search 知识库。每次调用都有耗时日志。</p>
+      <div class="io"><b>输入：</b>工具名 + JSON 参数　<b>输出：</b>标准化结果 + 调用日志</div>
+      <div class="tag">JSON-RPC 2.0</div><div class="tag">动态注册</div><div class="tag">权限/参数校验</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ④ 三层记忆 ═══════════ -->
+<section id="memory" class="wrap">
+  <div class="sec-head">
+    <span class="no">04</span>
+    <h2>三层记忆：便签、笔记本、档案室</h2>
+    <p>像人一样分层记事：越常用的越快、越贵；越久远的越慢、越便宜。</p>
+  </div>
+  <div class="mem-grid">
+    <div class="mem" style="border-top:4px solid #38bdf8;">
+      <div class="big">📝</div>
+      <h3>工作记忆</h3>
+      <div class="ana">≈ 手里的便签 · 用完就扔</div>
+      <table>
+        <tr><td>存在哪</td><td>进程内存 dict（带锁）</td></tr>
+        <tr><td>活多久</td><td>单次请求内</td></tr>
+        <tr><td>存什么</td><td>本轮路由决策、推理中间态</td></tr>
+      </table>
+      <div class="lat-bar">
+        <div class="lab"><span>延迟</span><span>&lt; 1ms</span></div>
+        <div class="rail"><div class="fill" style="width:4%; background:#38bdf8;"></div></div>
+      </div>
+    </div>
+    <div class="mem" style="border-top:4px solid #10b981;">
+      <div class="big">📒</div>
+      <h3>短期记忆</h3>
+      <div class="ana">≈ 桌上笔记本 · 最近 20 轮对话</div>
+      <table>
+        <tr><td>存在哪</td><td>Redis（TTL 30 分钟 + LRU 淘汰）</td></tr>
+        <tr><td>活多久</td><td>30 分钟无活动自动过期</td></tr>
+        <tr><td>存什么</td><td>多轮对话上下文，让 AI「记得刚才说过啥」</td></tr>
+      </table>
+      <div class="lat-bar">
+        <div class="lab"><span>延迟</span><span>1–5ms</span></div>
+        <div class="rail"><div class="fill" style="width:18%; background:#10b981;"></div></div>
+      </div>
+    </div>
+    <div class="mem" style="border-top:4px solid #059669;">
+      <div class="big">🗄️</div>
+      <h3>长期记忆</h3>
+      <div class="ana">≈ 公司档案室 · 永久保存可检索</div>
+      <table>
+        <tr><td>存在哪</td><td>FAISS 向量库（1536 维，磁盘持久化）</td></tr>
+        <tr><td>活多久</td><td>永久</td></tr>
+        <tr><td>存什么</td><td>知识库文档、用户画像、历史工单</td></tr>
+      </table>
+      <div class="lat-bar">
+        <div class="lab"><span>延迟</span><span>10–50ms</span></div>
+        <div class="rail"><div class="fill" style="width:42%; background:#059669;"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="impl-note" style="margin-top:14px;">📎 细节补充：文档入库按 <b>512 token 分块 + 128 token 重叠窗口</b>，优先按段落切；FAISS 不可用时自动降级为关键词匹配；Redis 连不上时短期记忆降级为进程内 list（开发友好，但多实例失效）。另：演示版 embedding 是哈希伪向量，真实语义检索需换 OpenAI Embedding。</div>
+</section>
+
+<!-- ═══════════ ⑤ 技术栈 ═══════════ -->
+<section id="stack" class="wrap">
+  <div class="sec-head">
+    <span class="no">05</span>
+    <h2>技术栈：一套架构，三种语言各写了一遍</h2>
+    <p>选语言看你面什么岗：Python 是主实现（功能最全），Java/Go 是同构对照版。</p>
+  </div>
+  <div class="tabs">
+    <button class="tab-btn on" data-tab="py">🐍 Python · LangGraph（主实现）</button>
+    <button class="tab-btn" data-tab="java">☕ Java · Spring AI</button>
+    <button class="tab-btn" data-tab="go">🐹 Go · Gin</button>
+  </div>
+
+  <div class="tab-pane on" id="tab-py">
+    <div class="stack-grid">
+      <div class="stack-cell"><h4>多 AGENT 编排</h4><span class="chip"><b>LangGraph</b> ≥0.3</span><span class="chip">StateGraph 有向图</span><span class="chip">MemorySaver 检查点</span><span class="chip">条件边路由</span></div>
+      <div class="stack-cell"><h4>LLM 接入</h4><span class="chip"><b>langchain-openai</b></span><span class="chip">GPT-4o（temperature=0）</span><span class="chip">tiktoken 计数</span></div>
+      <div class="stack-cell"><h4>API 服务</h4><span class="chip"><b>FastAPI</b></span><span class="chip">uvicorn</span><span class="chip">Pydantic v2</span><span class="chip">asyncio 全异步</span></div>
+      <div class="stack-cell"><h4>记忆 / 检索</h4><span class="chip"><b>redis-py</b> (asyncio)</span><span class="chip"><b>faiss-cpu</b> IndexFlatIP</span><span class="chip">numpy</span></div>
+      <div class="stack-cell"><h4>可观测性</h4><span class="chip"><b>OpenTelemetry</b> API+SDK</span><span class="chip">OTLP → Jaeger</span><span class="chip">trace 装饰器</span></div>
+      <div class="stack-cell"><h4>工具协议</h4><span class="chip"><b>mcp ≥1.0</b></span><span class="chip">JSON-RPC 2.0</span><span class="chip">httpx</span></div>
+      <div class="stack-cell"><h4>并发模型</h4><span class="chip"><b>async / await</b></span><span class="chip">单进程事件循环</span></div>
+    </div>
+    <div class="impl-note">✅ Python 版是三套里功能最完整的：真实调用 LLM、RAG 全流程、MCP 服务端、OTel 追踪齐备。</div>
+  </div>
+
+  <div class="tab-pane" id="tab-java">
+    <div class="stack-grid">
+      <div class="stack-cell"><h4>基座</h4><span class="chip"><b>Spring Boot</b> 3.4</span><span class="chip">Java 21</span><span class="chip">Maven</span></div>
+      <div class="stack-cell"><h4>LLM 接入</h4><span class="chip"><b>Spring AI</b> 1.0</span><span class="chip">OpenAI Starter</span><span class="chip">ChatClient</span></div>
+      <div class="stack-cell"><h4>API / 数据</h4><span class="chip">Spring Web</span><span class="chip">Spring Data <b>Redis</b></span><span class="chip">Validation</span></div>
+      <div class="stack-cell"><h4>可观测性</h4><span class="chip"><b>OpenTelemetry</b> 1.44</span><span class="chip">Jackson / Lombok</span></div>
+      <div class="stack-cell"><h4>并发模型</h4><span class="chip"><b>CompletableFuture</b></span><span class="chip">线程池</span></div>
+      <div class="stack-cell"><h4>定位</h4><span class="chip">企业级 Java 团队</span><span class="chip">银行/金融主流栈</span></div>
+    </div>
+    <div class="impl-note">☕ 结构与 Python 版一一对应（5 个 Agent + 记忆 + MCP + 追踪），真实调 LLM（Spring AI ChatClient）。</div>
+  </div>
+
+  <div class="tab-pane" id="tab-go">
+    <div class="stack-grid">
+      <div class="stack-cell"><h4>基座 / API</h4><span class="chip"><b>Go</b> 1.22</span><span class="chip"><b>Gin</b> v1.10</span></div>
+      <div class="stack-cell"><h4>记忆 / 数据</h4><span class="chip"><b>go-redis</b> v9</span><span class="chip">内存向量检索</span></div>
+      <div class="stack-cell"><h4>可观测性</h4><span class="chip"><b>OpenTelemetry</b> 1.32</span><span class="chip">TraceFunc 包装</span></div>
+      <div class="stack-cell"><h4>工具协议</h4><span class="chip">自研 MCP Server</span><span class="chip">sync.RWMutex</span></div>
+      <div class="stack-cell"><h4>并发模型</h4><span class="chip"><b>goroutine</b></span><span class="chip">适合并行调度子 Agent</span></div>
+      <div class="stack-cell"><h4>定位</h4><span class="chip">云原生微服务</span><span class="chip">高并发网关侧</span></div>
+    </div>
+    <div class="impl-note">⚠️ 两个与 README 不符的代码事实：① README 称用 <b>Eino 框架</b>，但 go.mod 里并没有 Eino，实际是手写顺序编排；② Go 版意图路由是<b>关键词规则匹配</b>，没有接 LLM（代码注释自述「演示用，生产应调 LLM」）。</div>
+  </div>
+
+  <div class="infra-row">
+    <h4>🌍 三套共享的基础设施（docker-compose 一键起）</h4>
+    <span class="chip"><b>Docker Compose</b> 编排</span>
+    <span class="chip"><b>Redis 7</b>（256MB · LRU）短期记忆</span>
+    <span class="chip"><b>Jaeger</b> all-in-one 追踪 UI (:16686)</span>
+    <span class="chip"><b>OTLP</b> gRPC/HTTP (:4317/:4318)</span>
+    <span class="chip">Python :8000 · Java :8080 · Go :8090</span>
+    <span class="chip">FAISS(开发) → Milvus(生产)</span>
+  </div>
+</section>
+
+<!-- ═══════════ ⑥ 解决什么问题 ═══════════ -->
+<section id="scene" class="wrap">
+  <div class="sec-head">
+    <span class="no">06</span>
+    <h2>它到底解决什么场景的问题？</h2>
+    <p>目标场景：<b>金融 / 电商的在线客服</b>——用户问咨询、办业务、投诉，AI 全流程接住，人只处理 AI 搞不定的。</p>
+  </div>
+  <div class="pain-grid">
+    <div class="pain">
+      <div class="q">😱 痛点：AI 客服一本正经胡说八道</div>
+      <div class="a"><b>→ RAG 知识检索：</b>回答必须来自知识库检索结果，带引用来源标注；查不到就明说并建议转人工；金融话题强制附加风险提示。</div>
+    </div>
+    <div class="pain">
+      <div class="q">⚖️ 痛点：金融合规红线（说错一句话被监管罚）</div>
+      <div class="a"><b>→ 强制合规关卡：</b>图上所有回复<b>必须</b>经过合规节点——违禁词/PII 正则毫秒级初筛 + LLM 深审越权承诺；不通过自动拦截转人工、PII 打码。</div>
+    </div>
+    <div class="pain">
+      <div class="q">💰 痛点：人工客服又贵又不 7×24</div>
+      <div class="a"><b>→ 多 Agent 自动化：</b>常见咨询秒答；退款/理赔/开户自动提取要素建工单（返回工单号）；只有高风险/查不到的才升级人工。</div>
+    </div>
+    <div class="pain">
+      <div class="q">🧩 痛点：聊两句就「失忆」，断线重连全忘</div>
+      <div class="a"><b>→ 三层记忆 + 检查点：</b>Redis 存最近 20 轮对话（30 分钟 TTL），向量库存永久知识；LangGraph Checkpoint 支持对话断点续接。</div>
+    </div>
+    <div class="pain">
+      <div class="q">🕳️ 痛点：AI 系统是黑盒，出错不知道卡在哪</div>
+      <div class="a"><b>→ 全链路追踪：</b>每个 Agent 每一步都是一个 OTel Span（耗时/成败/Token），Jaeger 里整条调用链一目了然，还有 /api/metrics 指标接口。</div>
+    </div>
+    <div class="pain">
+      <div class="q">🔌 痛点：接新业务系统就要改一堆 Agent 代码</div>
+      <div class="a"><b>→ MCP 标准协议：</b>工具用 JSON Schema 声明能力，注册即被自动发现调用；订单/工单/风控/知识库全是即插即用的「标准插座」。</div>
+    </div>
+  </div>
+  <div class="scene-tags">
+    <span>🏦 银行 / 理财客服</span><span>🛒 电商售后</span><span>🛡️ 保险理赔</span><span>💼 券商开户咨询</span><span>☎️ 任何「咨询 + 办理 + 审查」类业务</span>
+  </div>
+  <div class="position-note">
+    🎓 <b>诚实定位：</b>README 自述这是「<b>企业级面试项目全攻略</b>」——本质是一个<b>教学/求职样板项目</b>（配套简历模板、STAR 话术、八股题库）。架构是真架构、流程是真流程，但订单/风控等工具是<b>写死的模拟数据</b>，工单/检查点在进程内存里，距离生产还有一段工程化路要走（见下节）。
+  </div>
+</section>
+
+<!-- ═══════════ ⑦ 高并发 ═══════════ -->
+<section id="cc" class="wrap">
+  <div class="sec-head">
+    <span class="no">07</span>
+    <h2>适用于高并发场景吗？——绿灯红灯各一半</h2>
+    <p>把「设计意图」和「当前实现」分开看，结论才客观。</p>
+  </div>
+  <div class="verdict">
+    🟡 <b>结论先行：</b>架构<b>按高并发模型设计</b>（全异步、缓存外置、工具层无状态、可水平扩副本、全程可观测），但<b>当前代码是单机教学级</b>——直接上线扛不住真正的高并发，瓶颈第一在 LLM，第二在三个「进程内存单点」。
+  </div>
+  <div class="cc-grid">
+    <div class="cc good">
+      <h3>🟢 架构已经具备的高并发基础</h3>
+      <ul>
+        <li><b>全链路异步：</b>FastAPI + asyncio（Python）/ goroutine（Go）/ CompletableFuture（Java），I/O 等待不阻塞。</li>
+        <li><b>会话状态外置：</b>短期记忆放 Redis，多实例部署时任何副本都能接上对话。</li>
+        <li><b>工具层无状态：</b>MCP 调用是无状态请求，天然可扩。</li>
+        <li><b>容器化部署：</b>Docker Compose 一键起，配负载均衡即可横向加副本。</li>
+        <li><b>可观测性到位：</b>扩容前先能看清瓶颈在哪（P99 延迟、Agent 错误率、Token 消耗都有监控位）。</li>
+      </ul>
+    </div>
+    <div class="cc bad">
+      <h3>🔴 当前实现的并发短板</h3>
+      <ul>
+        <li><b>LLM 是第一瓶颈：</b>单请求要串行调 <b>3~5 次 LLM</b>（路由 + RAG 三连 + 合规审查），端到端约 2~3 秒；吞吐和成本被 OpenAI 速率限制锁死。</li>
+        <li><b>三个进程内存单点：</b>工作记忆（dict+锁）、工单库（TicketStore dict）、LangGraph 检查点（MemorySaver）——多副本各记各的，会话一漂移就失忆、丢单。</li>
+        <li><b>FAISS 不适合多副本：</b>进程内暴力检索（IndexFlatIP），各副本索引不一致；且演示 embedding 是哈希伪向量，检索语义无效。</li>
+        <li><b>没有流量防护：</b>无限流、排队削峰、熔断降级、重试背压——LLM 一抖动就是雪崩。</li>
+      </ul>
+    </div>
+  </div>
+  <div class="fixlist">
+    <h3>🛠️ 想上生产扛并发？按这 5 步改造</h3>
+    <div class="fix"><div class="num">1</div><div><b>检查点外置：</b>MemorySaver → Redis/Postgres 版 Checkpointer，会话跨副本断点续接。</div></div>
+    <div class="fix"><div class="num">2</div><div><b>消灭内存单点：</b>工单入 MySQL/PG，工作记忆改 Redis —— 任何副本无差别服务。</div></div>
+    <div class="fix"><div class="num">3</div><div><b>向量库升级：</b>FAISS → Milvus（分布式）+ 真实 Embedding API，多副本共享一份索引。</div></div>
+    <div class="fix"><div class="num">4</div><div><b>LLM 降本提速：</b>流式输出（SSE 已预留）、高频答案缓存、路由/重排换小模型、控制并发池。</div></div>
+    <div class="fix"><div class="num">5</div><div><b>流量防护：</b>网关限流 + 消息队列削峰 + 熔断重试，副本前置负载均衡。</div></div>
+  </div>
+  <div class="verdict" style="margin-top:14px; background:#fffbeb;">
+    📏 <b>量化感受：</b>当前形态 ≈ <b>单机演示级</b>（十几~几十并发、秒级响应）；完成 1–5 步改造后，架构骨架（异步 + Redis + 无状态工具层）足以支撑<b>数百到上千 QPS</b> 的客服场景——真正的天花板永远在 LLM 的吞吐与成本上。
+  </div>
+</section>
+
+<footer class="wrap">
+  <p>本文档由代码实读生成 · 源项目：<code>smart-cs-multi-agent-main</code>（Python / Java / Go 三实现）</p>
+  <p style="margin-top:6px;">交互说明：架构图模块可悬停 · 流程可播放/点站 · 技术栈可切语言 · 本文件离线可用，可直接分享</p>
+</footer>
+
+<script>
+/* ══════════ 架构图悬停说明 ══════════ */
+const ARCH_INFO = {
+  user:  ["👤 用户", "发消息的人（Web/App/API）。一个 POST /api/chat 就把问题递进了「客服公司」。"],
+  api:   ["🚪 API 网关（FastAPI）", "公司前台。接住 HTTP 请求，生成/沿用 session_id，先把这句话写进 Redis 短期记忆，再把请求交给 Supervisor。还提供 /api/history、/api/tools、/api/metrics 等窗口。"],
+  sup:   ["🧭 Supervisor 主管", "整个系统的中枢（LangGraph StateGraph 有向图）。调 LLM 分析意图并决定路由给哪个专家；等专家干完再由它汇总出最终回复。内置「工作记忆」记录路由上下文，MemorySaver 检查点让对话可断点续接。"],
+  rag:   ["📚 知识检索 Agent（RAG）", "资料室专家。四步流水线：Query 改写 → FAISS 向量检索 Top-5 → LLM 重排 Top-3 → 基于文档生成回答。铁律：不编造、标引用、金融话题带风险提示。它是长期记忆（FAISS）的主要读者。"],
+  ticket:["🎫 工单处理 Agent", "业务办理窗口。用 LLM 从用户的话里提取工单类型/优先级/摘要，再经 MCP 协议调 ticket_create 建单或查单，把工单号告诉用户。覆盖退款、理赔、开户、投诉。"],
+  comp:  ["🛡️ 合规审查 Agent（强制质检站）", "金融场景的命门。所有 Agent 的回复都必须经过它：先规则引擎（违禁词 + 手机号/身份证/银行卡正则，毫秒级），再 LLM 深审越权承诺。不通过 = 拦截 + 转人工，PII 自动打码。"],
+  syn:   ["📝 汇总回复节点", "Supervisor 的出口。把各专家结果拼成最终话术；若合规未通过，则输出固定的转人工话术。结果同时写回短期记忆。"],
+  redis: ["⚡ Redis · 短期记忆", "桌上笔记本：保留最近 20 轮对话，30 分钟无活动自动过期（TTL），Redis 侧配了 256MB LRU。存在外部 Redis 是多实例部署能共享会话的关键。连不上时自动降级为进程内存储。"],
+  faiss: ["🧠 FAISS · 长期记忆", "公司档案室：知识库文档向量化（1536 维）后永久保存，支持语义相似度检索；512 token 分块 + 128 重叠。生产环境设计上换 Milvus。演示版 embedding 是哈希伪向量，真实语义检索需接 Embedding API。"],
+  mcp:   ["🔧 MCP 工具协议层", "对接公司内部系统的标准内线电话（JSON-RPC 2.0）。Agent 用 tools/list 发现工具、tools/call 调用；内置 order_query / ticket_create / risk_check / knowledge_search。新工具注册即用，Agent 代码零改动。每次调用记耗时日志。"],
+  jaeger:["🔭 Jaeger · 全链路追踪", "全程监控录像。每个 Agent 方法都是装饰器包出来的一个 OpenTelemetry Span（耗时/成败/Token/输入输出规模），经 OTLP 上报到 Jaeger UI（:16686），整条调用链看得清清楚楚。"]
+};
+const svg = document.getElementById("archSvg");
+const detail = document.getElementById("archDetail");
+document.querySelectorAll(".arch-node").forEach(node => {
+  node.addEventListener("mouseenter", () => {
+    svg.classList.add("hovering");
+    node.classList.add("lit");
+    const key = node.dataset.key;
+    if (ARCH_INFO[key]) {
+      detail.innerHTML = "<b>" + ARCH_INFO[key][0] + "</b> — " + ARCH_INFO[key][1];
+    }
+  });
+  node.addEventListener("mouseleave", () => {
+    svg.classList.remove("hovering");
+    node.classList.remove("lit");
+  });
+});
+
+/* ══════════ 流程 Stepper ══════════ */
+const STEPS = [
+  {x:100, y:70,  row:1, name:"用户提问",  title:"① 用户提问", desc:"用户在 App 里问：「我的订单什么时候到？」一条 POST /api/chat 带着 user_id 和消息体发出。", tech:"HTTP / JSON"},
+  {x:250, y:70,  row:1, name:"网关接收",  title:"② 前台接收 + 存档", desc:"FastAPI 接住请求，生成或沿用 session_id，先把这句话写进 Redis 短期记忆（保留最近 20 轮、30 分钟过期）——这就是「记住用户刚说了啥」。", tech:"FastAPI · Redis"},
+  {x:400, y:70,  row:1, name:"主管分析",  title:"③ Supervisor 分析意图", desc:"Supervisor 节点带着对话历史调 LLM：这句话该谁接？LLM 只允许回答 knowledge_rag / ticket_handler / compliance_checker 之一，答偏了就兜底走知识库。", tech:"LangGraph 节点 · GPT-4o"},
+  {x:610, y:70,  row:1, name:"条件路由",  title:"④ 条件边路由（分诊）", desc:"StateGraph 的条件边按意图分发：查订单/问政策 → 知识 RAG；要退款/理赔 → 工单窗口。这张「有向图」就是全系统的调度轨道。", tech:"add_conditional_edges"},
+  {x:790, y:70,  row:1, name:"专家干活",  title:"⑤ 专家处理（RAG 四连 / 工单建单）", desc:"RAG 路线：Query 改写 → FAISS 检索 Top-5 → LLM 重排 Top-3 → 带引用生成回答。工单路线：LLM 提取要素后经 MCP 调 ticket_create 建单，返回工单号。", tech:"RAG · FAISS · MCP"},
+  {x:790, y:172, row:2, name:"合规质检",  title:"⑥ 合规两道关（必经）", desc:"先过规则引擎：违禁词（保证收益/零风险…）+ 手机号/身份证正则，毫秒级；再让 LLM 深审越权承诺等软违规。期间 PII 自动打码（保留前 3 后 3）。", tech:"正则规则 · LLM 审查"},
+  {x:610, y:172, row:2, name:"闯关判定",  title:"⑦ 通过 or 拦截", desc:"通过 → Supervisor 汇总各专家结果成最终话术；不通过 → 整单拦截，替换为固定转人工话术并自动生成工单。合规未通过时用户永远看不到违规内容。", tech:"Graph 汇总节点"},
+  {x:430, y:172, row:2, name:"回复用户",  title:"⑧ 响应返回 + 对话存档", desc:"final_response 返回给用户（含 intent、compliance_passed 字段），回答同步写回 Redis，下一轮对话就接上了；thread_id 让对话可断点续接。", tech:"Checkpoint · /api/chat"},
+  {x:250, y:172, row:2, name:"全程留痕",  title:"⑨ 全链路追踪上报（贯穿全程）", desc:"从头到尾，每个 Agent 方法的每次执行都是一个 OpenTelemetry Span（耗时/成败/结果），经 OTLP 汇到 Jaeger——在 ：16686 看到整条调用链，性能问题无处藏身。", tech:"OpenTelemetry → Jaeger"}
+];
+const g = document.getElementById("stNodes");
+const NS = "http://www.w3.org/2000/svg";
+const nodeEls = [];
+STEPS.forEach((s, i) => {
+  const grp = document.createElementNS(NS, "g");
+  grp.setAttribute("class", "st-node");
+  const cOuter = document.createElementNS(NS, "circle");
+  cOuter.setAttribute("cx", s.x); cOuter.setAttribute("cy", s.y); cOuter.setAttribute("r", "22");
+  cOuter.setAttribute("fill", "#fff"); cOuter.setAttribute("stroke", "#c7d2fe"); cOuter.setAttribute("stroke-width", "3");
+  const cMain = document.createElementNS(NS, "circle");
+  cMain.setAttribute("cx", s.x); cMain.setAttribute("cy", s.y); cMain.setAttribute("r", "16");
+  cMain.setAttribute("class", "main");
+  cMain.setAttribute("fill", "#eef2ff"); cMain.setAttribute("stroke", "#a5b4fc"); cMain.setAttribute("stroke-width", "2");
+  const tNum = document.createElementNS(NS, "text");
+  tNum.setAttribute("x", s.x); tNum.setAttribute("y", s.y + 5); tNum.setAttribute("text-anchor", "middle");
+  tNum.setAttribute("font-size", "13"); tNum.setAttribute("fill", "#6366f1"); tNum.setAttribute("font-weight", "700");
+  tNum.textContent = i + 1;
+  const tLab = document.createElementNS(NS, "text");
+  tLab.setAttribute("class", "st-label");
+  tLab.setAttribute("x", s.x);
+  tLab.setAttribute("y", s.row === 1 ? s.y + 44 : s.y - 34);
+  tLab.setAttribute("text-anchor", "middle");
+  tLab.textContent = s.name;
+  grp.appendChild(cOuter); grp.appendChild(cMain); grp.appendChild(tNum); grp.appendChild(tLab);
+  grp.addEventListener("click", () => { stopPlay(); showStep(i); });
+  g.appendChild(grp);
+  nodeEls.push(grp);
+});
+let cur = -1, timer = null;
+const descEl = document.getElementById("stDesc");
+const progEl = document.getElementById("stProg");
+function showStep(i) {
+  cur = i;
+  nodeEls.forEach((el, k) => {
+    el.classList.remove("on", "done");
+    if (k < i) el.classList.add("done");
+  });
+  if (i >= 0) nodeEls[i].classList.add("on");
+  const s = STEPS[i];
+  if (s) {
+    descEl.innerHTML = "<h4>" + s.title + "</h4>" + s.desc + "<br><span class='tech'>" + s.tech + "</span>";
+    progEl.textContent = (i + 1) + " / 9";
+  } else {
+    progEl.textContent = "0 / 9";
+  }
+}
+function next() { if (cur >= STEPS.length - 1) { stopPlay(); return; } showStep(cur + 1); }
+function stopPlay() { if (timer) { clearInterval(timer); timer = null; } document.getElementById("btnPlay").textContent = "▶ 播放"; }
+document.getElementById("btnPlay").addEventListener("click", function () {
+  if (timer) { stopPlay(); return; }
+  if (cur >= STEPS.length - 1) showStep(-1);
+  this.textContent = "⏸ 暂停";
+  timer = setInterval(next, 2400);
+  next();
+});
+document.getElementById("btnNext").addEventListener("click", () => { stopPlay(); next(); });
+document.getElementById("btnPrev").addEventListener("click", () => { stopPlay(); if (cur > 0) showStep(cur - 1); });
+document.getElementById("btnReset").addEventListener("click", () => { stopPlay(); showStep(-1); descEl.innerHTML = "<h4>▶ 点击「播放」开始</h4>一条用户的提问，将经过 9 个站点完成闭环：接收 → 记忆 → 路由 → 专家处理 → 质检 → 汇总 → 回复，全程被追踪系统录像。"; });
+
+/* ══════════ 技术栈 Tabs ══════════ */
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("on"));
+    document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("on"));
+    btn.classList.add("on");
+    document.getElementById("tab-" + btn.dataset.tab).classList.add("on");
+  });
+});
+</script>
+</body>
+</html>

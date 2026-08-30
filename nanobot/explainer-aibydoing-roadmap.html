@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI By Doing 学习地图 · 96 章知识清单与学习计划</title>
+<style>
+  :root{
+    --ink:#1e293b; --sub:#64748b; --line:#e2e8f0; --bg:#f6f8fb; --card:#ffffff;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:-apple-system,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.6;
+  }
+  .wrap{max-width:1140px; margin:0 auto; padding:0 20px 80px;}
+
+  /* ---------- header ---------- */
+  header{padding:44px 0 10px; text-align:center;}
+  header h1{font-size:34px; letter-spacing:.5px;}
+  header .sub{margin-top:10px; font-size:17px; color:var(--sub);}
+  header .sub b{color:var(--ink);}
+  .flowline{margin-top:18px; font-size:15px; font-weight:600; display:flex; gap:8px; justify-content:center; flex-wrap:wrap;}
+  .flowline span{background:#fff; border:1px solid var(--line); border-radius:999px; padding:5px 14px;}
+  .flowline i{align-self:center; color:#94a3b8; font-style:normal;}
+  .stats{margin-top:16px; font-size:13px; color:var(--sub);}
+
+  /* ---------- sections ---------- */
+  section{margin-top:56px;}
+  .sec-head{display:flex; align-items:baseline; gap:12px; margin-bottom:6px;}
+  .sec-head .no{font-size:13px; font-weight:800; color:#fff; background:#1e293b; border-radius:6px; padding:2px 9px;}
+  .sec-head h2{font-size:24px;}
+  .sec-desc{color:var(--sub); font-size:14px; margin-bottom:18px;}
+
+  /* ---------- map card ---------- */
+  .card{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px; box-shadow:0 1px 3px rgba(15,23,42,.05);}
+  .map-svg{width:100%; height:auto; display:block;}
+  .station{cursor:pointer;}
+  .station .hit{fill:transparent;}
+  .station .ring{fill:#fff; stroke-width:6; transition:all .15s;}
+  .station .halo{fill:none; stroke-width:2.5; opacity:0; transition:opacity .15s;}
+  .station text{pointer-events:none;}
+  .station .name{font-size:15px; font-weight:700; fill:#1e293b;}
+  .station .chap{font-size:11.5px; fill:#64748b;}
+  .station.dim .ring{opacity:.45;}
+  .station.dim .name,.station.dim .chap{opacity:.45;}
+  .station.sel .halo{opacity:1;}
+  .path{stroke:#cbd5e1; stroke-width:5; fill:none;}
+  .path.dash{stroke-dasharray:3 9; stroke-linecap:round;}
+  .flag{font-size:12.5px; font-weight:700; fill:#b45309;}
+  .legend{display:flex; gap:18px; flex-wrap:wrap; font-size:13px; color:var(--sub); margin-top:4px;}
+  .legend b{color:var(--ink);}
+
+  /* ---------- panel ---------- */
+  .panel{margin-top:18px; border:1px solid var(--line); border-radius:16px; background:#fff; overflow:hidden;}
+  .p-head{display:flex; align-items:center; gap:14px; padding:18px 22px; border-bottom:1px solid var(--line); background:linear-gradient(90deg, color-mix(in srgb, var(--pc) 10%, #fff), #fff);}
+  .p-emoji{font-size:34px; line-height:1;}
+  .p-head h3{font-size:21px;}
+  .p-tag{font-size:13px; color:var(--sub);}
+  .p-one{padding:14px 22px 4px; font-size:15px;}
+  .p-one b{color:var(--pc);}
+  .p-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; padding:14px 22px 22px;}
+  .p-box{border:1px solid var(--line); border-radius:12px; padding:14px 16px;}
+  .p-box.wide{grid-column:1 / -1;}
+  .p-box h4{font-size:14px; margin-bottom:8px;}
+  .p-box ul{list-style:none;}
+  .p-box li{font-size:13.5px; padding:3px 0; display:flex; gap:8px;}
+  .p-box li .cno{flex:none; min-width:46px; font-weight:700; color:var(--pc); font-variant-numeric:tabular-nums;}
+  .chip{display:inline-block; margin:3px 4px 3px 0; padding:4px 11px; border-radius:999px; font-size:12.5px; background:color-mix(in srgb, var(--pc) 10%, #fff); border:1px solid color-mix(in srgb, var(--pc) 28%, #fff); color:var(--ink);}
+  .chip.jmp{cursor:pointer;}
+  .chip.jmp:hover{background:var(--pc); color:#fff;}
+  .lvl{display:flex; gap:8px; align-items:flex-start; padding:4px 0; font-size:13.5px;}
+  .lvl .b{flex:none; font-weight:800; font-size:12px; color:#fff; background:var(--pc); border-radius:6px; padding:1px 8px; margin-top:2px;}
+  .lvl .t b{font-weight:700;}
+  .proof{margin-top:10px; font-size:13.5px; background:#fffbeb; border:1px dashed #f59e0b; border-radius:10px; padding:8px 12px;}
+  .p-empty{padding:40px; text-align:center; color:var(--sub); font-size:14px;}
+
+  /* ---------- plan / gantt ---------- */
+  .tabs{display:flex; gap:8px; margin-bottom:14px;}
+  .tab{border:1px solid var(--line); background:#fff; border-radius:999px; padding:6px 18px; font-size:14px; cursor:pointer; color:var(--sub);}
+  .tab.on{background:#1e293b; color:#fff; border-color:#1e293b;}
+  .gantt{background:#fff; border:1px solid var(--line); border-radius:16px; padding:18px 20px;}
+  .g-ruler{display:grid; font-size:11px; color:#94a3b8; margin-bottom:8px; margin-left:150px;}
+  .g-row{display:flex; align-items:center; margin:7px 0;}
+  .g-label{flex:none; width:150px; font-size:13px; font-weight:700; padding-right:10px; display:flex; align-items:center; gap:6px;}
+  .g-label .dot{width:9px; height:9px; border-radius:50%; flex:none;}
+  .g-track{flex:1; position:relative; height:26px; background:#f1f5f9; border-radius:7px;}
+  .g-bar{position:absolute; top:3px; bottom:3px; border-radius:6px; color:#fff; font-size:11.5px; font-weight:700; display:flex; align-items:center; padding:0 8px; white-space:nowrap; overflow:hidden; cursor:pointer; transition:filter .15s;}
+  .g-bar:hover{filter:brightness(1.12);}
+  .plan-note{margin-top:12px; font-size:13px; color:var(--sub);}
+  .plan-note b{color:var(--ink);}
+
+  /* ---------- mastery ladder ---------- */
+  .ladder{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+  .rung{background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px; position:relative;}
+  .rung .no{font-size:26px; font-weight:800;}
+  .rung h4{font-size:16px; margin:2px 0 6px;}
+  .rung p{font-size:13px; color:var(--sub);}
+  .rung.r1 .no{color:#94a3b8;} .rung.r2 .no{color:#2563eb;} .rung.r3 .no{color:#16a34a;} .rung.r4 .no{color:#ea580c;}
+  .ladder-note{margin-top:14px; font-size:14px; background:#fff; border:1px solid var(--line); border-left:5px solid #ea580c; border-radius:10px; padding:12px 16px;}
+  .ladder-note b{color:#ea580c;}
+
+  /* ---------- summary ---------- */
+  .pipeline{display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin:8px 0 22px;}
+  .pipe{flex:1; min-width:150px; background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px 12px; text-align:center;}
+  .pipe .pe{font-size:28px;}
+  .pipe h5{font-size:15px; margin:6px 0 2px;}
+  .pipe p{font-size:12px; color:var(--sub);}
+  .pipe .pc{margin-top:6px; font-size:11.5px; font-weight:700; color:#fff; border-radius:999px; display:inline-block; padding:1px 10px;}
+  .cmp{width:100%; border-collapse:collapse; background:#fff; border-radius:14px; overflow:hidden; border:1px solid var(--line); font-size:13.5px;}
+  .cmp th,.cmp td{padding:11px 14px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top;}
+  .cmp thead th{background:#1e293b; color:#fff; font-size:14px;}
+  .cmp tr:last-child td{border-bottom:none;}
+  .cmp td:first-child{font-weight:700; white-space:nowrap; color:var(--sub); width:110px;}
+  .quad{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:22px;}
+  .qd{background:#fff; border:1px solid var(--line); border-radius:14px; padding:16px; text-align:center;}
+  .qd .qe{font-size:30px;}
+  .qd h5{font-size:15px; margin:6px 0 4px;}
+  .qd p{font-size:12.5px; color:var(--sub);}
+  .qa{margin-top:14px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:12px; padding:14px 18px; font-size:14px;}
+  .qa b{color:#1d4ed8;}
+
+  footer{margin-top:60px; text-align:center; color:var(--sub); font-size:13px; border-top:1px solid var(--line); padding-top:24px;}
+  footer a{color:#2563eb; text-decoration:none;}
+
+  @media (max-width:860px){
+    .p-grid{grid-template-columns:1fr;}
+    .ladder,.quad{grid-template-columns:repeat(2,1fr);}
+    .g-label{width:96px; font-size:12px;}
+    .g-ruler{margin-left:96px;}
+    header h1{font-size:26px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>🗺️ AI By Doing 学习地图</h1>
+  <p class="sub">把 <b>96 章</b> 教程看成一条流水线：<b>喂它数据 → 教它规律 → 练出大脑 → 装进产品</b>。点击地图上任意站点，查看知识清单、前后置、掌握标准与应用场景。</p>
+  <div class="flowline">
+    <span>🧰 工具地基</span><i>→</i>
+    <span>📈 回归</span><i>→</i>
+    <span>⚖️ 分类</span><i>→</i>
+    <span>🧩 无监督</span><i>→</i>
+    <span>🚀 上线</span><i>⤵</i>
+    <span>🧠 神经网络</span><i>→</i>
+    <span>👁️ 看图 · 💬 说话</span><i>→</i>
+    <span>🛰️ AI 服务</span>
+  </div>
+  <p class="stats">来源：aibydoing.com · 96 章 / 约 42 万字 · 全部免费 · 每章 = 数学推导 + 手写实现 + 框架实现 + 真实实战</p>
+</header>
+
+<!-- ================= 1. 地图 ================= -->
+<section id="map-sec">
+  <div class="sec-head"><span class="no">1</span><h2>全景路线图（依赖关系一目了然）</h2></div>
+  <p class="sec-desc">箭头 = 前置 → 后置：箭头出发的站点是"先修课"，指向的站点是"解锁课"。虚线为选修支线。</p>
+  <div class="card">
+    <svg class="map-svg" viewBox="0 0 1180 640" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+          <path d="M0 0 L10 5 L0 10 z" fill="#94a3b8"/>
+        </marker>
+      </defs>
+
+      <!-- paths -->
+      <line class="path" x1="134" y1="500" x2="256" y2="500" marker-end="url(#arr)"/>
+      <line class="path" x1="344" y1="500" x2="466" y2="500" marker-end="url(#arr)"/>
+      <line class="path" x1="554" y1="500" x2="676" y2="500" marker-end="url(#arr)"/>
+      <line class="path" x1="764" y1="500" x2="886" y2="500" marker-end="url(#arr)"/>
+      <line class="path" x1="510" y1="456" x2="510" y2="332" marker-end="url(#arr)"/>
+      <line class="path" x1="543" y1="258" x2="722" y2="192" marker-end="url(#arr)"/>
+      <line class="path" x1="543" y1="302" x2="722" y2="368" marker-end="url(#arr)"/>
+      <line class="path" x1="802" y1="176" x2="955" y2="252" marker-end="url(#arr)"/>
+      <line class="path" x1="802" y1="384" x2="955" y2="308" marker-end="url(#arr)"/>
+      <line class="path dash" x1="468" y1="280" x2="302" y2="280" marker-end="url(#arr)"/>
+
+      <!-- entry hint -->
+      <text x="90" y="560" text-anchor="middle" font-size="12.5" fill="#64748b">会 Python 就能出发</text>
+
+      <!-- milestones -->
+      <text class="flag" x="930" y="596" text-anchor="middle">🚩 里程碑①：上线第一个 AI 模型</text>
+      <text class="flag" x="990" y="352" text-anchor="middle">🚩 里程碑②：深度学习作品集</text>
+
+      <!-- stations (js enhances) -->
+      <g class="station" id="st-s0" transform="translate(90,500)"><circle class="hit" r="52"/><circle class="ring" r="38" stroke="#64748b"/><circle class="halo" r="46" stroke="#64748b"/><text y="9" text-anchor="middle" font-size="26">🧰</text><text class="name" y="64" text-anchor="middle">地基：工具+数学</text><text class="chap" y="82" text-anchor="middle">90–96 章 · 数学 87–89</text></g>
+      <g class="station" id="st-s1" transform="translate(300,500)"><circle class="hit" r="52"/><circle class="ring" r="38" stroke="#2563eb"/><circle class="halo" r="46" stroke="#2563eb"/><text y="9" text-anchor="middle" font-size="26">📈</text><text class="name" y="64" text-anchor="middle">回归：预测一个数</text><text class="chap" y="82" text-anchor="middle">第 1–9 章</text></g>
+      <g class="station" id="st-s2" transform="translate(510,500)"><circle class="hit" r="52"/><circle class="ring" r="38" stroke="#7c3aed"/><circle class="halo" r="46" stroke="#7c3aed"/><text y="9" text-anchor="middle" font-size="26">⚖️</text><text class="name" y="64" text-anchor="middle">分类：判断是与否</text><text class="chap" y="82" text-anchor="middle">第 10–23 章 · 核心</text></g>
+      <g class="station" id="st-s3" transform="translate(720,500)"><circle class="hit" r="52"/><circle class="ring" r="38" stroke="#0891b2"/><circle class="halo" r="46" stroke="#0891b2"/><text y="9" text-anchor="middle" font-size="26">🧩</text><text class="name" y="64" text-anchor="middle">无监督：自己找规律</text><text class="chap" y="82" text-anchor="middle">第 24–38 章</text></g>
+      <g class="station" id="st-s4" transform="translate(930,500)"><circle class="hit" r="52"/><circle class="ring" r="38" stroke="#16a34a"/><circle class="halo" r="46" stroke="#16a34a"/><text y="9" text-anchor="middle" font-size="26">🚀</text><text class="name" y="64" text-anchor="middle">ML 工程与部署</text><text class="chap" y="82" text-anchor="middle">第 39–45 章</text></g>
+      <g class="station" id="st-s5" transform="translate(510,280)"><circle class="hit" r="52"/><circle class="ring" r="38" stroke="#ea580c"/><circle class="halo" r="46" stroke="#ea580c"/><text y="9" text-anchor="middle" font-size="26">🧠</text><text class="name" y="-64" text-anchor="middle">神经网络 + 双框架</text><text class="chap" y="-48" text-anchor="middle">第 46–57 章 · TensorFlow / PyTorch</text></g>
+      <g class="station" id="st-s6" transform="translate(760,170)"><circle class="hit" r="52"/><circle class="ring" r="38" stroke="#db2777"/><circle class="halo" r="46" stroke="#db2777"/><text y="9" text-anchor="middle" font-size="26">👁️</text><text class="name" y="-64" text-anchor="middle">计算机视觉</text><text class="chap" y="-48" text-anchor="middle">第 58–68 章</text></g>
+      <g class="station" id="st-s7" transform="translate(760,390)"><circle class="hit" r="52"/><circle class="ring" r="38" stroke="#4f46e5"/><circle class="halo" r="46" stroke="#4f46e5"/><text y="9" text-anchor="middle" font-size="26">💬</text><text class="name" y="64" text-anchor="middle">自然语言处理</text><text class="chap" y="82" text-anchor="middle">第 69–76 章</text></g>
+      <g class="station" id="st-s8" transform="translate(990,280)"><circle class="hit" r="52"/><circle class="ring" r="38" stroke="#059669"/><circle class="halo" r="46" stroke="#059669"/><text y="9" text-anchor="middle" font-size="26">🛰️</text><text class="name" y="-64" text-anchor="middle">DL 工程与部署</text><text class="chap" y="-48" text-anchor="middle">第 77–83 章</text></g>
+      <g class="station" id="st-s9" transform="translate(250,280)"><circle class="hit" r="52"/><circle class="ring" r="38" stroke="#b45309" stroke-dasharray="6 5"/><circle class="halo" r="46" stroke="#b45309"/><text y="9" text-anchor="middle" font-size="26">🎮</text><text class="name" y="-64" text-anchor="middle">强化学习（选修）</text><text class="chap" y="-48" text-anchor="middle">第 84–86 章</text></g>
+      <text x="385" y="266" text-anchor="middle" font-size="11.5" fill="#94a3b8">学有余力</text>
+    </svg>
+    <div class="legend"><span><b>操作：</b>点击站点查看详情</span><span><b>颜色：</b>每个板块一色</span><span><b>实线：</b>必经之路</span><span><b>虚线：</b>选修支线</span></div>
+  </div>
+  <div class="panel" id="panel"><div class="p-empty">👆 点击地图上的任意站点，这里会显示：知识清单 · 前置条件 · 后置解锁 · 掌握标准 · 应用场景</div></div>
+</section>
+
+<!-- ================= 2. 学习计划 ================= -->
+<section id="plan-sec">
+  <div class="sec-head"><span class="no">2</span><h2>学习计划（可调节奏）</h2></div>
+  <p class="sec-desc">标准版按"每天 1–1.5 小时"排布；冲刺版按"每天 2 小时 + 周末加练、有一定编程基础"压缩。点击色块可跳到对应站点详情。</p>
+  <div class="tabs">
+    <button class="tab on" data-plan="std">🐢 标准版 · 24 周</button>
+    <button class="tab" data-plan="fast">🐇 冲刺版 · 12 周</button>
+  </div>
+  <div class="gantt" id="gantt"></div>
+</section>
+
+<!-- ================= 3. 掌握标准 ================= -->
+<section id="mastery-sec">
+  <div class="sec-head"><span class="no">3</span><h2>什么叫"掌握了"？四级通关梯子</h2></div>
+  <p class="sec-desc">每个知识点都用同一把尺子量。每个站点的详情里写明了该站对应的 L1–L4 具体要求和"通关作品"。</p>
+  <div class="ladder">
+    <div class="rung r1"><div class="no">L1</div><h4>🗣️ 能讲出来</h4><p>合上教程，能给完全不懂的朋友讲明白：它解决什么问题、大概怎么算、什么时候用。</p></div>
+    <div class="rung r2"><div class="no">L2</div><h4>⌨️ 能写出来</h4><p>不看答案，亲手写出核心代码并跑通（NumPy 手搓 或 框架实现）。跑通教程代码 ≠ 会写。</p></div>
+    <div class="rung r3"><div class="no">L3</div><h4>📊 能用起来</h4><p>找一份真实数据，独立完成 清洗 → 训练 → 评估 全流程，产出一份有结论的报告。</p></div>
+    <div class="rung r4"><div class="no">L4</div><h4>🔧 能调得优</h4><p>知道指标好不好，会用交叉验证、调参、正则化等手段改进它，并能解释为什么有效。</p></div>
+  </div>
+  <div class="ladder-note">⭐ 通关规则：<b>L1 + L2 必达</b>（这是"学懂"的底线），<b>L3 每个板块至少做一个代表项目</b>，L4 力争。检验法很简单——把 L1 讲给别人听，讲不顺就回去重学。</div>
+</section>
+
+<!-- ================= 4. 归纳汇总 ================= -->
+<section id="summary-sec">
+  <div class="sec-head"><span class="no">4</span><h2>归纳汇总：一本书其实是五件事</h2></div>
+  <div class="pipeline">
+    <div class="pipe"><div class="pe">🧰</div><h5>1 · 喂它数据</h5><p>工具+数学<br>把数据读进来、洗干净</p><span class="pc" style="background:#64748b">87–96 章</span></div>
+    <div class="pipe"><div class="pe">📈</div><h5>2 · 教它规律</h5><p>传统机器学习<br>回归·分类·聚类·关联</p><span class="pc" style="background:#2563eb">1–38 章</span></div>
+    <div class="pipe"><div class="pe">🚀</div><h5>3 · 先上一次线</h5><p>ML 工程化<br>模型 → API → 云端</p><span class="pc" style="background:#16a34a">39–45 章</span></div>
+    <div class="pipe"><div class="pe">🧠</div><h5>4 · 练出大脑</h5><p>深度学习+应用<br>神经网络·CV·NLP</p><span class="pc" style="background:#ea580c">46–76 章</span></div>
+    <div class="pipe"><div class="pe">🛰️</div><h5>5 · 造出产品</h5><p>DL 部署 + 强化学习<br>推理服务·试错决策</p><span class="pc" style="background:#059669">77–86 章</span></div>
+  </div>
+
+  <table class="cmp">
+    <thead><tr><th>三大板块</th><th>🧱 传统机器学习</th><th>🧠 深度学习</th><th>🚚 工程化部署</th></tr></thead>
+    <tbody>
+      <tr><td>吃什么</td><td>表格数据（像 Excel 的行列）</td><td>图像 / 文本 / 语音等原始信号</td><td>训练好的模型文件</td></tr>
+      <tr><td>招牌算法</td><td>线性回归 · 逻辑回归 · SVM · 决策树/XGBoost 类 · K-Means</td><td>CNN · RNN/LSTM · GAN · 自编码器 · BERT</td><td>Flask · TF Serving · ONNX · 云端 API</td></tr>
+      <tr><td>何时用它</td><td>数据量不大、要可解释、要快速出活</td><td>感知类任务（看图听话），数据越大越强</td><td>想让模型真正被用户用起来</td></tr>
+      <tr><td>对应章节</td><td>第 1–38 章</td><td>第 46–76 章</td><td>第 39–45、77–83 章</td></tr>
+      <tr><td>典型产出</td><td>销量预测 · 风控 · 用户分群</td><td>识图 · 翻译 · AIGC 生成</td><td>可访问的 AI 接口 / 服务</td></tr>
+    </tbody>
+  </table>
+
+  <div class="quad">
+    <div class="qd"><div class="qe">📐</div><h5>① 数学推导</h5><p>每个公式亲手推一遍<br>懂"为什么"</p></div>
+    <div class="qd"><div class="qe">✍️</div><h5>② NumPy 手写</h5><p>不调包实现核心算法<br>懂"怎么算"</p></div>
+    <div class="qd"><div class="qe">📦</div><h5>③ 框架实现</h5><p>再用 TF/PyTorch 做一遍<br>会"干活"</p></div>
+    <div class="qd"><div class="qe">🌍</div><h5>④ 真实数据</h5><p>房价/股价/图像等实战<br>见"世面"</p></div>
+  </div>
+  <div class="qa">💡 <b>作者的核心方法论（每章都是这个"四件套"）：</b>先推导原理 → 用 NumPy 手写 → 再用主流框架重做 → 最后上真实数据。对照第 3 节的梯子：①对应 L1，②③对应 L2，④对应 L3，自己再加一步调参反思就是 L4。<b>作者特别提醒：只浏览不敲代码，收效甚微——最好的学法是打开电脑跟着做，并用自己的 Notebook 记录。</b></div>
+</section>
+
+<footer>
+  内容整理自 <a href="https://aibydoing.com/" target="_blank">动手实战人工智能 AI By Doing</a>（作者 huhuhang，96 章持续更新，全部免费阅读）。<br>
+  本页为学习导航图，具体内容请以原站为准 · 单文件离线可用
+</footer>
+
+</div>
+
+<script>
+/* ============ 站点数据 ============ */
+const DATA = {
+  s0:{ name:"地基：工具与数学", emoji:"🧰", color:"#64748b", tag:"第 90–96 章（常用工具）+ 第 87–89 章（数学基础）· 建议 1–2 周",
+    one:"先认识厨房再学做菜：<b>NumPy/Pandas/Matplotlib 是每天都要用的锅碗瓢盆</b>；三大数学支柱不用先啃，全书遇到不懂再回来查（作者原话：先学数学会把耐心磨光）。",
+    chapters:[["91","NumPy：多维数组与矩阵运算"],["92","Pandas：读取、筛选、清洗数据"],["93/94","Matplotlib 二维 / 三维绘图"],["95","Seaborn 快速可视化"],["96","SciPy 科学计算"],["90","Jupyter Notebook 使用"],["87–89","线性代数 / 微积分 / 概率统计（按需查阅）"]],
+    prereq:[["—","只需基础 Python 语法，即可从这里出发"]],
+    unlock:[["s1","全部后续章节的运行地基"]],
+    mastery:{l1:"说出 NumPy / Pandas / Matplotlib 各管什么、为什么矩阵运算是 AI 的通用语言",l2:"不看教程：用 Pandas 读 CSV 并完成筛选、分组、缺失值填充；用 NumPy 完成矩阵乘法与切片",l3:"找一份脏数据（如某城市房价 CSV），洗干净并画出 3 种有结论的图",l4:"能把一段慢的 for 循环改写成向量化运算并解释为什么快"},
+    proof:"一份自己的「数据探索 Notebook」", apps:["数据分析报告","科研/业务画图","一切后续实验的起点"] },
+
+  s1:{ name:"回归：预测一个数", emoji:"📈", color:"#2563eb", tag:"第 1–9 章 · 建议 2–3 周",
+    one:"教电脑画一条<b>最贴近数据的线</b>，用来预测数值：房价、销量、价格趋势。这是全书一切算法的『hello world』。",
+    chapters:[["1","机器学习综述：什么是监督/无监督学习"],["2","线性回归：平方损失 + 最小二乘"],["3","实战：北京住房价格预测"],["4","多项式回归：曲线拟合与过拟合"],["5","实战：比特币价格预测与可视化"],["6","岭回归 & LASSO：正则化救过拟合"],["7","矩阵法计算岭回归系数"],["8","回归评价：MAE / MSE / MAPE / 拟合优度"],["9","综合练习：多元回归 + 假设检验"]],
+    prereq:[["s0","NumPy 矩阵运算 + Pandas 读数据 + 画图"]],
+    unlock:[["s2","逻辑回归 = 线性回归 + Sigmoid，分类从这里开始"],["s5","梯度下降是神经网络的训练引擎，第 11 章是关键前置"]],
+    mastery:{l1:"讲清：回归是在找『最贴近数据的线』；为什么损失用平方；什么是过拟合",l2:"不看答案手写线性回归（公式法或梯度下降均可），并会用 sklearn 一行实现对照",l3:"完成房价/币价预测：划分数据集 → 训练 → 用 MAE/MSE/R² 评价并写结论",l4:"能用多项式次数与岭/Lasso 系数控制过拟合，并画出训练/测试误差对比解释"},
+    proof:"一份房价（或币价）预测小报告", apps:["房价预测","销量/营收预测","价格趋势分析（比特币等）","广告出价估算"] },
+
+  s2:{ name:"分类：判断是与否", emoji:"⚖️", color:"#7c3aed", tag:"第 10–23 章 · 全书重心 · 建议 4–5 周",
+    one:"回答『是/否』的问题：这封邮件是垃圾吗？这个客户会流失吗？<b>业务中 80% 的 AI 需求都是分类</b>，这一站要学得最扎实。",
+    chapters:[["10","逻辑回归：从回归到分类的桥"],["11","梯度下降：通用优化引擎（重点！）"],["12/13","K 近邻分类与回归"],["14","朴素贝叶斯：先验/后验/条件概率"],["15","高斯分布函数与绘图"],["16","分类评价：准确率/查准率/召回率/F1/ROC"],["17/18","支持向量机（含核技巧）+ 人脸分类实战"],["19/20","决策树 + 网格搜索调参"],["21/22","集成学习：装袋 Bagging 与提升 Boosting"],["23","K 折交叉验证选模型"]],
+    prereq:[["s1","线性回归（逻辑回归的地基）+ 损失函数思想"],["s0","NumPy / Pandas"]],
+    unlock:[["s3","带着『怎么评价好坏』进入无监督"],["s4","至少一个练熟的模型才能部署"],["s5","一个神经元 ≈ 一次逻辑回归"]],
+    mastery:{l1:"讲清分类与回归的区别；什么场景看查准率、什么场景看召回率；装袋与提升分别为什么有效",l2:"手写逻辑回归 + 梯度下降；会用 KNN / 朴素贝叶斯 / SVM / 决策树 / 随机森林",l3:"在真实数据（如用户流失）上端到端建模：特征处理 → 交叉验证选模 → 用 F1/ROC 给出结论",l4:"会处理类别不均衡；会用网格搜索调参；能说清为什么模型 A 比模型 B 好"},
+    proof:"一个击败基线的分类项目 + 评估报告（可投 Kaggle 练手）", apps:["垃圾邮件拦截","信贷风控","用户流失预警","疾病辅助诊断","人脸识别（第 18 章）"] },
+
+  s3:{ name:"无监督：自己找规律", emoji:"🧩", color:"#0891b2", tag:"第 24–38 章 · 建议 2–3 周",
+    one:"没有标准答案的数据里<b>自己找结构</b>：把客户自动分成几群、找出『买啤酒的人常买尿布』、发现异常单车、预测时间序列。",
+    chapters:[["24/25","K-Means 划分聚类 + 图像压缩实战"],["26/28","层次聚类 + 聚类树绘制"],["27","PCA 主成分分析：降维"],["29/30","DBSCAN 密度聚类 + 共享单车异常检测"],["31/32","谱聚类 & 8 种聚类算法对比"],["33/34","Apriori 关联规则 + 购物篮分析"],["35–38","时间序列：处理 → 建模 → Prophet 预测"]],
+    prereq:[["s0","数据处理与画图"],["s2","第 16 章的『评价好坏』思维方式"]],
+    unlock:[["—","用户画像 / 推荐系统等专题方向"]],
+    mastery:{l1:"讲清：无监督没有标签怎么验证效果；K-Means、层次、DBSCAN 各适合什么形状的数据",l2:"手写 K-Means；会用 PCA 降维并解释主成分；会用 SciPy 画树状图",l3:"完成客户分群或异常检测，能解读每一簇的业务含义（而不是只输出簇号）",l4:"能根据数据形状与业务目标在 8 种聚类里做选择并给出理由"},
+    proof:"一份用户分群报告 或 异常点位地图", apps:["客户分群精准营销","图像压缩","共享单车异常点位","购物篮分析（啤酒+尿布）","股价 / 农业指数时序预测"] },
+
+  s4:{ name:"ML 工程：把模型变产品", emoji:"🚀", color:"#16a34a", tag:"第 39–45 章 · 里程碑① · 建议 1 周",
+    one:"训练好的模型只是一张『成绩单』，<b>部署成 API 才是产品</b>。学完这一站，你完成了从『会算法』到『能交付』的第一次跨越。",
+    chapters:[["39/40","自动化机器学习 AutoML 综述 + auto-sklearn"],["41","AutoML 实战：MNIST 手写字符（Kaggle）"],["42","模型保存 / 加载 / 推理全流程"],["43","Flask 部署毒蘑菇分类 Web 服务"],["44","动态增量训练：线上边用边学"],["45","在线学习 + 云端部署挑战"]],
+    prereq:[["s2","至少一个练熟的传统 ML 模型"]],
+    unlock:[["s8","部署思想在深度学习侧复用（80 章）"]],
+    mastery:{l1:"讲清：训练 ≠ 上线，模型要被程序调用才有价值；增量学习解决什么问题",l2:"会用 joblib 保存/加载模型；会写一个接收 JSON 返回预测的 Flask 接口",l3:"把任意练好的模型部署成本地 Web 服务，用浏览器/curl 成功完成一次真实预测",l4:"能说出 AutoML 的适用边界；能解释为什么要在线增量学习"},
+    proof:"一个能访问的预测 API（里程碑①作品）", apps:["把模型变成 App 后端","AutoML 降本提效","线上模型持续进化"] },
+
+  s5:{ name:"神经网络 + 双框架", emoji:"🧠", color:"#ea580c", tag:"第 46–57 章 · 从调包到懂原理的分水岭 · 建议 3–4 周",
+    one:"上一半讲<b>大脑怎么模仿</b>（感知机 → 反向传播），下一半练<b>两把瑞士军刀</b>：TensorFlow 与 PyTorch。从这里开始进入深度学习世界。",
+    chapters:[["46","深度学习综述：AI/ML/DL 的关系"],["47","感知机与人工神经网络（核心原理）"],["48","实战：手写字符识别网络"],["49–54","TensorFlow：张量语法 → 神经网络 → Keras 高阶 API → 三个实战"],["55–57","PyTorch：张量与自动微分 → Sequential 建网 → 线性回归"]],
+    prereq:[["s1","梯度下降（第 11 章）—— 网络就是靠它训练的"],["s2","逻辑回归 —— 一个神经元 ≈ 一次逻辑回归"],["s0","线性代数（矩阵乘法）"]],
+    unlock:[["s6","CNN 是神经网络的视觉特化"],["s7","RNN 是神经网络的序列特化"],["s9","强化学习需要网络当决策器"]],
+    mastery:{l1:"讲清：神经元 = 加权求和 + 激活；网络如何一层层提取特征；反向传播在干嘛",l2:"用 NumPy 手写过前向传播 + 梯度下降；会用 TF 和 PyTorch 各搭一个全连接网络",l3:"完成 MNIST 手写识别，测试准确率 ≥ 97%",l4:"会用 Dropout / 正则化 / 学习率策略治过拟合欠拟合；能对比两框架的编程风格差异"},
+    proof:"手写数字识别模型（自己从零搭的）", apps:["手写数字/字符识别","看懂所有 DL 框架的底层逻辑","后续一切深度学习方向的地基"] },
+
+  s6:{ name:"计算机视觉", emoji:"👁️", color:"#db2777", tag:"第 58–68 章 · 建议 3 周",
+    one:"让电脑<b>看懂图片</b>：卷积核像手电筒一样在图上扫，扫出边缘、纹理、形状。这一站还有 AIGC 鼻祖 GAN——让电脑凭空画图。",
+    chapters:[["58/59","卷积神经网络原理 + 双框架构建"],["60","LeNet-5 经典网络复刻"],["61/62","图像分类 + 迁移学习（小数据救星）"],["63/64","GAN / DCGAN：生成动漫人物头像"],["65/66","自编码器 + 卷积自编码器图像去噪"],["67/68","目标检测原理 + YOLO 实时检测"]],
+    prereq:[["s5","神经网络 + 至少一个框架"]],
+    unlock:[["s8","视觉模型可以上线成推理服务"]],
+    mastery:{l1:"讲清：卷积核如何提取边缘纹理；池化干嘛；迁移学习为什么省数据；GAN 的生成器与判别器在博弈什么",l2:"会用框架搭 CNN；会加载 MobileNet 等预训练模型做迁移学习",l3:"完成猫狗/动物分类 或 图像去噪项目，附可视化结果",l4:"小数据集时会选迁移学习并说明理由；能对比 YOLO 与 R-CNN 家族的取舍"},
+    proof:"一个图像识别 demo（或 GAN 生成的头像集）", apps:["人脸/动物识别","医疗影像筛查","自动驾驶感知","AIGC 图像生成","图像去噪修复","YOLO 实时目标检测"] },
+
+  s7:{ name:"自然语言处理", emoji:"💬", color:"#4f46e5", tag:"第 69–76 章 · 建议 2 周",
+    one:"让电脑<b>读懂人话</b>：先把词变成向量，再用有记忆的网络（RNN/LSTM）顺着句子读下去。BERT 一节是大模型时代的直接地基。",
+    chapters:[["69/70","RNN 原理（LSTM/GRU）+ 框架构建"],["71","实战：LSTM 预测股票价格"],["72/73","文本分类：分词、特征提取 + 假新闻识别"],["74","NLP 工具链：NLTK / Flair"],["75","BERT 预训练技术（通往大模型之门）"],["76","神经机器翻译与对话系统"]],
+    prereq:[["s5","神经网络 + 词嵌入等序列建模思想"]],
+    unlock:[["s8","NLP 模型可上线成服务"],["—","继续通向大模型 / 对话系统方向"]],
+    mastery:{l1:"讲清：RNN 为什么能处理序列；LSTM 靠『门』记住长距离依赖；词嵌入是什么；BERT 预训练为什么强",l2:"会用框架搭 RNN/LSTM 完成文本分类；会做中文分词与文本向量化",l3:"完成假新闻分类 或 股价预测项目并给出评估",l4:"知道何时微调 BERT 而非从零训练，并能说明理由"},
+    proof:"一个文本分类 demo（或迷你翻译/对话 demo）", apps:["假新闻/垃圾文本识别","评论情感分析","股价等序列预测","机器翻译","智能客服对话","BERT 搜索排序"] },
+
+  s8:{ name:"DL 工程：AI 真正上线", emoji:"🛰️", color:"#059669", tag:"第 77–83 章 · 里程碑② · 建议 1 周",
+    one:"深度模型要服务真实用户，得考虑<b>延迟、格式、版本、算力</b>。这一站教你把 CV/NLP 模型装进 Docker 式的推理服务或直接调用云端 API。",
+    chapters:[["77/78","自动化深度学习 Auto-Keras + 实践"],["79","Kaggle 实战：仙人掌航拍照片分类"],["80","TF Serving 架构 + ONNX 开放模型格式"],["81","构建图像分类实时推理 API"],["82","AWS / 阿里云深度学习服务实践"],["83","挑战：云 API 识别增值税发票"]],
+    prereq:[["s6 或 s7","至少一个方向有完整项目"],["s4","部署思想（Flask / 推理概念）"]],
+    unlock:[["—","深度学习工程师求职作品集"]],
+    mastery:{l1:"讲清：推理服务要考虑什么（延迟/请求格式/模型版本）；自建服务 vs 云 API 的边界",l2:"会把模型导出 ONNX 或用 TF Serving 起服务；会直接调云端视觉/OCR API",l3:"上线一个图像分类推理 API，让别人（或手机）也能调用成功",l4:"能对一次上线做成本/延迟权衡说明；会用 Auto-Keras 加速建模"},
+    proof:"一个可公开访问的图像推理服务（里程碑②作品）", apps:["图像分类 API","云端发票/证件识别","Kaggle 参赛全流程","AI 产品上线"] },
+
+  s9:{ name:"强化学习（选修）", emoji:"🎮", color:"#b45309", tag:"第 84–86 章 · 建议 1 周 · 学有余力再加餐",
+    one:"前面都是『看样学样』，强化学习是<b>试错学艺</b>：像学骑自行车，摔一次改一次，靠奖励找到最优策略。",
+    chapters:[["84","强化学习综述：智能体 / 奖励 / 策略"],["85","Q-Learning：Q 表 + ε 贪心"],["86","Sarsa 算法：走出迷宫实战"]],
+    prereq:[["s5","神经网络（进阶 RL 需要网络当决策器）"],["s2","『价值/收益』概念可类比分类中的评价"]],
+    unlock:[["—","游戏 AI / 机器人控制 / 自动驾驶决策等进阶领域"]],
+    mastery:{l1:"讲清：强化学习与监督学习的区别；Q 值代表什么；ε 贪心平衡探索与利用",l2:"手写 Q-Learning 与 Sarsa 的 Q 表更新，跑通迷宫环境",l3:"调出能稳定走出迷宫的智能体，并解释参数对收敛的影响",l4:"能说清 Q-Learning（离轨）与 Sarsa（在轨）的差异与风险偏好"},
+    proof:"一个走迷宫智能体", apps:["游戏 AI","机器人路径规划","自动驾驶决策","智能推荐探索"] }
+};
+
+const ORDER = ["s0","s1","s2","s3","s4","s5","s6","s7","s8","s9"];
+
+/* ============ 地图交互 ============ */
+let selected = null;
+document.querySelectorAll(".station").forEach(g=>{
+  g.addEventListener("click", ()=>show(g.id.replace("st-","")));
+});
+function show(id){
+  selected = id;
+  document.querySelectorAll(".station").forEach(g=>{
+    const isSel = g.id === "st-"+id;
+    g.classList.toggle("sel", isSel);
+    g.classList.toggle("dim", selected!==null && !isSel);
+  });
+  renderPanel(id);
+}
+function chipHTML(items, cls){
+  return items.map(([id,text])=>{
+    if(id!=="—" && DATA[id]) return `<span class="chip ${cls||"jmp"}" data-jump="${id}">${text}</span>`;
+    return `<span class="chip">${text}</span>`;
+  }).join("");
+}
+function renderPanel(id){
+  const d = DATA[id];
+  const lv = d.mastery;
+  document.getElementById("panel").innerHTML = `
+  <div style="--pc:${d.color}">
+    <div class="p-head" style="--pc:${d.color}">
+      <div class="p-emoji">${d.emoji}</div>
+      <div><h3>${d.name}</h3><p class="p-tag">${d.tag}</p></div>
+    </div>
+    <p class="p-one">💡 ${d.one}</p>
+    <div class="p-grid">
+      <div class="p-box wide"><h4>📚 知识清单</h4><ul>
+        ${d.chapters.map(c=>`<li><span class="cno">${c[0]}章</span><span>${c[1]}</span></li>`).join("")}
+      </ul></div>
+      <div class="p-box"><h4>⬅️ 前置条件（先学这些）</h4>${chipHTML(d.prereq)}
+        <p style="font-size:12.5px;color:#64748b;margin-top:8px">没学前置就往下走，公式和代码会像天书 —— 卡住时先回头补。</p></div>
+      <div class="p-box"><h4>➡️ 后置解锁（之后能学什么）</h4>${chipHTML(d.unlock)}</div>
+      <div class="p-box wide"><h4>✅ 掌握标准（做到才算会）</h4>
+        <div class="lvl"><span class="b">L1</span><span class="t"><b>能讲：</b>${lv.l1}</span></div>
+        <div class="lvl"><span class="b">L2</span><span class="t"><b>能写：</b>${lv.l2}</span></div>
+        <div class="lvl"><span class="b">L3</span><span class="t"><b>能用：</b>${lv.l3}</span></div>
+        <div class="lvl"><span class="b">L4</span><span class="t"><b>能调：</b>${lv.l4}</span></div>
+        <div class="proof">🏅 通关作品：${d.proof}</div></div>
+      <div class="p-box wide"><h4>🎯 应用场景</h4>${d.apps.map(a=>`<span class="chip">${a}</span>`).join("")}</div>
+    </div>
+  </div>`;
+  document.querySelectorAll("#panel .chip.jmp").forEach(ch=>{
+    ch.addEventListener("click", ()=>{
+      show(ch.dataset.jump);
+      document.getElementById("map-sec").scrollIntoView({behavior:"smooth"});
+    });
+  });
+}
+
+/* ============ 学习计划甘特图 ============ */
+const PLANS = {
+  std:{ weeks:24, note:"<b>标准版节奏：</b>每天 1–1.5 小时 + 周末一次 2 小时复盘。作者建议：每章读完关掉教程，把代码重写一遍才算过。强化学习（84–86 章）随时可插入，也可学完全部后再加餐。",
+    rows:[
+      {st:"s0", start:1,  len:2, label:"① 工具地基", bar:"Jupyter·NumPy·Pandas·画图"},
+      {st:"s1", start:3,  len:4, label:"② 回归", bar:"线性→多项式→正则化→评价"},
+      {st:"s2", start:7,  len:5, label:"③ 分类 ★核心", bar:"逻辑回归→KNN→贝叶斯→SVM→树→集成"},
+      {st:"s3", start:12, len:3, label:"④ 无监督", bar:"聚类→PCA→关联规则→时间序列"},
+      {st:"s4", start:15, len:1, label:"⑤ ML部署 🚩", bar:"Flask 上线：里程碑①"},
+      {st:"s5", start:16, len:3, label:"⑥ 神经网络", bar:"原理→TensorFlow→PyTorch"},
+      {st:"s6", start:19, len:3, label:"⑦ 计算机视觉", bar:"CNN→迁移学习→GAN→YOLO"},
+      {st:"s7", start:22, len:2, label:"⑧ NLP", bar:"RNN/LSTM→文本分类→BERT"},
+      {st:"s8", start:24, len:1, label:"⑨ DL部署 🚩", bar:"推理服务：里程碑②"}
+    ]},
+  fast:{ weeks:12, note:"<b>冲刺版节奏：</b>每天 2 小时 + 周末加练，需要一定编程基础；CV 与 NLP 先二选一学深，另一个以后速览。赶进度时守住底线：L1 能讲 + L2 能写，不许跳过手写环节。",
+    rows:[
+      {st:"s0", start:1,  len:1, label:"① 工具地基", bar:"速览三件套"},
+      {st:"s1", start:2,  len:2, label:"② 回归", bar:"线性→多项式→正则化"},
+      {st:"s2", start:4,  len:3, label:"③ 分类 ★核心", bar:"逻辑回归→SVM→树→集成"},
+      {st:"s3", start:7,  len:1, label:"④ 无监督", bar:"K-Means→PCA→Apriori"},
+      {st:"s4", start:8,  len:1, label:"⑤ ML部署 🚩", bar:"Flask 上线：里程碑①"},
+      {st:"s5", start:9,  len:2, label:"⑥ 神经网络", bar:"原理→双框架"},
+      {st:"s6", start:11, len:1, label:"⑦ CV/NLP 二选一", bar:"深入一个方向"},
+      {st:"s8", start:12, len:1, label:"⑧ DL部署 🚩", bar:"推理服务：里程碑②"}
+    ]}
+};
+let curPlan = "std";
+document.querySelectorAll(".tab").forEach(t=>{
+  t.addEventListener("click", ()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("on"));
+    t.classList.add("on");
+    curPlan = t.dataset.plan;
+    renderGantt();
+  });
+});
+function renderGantt(){
+  const p = PLANS[curPlan];
+  const weeks = p.weeks;
+  let ruler = "<div class='g-ruler' style='grid-template-columns:repeat("+Math.ceil(weeks/2)+",1fr)'>";
+  for(let w=2; w<=weeks; w+=2){ ruler += `<span>W${w}</span>`; }
+  ruler += "</div>";
+  const rows = p.rows.map(r=>{
+    const d = DATA[r.st];
+    const left = ((r.start-1)/weeks*100).toFixed(2);
+    const width = (r.len/weeks*100).toFixed(2);
+    return `<div class="g-row">
+      <div class="g-label"><span class="dot" style="background:${d.color}"></span>${r.label}</div>
+      <div class="g-track">
+        <div class="g-bar" data-jump="${r.st}" style="left:${left}%;width:${width}%;background:${d.color}" title="${d.name}">${r.len>=3?r.bar:""}</div>
+      </div></div>`;
+  }).join("");
+  document.getElementById("gantt").innerHTML = ruler + rows +
+    `<div class="plan-note">📌 ${p.note}</div>`;
+  document.querySelectorAll("#gantt .g-bar").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      show(b.dataset.jump);
+      document.getElementById("map-sec").scrollIntoView({behavior:"smooth"});
+    });
+  });
+}
+renderGantt();
+</script>
+</body>
+</html>
