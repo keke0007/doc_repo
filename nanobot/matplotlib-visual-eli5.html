@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Matplotlib 全景图 · 场景 / 掌握标准 / 知识点关联</title>
+<style>
+:root{
+  color-scheme: light;
+  --ink:#15171c; --mut:#6b7280; --line:#e4e7ec; --bg:#fff; --soft:#f6f7f9;
+  --acc:#2f6bd8; --acc-soft:#e9effc; --rel:#b96c08; --rel-soft:#fdf3e2; --done:#12796a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:14px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+code,pre,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.wrap{max-width:1340px;margin:0 auto;padding:22px 26px 70px;position:relative}
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+h1{font-size:19px;margin:0;letter-spacing:.2px}
+.sub{margin:2px 0 0;color:var(--mut);font-size:13px}
+.prog{min-width:250px}
+.pbar{height:5px;background:var(--soft);border-radius:3px;overflow:hidden}
+.pbar i{display:block;height:100%;width:0;background:var(--done);transition:width .25s}
+#ptxt{display:block;font-size:11.5px;color:var(--mut);margin-top:5px}
+
+/* ---------- 幻灯片外壳 ---------- */
+.tabs{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:16px 0 9px}
+.tab{display:flex;align-items:center;gap:7px;font:inherit;font-size:12.5px;padding:6px 12px;
+  border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:20px;cursor:pointer;
+  transition:background .15s,border-color .15s,color .15s}
+.tab:hover{border-color:var(--acc);color:var(--acc)}
+.tab b{font-size:11px;font-weight:600;color:var(--mut);font-family:ui-monospace,Consolas,monospace}
+.tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.tab[aria-selected="true"] b{color:rgba(255,255,255,.6)}
+.tab .num{font-size:10.5px;color:var(--mut);font-family:ui-monospace,Consolas,monospace}
+.tab b.full{color:var(--done)}
+.tab[aria-selected="true"] b.full{color:#8ddccf}
+.khint{font-size:11.5px;color:var(--mut);margin-right:4px}
+.tab[aria-selected="true"] .num{color:rgba(255,255,255,.55)}
+.slide{display:none}
+.slide.on{display:block;animation:fade .18s ease-out}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.slide>h3{font-size:14px;margin:0 0 3px;letter-spacing:.2px}
+.slide>.note{font-size:12.5px;color:var(--mut);margin:0 0 14px}
+.chipgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));gap:8px}
+.stage.solo{grid-template-columns:1fr}
+.stage.solo .detail{display:none}
+.snav{display:flex;gap:6px;margin-left:auto}
+
+/* ---------- 主图:解剖一张图 ---------- */
+.stage{display:grid;grid-template-columns:1.5fr 1fr;gap:26px;margin-top:18px;align-items:start}
+.anat{position:relative}
+.anat svg{display:block;width:100%;height:auto}
+.hot{cursor:pointer}
+.hot circle{fill:#fff;stroke:var(--acc);stroke-width:1.4}
+.hot text{fill:var(--acc);font-size:11px;font-weight:700;text-anchor:middle;dominant-baseline:central;
+  font-family:ui-monospace,Consolas,monospace}
+.hot:hover circle{fill:var(--acc-soft)}
+.hot.on circle{fill:var(--acc);stroke:var(--acc)}
+.hot.on text{fill:#fff}
+.hot.pre circle{stroke:var(--acc);stroke-width:2.4}
+.hot.rel circle{stroke:var(--rel);stroke-width:2.4}
+.part{transition:opacity .15s}
+.part.on path,.part.on line,.part.on polyline,.part.on rect,.part.on circle{stroke:var(--acc)}
+.part.on text{fill:var(--acc);font-weight:700}
+.part.on circle[data-f]{fill:var(--acc)}
+.anat .cap{font-size:11.5px;color:var(--mut);text-align:center;margin:2px 0 0}
+
+/* ---------- 详情面板 ---------- */
+.detail{border:1px solid var(--line);border-radius:10px;padding:15px 16px 17px;background:#fff;
+  position:sticky;top:16px}
+.d-tag{font-size:11px;color:var(--mut);letter-spacing:.4px}
+.d-h{font-size:16px;font-weight:700;margin:2px 0 4px}
+.d-o{color:#3c4350;margin:0 0 12px;font-size:13.5px}
+.d-sec{margin-top:13px}
+.d-sec>h4{font-size:11.5px;color:var(--mut);margin:0 0 6px;font-weight:600;letter-spacing:.4px}
+.d-sec ul{margin:0;padding-left:16px}
+.d-sec li{margin:0 0 3px;font-size:13px}
+pre.api{margin:0;background:var(--soft);border:1px solid var(--line);border-radius:7px;
+  padding:9px 10px;font-size:12px;line-height:1.65;white-space:pre-wrap;word-break:break-word;color:#1f2937}
+.chk{display:flex;gap:8px;align-items:flex-start;font-size:13px;margin:0 0 6px;cursor:pointer}
+.chk input{margin:4px 0 0;accent-color:var(--done);flex:none}
+.chk.ok span{color:var(--done)}
+.rels{display:flex;flex-wrap:wrap;gap:6px}
+.rels button{font:inherit;font-size:12px;padding:3px 8px;border-radius:20px;cursor:pointer;
+  border:1px solid var(--line);background:#fff;color:var(--ink)}
+.rels button:hover{border-color:var(--acc);color:var(--acc)}
+.rels button.pre{border-color:var(--acc);background:var(--acc-soft);color:var(--acc)}
+.rels button.rel{border-color:var(--rel);background:var(--rel-soft);color:var(--rel)}
+
+/* ---------- 控制条 ---------- */
+.ctl{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:22px 0 0;
+  padding:10px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.ctl button{font:inherit;font-size:12.5px;padding:5px 11px;border:1px solid var(--line);
+  background:#fff;border-radius:6px;cursor:pointer}
+.ctl button:hover{border-color:var(--acc);color:var(--acc)}
+.ctl .lbl{font-size:12px;color:var(--mut)}
+.ctl label{display:flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer}
+.lg{display:flex;gap:14px;margin-left:auto;font-size:11.5px;color:var(--mut);align-items:center}
+.lg i{display:inline-block;width:22px;height:0;border-top:1.6px solid var(--acc);
+  vertical-align:middle;margin-right:5px}
+.lg i.d{border-top-style:dashed;border-top-color:var(--rel)}
+/* ---------- 货架:布局 / 图型 / 注释 / 实战 ---------- */
+#board{position:relative}
+.shelves{display:grid;grid-template-columns:1fr 1.35fr 1fr;gap:24px;margin-top:20px}
+.shelf>h3{font-size:12.5px;margin:0 0 3px;letter-spacing:.3px}
+.shelf>h3 b{font-weight:700}
+.shelf .note{font-size:11.5px;color:var(--mut);margin:0 0 9px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.grid1{display:grid;grid-template-columns:1fr;gap:7px}
+.chip{display:flex;align-items:center;gap:8px;width:100%;text-align:left;font:inherit;font-size:12.5px;
+  padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);
+  cursor:pointer;transition:opacity .15s,border-color .15s,background .15s}
+.chip:hover{border-color:var(--acc)}
+.chip svg{flex:none;color:#8b93a3}
+.chip[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:#fff}
+.chip[aria-pressed="true"] svg{color:#fff}
+.chip .dot{flex:none;width:6px;height:6px;border-radius:50%;background:var(--line);margin-left:auto}
+.chip .dot.ok{background:var(--done)}
+.chip[aria-pressed="true"] .dot{background:rgba(255,255,255,.45)}
+.chip[aria-pressed="true"] .dot.ok{background:#8ff0dd}
+#board.focus .chip{opacity:.32}
+#board.focus .chip[aria-pressed="true"],#board.focus .chip.pre,#board.focus .chip.rel{opacity:1}
+#board.focus .hot{opacity:.35}
+#board.focus .hot.on,#board.focus .hot.pre,#board.focus .hot.rel{opacity:1}
+.chip.pre{border-color:var(--acc);background:var(--acc-soft)}
+.chip.rel{border-color:var(--rel);background:var(--rel-soft)}
+svg.edges{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:5;opacity:.6}
+
+/* ---------- 易混淆对照 ---------- */
+.cmp{margin-top:0;border-top:none;padding-top:0}
+.cmp>h2{font-size:14px;margin:0 0 3px}
+.cmp>p{margin:0 0 14px;color:var(--mut);font-size:12.5px}
+.pairs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.pair{border:1px solid var(--line);border-radius:10px;padding:12px 13px}
+.pair h5{margin:0 0 8px;font-size:12.5px}
+.pair svg{display:block;width:100%;height:auto}
+.pair .why{font-size:12px;color:var(--mut);margin:8px 0 0}
+@media (max-width:1080px){
+  .stage,.shelves{grid-template-columns:1fr}
+  .detail{position:static}
+  svg.edges{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div>
+    <h1>Matplotlib:一张图上,每个零件都能被你点名</h1>
+    <p class="sub">6 页翻着看:先认<b>零件</b>,再排<b>布局</b>,再挑<b>图型</b>。点编号或卡片 → 右侧看它<b>什么时候用</b>、<b>怎么写</b>、<b>怎么算掌握了</b>、<b>连着谁</b>。</p>
+  </div>
+  <div class="prog">
+    <div class="pbar"><i id="pfill"></i></div>
+    <span id="ptxt">掌握进度 0 / 0</span>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="分页导航">
+  <div id="tablist" style="display:flex;gap:6px;flex-wrap:wrap" role="tablist"></div>
+  <span class="snav">
+    <span class="khint">1–6 / ← → 翻页 · ↑ ↓ 走路线</span>
+    <button class="tab" id="sprev" type="button" aria-label="上一页">‹</button>
+    <button class="tab" id="snext" type="button" aria-label="下一页">›</button>
+  </span>
+</nav>
+
+<div class="ctl">
+  <span class="lbl">学习路线</span>
+  <button id="prev" type="button">‹ 上一步</button>
+  <button id="play" type="button">▶ 自动播放</button>
+  <button id="next" type="button">下一步 ›</button>
+  <span class="lbl mono" id="steptxt"></span>
+  <label><input type="checkbox" id="allrel"> 显示本页全部关联</label>
+  <span class="lg">
+    <span><i></i>前置:先会它</span>
+    <span><i class="d"></i>常一起用</span>
+    <span><i style="border-top-color:#12796a"></i>已掌握</span>
+  </span>
+</div>
+
+<div id="board">
+<svg class="edges" id="edges" aria-hidden="true">
+  <defs>
+    <marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0.6 L7.4 4 L0 7.4 z" fill="#2f6bd8"></path>
+    </marker>
+  </defs>
+</svg>
+
+<div class="stage" id="stage">
+<div class="slidebox">
+<section class="slide on" data-slide="anat" role="tabpanel">
+<h3>一张图的零件 · 点图上的编号</h3>
+<p class="note">Figure 是画布,Axes 是真正画东西的那块,其余都是往 Axes 上挂的部件。</p>
+<div class="anat">
+<svg viewBox="0 0 720 440" role="img" aria-label="Matplotlib 图形结构解剖图">
+  <!-- Figure -->
+  <g class="part" data-part="figure">
+    <rect x="8" y="8" width="704" height="424" rx="6" fill="#fff" stroke="#b9c0cc" stroke-width="1.3" stroke-dasharray="6 4"></rect>
+    <line x1="22" y1="20" x2="150" y2="20" stroke="#9aa3b2" stroke-width="1.1"></line>
+    <path d="M22 16 L22 24 M150 16 L150 24" stroke="#9aa3b2" stroke-width="1.1"></path>
+    <text x="158" y="24" font-size="10.5" fill="#8b93a3" font-family="ui-monospace,Consolas,monospace">figsize=(9,6) · Figure 画布</text>
+  </g>
+  <!-- lim -->
+  <g class="part" data-part="lim">
+    <rect x="88" y="70" width="536" height="284" fill="none" stroke="#9aa3b2" stroke-width="1.1" stroke-dasharray="3 4"></rect>
+    <text x="630" y="286" font-size="10.5" fill="#8b93a3" font-family="ui-monospace,Consolas,monospace">xlim</text>
+    <text x="630" y="302" font-size="10.5" fill="#8b93a3" font-family="ui-monospace,Consolas,monospace">ylim</text>
+  </g>
+  <!-- Axes -->
+  <g class="part" data-part="axes">
+    <rect x="96" y="78" width="520" height="268" fill="#fbfcfd" stroke="#eef1f5" stroke-width="1"></rect>
+  </g>
+  <!-- grid -->
+  <g class="part" data-part="grid">
+    <line x1="96" y1="122" x2="616" y2="122" stroke="#dfe3ea" stroke-width="1" stroke-dasharray="3 3"></line>
+    <line x1="96" y1="167" x2="616" y2="167" stroke="#dfe3ea" stroke-width="1" stroke-dasharray="3 3"></line>
+    <line x1="96" y1="257" x2="616" y2="257" stroke="#dfe3ea" stroke-width="1" stroke-dasharray="3 3"></line>
+    <line x1="96" y1="302" x2="616" y2="302" stroke="#dfe3ea" stroke-width="1" stroke-dasharray="3 3"></line>
+    <line x1="200" y1="78" x2="200" y2="346" stroke="#dfe3ea" stroke-width="1" stroke-dasharray="3 3"></line>
+    <line x1="304" y1="78" x2="304" y2="346" stroke="#dfe3ea" stroke-width="1" stroke-dasharray="3 3"></line>
+    <line x1="408" y1="78" x2="408" y2="346" stroke="#dfe3ea" stroke-width="1" stroke-dasharray="3 3"></line>
+    <line x1="512" y1="78" x2="512" y2="346" stroke="#dfe3ea" stroke-width="1" stroke-dasharray="3 3"></line>
+  </g>
+  <!-- spines -->
+  <g class="part" data-part="spines">
+    <line x1="96" y1="78" x2="96" y2="346" stroke="#4b5563" stroke-width="1.6"></line>
+    <line x1="96" y1="346" x2="616" y2="346" stroke="#4b5563" stroke-width="1.6"></line>
+    <line x1="616" y1="78" x2="616" y2="346" stroke="#e4e7ec" stroke-width="1.4"></line>
+    <line x1="96" y1="78" x2="616" y2="78" stroke="#e4e7ec" stroke-width="1.4"></line>
+  </g>
+  <!-- ticks -->
+  <g class="part" data-part="ticks">
+    <path d="M90 122h6 M90 212h6 M90 302h6" stroke="#4b5563" stroke-width="1.3"></path>
+    <text x="84" y="126" font-size="10.5" fill="#6b7280" text-anchor="end">1</text>
+    <text x="84" y="216" font-size="10.5" fill="#6b7280" text-anchor="end">0</text>
+    <text x="84" y="306" font-size="10.5" fill="#6b7280" text-anchor="end">-1</text>
+    <path d="M96 346v6 M226 346v6 M356 346v6 M486 346v6 M616 346v6" stroke="#4b5563" stroke-width="1.3"></path>
+    <text x="96" y="366" font-size="10.5" fill="#6b7280" text-anchor="middle">0</text>
+    <text x="226" y="366" font-size="10.5" fill="#6b7280" text-anchor="middle">π/2</text>
+    <text x="356" y="366" font-size="10.5" fill="#6b7280" text-anchor="middle">π</text>
+    <text x="486" y="366" font-size="10.5" fill="#6b7280" text-anchor="middle">3π/2</text>
+    <text x="616" y="366" font-size="10.5" fill="#6b7280" text-anchor="middle">2π</text>
+  </g>
+  <!-- 线 -->
+  <g class="part" data-part="plotline">
+    <path d="M96 212 Q161 84 226 212 T356 212 T486 212 T616 212" fill="none" stroke="#3c7f99" stroke-width="2"></path>
+  </g>
+  <!-- 线的样式 -->
+  <g class="part" data-part="style">
+    <path d="M96 152 Q161 216 226 152 T356 152 T486 152 T616 152" fill="none" stroke="#c5b783" stroke-width="2" stroke-dasharray="7 4"></path>
+  </g>
+  <!-- 点型 -->
+  <g class="part" data-part="marker">
+    <circle data-f cx="161" cy="184" r="4.6" fill="#c5b783" stroke="#8a7c47" stroke-width="1.2"></circle>
+    <circle data-f cx="291" cy="120" r="4.6" fill="#c5b783" stroke="#8a7c47" stroke-width="1.2"></circle>
+    <circle data-f cx="421" cy="184" r="4.6" fill="#c5b783" stroke="#8a7c47" stroke-width="1.2"></circle>
+    <circle data-f cx="551" cy="120" r="4.6" fill="#c5b783" stroke="#8a7c47" stroke-width="1.2"></circle>
+  </g>
+  <!-- legend -->
+  <g class="part" data-part="legend">
+    <rect x="468" y="86" width="140" height="46" rx="4" fill="#fff" stroke="#dfe3ea" stroke-width="1"></rect>
+    <line x1="478" y1="101" x2="502" y2="101" stroke="#3c7f99" stroke-width="2"></line>
+    <line x1="478" y1="118" x2="502" y2="118" stroke="#c5b783" stroke-width="2" stroke-dasharray="6 3"></line>
+    <text x="510" y="105" font-size="10.5" fill="#4b5563">sin(x)</text>
+    <text x="510" y="122" font-size="10.5" fill="#4b5563">cos(x)</text>
+  </g>
+  <!-- text -->
+  <g class="part" data-part="text">
+    <text x="146" y="332" font-size="11" fill="#6b7280" font-family="ui-monospace,Consolas,monospace">plt.text(x, y, "任意位置写字")</text>
+  </g>
+  <!-- annotate -->
+  <g class="part" data-part="annotate">
+    <path d="M348 318 C324 320 306 328 298 336" fill="none" stroke="#8b93a3" stroke-width="1.3" marker-end="url(#ah2)"></path>
+    <text x="354" y="322" font-size="11" fill="#6b7280" font-family="ui-monospace,Consolas,monospace">annotate 指着它说话</text>
+  </g>
+  <!-- 标签与标题 -->
+  <g class="part" data-part="labels">
+    <text x="356" y="30" font-size="12.5" fill="#15171c" text-anchor="middle" font-weight="700">suptitle:整块画布的大标题</text>
+    <text x="356" y="62" font-size="11.5" fill="#4b5563" text-anchor="middle">title:这个 Axes 自己的标题</text>
+    <text x="356" y="392" font-size="11" fill="#4b5563" text-anchor="middle">xlabel:x 轴说明</text>
+    <text x="44" y="212" font-size="11" fill="#4b5563" text-anchor="middle" transform="rotate(-90 44 212)">ylabel:y 轴说明</text>
+  </g>
+  <!-- savefig -->
+  <g class="part" data-part="save">
+    <rect x="470" y="402" width="176" height="22" rx="4" fill="#fff" stroke="#b9c0cc" stroke-width="1" stroke-dasharray="4 3"></rect>
+    <text x="478" y="417" font-size="10" fill="#8b93a3" font-family="ui-monospace,Consolas,monospace">savefig(dpi, bbox_inches)</text>
+  </g>
+  <defs>
+    <marker id="ah2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6.5" markerHeight="6.5" orient="auto">
+      <path d="M0 0.6 L7.4 4 L0 7.4 z" fill="#8b93a3"></path>
+    </marker>
+  </defs>
+  <g class="hot" data-id="figure" tabindex="0" role="button" aria-label="Figure 画布"><circle cx="26" cy="44" r="10"></circle><text x="26" y="44">1</text></g>
+  <g class="hot" data-id="axes" tabindex="0" role="button" aria-label="Axes 轴域"><circle cx="114" cy="96" r="10"></circle><text x="114" y="96">2</text></g>
+  <g class="hot" data-id="plotline" tabindex="0" role="button" aria-label="plot 画线"><circle cx="150" cy="240" r="10"></circle><text x="150" y="240">3</text></g>
+  <g class="hot" data-id="style" tabindex="0" role="button" aria-label="线条样式"><circle cx="466" cy="124" r="10"></circle><text x="466" y="124">4</text></g>
+  <g class="hot" data-id="marker" tabindex="0" role="button" aria-label="点型细节"><circle cx="551" cy="94" r="10"></circle><text x="551" y="94">5</text></g>
+  <g class="hot" data-id="labels" tabindex="0" role="button" aria-label="标签与标题"><circle cx="110" cy="60" r="10"></circle><text x="110" y="60">6</text></g>
+  <g class="hot" data-id="ticks" tabindex="0" role="button" aria-label="刻度"><circle cx="161" cy="364" r="10"></circle><text x="161" y="364">7</text></g>
+  <g class="hot" data-id="lim" tabindex="0" role="button" aria-label="坐标轴范围"><circle cx="640" cy="330" r="10"></circle><text x="640" y="330">8</text></g>
+  <g class="hot" data-id="grid" tabindex="0" role="button" aria-label="网格线"><circle cx="200" cy="302" r="10"></circle><text x="200" y="302">9</text></g>
+  <g class="hot" data-id="legend" tabindex="0" role="button" aria-label="图例"><circle cx="450" cy="96" r="10"></circle><text x="450" y="96">10</text></g>
+  <g class="hot" data-id="spines" tabindex="0" role="button" aria-label="脊柱"><circle cx="78" cy="196" r="10"></circle><text x="78" y="196">11</text></g>
+  <g class="hot" data-id="text" tabindex="0" role="button" aria-label="文本"><circle cx="126" cy="330" r="10"></circle><text x="126" y="330">12</text></g>
+  <g class="hot" data-id="annotate" tabindex="0" role="button" aria-label="注释"><circle cx="480" cy="330" r="10"></circle><text x="480" y="330">13</text></g>
+  <g class="hot" data-id="save" tabindex="0" role="button" aria-label="保存图片"><circle cx="658" cy="413" r="10"></circle><text x="658" y="413">14</text></g>
+</svg>
+<p class="cap">这一页的 14 个编号,就是画一张图时你能调的全部零件。</p>
+</div>
+</section>
+
+<section class="slide" data-slide="layout" role="tabpanel">
+<h3>多图布局 · 一张画布放几张图</h3>
+<p class="note">先会规则网格,再挑一种"随意切块"的写法就够用了。</p>
+<div class="chipgrid" id="sh-L"></div>
+</section>
+
+<section class="slide" data-slide="charts" role="tabpanel">
+<h3>图型货架 · 数据长什么样,就选哪把工具</h3>
+<p class="note">选错图型,画得再美也读不出结论。</p>
+<div class="chipgrid" id="sh-V"></div>
+</section>
+
+<section class="slide" data-slide="text" role="tabpanel">
+<h3>写字与指点 · 让图自己说话</h3>
+<p class="note">图里最值得说的那一句,别留到口头。</p>
+<div class="chipgrid" id="sh-T"></div>
+</section>
+
+<section class="slide" data-slide="real" role="tabpanel">
+<h3>实战串联 · 招聘数据分析</h3>
+<p class="note">pandas 出数 → Matplotlib 出图;每一节都是前面零件的组合。</p>
+<div class="chipgrid" id="sh-P"></div>
+</section>
+
+<section class="slide" data-slide="cmp" role="tabpanel">
+<section class="cmp">
+<h2>四对最容易搞混的东西</h2>
+<p>左右对着看,比记文档快。</p>
+<div class="pairs">
+
+  <div class="pair">
+    <h5><code>plt.xxx()</code> 状态机 &nbsp;vs&nbsp; <code>ax.set_xxx()</code> 面向对象</h5>
+    <svg viewBox="0 0 320 132" role="img" aria-label="plt 与 ax 的区别">
+      <text x="6" y="12" font-size="10.5" fill="#6b7280">plt.title("A") 只落在“当前”那张</text>
+      <rect x="26" y="30" width="88" height="62" rx="3" fill="#f6f7f9" stroke="#dfe7f5"></rect>
+      <rect x="14" y="42" width="88" height="62" rx="3" fill="#fff" stroke="#2f6bd8" stroke-width="1.6"></rect>
+      <text x="58" y="70" font-size="10" fill="#2f6bd8" text-anchor="middle">当前 Axes</text>
+      <text x="58" y="84" font-size="9.5" fill="#8b93a3" text-anchor="middle">gca()</text>
+      <path d="M100 22 C90 30 78 34 66 40" fill="none" stroke="#2f6bd8" stroke-width="1.3" marker-end="url(#ah3)"></path>
+      <line x1="158" y1="14" x2="158" y2="120" stroke="#e4e7ec"></line>
+      <text x="172" y="12" font-size="10.5" fill="#6b7280">ax1/ax2 各自点名,不会认错</text>
+      <rect x="176" y="34" width="60" height="58" rx="3" fill="#fff" stroke="#b96c08" stroke-width="1.4"></rect>
+      <rect x="248" y="34" width="60" height="58" rx="3" fill="#fff" stroke="#b96c08" stroke-width="1.4"></rect>
+      <text x="206" y="66" font-size="10" fill="#b96c08" text-anchor="middle">ax1</text>
+      <text x="278" y="66" font-size="10" fill="#b96c08" text-anchor="middle">ax2</text>
+      <text x="176" y="110" font-size="9.5" fill="#8b93a3" font-family="ui-monospace,Consolas,monospace">ax1.set_title(...)</text>
+      <text x="176" y="123" font-size="9.5" fill="#8b93a3" font-family="ui-monospace,Consolas,monospace">ax2.set_xlim(...)</text>
+      <defs><marker id="ah3" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 .6L7.4 4L0 7.4z" fill="#2f6bd8"></path></marker></defs>
+    </svg>
+    <p class="why">同一件事两种写法:<code>plt.title</code> 靠"当前图"隐式生效,子图一多就容易写错地方;拿到 <code>ax</code> 后一律用 <code>set_</code> 前缀,谁是谁一目了然。</p>
+  </div>
+
+  <div class="pair">
+    <h5>直方图 <code>hist</code> &nbsp;vs&nbsp; 柱状图 <code>bar</code></h5>
+    <svg viewBox="0 0 320 132" role="img" aria-label="直方图与柱状图的区别">
+      <text x="6" y="12" font-size="10.5" fill="#6b7280">连续数值 → 自动分箱,柱子挨着</text>
+      <g fill="#3c7f99">
+        <rect x="16" y="76" width="20" height="24"></rect><rect x="36" y="58" width="20" height="42"></rect>
+        <rect x="56" y="36" width="20" height="64"></rect><rect x="76" y="52" width="20" height="48"></rect>
+        <rect x="96" y="70" width="20" height="30"></rect><rect x="116" y="86" width="20" height="14"></rect>
+      </g>
+      <line x1="14" y1="100" x2="140" y2="100" stroke="#4b5563"></line>
+      <text x="14" y="114" font-size="9.5" fill="#8b93a3">0</text><text x="130" y="114" font-size="9.5" fill="#8b93a3">30k</text>
+      <text x="14" y="127" font-size="9.5" fill="#8b93a3" font-family="ui-monospace,Consolas,monospace">bins=6</text>
+      <line x1="158" y1="14" x2="158" y2="120" stroke="#e4e7ec"></line>
+      <text x="172" y="12" font-size="10.5" fill="#6b7280">离散类别 → 一类一柱,柱子分开</text>
+      <g fill="#c5b783">
+        <rect x="180" y="56" width="22" height="44"></rect><rect x="216" y="40" width="22" height="60"></rect>
+        <rect x="252" y="70" width="22" height="30"></rect><rect x="288" y="80" width="22" height="20"></rect>
+      </g>
+      <line x1="176" y1="100" x2="314" y2="100" stroke="#4b5563"></line>
+      <text x="191" y="113" font-size="9.5" fill="#8b93a3" text-anchor="middle">北京</text>
+      <text x="227" y="113" font-size="9.5" fill="#8b93a3" text-anchor="middle">上海</text>
+      <text x="263" y="113" font-size="9.5" fill="#8b93a3" text-anchor="middle">深圳</text>
+      <text x="299" y="113" font-size="9.5" fill="#8b93a3" text-anchor="middle">杭州</text>
+    </svg>
+    <p class="why">柱子之间有没有缝,就是判断标准:<b>hist</b> 回答"这堆数字怎么分布",x 轴是数值区间;<b>bar</b> 回答"哪一类更多",x 轴是标签。</p>
+  </div>
+  <div class="pair">
+    <h5>均匀 <code>plt.subplots(3,3)</code> &nbsp;vs&nbsp; 不均匀 <code>GridSpec</code> / <code>subplot2grid</code></h5>
+    <svg viewBox="0 0 320 132" role="img" aria-label="均匀布局与不均匀布局">
+      <text x="6" y="12" font-size="10.5" fill="#6b7280">一次拿到 3×3 的 axs 数组</text>
+      <g fill="#f6f7f9" stroke="#c9d3e6">
+        <rect x="16" y="24" width="36" height="24"></rect><rect x="56" y="24" width="36" height="24"></rect><rect x="96" y="24" width="36" height="24"></rect>
+        <rect x="16" y="52" width="36" height="24"></rect><rect x="56" y="52" width="36" height="24"></rect><rect x="96" y="52" width="36" height="24"></rect>
+        <rect x="16" y="80" width="36" height="24"></rect><rect x="56" y="80" width="36" height="24"></rect><rect x="96" y="80" width="36" height="24"></rect>
+      </g>
+      <text x="16" y="124" font-size="9.5" fill="#8b93a3" font-family="ui-monospace,Consolas,monospace">axs[1,2].plot(...)</text>
+      <line x1="158" y1="14" x2="158" y2="120" stroke="#e4e7ec"></line>
+      <text x="172" y="12" font-size="10.5" fill="#6b7280">按格子"切块",大小随你</text>
+      <g fill="#fdf3e2" stroke="#e0bd7f">
+        <rect x="176" y="24" width="132" height="24"></rect>
+        <rect x="176" y="52" width="84" height="52"></rect>
+        <rect x="264" y="52" width="44" height="24"></rect>
+        <rect x="264" y="80" width="44" height="24"></rect>
+      </g>
+      <text x="242" y="40" font-size="9.5" fill="#b96c08" text-anchor="middle">gs[0, :]</text>
+      <text x="218" y="82" font-size="9.5" fill="#b96c08" text-anchor="middle">gs[1:, :2]</text>
+      <text x="176" y="124" font-size="9.5" fill="#8b93a3" font-family="ui-monospace,Consolas,monospace">小图属性只能用 ax.set_*</text>
+    </svg>
+    <p class="why">均匀布局适合"同类多图并排比较";一旦有主次(一张大图 + 几张小图),就切块。切块的三种写法(<code>subplot</code> 元组、<code>subplot2grid</code>、<code>GridSpec</code>)结果等价,挑一种顺手的即可。</p>
+  </div>
+
+  <div class="pair">
+    <h5>双轴 <code>twinx</code> &nbsp;vs&nbsp; 拆成两张子图</h5>
+    <svg viewBox="0 0 320 132" role="img" aria-label="双轴与两张子图">
+      <text x="6" y="12" font-size="10.5" fill="#6b7280">共享 x,两套 y 刻度叠在一起</text>
+      <rect x="26" y="24" width="104" height="72" fill="#fbfcfd" stroke="#eef1f5"></rect>
+      <line x1="26" y1="24" x2="26" y2="96" stroke="#3c7f99" stroke-width="1.6"></line>
+      <line x1="130" y1="24" x2="130" y2="96" stroke="#c5b783" stroke-width="1.6"></line>
+      <line x1="26" y1="96" x2="130" y2="96" stroke="#4b5563"></line>
+      <path d="M26 84 L52 70 L78 74 L104 46 L130 38" fill="none" stroke="#3c7f99" stroke-width="1.6"></path>
+      <path d="M26 40 L52 52 L78 44 L104 66 L130 78" fill="none" stroke="#c5b783" stroke-width="1.6" stroke-dasharray="5 3"></path>
+      <text x="16" y="112" font-size="9.5" fill="#3c7f99">销量</text>
+      <text x="112" y="112" font-size="9.5" fill="#8a7c47">增长率</text>
+      <line x1="158" y1="14" x2="158" y2="120" stroke="#e4e7ec"></line>
+      <text x="172" y="12" font-size="10.5" fill="#6b7280">量级差太多 / 想避免误读时,拆开</text>
+      <rect x="186" y="24" width="112" height="32" fill="#fbfcfd" stroke="#eef1f5"></rect>
+      <path d="M186 50 L214 40 L242 44 L270 28 L298 26" fill="none" stroke="#3c7f99" stroke-width="1.6"></path>
+      <rect x="186" y="64" width="112" height="32" fill="#fbfcfd" stroke="#eef1f5"></rect>
+      <path d="M186 72 L214 82 L242 76 L270 90 L298 92" fill="none" stroke="#c5b783" stroke-width="1.6" stroke-dasharray="5 3"></path>
+      <text x="186" y="112" font-size="9.5" fill="#8b93a3" font-family="ui-monospace,Consolas,monospace">sharex=True</text>
+    </svg>
+    <p class="why">双轴省地方,但两条线的"交叉点"没有真实含义,容易骗人。只有当两个指标必须逐点对齐看趋势时才用 twinx,否则上下两张共享 x 轴的子图更诚实。</p>
+  </div>
+</div>
+</section>
+</section>
+</div>
+<div class="detail" id="detail"></div>
+</div>
+</div>
+</div>
+<script>
+/* ---------- 小图标 ---------- */
+const IC={
+subplot:'<rect x="1" y="1" width="10" height="7" fill="currentColor"/><g fill="none" stroke="currentColor"><rect x="13" y="1" width="10" height="7"/><rect x="1" y="10" width="10" height="7"/><rect x="13" y="10" width="10" height="7"/></g>',
+nest:'<rect x="1" y="1" width="22" height="16" fill="none" stroke="currentColor"/><rect x="13" y="3" width="8" height="6" fill="currentColor"/>',
+subplots:'<g fill="none" stroke="currentColor"><rect x="1" y="1" width="6" height="4"/><rect x="9" y="1" width="6" height="4"/><rect x="17" y="1" width="6" height="4"/><rect x="1" y="7" width="6" height="4"/><rect x="9" y="7" width="6" height="4"/><rect x="17" y="7" width="6" height="4"/><rect x="1" y="13" width="6" height="4"/><rect x="9" y="13" width="6" height="4"/><rect x="17" y="13" width="6" height="4"/></g>',
+slicegrid:'<g fill="none" stroke="currentColor"><rect x="1" y="1" width="22" height="5"/><rect x="1" y="8" width="14" height="9"/><rect x="17" y="8" width="6" height="9"/></g>',
+s2g:'<g fill="none" stroke="currentColor"><rect x="1" y="1" width="8" height="16"/><rect x="11" y="1" width="12" height="7"/><rect x="11" y="10" width="12" height="7"/></g>',
+gridspec:'<g fill="none" stroke="currentColor"><rect x="1" y="1" width="22" height="4"/><rect x="1" y="7" width="10" height="10"/><rect x="13" y="7" width="10" height="4"/><rect x="13" y="13" width="10" height="4"/></g>',
+twinx:'<rect x="4" y="2" width="16" height="14" fill="none" stroke="currentColor" opacity=".3"/><path d="M4 2v14M20 2v14" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M5 13l5-4 4 2 5-6" fill="none" stroke="currentColor"/>',
+line:'<polyline points="1,15 6,7 11,11 16,3 23,8" fill="none" stroke="currentColor" stroke-width="1.6"/>',
+bar:'<g fill="currentColor"><rect x="2" y="9" width="4" height="8"/><rect x="8" y="4" width="4" height="13"/><rect x="14" y="11" width="4" height="6"/><rect x="20" y="7" width="3" height="10"/></g>',
+polar:'<circle cx="12" cy="9" r="7" fill="none" stroke="currentColor" opacity=".4"/><path d="M12 9L18 5M12 9L8 3M12 9l6 6" stroke="currentColor" fill="none"/>',
+hist:'<g fill="currentColor"><rect x="1" y="12" width="4" height="5"/><rect x="5" y="8" width="4" height="9"/><rect x="9" y="3" width="4" height="14"/><rect x="13" y="7" width="4" height="10"/><rect x="17" y="11" width="4" height="6"/></g>',
+box:'<path d="M12 1v3M12 14v3" stroke="currentColor" fill="none"/><rect x="5" y="4" width="14" height="10" fill="none" stroke="currentColor"/><path d="M5 9h14" stroke="currentColor" stroke-width="1.6" fill="none"/>',
+scatter:'<g fill="currentColor"><circle cx="4" cy="13" r="2"/><circle cx="9" cy="7" r="2.6"/><circle cx="15" cy="11" r="1.8"/><circle cx="20" cy="4" r="2.2"/></g>',
+pie:'<path d="M12 9V1A8 8 0 0 1 20 9z" fill="currentColor"/><circle cx="12" cy="9" r="8" fill="none" stroke="currentColor"/>',
+ring:'<circle cx="12" cy="9" r="7.5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9" r="3.5" fill="none" stroke="currentColor" stroke-width="1.5"/>',
+heat:'<g fill="currentColor"><rect x="1" y="1" width="6" height="5" opacity=".9"/><rect x="9" y="1" width="6" height="5" opacity=".35"/><rect x="17" y="1" width="6" height="5" opacity=".6"/><rect x="1" y="7" width="6" height="5" opacity=".3"/><rect x="9" y="7" width="6" height="5" opacity=".75"/><rect x="17" y="7" width="6" height="5" opacity=".45"/><rect x="1" y="13" width="6" height="4" opacity=".55"/><rect x="9" y="13" width="6" height="4" opacity=".25"/><rect x="17" y="13" width="6" height="4" opacity=".85"/></g>',
+area:'<path d="M1 17V11l6-5 5 4 5-7 6 4v10z" fill="currentColor" opacity=".5"/><path d="M1 11l6-5 5 4 5-7 6 4" fill="none" stroke="currentColor"/>',
+radar:'<polygon points="12,1 21,7 18,16 6,16 3,7" fill="none" stroke="currentColor" opacity=".45"/><polygon points="12,4 18,8 16,14 8,13 6,8" fill="currentColor" opacity=".5"/>',
+d3line:'<path d="M2 14l7-3 5 2 8-8" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M2 14V6l5-4M2 14h18" fill="none" stroke="currentColor" opacity=".4"/>',
+d3bar:'<g fill="currentColor"><rect x="3" y="8" width="4" height="8"/><rect x="9" y="5" width="4" height="11"/><rect x="15" y="10" width="4" height="6"/></g><path d="M2 16l4-3M8 16l4-3" stroke="currentColor" opacity=".35" fill="none"/>',
+text:'<path d="M3 4h18M12 4v12" stroke="currentColor" stroke-width="1.6" fill="none"/>',
+arrow:'<path d="M2 14L20 4" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M14 3.5l7 .8-1.5 6.5z" fill="currentColor"/>',
+annotate:'<circle cx="5" cy="14" r="2" fill="currentColor"/><path d="M7 13C11 12 12 8 16 6" fill="none" stroke="currentColor"/><rect x="14" y="1" width="9" height="6" fill="none" stroke="currentColor"/>',
+connstyle:'<path d="M3 15C3 6 12 14 21 4" fill="none" stroke="currentColor" stroke-dasharray="3 2"/><path d="M15 3.6l6 .6-.8 5.4z" fill="currentColor" opacity=".7"/>',
+p_rank:'<g fill="currentColor"><rect x="1" y="2" width="20" height="3"/><rect x="1" y="8" width="14" height="3"/><rect x="1" y="14" width="9" height="3"/></g>',
+p_bar:'<g fill="currentColor"><rect x="1" y="2" width="8" height="3" opacity=".4"/><rect x="1" y="8" width="14" height="3" opacity=".7"/><rect x="1" y="14" width="20" height="3"/></g>',
+p_matrix:'<rect x="1" y="1" width="22" height="16" fill="none" stroke="currentColor"/><g fill="currentColor"><rect x="3" y="3" width="5" height="5" opacity=".85"/><rect x="10" y="3" width="5" height="5" opacity=".3"/><rect x="10" y="10" width="5" height="5" opacity=".6"/></g>',
+p_bubble:'<g fill="currentColor"><circle cx="6" cy="13" r="2"/><circle cx="12" cy="8" r="3.4"/><circle cx="19" cy="5" r="2.6" opacity=".6"/></g><path d="M1 17h22" stroke="currentColor" opacity=".35" fill="none"/>'
+};
+const GNAME={F:'图的零件',L:'多图布局',V:'图型',T:'文字与注释',P:'实战'};
+/* ---------- 知识点 ---------- */
+const NODES=[
+{i:'figure',s:'F',t:'Figure 画布与尺寸',o:`一块空白画布,决定图多大、多清晰`,
+ a:`plt.figure(figsize=(9,6), dpi=100)   # 宽9英寸 高6英寸\nplt.plot(x, y)\nplt.show()`,
+ u:[`图挤在一起看不清 → 先把 figsize 调大`,`要放进 PPT / 论文,需要固定宽高比`,`一个 Figure 里准备放多张子图`],
+ k:[`能说出 figsize 单位是英寸,最终像素 = figsize × dpi`,`改 figsize 后能预判图是变宽还是变高`,`知道 plt.show() 之后当前 Figure 就用完了,再画会开新的一张`],
+ p:[],r:['axes','save','subplots']},
+{i:'axes',s:'F',t:'Axes 轴域(真正画图的那块)',o:`拿到它,才能精细控制每个部件`,
+ a:`ax = plt.gca()          # get current axes\nplt.sca(ax)             # 把某个 Axes 设为“当前”\nax.set_title('标题')\nax.set(xlim=(0,10), xticks=[], ylabel='y')`,
+ u:[`画了子图后想单独改某一张的标题 / 范围`,`用 plt.xxx 改不动小图属性时`,`要移动坐标轴、加双轴、加嵌套小图`],
+ k:[`能解释 plt.title() 和 ax.set_title() 的区别`,`拿到 ax 后能把常用的 plt.xxx 换成 ax.set_xxx`,`知道 gca 是 get current axes 的缩写`],
+ p:['figure'],r:['spines','subplot','twinx','labels']},
+{i:'plotline',s:'F',t:'plot 画线(最基础的一笔)',o:`把一串 x 和一串 y 连起来`,
+ a:`x = np.linspace(0, 2*np.pi, 100)\nplt.plot(x, np.sin(x))\nplt.plot(x, np.cos(x))    # 同一张图上再画一条`,
+ u:[`看指标随时间 / 顺序怎么变`,`把多条曲线放一起比较趋势`,`验证公式或模型输出的形状`],
+ k:[`知道 x 和 y 的长度必须一致`,`能在一张图上叠多条线,并说清它们共用同一套坐标轴`,`会用 np.linspace 造平滑曲线的取样点`],
+ p:['figure'],r:['style','legend','line','axes']},
+{i:'style',s:'F',t:'颜色 / 线型 / 线宽 / 透明度',o:`让人一眼分清哪条是哪条`,
+ a:`plt.plot(x, y, color='#3c7f99', ls='--', lw=2, alpha=.7, marker='o')\nplt.plot(x, y, 'bo--')    # 简写:蓝色 + 圆点 + 虚线`,
+ u:[`多条线必须能区分(尤其黑白打印)`,`强调主线、弱化参考线(alpha 调低)`,`团队 / 论文有固定配色规范`],
+ k:[`能说出 color / ls / lw / marker / alpha 各管什么`,`看到 'bo--' 能翻译成三件事`,`知道只靠颜色区分会在黑白打印时失效,要配合虚实和点型`],
+ p:['plotline'],r:['marker','legend','p_bar']},
+{i:'marker',s:'F',t:'点型的里外与大小',o:`点本身也分填充色、边框色、粗细`,
+ a:`plt.plot(x, y, marker='o', markersize=10,\n         markerfacecolor='#c5b783',   # 里\n         markeredgecolor='k',         # 外\n         markeredgewidth=2)`,
+ u:[`数据点很少,需要强调每个观测值`,`折线上突出关键节点`,`点太密 → 调小 markersize 或降 alpha`],
+ k:[`能分清 markerfacecolor(里)和 markeredgecolor(外)`,`会用缩写 mfc / mec / ms 写出同样效果`,`知道 markersize 和 lw 是两件不同的事`],
+ p:['style'],r:['scatter']},
+{i:'labels',s:'F',t:'轴标签与标题(含中文字体)',o:`别人不用问,就知道这图在说什么`,
+ a:`plt.rcParams['font.sans-serif'] = 'SimHei'   # 中文\nplt.rcParams['axes.unicode_minus'] = False   # 负号\nplt.xlabel('时间(秒)', fontsize=12); plt.ylabel('幅值')\nplt.title('这一张的标题'); plt.suptitle('整块画布的大标题')`,
+ u:[`图要给别人看(汇报、报告、作品集)`,`中文标题显示成方框 → 设 font.sans-serif`,`多子图:每张 title + 整体 suptitle`],
+ k:[`能说出 title 属于 Axes、suptitle 属于 Figure`,`中文乱码或负号变方块时知道该改哪两个 rcParams`,`会用 fontdict 或 fontsize/color 统一一批文字的样式`],
+ p:['axes'],r:['ticks','text','subplots']},
+{i:'ticks',s:'F',t:'刻度与刻度标签',o:`轴上的刻度文字可以换成任何你想要的内容`,
+ a:`plt.xticks([0, np.pi/2, np.pi],\n           ['0', r'$\\frac{\\pi}{2}$', r'$\\pi$'], fontsize=12)\nplt.yticks(np.arange(-1, 1.1, .5))\nplt.tick_params(axis='y', colors='#3c7f99')`,
+ u:[`x 轴是日期 / 类别,默认数字看不懂`,`刻度太密挤成一团 → 自己指定间隔`,`要写数学符号(用 $...$ 的 LaTeX 写法)`],
+ k:[`能把“刻度位置”和“刻度显示文字”分成两个参数来理解`,`会用 $...$ 写希腊字母和分数`,`知道 xticks([]) 传空列表可以彻底隐藏刻度`],
+ p:['labels'],r:['lim','spines','heat','p_bar']},
+{i:'lim',s:'F',t:'坐标轴范围(镜头框住哪一段)',o:`裁镜头,不删数据`,
+ a:`plt.xlim(0, 10); plt.ylim(-1.5, 1.5)\nplt.axis([0, 10, -1.5, 1.5])   # xmin,xmax,ymin,ymax\nplt.axis('equal')   # 或 'off' 关掉坐标系`,
+ u:[`想放大看局部细节`,`多张子图要统一量纲才好比较`,`柱状图从 0 开始才不夸大差距`],
+ k:[`能说出 axis([...]) 四个数的顺序`,`知道改 lim 只是换镜头,原数据还在`,`会用 axis('off') 关掉整个坐标系(画饼图 / 热力图时常用)`],
+ p:['ticks'],r:['grid','pie']},
+{i:'grid',s:'F',t:'网格线',o:`帮眼睛把点对到刻度上`,
+ a:`plt.grid(True, ls='--', lw=.5, color='gray', alpha=.5, axis='y')`,
+ u:[`需要读出近似数值的图(汇报常用)`,`只想要横向参考线 → axis='y'`,`图本身很干净时果断关掉`],
+ k:[`会只开一个方向的网格`,`知道网格线的样式参数和线条一样(ls / lw / alpha)`,`能判断这张图加网格是帮忙还是添乱`],
+ p:['lim'],r:['ticks','bar']},
+{i:'legend',s:'F',t:'图例',o:`告诉读者每条线、每块颜色代表谁`,
+ a:`plt.plot(x, y1, label='sin'); plt.plot(x, y2, label='cos')\nplt.legend(loc='upper right', ncol=2, fontsize=10,\n           bbox_to_anchor=(1.02, 1))   # 放到画布外`,
+ u:[`一张图里有两条以上的线 / 两组以上的柱`,`图例挡住数据 → 用 bbox_to_anchor 挪到外面`,`图例太长 → ncol 分成多列`],
+ k:[`知道 label 要在画线时给,legend() 才收得到`,`能说出 loc 和 bbox_to_anchor 的分工`,`会把图例放到图外,并配合 tight_layout 不被裁掉`],
+ p:['plotline'],r:['style','save','p_bubble']},
+{i:'spines',s:'F',t:'脊柱(四条边框)',o:`可以删掉、染色,或搬到数据 0 的位置`,
+ a:`ax = plt.gca()\nax.spines['right'].set_color('none')\nax.spines['top'].set_color('none')\nax.spines['left'].set_position(('data', 0))   # 搬到 x=0\nplt.box(False)   # 一次去掉全部边框`,
+ u:[`画数学函数,想要十字坐标系`,`做简洁风格的图(去掉上、右边框)`,`横向排行榜去掉边框更清爽`],
+ k:[`能说出 spines 有 left / right / top / bottom 四个 key`,`会用 set_color('none') 隐藏而不是想办法删掉`,`知道 set_position(('data', 0)) 里的 data 表示按数据坐标定位`],
+ p:['axes'],r:['ticks','p_rank']},
+{i:'save',s:'F',t:'保存图片 savefig',o:`别再截屏了`,
+ a:`plt.tight_layout()\nplt.savefig('fig.png', dpi=200, facecolor='w',\n            edgecolor='w', bbox_inches='tight')\nplt.show()   # 必须放在 savefig 后面`,
+ u:[`图要放进 PPT / 论文 / 网页`,`图例或长标签被裁掉 → bbox_inches='tight'`,`批量出图自动存盘`],
+ k:[`知道 savefig 必须写在 show() 之前,否则存出空白图`,`能说出 dpi 如何影响清晰度和文件体积`,`会用 tight_layout / bbox_inches 解决元素被裁或重叠`],
+ p:['figure'],r:['legend','subplots']},
+{i:'subplot',s:'L',t:'subplot 一格一格画',o:`把画布切成规则网格,一格一张图`,
+ a:`plt.figure(figsize=(9,6))\nax1 = plt.subplot(221)   # 2行2列第1个,等价于 (2,2,1)\nplt.plot(x, y)\nplt.subplot(2,2,2); plt.plot(x, -y)\nplt.sca(ax1); plt.title('回到第1格再补东西')`,
+ u:[`同一份数据的几个侧面并排展示`,`对比不同参数 / 不同城市的同类图`,`先快速搭好格子,再逐格填内容`],
+ k:[`能解释 221 和 (2,2,1) 是一回事`,`会用 plt.sca(ax) 切回之前那一格`,`知道编号从 1 开始、按行优先`],
+ p:['axes'],r:['subplots','slicegrid','labels']},
+{i:'nest',s:'L',t:'嵌套小图(画中画)',o:`在大图里开一个自由摆放的小窗口`,
+ a:`fig = plt.figure(figsize=(8,5))\nplt.plot(x, y)                            # 大图\nax_in = plt.axes([.58, .58, .28, .28])    # [左, 下, 宽, 高] 0~1 比例\nax_in.plot(x, y2); ax_in.set_title('局部放大')\n# 等价:fig.add_axes([.58, .58, .28, .28])`,
+ u:[`整体趋势 + 局部放大(放大镜效果)`,`主图角落塞一张小的占比 / 分布图`,`位置要自定义,不想被网格约束`],
+ k:[`能说出 [l, b, w, h] 是相对整块画布的 0~1 比例`,`知道坐标原点 (0,0) 在左下角`,`小图里改属性必须用 ax_in.set_xxx`],
+ p:['axes'],r:['subplot','p_bubble']},
+{i:'subplots',s:'L',t:'subplots 一次拿到所有格子',o:`适合批量画同类小图`,
+ a:`fig, axs = plt.subplots(3, 3, figsize=(9,7),\n                        sharex=True, sharey=True)\naxs[1,2].plot(x, y)\naxs[0,0].set_title('第一张')\nplt.tight_layout()`,
+ u:[`要画很多同类小图(一个城市一张)`,`希望所有子图共享坐标轴,便于横向比较`,`用 for 循环批量填图`],
+ k:[`能用 axs[i,j] 或 axs.ravel() 遍历所有子图`,`知道 sharex / sharey 会隐藏内部刻度并统一范围`,`子图重叠时会加 tight_layout`],
+ p:['subplot'],r:['save','labels','p_rank']},
+{i:'slicegrid',s:'L',t:'不均匀①:subplot 给元组',o:`把连续的几格合成一张大图`,
+ a:`plt.subplot(3, 3, (1, 3))    # 第1~3格合成一张宽图\nplt.subplot(3, 3, (4, 5))\nplt.subplot(3, 3, 6)`,
+ u:[`一张主图占满整行 + 下面几张小图`,`临时改布局,不想引入新 API`,`简单的“上宽下窄”版式`],
+ k:[`能算出元组里的编号对应哪几格`,`知道合并的格子必须是连续的矩形区域`,`明白它和 subplot2grid / GridSpec 的结果是等价的`],
+ p:['subplot'],r:['s2g','gridspec']},
+{i:'s2g',s:'L',t:'不均匀②:subplot2grid',o:`直接说“从哪起、占几行几列”`,
+ a:`plt.subplot2grid((3,3), (0,0), colspan=3)             # 横跨3列\nplt.subplot2grid((3,3), (1,0), colspan=2, rowspan=2)  # 跨2行2列\nplt.subplot2grid((3,3), (1,2))`,
+ u:[`布局复杂,用元组编号已经算不清`,`需要跨行的块(左侧一张高图)`,`照着草图排版`],
+ k:[`能说出四个参数:总网格、起点、跨列数、跨行数`,`知道起点是 (行, 列) 且从 0 开始`,`会在一张画布上混搭多个不同大小的块`],
+ p:['slicegrid'],r:['gridspec']},
+{i:'gridspec',s:'L',t:'不均匀③:GridSpec 切片',o:`像切蛋糕:用切片语法划区域`,
+ a:`from matplotlib import gridspec\nfig = plt.figure(figsize=(9,6))\ngs = gridspec.GridSpec(3, 3)\nax1 = fig.add_subplot(gs[0, :])     # 第0行全部\nax2 = fig.add_subplot(gs[1:, :2])   # 后两行、前两列\nax2.set_title('小图属性只能用 set_*')`,
+ u:[`需要最灵活的版式(仪表板式排版)`,`要给图例或色条留一条专门位置`,`同一套布局复用到多张图`],
+ k:[`能用切片写出“整行 / 整列 / 一块区域”`,`知道 add_subplot 返回的是 ax,属性只能用 set_xxx`,`能把同一个布局用三种写法分别写出来`],
+ p:['s2g'],r:['axes','p_bubble']},
+{i:'twinx',s:'L',t:'twinx 双 y 轴',o:`两个量级差很大的指标画在一起`,
+ a:`ax1 = plt.gca()\nax1.plot(x, sales, color='#3c7f99')\nax1.set_ylabel('销量', color='#3c7f99')\nax1.tick_params(axis='y', labelcolor='#3c7f99')\nax2 = ax1.twinx()          # 共享 x,另起一套 y\nax2.plot(x, rate, color='#c5b783')`,
+ u:[`销量(万台)和增长率(%)放一起看`,`温度和降水量这类不同单位的组合`,`K 线配成交量`],
+ k:[`知道 twinx 共享 x 轴、各有各的 y 轴`,`会用颜色把轴、刻度和线绑在一起,避免读错`,`能说出双轴的风险:两线交叉点没有实际意义`],
+ p:['axes'],r:['legend','subplots']},
+{i:'line',s:'V',t:'折线图',o:`看趋势:一图多线 or 多图各一线`,
+ a:`plt.plot(x, y1, label='上海')\nplt.plot(x, y2, label='北京')\nplt.legend()`,
+ u:[`时间序列趋势(月度销量、每日活跃)`,`多个对象同期对比`,`曲线形状本身就是结论(周期、拐点)`],
+ k:[`会在“一图多线”和“多图各一线”之间做选择`,`线超过 4~5 条时知道该拆图或只高亮重点`,`能给折线加标记点,强调实际观测位置`],
+ p:['plotline'],r:['style','legend','subplots']},
+{i:'bar',s:'V',t:'柱状图(分组 / 堆叠 / 横向)',o:`比大小:一类一柱`,
+ a:`w = .35\nplt.bar(x-w/2, a, width=w, label='A')      # 分组:错开位置\nplt.bar(x+w/2, b, width=w, label='B')\nplt.bar(x, a); plt.bar(x, b, bottom=a)     # 堆叠:累加起点\nplt.barh(y, v)                             # 横向\nfor r in bars:\n    plt.text(r.get_x()+r.get_width()/2, r.get_height(),\n             f'{r.get_height():.0f}', ha='center', va='bottom')`,
+ u:[`各类别的数量 / 金额对比(城市、学历、技能)`,`看总量同时看内部构成 → 堆叠`,`类别名字很长 → 用 barh 横着放`],
+ k:[`能说出分组柱靠 x±width/2 错位、堆叠柱靠 bottom 累加`,`会遍历返回值用 get_height / get_x 给柱子加数值标签`,`知道 yerr 画误差棒、tick_label 直接给类别名`],
+ p:['plotline'],r:['grid','p_rank','p_bar','hist']},
+{i:'polar',s:'V',t:'极坐标图(线 / 玫瑰图)',o:`角度 + 半径,首尾自然相接`,
+ a:`ax = plt.subplot(111, projection='polar')\nax.plot(theta, r)\nax.bar(theta, r, width=.5, alpha=.6)    # 极坐标柱状图\nax.set_rmax(2); ax.set_rticks([.5,1,1.5,2])\nax.set_rlabel_position(-22)`,
+ u:[`方向 / 角度类数据(风向、时钟、罗盘)`,`周期性数据,首尾接上更自然`,`玫瑰图展示各方位的强度`],
+ k:[`知道两个量是角度 theta(弧度)和半径 r`,`会用 set_rmax / set_rticks / set_rlabel_position 调半径轴`,`能说出极坐标柱状图和普通柱状图的对应关系`],
+ p:['plotline'],r:['radar','bar']},
+{i:'hist',s:'V',t:'直方图',o:`看一列数字的分布形状`,
+ a:`plt.hist(data, bins=30, density=True,\n         color='#3c7f99', alpha=.7, edgecolor='w')\nplt.plot(xs, pdf)    # 叠一条概率密度曲线`,
+ u:[`看薪资 / 年龄 / 时长这类数值的分布`,`判断是否近似正态、有没有长尾`,`分箱数会影响结论时做敏感性检查`],
+ k:[`能解释 bins 变化如何改变你看到的结论`,`知道 density=True 后纵轴是密度、总面积为 1`,`会在直方图上叠加理论概率密度曲线做对比`],
+ p:['bar'],r:['box','p_matrix']},
+{i:'box',s:'V',t:'箱形图',o:`一次看中位数、离散程度和异常值`,
+ a:`plt.boxplot([a, b, c], labels=['Python','Java','Go'],\n            vert=False, showmeans=True)`,
+ u:[`比较多组数据的中位数和离散程度`,`找异常值(箱须之外的点)`,`样本量不大时,比只画平均值更诚实`],
+ k:[`能读出箱体的上下四分位、中位线、须和离群点`,`知道 vert=False 变横向、labels 给每组命名`,`能说出它比“只画一根平均值柱子”多告诉了什么`],
+ p:['hist'],r:['p_matrix','scatter']},
+{i:'scatter',s:'V',t:'散点图 / 气泡图',o:`看两个变量之间有没有关系`,
+ a:`plt.scatter(x, y, s=size, c=value, alpha=.6, cmap='RdBu_r')\nplt.colorbar()`,
+ u:[`看两个变量的相关性`,`用 s 和 c 再塞进两个维度 → 气泡图`,`找离群样本`],
+ k:[`能说出 s 控制大小、c 控制颜色,两者都能传数组`,`知道点太多要靠 alpha 或抽样才看得清密度`,`会把第三个变量映射成大小或颜色,而不是再开一张图`],
+ p:['marker'],r:['p_bubble','box','line']},
+{i:'pie',s:'V',t:'饼图',o:`只回答一个问题:谁占多大份`,
+ a:`plt.pie(v, labels=names, autopct='%.1f%%',\n        explode=[0,.1,0], shadow=True, startangle=90)\nplt.axis('equal')`,
+ u:[`构成占比(学历分布、渠道来源)`,`只有 2~5 个类别,且只关心份额`,`要突出某一块 → explode 拉出来`],
+ k:[`知道类别一多饼图就读不出来,应改用柱状图`,`会用 autopct 显示百分比、explode 突出某块`,`明白 pie 会自动把数值归一化成占比`],
+ p:['lim'],r:['ring','p_bar']},
+{i:'ring',s:'V',t:'嵌套饼图 / 甜甜圈',o:`两层分类的占比,中间还能写总数`,
+ a:`# 外圈:大类;内圈:明细\nplt.pie(outer, radius=1, labeldistance=1.1,\n        wedgeprops=dict(width=.3, edgecolor='w'))\nplt.pie(inner, radius=.7, labeldistance=.4,\n        wedgeprops=dict(width=.3, edgecolor='w'))\n# 甜甜圈引线:ax.annotate(name, xy=..., xytext=..., arrowprops=...)`,
+ u:[`两层分类的占比(大类 → 子类)`,`环形比实心饼更清爽,中间可放总数`,`标签太多挤在一起 → 用引线引到外面`],
+ k:[`能说出 radius 和 wedgeprops 的 width 一起决定环的位置与粗细`,`会用 groupby 得到外圈、原始明细做内圈`,`知道两层的角度必须对得上,否则图是错的`],
+ p:['pie'],r:['annotate','p_bar']},
+{i:'heat',s:'V',t:'热力图 imshow',o:`二维矩阵用颜色深浅表示大小`,
+ a:`plt.imshow(mat, cmap='RdBu_r')\nplt.colorbar()\nplt.xticks(range(n), cols, rotation=45)\nplt.yticks(range(m), rows)\nfor i in range(m):\n    for j in range(n):\n        plt.text(j, i, mat[i,j], ha='center', va='center')`,
+ u:[`两个类别交叉的数值矩阵(城市×经验的薪资)`,`相关系数矩阵`,`只想知道“哪一块特别亮 / 特别暗”`],
+ k:[`知道输入是二维矩阵,行对 y、列对 x`,`会把 pivot_table 的结果直接喂给 imshow`,`会用双层 for 循环把数值写进格子里`],
+ p:['ticks'],r:['p_matrix','scatter']},
+{i:'area',s:'V',t:'面积图 stackplot',o:`总量趋势 + 各部分贡献`,
+ a:`plt.stackplot(x, y1, y2, y3, labels=['A','B','C'])\nplt.legend(loc='upper left')`,
+ u:[`看总量趋势的同时看构成变化`,`各渠道流量 / 各品类收入的时间序列`,`想强调“累积”的感觉`],
+ k:[`知道它是自动累加的,读的是每一层的厚度`,`能说出它和多条折线的区别`,`层数一多会想到改用折线或小倍数图`],
+ p:['line'],r:['bar']},
+{i:'radar',s:'V',t:'雷达图 / 蜘蛛图',o:`多个维度上的“轮廓”对比`,
+ a:`ax = plt.subplot(111, projection='polar')\nangles = np.linspace(0, 2*np.pi, n, endpoint=False)\nangles = np.append(angles, angles[0])      # 首尾闭合\nvals = np.append(vals, vals[0])\nax.plot(angles, vals); ax.fill(angles, vals, alpha=.3)\nax.set_thetagrids(angles[:-1]*180/np.pi, labels)`,
+ u:[`多维能力 / 评分对比(候选人、球员、产品)`,`看某个对象在各维度是否均衡`,`2~3 个对象叠一起比轮廓`],
+ k:[`知道必须把首尾点接上,不然图是缺口的`,`会用 set_thetagrids 把弧度换成维度名`,`能说出各维度量纲不同必须先归一化`],
+ p:['polar'],r:['pie']},
+{i:'d3line',s:'V',t:'3D 折线 / 散点',o:`三个连续变量的空间轨迹`,
+ a:`from mpl_toolkits.mplot3d.axes3d import Axes3D\nfig = plt.figure(figsize=(9,6))\nax3 = fig.add_subplot(projection='3d')   # 或 Axes3D(fig)\nax3.plot(x, y, z)\nax3.scatter(x, y, z, c=z, cmap='RdBu_r')\nax3.set_zlabel('z'); ax3.view_init(elev=20, azim=45)`,
+ u:[`三个连续变量的轨迹或曲面`,`聚类结果在三维空间的分布`,`演示、教学时的直观展示`],
+ k:[`知道要多给一个 z 轴数据并用 set_zlabel`,`明白 3D 常常不如两张 2D 图好读`,`会用 view_init 换观察角度避免遮挡`],
+ p:['scatter'],r:['d3bar']},
+{i:'d3bar',s:'V',t:'3D 柱状图',o:`把多排柱子放到纵深方向`,
+ a:`for i, z in enumerate([0, 10, 20]):\n    ax3.bar(x, y[i], zs=z, zdir='y', alpha=.7)   # 每排放在不同 y 上`,
+ u:[`多个分组的柱状图按“排”排开`,`年份×类别的销量对比(演示向)`,`汇报时需要视觉冲击`],
+ k:[`能说出 zs 决定这一排放在哪、zdir 决定纵深是哪根轴`,`知道前排会挡住后排,数值读不准`,`能判断什么时候该退回分组柱状图或热力图`],
+ p:['d3line'],r:['bar','heat']},
+{i:'text',s:'T',t:'text / figtext 写字',o:`在图里任意位置写一句话`,
+ a:`plt.text(x, y, '这里有个转折', fontsize=12,\n         color='#b96c08', ha='center', va='bottom')\nplt.figtext(.5, .02, '数据来源:xxx', ha='center')   # 按画布 0~1 比例`,
+ u:[`给柱子 / 折线上的关键点标数值`,`把结论写进图里,而不是让人自己找`,`图下方写数据来源、口径说明`],
+ k:[`能说出 text 用数据坐标、figtext 用 0~1 画布比例`,`会用 ha / va 控制对齐,避免文字压住数据`,`知道 fontdict 可以统一一批文字的样式`],
+ p:['labels'],r:['annotate','bar','heat']},
+{i:'arrow',s:'T',t:'arrow 画箭头',o:`纯示意用:从这里指到那里`,
+ a:`plt.arrow(0, 0, 3, 2,            # 起点 (0,0) + 位移 (3,2)\n          width=.05, head_width=.3, head_length=.4,\n          length_includes_head=True, color='#b96c08')`,
+ u:[`画向量、方向、受力示意图`,`表示“从这个状态到那个状态”`,`教学用的几何 / 物理示意`],
+ k:[`知道后两个参数是位移 dx, dy,不是终点坐标`,`会用 length_includes_head=True 让总长符合预期`,`能判断“要指着数据说话”时应该改用 annotate`],
+ p:['text'],r:['annotate']},
+{i:'annotate',s:'T',t:'annotate 带箭头的注释',o:`文字 + 箭头,指着数据说话`,
+ a:`plt.annotate('最高点',\n             xy=(2, 1),          # 箭头指向哪\n             xytext=(3, 1.4),    # 文字放哪\n             arrowprops=dict(arrowstyle='->', shrink=.05,\n                             connectionstyle='arc3,rad=.2'))`,
+ u:[`指着峰值 / 异常点写说明`,`甜甜圈图把标签用引线引到外面`,`标注关键事件(上线、活动、政策)`],
+ k:[`能分清 xy(箭头尖)和 xytext(文字位置)`,`会用 arrowprops 里的 arrowstyle / shrink / width 调外观`,`知道 textcoords='axes fraction' 可以按比例定位文字`],
+ p:['text'],r:['connstyle','ring','arrow']},
+{i:'connstyle',s:'T',t:'connectionstyle 箭头怎么弯',o:`五类弯法,专治箭头打结`,
+ a:`arrowprops=dict(arrowstyle='->',\n                connectionstyle='arc3,rad=.3')\n# angle3 / arc3 / angle / arc / bar 五类,各有自己的参数`,
+ u:[`多个注释箭头互相打结 → 换个弯法绕开`,`想要直角折线式的引线(angle)`,`引线需要贴着图边走(bar)`],
+ k:[`知道 rad 控制弯曲程度,正负决定往哪边弯`,`能说出 angle 系列是折线、arc 系列是圆弧`,`会通过换 connectionstyle 让箭头不压住数据`],
+ p:['annotate'],r:[]},
+{i:'p_rank',s:'P',t:'实战:需求排行榜(横向柱)',o:`回答“哪些城市 / 技能最缺人”`,
+ a:`top = df['city'].value_counts()[:10]\nplt.barh(top.index[::-1], top.values[::-1], color='#3c7f99')\nplt.box(False); plt.xticks([])\nplt.title(' 城市招聘量 Top10 ', backgroundcolor='#3c7f99', color='w')\nfor i, v in enumerate(top.values[::-1]):\n    plt.text(v, i, str(v), va='center')`,
+ u:[`Top N 排名类问题`,`类别名很长(公司名、技能名)`,`要一张能直接放进报告的干净排行榜`],
+ k:[`会用 value_counts()[:10] 取 Top N,并反转顺序让最大值在最上面`,`会用 box(False) + 去刻度 + 数值标签做出简洁版式`,`知道 title 也能设 backgroundcolor 做成色块标题`],
+ p:['bar'],r:['spines','subplots','text']},
+{i:'p_bar',s:'P',t:'实战:分组聚合 + 颜色映射',o:`groupby 的结果直接画成柱`,
+ a:`g = df.groupby('education')['salary'].mean().sort_values()\ncolors = plt.cm.RdBu_r(g.values / g.values.max())   # 数值→颜色\nplt.barh(range(len(g)), g.values, color=colors)\nplt.yticks(range(len(g)), g.index)`,
+ u:[`“不同学历 / 经验的平均薪资”这类分组对比`,`希望颜色本身也编码数值高低`,`把 pandas 聚合结果一步画出来`],
+ k:[`能把聚合结果的 index 和 values 分别用作标签和长度`,`会把归一化后的数值传给 plt.cm.XXX 生成一组颜色`,`知道先排序再画,读者才一眼看出顺序`],
+ p:['bar'],r:['style','pie','p_matrix']},
+{i:'p_matrix',s:'P',t:'实战:交叉矩阵热力图',o:`经验 × 城市,一眼找到最高薪组合`,
+ a:`pt = df.pivot_table(index='experience', columns='city',\n                    values='salary', aggfunc='mean')\nplt.imshow(pt.values, cmap='RdBu_r')\nplt.colorbar()\nplt.xticks(range(pt.shape[1]), pt.columns, rotation=45)\nplt.yticks(range(pt.shape[0]), pt.index)`,
+ u:[`双维度交叉对比`,`找出最优 / 最差的组合格子`,`矩阵里有缺失值也能看出结构`],
+ k:[`能把 pivot_table 的行列对应到 y / x 刻度`,`会加 colorbar,并解释颜色代表什么量`,`知道 cmap 选错会误导,有方向性的数据用发散色带`],
+ p:['heat'],r:['box','p_bar']},
+{i:'p_bubble',s:'P',t:'实战:气泡图 + 自制图例',o:`位置 + 大小 + 颜色,一张图看四个维度`,
+ a:`gs = gridspec.GridSpec(4, 1)\nax = fig.add_subplot(gs[:3])\ndf['size'] = df['size'].astype('category').cat.reorder_categories(order)\nax.scatter(x, y, s=df['size'].map(size_map),\n           c=df['size'].map(color_map), alpha=.7)\nax_lg = fig.add_subplot(gs[3])          # 专门留一格画图例\nax_lg.scatter(range(5), [1]*5, s=sizes, c=colors)\nax_lg.axis('off')`,
+ u:[`三四个维度塞进一张图`,`分类有天然顺序(公司规模 15人以下 → 2000人以上)`,`默认图例表达不了“大小”的含义 → 自己画一条`],
+ k:[`会用 category + reorder_categories 让类别按业务顺序排`,`能用 map 把类别映射成颜色和大小两套视觉编码`,`知道可以额外开一个小 Axes 手工画图例,再 axis('off')`],
+ p:['scatter'],r:['gridspec','nest','legend']}
+];
+/* ---------- 基础 ---------- */
+const BY={}; NODES.forEach(n=>BY[n.i]=n);
+const TOTAL=NODES.reduce((s,n)=>s+n.k.length,0);
+const PATH=['figure','plotline','style','labels','ticks','legend','grid','line','bar','scatter','hist','subplots','annotate','save','p_rank'];
+const done=new Set();
+let cur=null, step=0, timer=null;
+const $=s=>document.querySelector(s);
+function el(t,c,x){const e=document.createElement(t); if(c)e.className=c; if(x!=null)e.textContent=x; return e;}
+const board=$('#board'), detail=$('#detail'), edges=$('#edges'), allrel=$('#allrel');
+
+/* ---------- 幻灯片 ---------- */
+const SLIDES=[{k:'anat',t:'图的零件',g:'F'},{k:'layout',t:'多图布局',g:'L'},
+  {k:'charts',t:'图型货架',g:'V'},{k:'text',t:'文字与注释',g:'T'},
+  {k:'real',t:'实战串联',g:'P'},{k:'cmp',t:'易混淆对照',g:null}];
+const G2S={F:'anat',L:'layout',V:'charts',T:'text',P:'real'};
+let slide='anat';
+function markSlide(k){
+  slide=k;
+  document.querySelectorAll('.slide').forEach(s=>s.classList.toggle('on', s.dataset.slide===k));
+  document.querySelectorAll('#tablist .tab').forEach(b=>b.setAttribute('aria-selected', b.dataset.k===k?'true':'false'));
+  $('#stage').classList.toggle('solo', k==='cmp');
+}
+function showSlide(k){
+  markSlide(k);
+  const g=(SLIDES.find(s=>s.k===k)||{}).g;
+  if(g && (!cur || BY[cur].s!==g)){
+    const first=NODES.find(n=>n.s===g);
+    if(first){ cur=first.i; render(); return; }
+  }
+  drawEdges();
+}
+function slideStep(d){
+  const i=SLIDES.findIndex(s=>s.k===slide);
+  showSlide(SLIDES[(i+d+SLIDES.length)%SLIDES.length].k);
+}
+function buildTabs(){
+  const box=$('#tablist');
+  SLIDES.forEach((s,idx)=>{
+    const b=document.createElement('button');
+    b.className='tab'; b.type='button'; b.dataset.k=s.k; b.setAttribute('role','tab');
+    b.setAttribute('aria-selected', s.k===slide?'true':'false');
+    b.appendChild(el('span','num',String(idx+1)));
+    b.appendChild(el('span',null,s.t));
+    if(s.g) b.appendChild(el('b'));
+    b.addEventListener('click',()=>{stop(); showSlide(s.k);});
+    box.appendChild(b);
+  });
+}
+
+/* ---------- 货架卡片 ---------- */
+function chipEl(n){
+  const b=document.createElement('button');
+  b.className='chip'; b.type='button'; b.dataset.id=n.i; b.setAttribute('aria-pressed','false');
+  b.innerHTML='<svg width="24" height="18" viewBox="0 0 24 18" aria-hidden="true">'+(IC[n.i]||'')+'</svg>';
+  b.appendChild(el('span',null,n.t));
+  b.appendChild(el('span','dot'));
+  b.addEventListener('click',()=>{stop(); select(n.i);});
+  return b;
+}
+['L','V','T','P'].forEach(g=>{
+  const box=$('#sh-'+g);
+  NODES.filter(n=>n.s===g).forEach(n=>box.appendChild(chipEl(n)));
+});
+document.querySelectorAll('.hot').forEach(h=>{
+  h.addEventListener('click',()=>{stop(); select(h.dataset.id);});
+  h.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault(); stop(); select(h.dataset.id);}
+  });
+});
+const gcnt=el('span'); gcnt.style.cssText='display:block;font-size:11px;color:#6b7280;margin-top:2px';
+$('.prog').appendChild(gcnt);
+
+/* ---------- 选中与渲染 ---------- */
+function ownsNode(k,id){
+  const sl=document.querySelector('.slide[data-slide="'+k+'"]');
+  return !!(sl && sl.querySelector('.hot[data-id="'+id+'"], .chip[data-id="'+id+'"]'));
+}
+function select(id){
+  cur=id;
+  const k=G2S[BY[id].s];
+  /* 当前页上就有这个知识点(比如画布图上的文字/标注编号)就不翻页 */
+  if(k && k!==slide && !ownsNode(slide,id)) markSlide(k);
+  render();
+}
+function render(){
+  const n=BY[cur]; const pre=new Set(n.p), rel=new Set(n.r);
+  board.classList.add('focus');
+  document.querySelectorAll('.chip').forEach(c=>{
+    const id=c.dataset.id;
+    c.setAttribute('aria-pressed', id===cur?'true':'false');
+    c.classList.toggle('pre', pre.has(id));
+    c.classList.toggle('rel', rel.has(id)&&!pre.has(id));
+  });
+  document.querySelectorAll('.hot').forEach(h=>{
+    const id=h.dataset.id;
+    h.classList.toggle('on', id===cur);
+    h.classList.toggle('pre', pre.has(id));
+    h.classList.toggle('rel', rel.has(id)&&!pre.has(id));
+  });
+  document.querySelectorAll('.part').forEach(p=>p.classList.toggle('on', p.dataset.part===cur));
+  renderDetail(n); dots(); prog(); syncStep(); drawEdges();
+}
+/* ---------- 详情面板 ---------- */
+function renderDetail(n){
+  detail.innerHTML='';
+  detail.appendChild(el('div','d-tag',GNAME[n.s]));
+  detail.appendChild(el('div','d-h',n.t));
+  detail.appendChild(el('p','d-o',n.o));
+
+  let s=el('div','d-sec'); s.appendChild(el('h4',null,'什么时候用它'));
+  const ul=el('ul'); n.u.forEach(x=>ul.appendChild(el('li',null,x)));
+  s.appendChild(ul); detail.appendChild(s);
+
+  s=el('div','d-sec'); s.appendChild(el('h4',null,'关键写法'));
+  const pre=el('pre','api mono',n.a); s.appendChild(pre); detail.appendChild(s);
+
+  s=el('div','d-sec'); s.appendChild(el('h4',null,'怎么算掌握了(勾掉它)'));
+  n.k.forEach((x,idx)=>{
+    const key=n.i+'#'+idx;
+    const lab=el('label','chk'+(done.has(key)?' ok':''));
+    const cb=document.createElement('input'); cb.type='checkbox'; cb.checked=done.has(key);
+    cb.addEventListener('change',()=>{
+      if(cb.checked){done.add(key); lab.classList.add('ok');}
+      else{done.delete(key); lab.classList.remove('ok');}
+      dots(); prog();
+    });
+    lab.appendChild(cb); lab.appendChild(el('span',null,x)); s.appendChild(lab);
+  });
+  detail.appendChild(s);
+
+  const links=[].concat(n.p.map(x=>[x,'pre']), n.r.map(x=>[x,'rel']));
+  if(links.length){
+    s=el('div','d-sec'); s.appendChild(el('h4',null,'关联知识点(先会前置,再练常配)'));
+    const wrap=el('div','rels');
+    links.forEach(([id,kind])=>{
+      if(!BY[id]) return;
+      const b=document.createElement('button'); b.type='button'; b.className=kind;
+      b.textContent=(kind==='pre'?'← ':'~ ')+BY[id].t;
+      b.addEventListener('click',()=>{stop(); select(id);});
+      wrap.appendChild(b);
+    });
+    s.appendChild(wrap); detail.appendChild(s);
+  }
+}
+
+/* ---------- 进度 ---------- */
+function okOf(n){ return n.k.every((_,idx)=>done.has(n.i+'#'+idx)); }
+function dots(){
+  NODES.forEach(n=>{
+    const ok=okOf(n);
+    const c=document.querySelector('.chip[data-id="'+n.i+'"] .dot');
+    if(c) c.classList.toggle('ok', ok);
+    const h=document.querySelector('.hot[data-id="'+n.i+'"] circle');
+    if(h) h.style.stroke = ok ? '#12796a' : '';
+  });
+}
+function prog(){
+  $('#pfill').style.width=(done.size/TOTAL*100).toFixed(1)+'%';
+  $('#ptxt').textContent='掌握进度 '+done.size+' / '+TOTAL+' 条自测';
+  gcnt.textContent=['F','L','V','T','P'].map(g=>{
+    const ns=NODES.filter(n=>n.s===g);
+    return GNAME[g]+' '+ns.filter(okOf).length+'/'+ns.length;
+  }).join(' · ');
+  SLIDES.forEach(s=>{
+    if(!s.g) return;
+    const t=document.querySelector('#tablist .tab[data-k="'+s.k+'"] b');
+    if(!t) return;
+    const ns=NODES.filter(n=>n.s===s.g);
+    const ok=ns.filter(okOf).length;
+    t.textContent=ok+'/'+ns.length;
+    t.classList.toggle('full', ok===ns.length);
+  });
+}
+/* ---------- 关联连线 ---------- */
+function anchorEl(id){
+  const cands=[document.querySelector('.chip[data-id="'+id+'"]'),
+               document.querySelector('.hot[data-id="'+id+'"] circle')];
+  for(let i=0;i<cands.length;i++){
+    const c=cands[i]; if(!c) continue;
+    const r=c.getBoundingClientRect();
+    if(r.width&&r.height) return c;   /* 只连当前页上看得见的锚点 */
+  }
+  return null;
+}
+function border(r,b,tx,ty){
+  const cx=r.left-b.left+r.width/2, cy=r.top-b.top+r.height/2;
+  const dx=tx-cx, dy=ty-cy;
+  if(!dx&&!dy) return [cx,cy];
+  const hw=r.width/2+3, hh=r.height/2+3;
+  const s=Math.min(dx?Math.abs(hw/dx):1e9, dy?Math.abs(hh/dy):1e9);
+  return [cx+dx*s, cy+dy*s];
+}
+function center(r,b){ return [r.left-b.left+r.width/2, r.top-b.top+r.height/2]; }
+function drawEdges(){
+  while(edges.childNodes.length>1) edges.removeChild(edges.lastChild);
+  if(window.innerWidth<=1080) return;
+  const b=board.getBoundingClientRect();
+  const list=[];
+  const push=(f,t,k)=>{ if(f!==t&&BY[f]&&BY[t]) list.push([f,t,k]); };
+  if(allrel.checked){
+    const seen=new Set();
+    NODES.forEach(n=>{
+      n.p.forEach(x=>{ push(x,n.i,'pre'); seen.add(x+'>'+n.i); seen.add(n.i+'>'+x); });
+      n.r.forEach(x=>{ if(!seen.has(n.i+'>'+x)){ seen.add(n.i+'>'+x); seen.add(x+'>'+n.i); push(n.i,x,'rel'); } });
+    });
+  }else{
+    const n=BY[cur];
+    n.p.forEach(x=>push(x,cur,'pre'));
+    n.r.forEach(x=>{ if(n.p.indexOf(x)<0) push(cur,x,'rel'); });
+    NODES.filter(m=>m.p.indexOf(cur)>=0).forEach(m=>push(cur,m.i,'pre'));
+  }
+  edges.style.opacity = allrel.checked ? '.22' : '.62';
+  list.forEach(([f,t,k])=>{
+    const ef=anchorEl(f), et=anchorEl(t);
+    if(!ef||!et) return;
+    const rf=ef.getBoundingClientRect(), rt=et.getBoundingClientRect();
+    if(!rf.width||!rf.height||!rt.width||!rt.height) return;  /* 不在当前幻灯片上 */
+    const [fcx,fcy]=center(rf,b), [tcx,tcy]=center(rt,b);
+    const [sx,sy]=border(rf,b,tcx,tcy), [tx,ty]=border(rt,b,fcx,fcy);
+    const dx=tx-sx, dy=ty-sy;
+    let c1,c2;
+    if(Math.abs(dy)>Math.abs(dx)){
+      const o=Math.max(28,Math.abs(dy)*.38), sg=dy>0?1:-1;
+      c1=[sx+dx*.12, sy+sg*o]; c2=[tx-dx*.12, ty-sg*o];
+    }else{
+      const o=Math.max(28,Math.abs(dx)*.38), sg=dx>0?1:-1;
+      c1=[sx+sg*o, sy]; c2=[tx-sg*o, ty];
+    }
+    const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d','M'+sx+' '+sy+' C'+c1[0]+' '+c1[1]+' '+c2[0]+' '+c2[1]+' '+tx+' '+ty);
+    p.setAttribute('fill','none');
+    p.setAttribute('stroke', k==='pre'?'#2f6bd8':'#b96c08');
+    p.setAttribute('stroke-width', allrel.checked?'1':'1.4');
+    if(k==='rel') p.setAttribute('stroke-dasharray','4 3');
+    else p.setAttribute('marker-end','url(#ah)');
+    edges.appendChild(p);
+  });
+}
+/* ---------- 学习路线播放 ---------- */
+const steptxt=$('#steptxt'), playBtn=$('#play');
+function syncStep(){
+  const idx=PATH.indexOf(cur);
+  if(idx>=0){ step=idx; steptxt.textContent='路线 '+(idx+1)+' / '+PATH.length; }
+  else steptxt.textContent='(支线知识点)';
+}
+function goStep(d){
+  step=(step+d+PATH.length)%PATH.length;
+  select(PATH[step]);
+}
+function stop(){ if(timer){clearInterval(timer); timer=null; playBtn.textContent='▶ 自动播放';} }
+$('#prev').addEventListener('click',()=>{stop(); goStep(-1);});
+$('#next').addEventListener('click',()=>{stop(); goStep(1);});
+playBtn.addEventListener('click',()=>{
+  if(timer) return stop();
+  playBtn.textContent='❚❚ 暂停';
+  goStep(1);
+  timer=setInterval(()=>goStep(1),2800);
+});
+allrel.addEventListener('change',drawEdges);
+let rt=null;
+window.addEventListener('resize',()=>{clearTimeout(rt); rt=setTimeout(drawEdges,120);});
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT') return;
+  if(e.key==='ArrowRight'){stop(); slideStep(1);}
+  if(e.key==='ArrowLeft'){stop(); slideStep(-1);}
+  if(e.key==='ArrowDown'){e.preventDefault(); stop(); goStep(1);}
+  if(e.key==='ArrowUp'){e.preventDefault(); stop(); goStep(-1);}
+  if(/^[1-6]$/.test(e.key)){stop(); showSlide(SLIDES[+e.key-1].k);}
+});
+$('#sprev').addEventListener('click',()=>{stop(); slideStep(-1);});
+$('#snext').addEventListener('click',()=>{stop(); slideStep(1);});
+
+/* ---------- 启动 ---------- */
+buildTabs(); prog(); dots(); select('figure');
+</script>
+</body>
+</html>

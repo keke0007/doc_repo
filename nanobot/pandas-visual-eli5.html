@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>pandas 全景图 · 场景 / 掌握标准 / 知识点关联</title>
+<style>
+:root{
+  color-scheme: light;
+  --ink:#15171c; --mut:#6b7280; --line:#e4e7ec; --bg:#fff; --soft:#f6f7f9;
+  --acc:#2f6bd8; --acc-soft:#e9effc; --rel:#b96c08; --rel-soft:#fdf3e2; --done:#12796a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:14px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+code,pre,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.wrap{max-width:1320px;margin:0 auto;padding:22px 26px 70px}
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+h1{font-size:19px;margin:0;letter-spacing:.2px}
+.sub{margin:2px 0 0;color:var(--mut);font-size:13px}
+.prog{min-width:230px}
+.pbar{height:5px;background:var(--soft);border-radius:3px;overflow:hidden}
+.pbar i{display:block;height:100%;width:0;background:var(--done);transition:width .25s}
+#ptxt{display:block;font-size:11.5px;color:var(--mut);margin-top:5px}
+
+/* ---------- 主图:流水线总览 ---------- */
+.pipe{position:relative;display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin:4px 0 0;min-height:0;align-items:start}
+.stage{position:relative;padding:8px 12px;z-index:1}
+button.stage{appearance:none;background:transparent;border:0;font:inherit;color:inherit;
+  text-align:left;cursor:pointer;border-radius:9px;display:block;width:100%}
+button.stage:hover{background:var(--soft)}
+button.stage:hover .go{text-decoration:underline}
+button.stage:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+.stage:first-child{padding-left:0}
+.stage::after{content:"";position:absolute;left:-5px;top:17px;width:8px;height:8px;
+  border-right:1.6px solid #c3c9d4;border-bottom:1.6px solid #c3c9d4;transform:rotate(-45deg)}
+.stage:first-child::after{display:none}
+.shead{display:flex;align-items:center;gap:7px}
+.stage h3,.stage .stitle{font-size:13.5px;margin:0;font-weight:600;display:block}
+.stage .what{display:block;margin:3px 0 0;font-size:11.5px;color:var(--mut);min-height:34px}
+.stage .go{display:block;margin-top:7px;font-size:11.5px;color:var(--acc)}
+.chip{appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:6px;
+  padding:6px 8px;font:inherit;font-size:12.5px;line-height:1.35;text-align:left;cursor:pointer;
+  display:flex;align-items:center;gap:6px;transition:background .15s,border-color .15s,opacity .15s}
+.chip:hover{border-color:var(--acc)}
+.chip:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+.chip .dot{width:7px;height:7px;border-radius:50%;background:#dfe3ea;flex:0 0 auto}
+.chip .dot.on{background:var(--done)}
+.chip[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+.chip[aria-pressed="true"] .dot{background:#fff;opacity:.6}
+.chip[aria-pressed="true"] .dot.on{background:#9ff0dd;opacity:1}
+.slidebox.focus .chip{opacity:.34}
+.slidebox.focus .chip[aria-pressed="true"],.slidebox.focus .chip.pre,.slidebox.focus .chip.rel{opacity:1}
+.chip.pre{border-color:var(--acc);background:var(--acc-soft)}
+.chip.rel{border-color:var(--rel);background:var(--rel-soft)}
+#board{position:relative}
+svg.edges{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:5}
+
+/* ---------- 幻灯片分页 ---------- */
+.tabs{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:18px 0 0}
+.tab{display:flex;align-items:center;gap:7px;font:inherit;font-size:12.5px;padding:6px 12px;
+  border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:20px;cursor:pointer}
+.tab:hover{border-color:var(--acc);color:var(--acc)}
+.tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.tab b{font-size:11px;font-weight:600;color:var(--mut);font-family:ui-monospace,Consolas,monospace}
+.tab[aria-selected="true"] b{color:rgba(255,255,255,.6)}
+.tab b.full{color:var(--done)}
+.tab[aria-selected="true"] b.full{color:#8ddccf}
+.tab .num{font-size:10.5px;color:var(--mut);font-family:ui-monospace,Consolas,monospace}
+.tab[aria-selected="true"] .num{color:rgba(255,255,255,.55)}
+.snav{display:flex;align-items:center;gap:6px;margin-left:auto}
+.khint{font-size:11.5px;color:var(--mut);margin-right:4px}
+.deck{display:grid;grid-template-columns:1.5fr 1fr;gap:26px;margin-top:16px;align-items:start}
+.deck.solo{grid-template-columns:1fr}
+.deck.solo .detail{display:none}
+.slide{display:none}
+.slide.on{display:block;animation:fade .18s ease-out}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.slide>h3{font-size:14px;margin:0 0 3px;letter-spacing:.2px}
+.slide>.note{font-size:12.5px;color:var(--mut);margin:0 0 14px}
+.slide>.cap{font-size:11.5px;color:var(--mut);margin:14px 0 0}
+.chipgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(206px,1fr));gap:8px}
+
+/* ---------- 控制条 ---------- */
+.ctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:20px 0 0;
+  padding:10px 0;border-top:1px solid var(--line);font-size:12.5px}
+.ctl button{font:inherit;font-size:12.5px;padding:5px 11px;border:1px solid var(--line);
+  background:#fff;border-radius:6px;cursor:pointer;color:var(--ink)}
+.ctl button:hover{border-color:var(--acc);color:var(--acc)}
+.ctl .step{color:var(--mut);min-width:170px}
+.ctl label{display:flex;align-items:center;gap:5px;cursor:pointer;color:var(--mut)}
+.lg{margin-left:auto;display:flex;gap:14px;color:var(--mut);align-items:center}
+.lg i{display:inline-block;width:20px;height:0;border-top:2px solid;vertical-align:middle;margin-right:5px}
+.lg .e1{color:var(--acc)}.lg .e2{color:var(--rel);border-top-style:dashed}
+.lg .e3::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;
+  background:var(--done);margin-right:5px;vertical-align:middle}
+
+/* ---------- 细节层 ---------- */
+.detail{display:flex;flex-direction:column;gap:15px;border:1px solid var(--line);border-radius:10px;
+  padding:15px 16px 17px;background:#fff;position:sticky;top:14px;
+  max-height:calc(100vh - 34px);overflow:auto}
+.detail h2{font-size:16px;margin:0 0 2px}
+.detail .one{color:var(--mut);font-size:13px;margin:0 0 12px}
+.detail h4{font-size:12px;margin:0 0 6px;color:var(--mut);font-weight:600;letter-spacing:.4px}
+ul.scn{margin:0;padding-left:17px}
+ul.scn li{margin-bottom:5px}
+pre.api{background:var(--soft);border-radius:7px;padding:10px 12px;margin:0;font-size:12px;
+  line-height:1.65;white-space:pre-wrap;word-break:break-word;overflow:auto;max-height:250px}
+.chk{display:flex;gap:8px;align-items:flex-start;padding:3px 0;cursor:pointer;font-size:13px}
+.chk input{margin:5px 0 0;flex:0 0 auto;accent-color:var(--done)}
+.chk.ok span{color:var(--done)}
+.rels{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.lnk{font:inherit;font-size:12px;padding:3px 8px;border-radius:20px;cursor:pointer;background:#fff}
+.lnk.pre{border:1px solid var(--acc);color:var(--acc)}
+.lnk.rel{border:1px solid var(--rel);color:var(--rel)}
+.lnk:hover{filter:brightness(.92)}
+
+/* ---------- 易混淆对照 ---------- */
+.cmp{margin:0;padding:0;border:0}
+.cmp>h3{font-size:14px;margin:0 0 3px}
+.cmp>p{margin:0 0 18px;color:var(--mut);font-size:12.5px}
+.pairs{display:grid;grid-template-columns:repeat(2,1fr);gap:30px 40px}
+.pair>h5{margin:0 0 9px;font-size:13px}
+.pair .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.side{background:var(--soft);border-radius:8px;padding:11px 12px}
+.side b{font-size:12.5px;display:block;margin-bottom:2px}
+.side .n{font-size:11.5px;color:var(--mut);display:block;margin-bottom:8px;min-height:30px}
+.side svg{display:block}
+.side code{font-size:11.5px}
+
+@media (max-width:1080px){
+  .pipe{grid-template-columns:repeat(3,1fr);row-gap:14px}
+  .stage:nth-child(4){padding-left:0}
+  .stage:nth-child(4)::after{display:none}
+  .deck{grid-template-columns:1fr;gap:20px}
+  .detail{position:static;max-height:none}
+  .pairs{grid-template-columns:1fr}
+  svg.edges{display:none}
+}
+@media (max-width:620px){.pipe{grid-template-columns:repeat(2,1fr)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div>
+    <h1>pandas 全景图</h1>
+    <p class="sub">9 页翻着看:第 1 页认路(6 个工位),其后每页一个工位 · 点知识点看「场景 / 掌握标准 / 关联」</p>
+  </div>
+  <div class="prog">
+    <div class="pbar"><i id="pfill"></i></div>
+    <span id="ptxt"></span>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="分页导航">
+  <div id="tablist" style="display:flex;gap:6px;flex-wrap:wrap" role="tablist"></div>
+  <span class="snav">
+    <span class="khint">1–9 / ← → 翻页 · ↑ ↓ 走路径</span>
+    <button class="tab" id="sprev" type="button" aria-label="上一页">‹</button>
+    <button class="tab" id="snext" type="button" aria-label="下一页">›</button>
+  </span>
+</nav>
+
+<div class="ctl">
+  <button id="play" aria-label="按推荐学习路径自动播放">▶ 学习路径播放</button>
+  <button id="prev" aria-label="上一个知识点">←</button>
+  <button id="next" aria-label="下一个知识点">→</button>
+  <span class="step mono" id="stepTxt"></span>
+  <label><input type="checkbox" id="allRel"> 显示本页全部关联</label>
+  <span class="lg">
+    <span class="e1"><i></i>前置(先学它)</span>
+    <span class="e2"><i></i>互相复用</span>
+    <span class="e3">已勾选掌握</span>
+  </span>
+</div>
+
+<div id="board">
+<svg class="edges" id="edges" aria-hidden="true"></svg>
+<div class="deck" id="deck">
+<div class="slidebox" id="slidebox">
+
+<section class="slide on" data-slide="flow">
+  <h3>一份数据从进厂到出结论,要经过 6 个工位</h3>
+  <p class="note">先认路:每个工位只负责一件事。点任意工位卡片 → 翻到那一页看它里面的知识点。</p>
+  <div class="pipe" id="pipe"></div>
+  <p class="cap">环形进度 = 这个工位的掌握标准已勾选比例;工位之间的箭头就是数据流动方向。</p>
+</section>
+
+<section class="slide" data-slide="cmp">
+  <div class="cmp">
+  <h3>四对最容易混的东西,并排看一次就分清</h3>
+  <p>形状变化画出来,比记文字定义可靠。</p>
+  <div class="pairs">
+
+    <div class="pair"><h5>loc(按标签) vs iloc(按位置)</h5><div class="two">
+      <div class="side"><b>loc['A':'C']</b><span class="n">用名字,切片<strong>含末端</strong> → 3 行</span>
+        <svg width="132" height="90" role="img" aria-label="loc 标签切片包含末端,选中 A B C 三行">
+          <g font-size="9" fill="#6b7280"><text x="0" y="19">A</text><text x="0" y="41">B</text><text x="0" y="63">C</text><text x="0" y="85">D</text></g>
+          <rect x="16" y="6" width="112" height="18" rx="3" fill="var(--acc)"/><rect x="16" y="28" width="112" height="18" rx="3" fill="var(--acc)"/>
+          <rect x="16" y="50" width="112" height="18" rx="3" fill="var(--acc)"/><rect x="16" y="72" width="112" height="18" rx="3" fill="#dfe3ea"/>
+        </svg></div>
+      <div class="side"><b>iloc[0:2]</b><span class="n">用序号,切片<strong>不含末端</strong> → 2 行</span>
+        <svg width="132" height="90" role="img" aria-label="iloc 位置切片不含末端,只选中第0和第1行">
+          <g font-size="9" fill="#6b7280"><text x="0" y="19">0</text><text x="0" y="41">1</text><text x="0" y="63">2</text><text x="0" y="85">3</text></g>
+          <rect x="16" y="6" width="112" height="18" rx="3" fill="var(--rel)"/><rect x="16" y="28" width="112" height="18" rx="3" fill="var(--rel)"/>
+          <rect x="16" y="50" width="112" height="18" rx="3" fill="#dfe3ea"/><rect x="16" y="72" width="112" height="18" rx="3" fill="#dfe3ea"/>
+        </svg></div>
+    </div></div>
+
+    <div class="pair"><h5>concat(摞) vs merge(对号入座)</h5><div class="two">
+      <div class="side"><b>pd.concat</b><span class="n">同结构直接叠,<strong>行数相加</strong></span>
+        <svg width="150" height="90" role="img" aria-label="concat 把两张表上下叠加,行数相加">
+          <rect x="4" y="6" width="70" height="16" rx="3" fill="#dfe3ea"/><rect x="4" y="25" width="70" height="16" rx="3" fill="#dfe3ea"/>
+          <rect x="4" y="47" width="70" height="16" rx="3" fill="var(--acc)"/><rect x="4" y="66" width="70" height="16" rx="3" fill="var(--acc)"/>
+          <path d="M82 44 h20" stroke="#9aa3b2" stroke-width="1.4" marker-end="url(#a2)"/>
+          <rect x="110" y="6" width="36" height="16" rx="3" fill="#dfe3ea"/><rect x="110" y="25" width="36" height="16" rx="3" fill="#dfe3ea"/>
+          <rect x="110" y="47" width="36" height="16" rx="3" fill="var(--acc)"/><rect x="110" y="66" width="36" height="16" rx="3" fill="var(--acc)"/>
+          <defs><marker id="a2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6z" fill="#9aa3b2"/></marker></defs>
+        </svg></div>
+      <div class="side"><b>pd.merge</b><span class="n">按<strong>共同的键</strong>横向拼,只留对上的</span>
+        <svg width="150" height="90" role="img" aria-label="merge 按共同键把两表横向拼接,只保留匹配的行">
+          <g font-size="9" fill="#15171c">
+            <rect x="2" y="6" width="26" height="16" rx="3" fill="var(--acc-soft)" stroke="var(--acc)"/><text x="10" y="18">a</text>
+            <rect x="2" y="26" width="26" height="16" rx="3" fill="var(--acc-soft)" stroke="var(--acc)"/><text x="10" y="38">b</text>
+            <rect x="2" y="46" width="26" height="16" rx="3" fill="#f1f2f4" stroke="#cfd4dc"/><text x="10" y="58">c</text>
+            <rect x="52" y="6" width="26" height="16" rx="3" fill="var(--acc-soft)" stroke="var(--acc)"/><text x="60" y="18">a</text>
+            <rect x="52" y="26" width="26" height="16" rx="3" fill="var(--acc-soft)" stroke="var(--acc)"/><text x="60" y="38">b</text>
+            <rect x="52" y="46" width="26" height="16" rx="3" fill="#f1f2f4" stroke="#cfd4dc"/><text x="60" y="58">d</text>
+            <rect x="98" y="6" width="48" height="16" rx="3" fill="var(--acc)"/><rect x="98" y="26" width="48" height="16" rx="3" fill="var(--acc)"/>
+            <text x="98" y="74" fill="#6b7280">c、d 被丢掉</text>
+          </g>
+          <path d="M30 14 h20 M30 34 h20" stroke="var(--acc)" stroke-width="1.2"/>
+          <path d="M82 14 h12 M82 34 h12" stroke="var(--acc)" stroke-width="1.2"/>
+        </svg></div>
+    </div></div>
+    <div class="pair"><h5>分组后 agg vs transform</h5><div class="two">
+      <div class="side"><b>.agg / .mean()</b><span class="n">每组<strong>压成一行</strong>,用来出报表</span>
+        <svg width="150" height="90" role="img" aria-label="分组聚合把每组压缩成一行">
+          <rect x="4" y="6" width="52" height="12" rx="2" fill="var(--acc)"/><rect x="4" y="21" width="52" height="12" rx="2" fill="var(--acc)"/><rect x="4" y="36" width="52" height="12" rx="2" fill="var(--acc)"/>
+          <rect x="4" y="56" width="52" height="12" rx="2" fill="var(--rel)"/><rect x="4" y="71" width="52" height="12" rx="2" fill="var(--rel)"/>
+          <path d="M64 44 h18" stroke="#9aa3b2" stroke-width="1.4" marker-end="url(#a3)"/>
+          <rect x="92" y="27" width="52" height="12" rx="2" fill="var(--acc)"/><rect x="92" y="50" width="52" height="12" rx="2" fill="var(--rel)"/>
+          <text x="92" y="80" font-size="9" fill="#6b7280">5 行 → 2 行</text>
+          <defs><marker id="a3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6z" fill="#9aa3b2"/></marker></defs>
+        </svg></div>
+      <div class="side"><b>.transform()</b><span class="n">结果<strong>贴回每一行</strong>,长度不变</span>
+        <svg width="150" height="90" role="img" aria-label="分组 transform 保持原有行数,结果贴回每一行">
+          <rect x="4" y="6" width="52" height="12" rx="2" fill="var(--acc)"/><rect x="4" y="21" width="52" height="12" rx="2" fill="var(--acc)"/><rect x="4" y="36" width="52" height="12" rx="2" fill="var(--acc)"/>
+          <rect x="4" y="56" width="52" height="12" rx="2" fill="var(--rel)"/><rect x="4" y="71" width="52" height="12" rx="2" fill="var(--rel)"/>
+          <path d="M64 44 h18" stroke="#9aa3b2" stroke-width="1.4" marker-end="url(#a3)"/>
+          <rect x="92" y="6" width="52" height="12" rx="2" fill="var(--acc)"/><rect x="92" y="21" width="52" height="12" rx="2" fill="var(--acc)"/><rect x="92" y="36" width="52" height="12" rx="2" fill="var(--acc)"/>
+          <rect x="92" y="56" width="52" height="12" rx="2" fill="var(--rel)"/><rect x="92" y="71" width="52" height="12" rx="2" fill="var(--rel)"/>
+        </svg></div>
+    </div></div>
+
+    <div class="pair"><h5>cut(等宽) vs qcut(等频)</h5><div class="two">
+      <div class="side"><b>pd.cut</b><span class="n"><strong>刀距相等</strong>,每箱人数可能极不均</span>
+        <svg width="150" height="90" role="img" aria-label="等宽分箱每段宽度相同但样本数不均">
+          <path d="M6 58 H144" stroke="#cfd4dc" stroke-width="1.4"/>
+          <g stroke="var(--acc)" stroke-width="1.6"><path d="M52 50 v16"/><path d="M98 50 v16"/></g>
+          <g fill="var(--acc)"><circle cx="14" cy="42" r="3"/><circle cx="22" cy="42" r="3"/><circle cx="30" cy="42" r="3"/><circle cx="38" cy="42" r="3"/><circle cx="18" cy="32" r="3"/><circle cx="30" cy="32" r="3"/><circle cx="24" cy="22" r="3"/><circle cx="70" cy="42" r="3"/><circle cx="82" cy="42" r="3"/><circle cx="120" cy="42" r="3"/></g>
+          <g font-size="9" fill="#6b7280"><text x="18" y="76">7 个</text><text x="66" y="76">2 个</text><text x="112" y="76">1 个</text></g>
+        </svg></div>
+      <div class="side"><b>pd.qcut</b><span class="n"><strong>每箱人数相等</strong>,刀距自动伸缩</span>
+        <svg width="150" height="90" role="img" aria-label="等频分箱每段样本数相同但宽度不同">
+          <path d="M6 58 H144" stroke="#cfd4dc" stroke-width="1.4"/>
+          <g stroke="var(--rel)" stroke-width="1.6"><path d="M34 50 v16"/><path d="M76 50 v16"/></g>
+          <g fill="var(--rel)"><circle cx="14" cy="42" r="3"/><circle cx="24" cy="42" r="3"/><circle cx="19" cy="32" r="3"/><circle cx="44" cy="42" r="3"/><circle cx="58" cy="42" r="3"/><circle cx="68" cy="42" r="3"/><circle cx="92" cy="42" r="3"/><circle cx="112" cy="42" r="3"/><circle cx="132" cy="42" r="3"/></g>
+          <g font-size="9" fill="#6b7280"><text x="10" y="76">3 个</text><text x="48" y="76">3 个</text><text x="100" y="76">3 个</text></g>
+        </svg></div>
+    </div></div>
+  </div>
+  </div>
+</section>
+
+</div><!-- /slidebox -->
+<div class="detail" id="detail"></div>
+</div><!-- /deck -->
+</div><!-- /board -->
+
+<script>
+const STAGES=[
+ {id:'A',t:'① 装进容器',w:'把数据变成"带标签的表"'},
+ {id:'B',t:'② 进出口',w:'从文件/数据库读进来,算完写回去'},
+ {id:'C',t:'③ 取数',w:'精确指到你要的那一块'},
+ {id:'D',t:'④ 拼与洗',w:'多表合一,去重去空去异常'},
+ {id:'E',t:'⑤ 变形',w:'换形状、换数值、造新列'},
+ {id:'F',t:'⑥ 算与看',w:'汇总、分组、时间、出图、出结论'}];
+
+const NODES=[
+{i:'series',s:'A',t:'Series 一维',o:'一列数据 + 一列标签,绑在一起',a:`pd.Series(data=[0,1,7,np.NAN], index=list("abcd"), dtype="float32")\npd.Series(data={"a":99,"b":137}, name="Python_score")`,u:['把"一列数值"和它的含义(索引)一起传递,不怕顺序错乱','字典转成能按名字取值的数据列','从 DataFrame 取一列、或聚合出一行结果,拿到的都是 Series'],k:['能说清 index / values / name 三者分别是什么','知道 np.NaN 和 Python 的 None 进了 pandas 都变成 NaN','不看文档能写出"指定索引 + 指定 dtype"的构造'],p:[],r:['dataframe','map','stats1']},
+{i:'dataframe',s:'A',t:'DataFrame 二维',o:'一张带行标签和列标签的表(≈ Excel 表)',a:`pd.DataFrame(data={"Python":[99,107,122]}, index=["张三","李四","Michael"])\npd.DataFrame(data=np.random.randint(0,151,size=(5,3)), columns=["Python","Math","En"])`,u:['所有业务表(订单、用户、日志)在 Python 里的标准形态','字典的 key 自动变列名,适合把接口/爬取结果直接装进表'],k:['能说出 index 是行、columns 是列,不会记反','用字典和用 ndarray 两种方式都能建表','知道每列可以是不同 dtype,而 df.values 会被强行统一成一种'],p:['series'],r:['view','col','reshape']},
+{i:'view',s:'A',t:'先看一眼',o:'拿到新数据的前 30 秒该敲什么',a:`df.head(10) / df.tail()\ndf.shape / df.dtypes / df.index / df.columns / df.values\ndf.info()      # 列名、类型、非空计数、内存\ndf.describe()  # 计数/均值/标准差/最小值/四分位/最大值`,u:['拿到一份陌生 CSV:多少行、哪些列、哪列有缺失','describe() 一眼看出量纲异常:最大值离 75% 分位极远 → 有脏数据','info() 发现"数字列被读成了 object",提前避免后面算不出均值'],k:['能说出 info() 和 describe() 各自回答什么问题','看到数值列的 dtype 是 object 会立刻警觉','养成"加载后立刻 head + info + describe"的肌肉记忆'],p:['dataframe'],r:['na','outlier','stats1']},
+{i:'csv',s:'B',t:'CSV / 文本',o:'最通用的进出口,盯住分隔符和索引',a:`df.to_csv("./salary.csv", sep=";", header=True, index=True)\npd.read_csv("./salary.csv", sep=";", header=[0], index_col=0)\npd.read_table("./salary.csv", sep=";")   # 读任意分隔符文本`,u:['和同事、上游系统交换数据的默认格式','导出中间结果,给 Excel 打开或喂给下一个脚本'],k:['知道 to_csv(index=True) 会让下次读入多出一列 Unnamed: 0,以及两种解决办法','能读分号、制表符分隔的文件','能指定某一列作为行索引读入'],p:['dataframe'],r:['excel','project']},
+{i:'excel',s:'B',t:'Excel 多工作表',o:'一个文件里装多张表,交付业务方最爱',a:`df1.to_excel("./salary.xls", sheet_name="salary", index=False)\nwith pd.ExcelWriter("./data.xlsx") as writer:\n    df1.to_excel(writer, sheet_name="salary", index=False)\n    df2.to_excel(writer, sheet_name="score", index=False)\npd.read_excel("./data.xlsx", sheet_name="salary", header=0)`,u:['把分析结果交给不写代码的同事:一个文件,多个 sheet','读取运营手工维护的多 sheet 台账'],k:['能一次写出多 sheet 文件(记得 ExcelWriter 上下文管理器)','知道 sheet_name 既能传序号也能传名字','清楚要装 openpyxl / xlrd 这类引擎'],p:['csv'],r:['sql']},
+{i:'sql',s:'B',t:'SQL 数据库',o:'查询结果直接变表,结果表直接写回库',a:`from sqlalchemy import create_engine\nconn = create_engine("mysql+pymysql://root:root@localhost/pandas?charset=UTF8MB4")\ndf.to_sql("score", conn, if_exists="append")\npd.read_sql("select * from score limit 10", conn, index_col="Python")`,u:['生产数据在库里:先用 SQL 粗筛(WHERE/LIMIT),再用 pandas 精加工','每天算好的指标写回一张结果表,供 BI 读取'],k:['能说出 if_exists 的 fail / replace / append 区别','认同"能在 SQL 里过滤的绝不全量拉进内存"','看得懂连接串每一段的含义,而不是复制粘贴'],p:['csv'],r:['hdf5','project']},
+{i:'hdf5',s:'B',t:'HDF5 大文件',o:'像文件夹一样存多份数据集,读写快',a:`df1.to_hdf("./data.h5", key="salary")\ndf2.to_hdf("./data.h5", key="score")\npd.read_hdf("./data.h5", key="salary")`,u:['几百万行的中间结果要反复读,CSV 太慢时换它','一个 .h5 用 key 分门别类存多份数据(group=目录,dataset=文件)'],k:['能用"文件夹/文件"类比讲清 group 和 dataset','知道 key 是取数的唯一凭据','清楚它的定位是"自己用的高速缓存",不是对外交换格式'],p:['sql'],r:[]},
+{i:'col',s:'C',t:'按列名取',o:'方括号取列,冒号切行',a:`df["Python"]              # 单列 → Series\ndf.Python                 # 同上,列名合法时可用\ndf[["Python","Keras"]]    # 多列 → DataFrame\ndf[3:15]                  # 注意:方括号里放切片是切"行"`,u:['取出要分析的字段','一次选出建模需要的几列,丢掉无关列'],k:['能解释 df["a"] 与 df[["a"]] 返回类型的不同','记住这个不对称:方括号里放列名取列,放切片切行','知道 df.列名 在列名带空格、中文、和方法同名时会失效'],p:['dataframe'],r:['loc','bool']},
+{i:'loc',s:'C',t:'loc 按标签',o:'用"名字"定位:df.loc[行标签, 列标签]',a:`df.loc[["A","C","D","F"]]\ndf.loc["A":"E", ["Python","Keras"]]\ndf.loc[:, ["Keras","Tensorflow"]]\ndf.loc["E"::2, "Python":"Tensorflow"]\ndf.loc["A","Python"]      # 单个值`,u:['按用户 ID / 日期 / 商品名这种有意义的标签取数','行和列同时筛选,一步到位'],k:['能说出 loc 切片是闭区间(含末端),和 Python 惯例相反','行、列两个位置都能放:单值 / 列表 / 切片 / 布尔条件','会写 df.loc[条件, 列] 这种组合筛选'],p:['col'],r:['iloc','assign','ts_index']},
+{i:'iloc',s:'C',t:'iloc 按位置',o:'用"第几个"定位,规则和 NumPy 一致',a:`df.iloc[4]\ndf.iloc[2:8, 0:2]\ndf.iloc[[1,3,5],[0,2,1]]\ndf.iloc[0,2]`,u:['不关心标签,只要"前 100 行""最后两列"','标签重复或混乱时,用位置最稳'],k:['能立刻答出与 loc 的两个差别:标签/位置、闭区间/左闭右开','看到 df.iloc["A"] 知道必然报错'],p:['loc'],r:['assign']},
+{i:'bool',s:'C',t:'布尔索引(筛选)',o:'先算一张 True/False 表,再用它罩住数据',a:`cond = df.Python > 100\ndf[cond]\ncond2 = (df.Python > 50) & (df["Keras"] > 50)   # 用 & | ~,不是 and/or\ndf[df > 50]                    # 逐元素罩,不满足的位置变 NaN\ndf[df.index.isin(["A","C","F"])]`,u:['取出"高价值用户""异常订单""这几个城市"的数据','数据分析里出现频率最高的动作:提出问题 → 写成条件 → 筛出来'],k:['多条件必须用 & |,每段加括号,并能说出为什么不能用 and','能区分 df[cond](按行筛) 和 df[df>50](按元素罩)','会用 isin 代替一长串 or'],p:['col','loc'],r:['assign','outlier','na','project']},
+{i:'assign',s:'C',t:'赋值 / 加新列',o:'选中什么就能改什么;加列会自动按索引对齐',a:`df["PyTorch"] = s          # 按行索引自动对齐,缺的补 NaN\ndf.loc["A","Python"] = 256\ndf.iloc[3,2] = 512\ndf.loc[:,"Python"] = np.array([128]*10)\ndf[df >= 128] = -df        # 按条件批量改`,u:['特征工程:基于已有列算出新列','按条件批量修正脏数据(如把负数销量置 0)'],k:['能说出"自动对齐"帮你避免了什么错误(顺序不同也不会串行)','知道链式赋值 df[a][b]=x 可能不生效,要用 .loc 一步到位'],p:['loc','iloc','bool'],r:['map','apply']},
+{i:'concat',s:'D',t:'concat 摞起来',o:'同结构的表上下摞、或左右并',a:`pd.concat([df1,df2], axis=0)   # 上下摞:行追加\npd.concat([df1,df3], axis=1)   # 左右并:列追加\ndf1.append(df2)                # 老写法,新版 pandas 已移除`,u:['把 12 个月的月报拼成年度表','把同一批用户的不同指标表横向并起来'],k:['能说出 axis=0 / axis=1 各是哪个方向','知道拼接也要"按索引对齐",索引不一致会产生 NaN 或重复索引','拼完记得 reset_index'],p:['dataframe'],r:['merge','insert']},
+{i:'insert',s:'D',t:'insert 插到指定位置',o:'在第 n 列的位置塞一列进去',a:`df.insert(loc=1, column="Pytorch", value=1024)\n# 行没有 insert:想插到中间只能 切开 → 拼上(concat)`,u:['交付的表要求列顺序固定时,把新列放到指定位置'],k:['知道 insert 是原地修改、没有返回值','清楚行方向没有对应方法,得靠切片 + concat'],p:['concat'],r:[]},
+{i:'merge',s:'D',t:'merge 按键关联',o:'两张表通过共同的"钥匙"对上号(= SQL 的 JOIN)',a:`pd.merge(df1, df2, how="inner", on="name")\npd.merge(df1, df3, how="outer", left_on="name", right_on="名字")\npd.merge(df4, score_mean, left_index=True, right_index=True)`,u:['订单表 + 用户表 → 补上用户画像,最典型的多表分析','把算好的汇总值(如各科平均分)贴回明细表'],k:['能画出 inner / outer / left / right 四种 how 的取数范围','列名不同用 left_on/right_on;想按索引对就用 left_index/right_index','合并后一定看行数变化,警惕键重复导致的行数膨胀'],p:['concat','col'],r:['groupby','project']},
+{i:'dup',s:'D',t:'去重',o:'找出并删掉重复行',a:`df.duplicated()        # 每行是否与前面重复 → 布尔 Series\ndf.drop_duplicates()   # 删掉重复行\ndf.drop_duplicates(subset=["订单号"], keep="last")`,u:['爬取/日志数据常有重复记录,分析前先去重','按业务主键(订单号)去重,而不是整行完全相同才算重复'],k:['能说出 subset 和 keep 的作用','知道先用 duplicated() 看一眼再删,而不是闭眼删'],p:['view'],r:['na','project']},
+{i:'na',s:'D',t:'缺失值',o:'先看缺在哪,再决定删还是填',a:`df.isnull()            # 逐元素判断\ndf.isnull().sum()      # 每列缺多少(最常用)\ndf.dropna(how="any")   # 删\ndf.fillna(value=0)     # 填`,u:['问卷/埋点大量留空:先统计缺失比例,再决定策略','关键字段缺失 → 删行;非关键数值缺失 → 用均值/中位数/0 填'],k:['能说出 how="any" 与 how="all" 的区别','清楚"删还是填"取决于缺失比例和该列重要性,没有万能套路','会用 isnull().sum() 先定位缺失分布'],p:['view','bool'],r:['dup','project']},
+{i:'drop',s:'D',t:'按行列删 / filter 选',o:'点名删除,或按"名字规则"批量选列',a:`del df["color"]\ndf.drop(labels=["price"], axis=1)      # 删列\ndf.drop(labels=[0,1,5], axis=0)        # 删行\ndf.filter(items=["China","France"])\ndf.filter(regex="a$", axis=1)          # 正则选列名\ndf.filter(like="og", axis=0)           # 选行标签含 og`,u:['删掉身份证号这类不参与分析、又有风险的列','几十列的宽表里,用正则一次选出所有 _amt 结尾的金额列'],k:['能说清 labels + axis 的组合,并知道默认不原地修改(要 inplace 或重新赋值)','知道 filter 只看"标签名",不看数据内容'],p:['dup'],r:['col']},
+{i:'outlier',s:'D',t:'异常值(3σ)',o:'离均值太远的点,先标出来再决定去留',a:`cond = (df2 > 3*df2.std()).any(axis=1)   # 任一列越界就算这行异常\nindex = df2[cond].index\ndf2.drop(labels=index, axis=0)`,u:['价格/时长里混入明显不合理的极端值,会把均值带跑偏','风控、质检里"异常"本身就是要找的目标 —— 此时千万别删'],k:['能解释 3σ 的前提是近似正态,偏态数据该换分位数法(IQR)','会用 .any(axis=1) 把"任一列越界"折叠成一个行条件','先判断异常是脏数据还是真信号,再决定删不删'],p:['bool','stats3'],r:['stats1','bin']},
+{i:'rename',s:'E',t:'改名 / 换值',o:'rename 改标签,replace 改数据',a:`df.rename(index={"A":"AA"}, columns={"Python":"人工智能"})\ndf.replace(3, 1024)\ndf.replace([0,7], 2048)\ndf.replace({0:512, np.nan:998})     # {旧值:新值}\ndf.replace({"Python":2}, -1024)     # {列名:旧值} → 只改这列`,u:['把英文列名换成中文,再交付业务方','统一脏值:把 男 / M / 1 都换成 "男"'],k:['能一句话区分 rename(动标签) 和 replace(动数据)','知道 replace 传字典有两种含义,不会混'],p:['dataframe'],r:['map']},
+{i:'map',s:'E',t:'map(只给 Series)',o:'一列数据逐个过一遍"翻译词典"或小函数',a:`df["Keras"].map({1:"Hello",5:"World",7:"AI"})   # 字典映射\ndf["Python"].map(lambda x: x >= 5)              # 匿名函数\ndf["Tensorflow"].map(convert)                   # 自定义函数`,u:['把 0/1 编码翻译成 男/女','实战里的技能标签:职位描述含 python 就打 1,否则 0','把长长的行业标签串,用自定义函数压成一个主标签'],k:['记住 map 只属于 Series(一列),DataFrame 没有 map','字典没覆盖到的值会变成 NaN —— 这是高频踩坑点','能在"字典映射"和"函数映射"之间选对'],p:['col','assign'],r:['apply','dummies','project']},
+{i:'apply',s:'E',t:'apply / applymap',o:'Series 里 x 是元素;DataFrame 里 x 是一整行或一整列',a:`df["Keras"].apply(lambda x: x > 5)        # Series:x = 元素\ndf.apply(lambda x: x.median(), axis=0)    # DataFrame:x = 一整列\ndf.apply(convert, axis=1)                 # x = 一整行\ndf.applymap(lambda x: x + 100)            # 逐元素(DataFrame 专有)`,u:['业务规则复杂,内置函数表达不了时的万能出口','按行综合多列算一个新指标(如用身高体重算 BMI)'],k:['能准确说出三种写法里 x 到底是什么:元素 / 列 / 行','知道 axis=0 是"沿行方向压扁,每列得一个值"','清楚 apply 本质是 Python 循环,数据量大时明显慢于向量化'],p:['map'],r:['transform','g_apply','stats1']},
+{i:'transform',s:'E',t:'transform',o:'像 apply,但"进多少出多少",还能一列同时算多种',a:`df["Python"].transform([np.sqrt, np.exp])   # 一列 → 多列结果\ndf.transform({"Python":convert, "Tensorflow":np.max, "Keras":np.min})`,u:['同一列同时要多种变换结果(开方、取对数)','不同列各用不同函数处理,一次写完'],k:['能说出与 apply 的关键差别:transform 不许改变形状(不能聚合成一个值)','知道它真正的高光时刻在 groupby 之后'],p:['apply'],r:['g_apply','agg']},
+{i:'dummies',s:'E',t:'重排抽样 / 哑变量',o:'打乱、抽样;把类别列摊成一堆 0/1 列',a:`ran = np.random.permutation(10)\ndf.take(ran)                            # 重排\ndf.take(np.random.randint(0,10,size=15))  # 有放回随机抽样\npd.get_dummies(df, prefix="", prefix_sep="")   # 独热编码`,u:['训练模型前打乱样本顺序;或抽一小份数据快速验证代码','城市/渠道这类文字类别,模型不认识,必须变成 0/1 列'],k:['能解释为什么类别要独热编码,而不能直接编成 1,2,3','知道 take 用的是位置,不是标签'],p:['map'],r:['project']},
+{i:'reshape',s:'E',t:'重塑 stack / unstack',o:'长表 ⇄ 宽表:把一层索引竖起来或放平',a:`df.T                          # 转置\npd.MultiIndex.from_product([list("AB"), ["期中","期末"]])   # 多层索引\ndf2.unstack(level=-1)         # 行索引 → 列(变宽)\ndf2.stack()                   # 列 → 行索引(变长)\ndf2.mean(level=0)             # 只按某一层聚合`,u:['"每人每次考试一行"的长表 → "每人一行、期中期末各一列"的宽表,好交付','分组聚合后的多层索引结果,unstack 一下就是一张漂亮交叉表'],k:['能徒手画出 stack / unstack 前后的形状变化','看到多层索引不慌,知道用 level 指定操作哪一层','明白"长表适合存储和计算,宽表适合阅读"'],p:['dataframe'],r:['pivot','agg','ts_resample']},
+{i:'stats1',s:'F',t:'基础统计',o:'一行代码把一列(或一行)压成一个数',a:`df.count() / df.sum() / df.mean(axis=1)\ndf.max(axis=0) / df.min() / df.median()\ndf.quantile(q=[0.2,0.4,0.8])\ndf.describe()`,u:['算业务大盘:总销量、人均客单价、中位时长','用中位数而不是均值汇报"典型水平",避免被极端值带偏'],k:['能说出 axis=0 / axis=1 各沿哪个方向压缩,而且不会记反','知道均值受极端值影响、中位数不受,能按场景选对','清楚这些方法默认跳过 NaN'],p:['view','apply'],r:['stats3','sort','plot']},
+{i:'argidx',s:'F',t:'最值在哪',o:'不只要"多少",还要"是谁"',a:`df["Python"].argmin()    # 最小值的位置(第几个)\ndf["Keras"].argmax()\ndf.idxmax()              # 最大值的索引标签\ndf.idxmin()`,u:['找出销量最高的那个城市名,而不是销量数字本身','定位异常发生在哪一天'],k:['能区分 arg*(位置,配 iloc) 和 idx*(标签,配 loc)'],p:['stats1'],r:['iloc','loc','sort']},
+{i:'stats3',s:'F',t:'分布与变化',o:'看构成、看波动、看增长',a:`df["Python"].value_counts()   # 每个值出现几次\ndf["Keras"].unique()          # 去重后的取值\ndf.std() / df.var()           # 离散程度\ndf.cumsum() / df.cumprod() / df.cummax()   # 累计\ndf.diff()                     # 环比差值\ndf.pct_change()               # 环比增长率`,u:['value_counts 是探索类别列的第一把铲子:哪个渠道占比最大','日销量 → diff 看增减、pct_change 看增长率、cumsum 看累计到今天'],k:['能说出 value_counts() 和 groupby().size() 的关系','知道 std 变大对业务意味着什么(不稳定)','能徒手解释 diff 与 pct_change 的差别'],p:['stats1'],r:['outlier','bin','plot','ts_shift']},
+{i:'stats4',s:'F',t:'相关性',o:'两列是不是一起动?同向还是反向?',a:`df.cov()                       # 协方差\ndf["Python"].cov(df["Keras"])\ndf.corr()                      # 相关系数矩阵,范围 -1~1\ndf.corrwith(df["Tensorflow"])  # 单列 vs 所有列`,u:['找出与"是否流失"最相关的几个指标,决定先分析什么','建模前剔除高度相关的冗余特征'],k:['能说出为什么比强弱要用相关系数而不是协方差(已去掉量纲,范围固定)','牢记相关 ≠ 因果','知道 corr 默认只捕捉线性关系'],p:['stats3'],r:['plot']},
+{i:'sort',s:'F',t:'排序 / Top N',o:'按标签排、按数值排、直接取前 N',a:`df.sort_index(axis=0, ascending=True)    # 按行索引\ndf.sort_index(axis=1)                    # 按列名\ndf.sort_values(by=["Python","Keras"])    # 多列,先后生效\ndf.nlargest(10, columns="Keras")\ndf.nsmallest(5, columns="Python")`,u:['出"销售额 Top10 门店"这类结论,几乎每份报告都要用','多列排序:先按等级,再按分数'],k:['能区分 sort_index(排标签) 与 sort_values(排数据)','知道 nlargest 比 sort_values().head() 更省事也更快'],p:['stats1'],r:['argidx','groupby']},
+{i:'bin',s:'F',t:'分箱(离散化)',o:'把连续数值切成几档:低 / 中 / 高',a:`pd.cut(df.Python, bins=3)                       # 等宽\npd.cut(df.Keras, bins=[0,60,90,120,150], right=False,\n       labels=["不及格","中等","良好","优秀"])     # 指定断点\npd.qcut(df.Python, q=4, labels=["差","中","良","优"])   # 等频`,u:['年龄 → 年龄段、消费金额 → RFM 等级,再做分组统计','连续变量分箱后画柱状图,比散点更容易向业务解释'],k:['能说出 cut(等宽) 与 qcut(等频) 的差别和各自适用场景','会用 right=False 控制左闭右开,并核对边界不漏数','知道分箱产物是"类别列",天然接 groupby'],p:['stats3'],r:['groupby','plot','outlier']},
+{i:'groupby',s:'F',t:'groupby 分组',o:'拆 → 算 → 合 的第一步:只负责"拆"',a:`g = df.groupby(by="sex")[["Python","Java"]]\nfor name, data in g: ...          # 分组对象可迭代\ndf.groupby(by=["class","sex"])    # 多列分组 → 多层索引\ndf["Python"].groupby(df["class"])\ndf.groupby(df.dtypes, axis=1)     # 按数据类型分组\ndf.groupby(m, axis=1)             # 按字典分组`,u:['"分城市看销量""分渠道看转化" —— 一切带"分…看…"的问题都是 groupby','分组后遍历,给每个组单独生成一份报表或图'],k:['能背出 split-apply-combine 三步,并说清 groupby 本身还没开始算','知道多列分组的结果是多层索引,后面接得上 unstack','能说出 by 可以是列名 / Series / 字典 / 函数 / dtypes'],p:['col','map'],r:['agg','pivot','g_apply','reshape','ts_resample']},
+{i:'agg',s:'F',t:'聚合 agg',o:'每组算出一个(或多个)汇总值',a:`df.groupby("sex").mean().round(1)\ndf.groupby(["class","sex"])[["Python","Keras"]].max()\ndf.groupby(["class","sex"]).size()        # 每组行数\ndf.groupby(["class","sex"]).describe()\n.agg([np.max, np.min, pd.Series.count])  # 多种统计一起上\n.agg({"Python":[("最大值",np.max)], "Keras":[("中位数",np.median)]})`,u:['一次算出每个班的最高分、最低分、人数,直接做成报表','不同字段不同口径:金额求和、订单数计数、单价求均值'],k:['能默写 agg 传字典 + 元组改名的嵌套写法','清楚 size() 与 count() 的区别(前者含 NaN 行,后者不含)','面对聚合结果的多层列索引不发慌'],p:['groupby'],r:['pivot','transform','reshape']},
+{i:'g_apply',s:'F',t:'组内 apply / transform',o:'apply:每组返回一个;transform:每一行都拿回结果',a:`df.groupby(["class","sex"])[["Python","Keras"]].apply(np.mean)\n\ndef normalization(x):\n    return (x - x.min()) / (x.max() - x.min())\ndf.groupby(["class","sex"])[["Python","Tensorflow"]].transform(normalization)`,u:['组内归一化:每个班内部把分数缩放到 0~1,再跨班比较','算"该用户本月消费占他自己全年消费的比例"这类要把组内汇总贴回每行的指标'],k:['能一句话说清:apply 结果"每组一行",transform 结果和原表一样长','看到"减组均值、除以组内最大值"就想到 groupby().transform()'],p:['groupby','transform','apply'],r:['agg']},
+{i:'pivot',s:'F',t:'透视表 pivot_table',o:'Excel 数据透视表:分组聚合的现成入口',a:`df.pivot_table(values=["Python","Keras","Tensorflow"],\n               index=["class","sex"],\n               aggfunc={"Python":[("最大值",np.max)],\n                        "Keras":[("最小值",np.min),("中位数",np.median)]})`,u:['交付"行是门店、列是月份、值是销售额"的交叉表','面对熟悉 Excel 透视表的业务同事,这个格式沟通成本最低'],k:['能说出 pivot_table 本质就是 groupby + agg 的封装','知道 index / columns / values / aggfunc 四个位置各放什么'],p:['groupby','agg'],r:['reshape']},
+{i:'ts_index',s:'F',t:'时间戳 / 时间索引',o:'日期变成一等公民,就能用字符串直接切时间段',a:`pd.Timestamp("2020-8-24 12")       # 时刻\npd.Period("2020-8-24", freq="M")   # 时期\npd.date_range("2020.08.24", periods=5, freq="M")\npd.to_datetime(["2020.08.24","24/08/2020"])\npd.to_datetime([1598582420401], unit="ms") + pd.DateOffset(hours=8)\nts["2020-08"]                      # 传"年月"就能切\nts.index.year / ts.index.dayofweek`,u:['日志/订单里时间是字符串或毫秒数,先统一转成 datetime','取"今年 8 月"的数据不用写复杂条件,直接 ts["2020-08"]','提取星期几,分析周末 vs 工作日差异'],k:['能把毫秒时间戳转成东八区时间','知道 Timestamp(时刻) 与 Period(时期) 的区别','会用索引属性造出"星期几""第几周"这类特征'],p:['loc'],r:['ts_shift','ts_resample']},
+{i:'ts_shift',s:'F',t:'移动 / 频率转换',o:'把数据整体挪一格,或换一个时间粒度',a:`ts.shift(periods=2)     # 数据后移:昨天的值挪到今天\nts.shift(periods=-2)    # 前移\nts.shift(periods=2, freq=pd.tseries.offsets.Day())   # 挪的是日期\nts.asfreq(pd.tseries.offsets.Week())                 # 天 → 周\nts.asfreq(pd.tseries.offsets.Hour(), fill_value=0)   # 少变多要填值`,u:['算环比/同比:今天 ÷ shift(1) − 1','做时序特征:把过去 1/7/30 天的值作为今天的特征列'],k:['能说出 shift(移动数据) 与 shift(freq=)(移动日期) 的差别','知道频率变密会出现空位,要 fill_value 或插值'],p:['ts_index'],r:['stats3','ts_resample']},
+{i:'ts_resample',s:'F',t:'重采样 resample',o:'时间维度上的 groupby:按周/月/季汇总',a:`ts.resample("2W").sum()\nts.resample("3M").sum().cumsum()\ndf1.resample("M", on="week_starting").agg({"price":np.mean,"volume":np.sum})\ndf2.resample("D", level=0).sum()      # 多层索引里的时间层`,u:['秒级埋点压成小时级/日级再分析,数据量瞬间可控','出周报月报:日明细 → 月汇总,一行代码'],k:['能说出 resample 与 groupby 的关系(按时间分箱再聚合)','会用 on= 指定时间列、level= 指定多层索引里的时间层','记得常用频率别名:D / W / M / Q / H'],p:['ts_index','groupby'],r:['agg','reshape','plot']},
+{i:'plot',s:'F',t:'画图 .plot',o:'选图型 = 选你要回答的问题',a:`df.cumsum().plot()                # 线:随时间变化\ndf.plot.bar(stacked=True)         # 柱:类别间比较\ndf.plot.pie(subplots=True)        # 饼:占比(类别少时)\ndf.plot.scatter(x="A", y="B", s=df["C"]*200)   # 散点/气泡:两列关系\ndf.plot.area(stacked=True)        # 面积:累计构成\ndf.plot.box()                     # 箱:分布 + 离群点\ndf.plot.hist(alpha=0.5)           # 直方:单列分布`,u:['汇报前给关键结论配一张图,比一堆数字有说服力','箱线图快速看出哪列有离群点,和 3σ 过滤互为验证'],k:['能按问题选对图:趋势→线,比较→柱,分布→直方/箱,关系→散点,占比→饼','知道 df.plot 背后就是 matplotlib,能接着调标题和坐标轴'],p:['stats1','groupby'],r:['stats4','bin','project']},
+{i:'project',s:'F',t:'实战:招聘数据分析',o:'把上面所有工位串成一条真实链路',a:`job = pd.read_csv("./job.csv"); job.drop_duplicates(inplace=True)\ncond = job["positionName"].str.contains("数据分析"); job = job[cond]\njob["salary"] = job["salary"].str.lower()\\\n    .str.extract(r"(\\d+)[k]-(\\d+)k").applymap(int).mean(axis=1)\njob["Python"] = job["job_detail"].map(lambda x: 1 if "python" in x else 0)\njob["industryField"] = job.industryField.map(clean_industry)`,u:['先定分析目标(城市需求 / 薪资分布 / 经验与薪资关系 / 技能要求),再倒推需要哪些字段','薪资是 "8k-16k" 这种脏文本:小写化 → 正则抽数字 → 转 int → 取区间均值','从职位描述里用关键词打技能标签,把文本变成可统计的 0/1 列'],k:['能独立走完:提问 → 加载 → 去重 → 筛选 → 清洗 → 造特征 → 分组聚合 → 画图 → 写结论','会用 .str 系列(contains / lower / extract / split)处理文本列','接受 80% 时间花在清洗和造特征上,这很正常'],p:['csv','dup','bool','na','map','groupby','plot'],r:['merge','dummies']}];
+
+const PATH=['dataframe','view','csv','col','bool','na','map','groupby','agg','sort','plot','project'];
+const BY={};NODES.forEach(n=>BY[n.i]=n);
+const pipe=document.getElementById('pipe'), svg=document.getElementById('edges'), detail=document.getElementById('detail');
+const board=document.getElementById('board'), deck=document.getElementById('deck'), slidebox=document.getElementById('slidebox');
+const NS='http://www.w3.org/2000/svg';
+let sel='dataframe', step=-1, timer=null;
+const done=new Set();
+const TOTAL=NODES.reduce((s,n)=>s+n.k.length,0);
+function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
+const allRel=document.getElementById('allRel'), stepTxt=document.getElementById('stepTxt'), playBtn=document.getElementById('play');
+
+/* ---------- 幻灯片配置 ---------- */
+const SLIDES=[
+ {k:'flow',t:'流水线总览'},
+ {k:'A',t:'① 装进容器',g:'A'},
+ {k:'B',t:'② 进出口',g:'B'},
+ {k:'C',t:'③ 取数',g:'C'},
+ {k:'D',t:'④ 拼与洗',g:'D'},
+ {k:'E',t:'⑤ 变形',g:'E'},
+ {k:'F1',t:'⑥ 统计与排序',ids:['stats1','argidx','stats3','stats4','sort','bin'],
+   h:'⑥ 算与看(上):把一列数压成一个结论',note:'先会读懂一列数的水平、波动、分布,再谈分组和出图。'},
+ {k:'F2',t:'⑦ 分组·时间·出图',ids:['groupby','agg','g_apply','pivot','ts_index','ts_shift','ts_resample','plot','project'],
+   h:'⑥ 算与看(下):分组、时间、出图,直到跑完一条真实链路',note:'一切"分…看…"的问题都是 groupby;时间维度的分组叫 resample。'},
+ {k:'cmp',t:'易混淆对照'}
+];
+const idsOf=s=>s.ids||(s.g?NODES.filter(n=>n.s===s.g).map(n=>n.i):[]);
+const N2S={};SLIDES.forEach(s=>idsOf(s).forEach(id=>{if(!N2S[id])N2S[id]=s.k}));
+const G2S={};SLIDES.forEach(s=>{if(s.g&&!G2S[s.g])G2S[s.g]=s.k});
+G2S.F='F1';
+let slide='flow';
+
+function buildSlides(){
+  const cmp=slidebox.querySelector('.slide[data-slide="cmp"]');
+  SLIDES.forEach(s=>{
+    const ids=idsOf(s); if(!ids.length) return;
+    const st=STAGES.filter(x=>x.id===s.g)[0];
+    const sec=el('section','slide'); sec.dataset.slide=s.k;
+    sec.appendChild(el('h3',null,s.h||(st?st.t+':'+st.w:s.t)));
+    sec.appendChild(el('p','note',s.note||'点卡片看:什么时候用它 / 关键写法 / 怎么算掌握了 / 它连着谁。'));
+    const grid=el('div','chipgrid');
+    ids.forEach(id=>{
+      const n=BY[id];
+      const b=el('button','chip'); b.type='button'; b.dataset.id=id;
+      b.setAttribute('aria-pressed','false');
+      b.appendChild(el('span','dot')); b.appendChild(el('span',null,n.t));
+      b.addEventListener('click',()=>{stop();select(id)});
+      grid.appendChild(b);
+    });
+    sec.appendChild(grid);
+    sec.appendChild(el('p','cap','实心圆点 = 这个知识点的掌握标准已全部勾选。'));
+    slidebox.insertBefore(sec,cmp);
+  });
+}
+function markSlide(k){
+  slide=k;
+  slidebox.querySelectorAll('.slide').forEach(s=>s.classList.toggle('on',s.dataset.slide===k));
+  document.querySelectorAll('#tablist .tab').forEach(b=>b.setAttribute('aria-selected',b.dataset.k===k?'true':'false'));
+  deck.classList.toggle('solo',k==='cmp'||k==='flow');
+}
+function showSlide(k){
+  markSlide(k);
+  const ids=idsOf(SLIDES.filter(s=>s.k===k)[0]||{});
+  if(ids.length && ids.indexOf(sel)<0){sel=ids[0];render();return}
+  drawEdges();
+}
+function slideStep(d){
+  let i=0;SLIDES.forEach((s,j)=>{if(s.k===slide)i=j});
+  showSlide(SLIDES[(i+d+SLIDES.length)%SLIDES.length].k);
+}
+function buildTabs(){
+  const box=document.getElementById('tablist');
+  SLIDES.forEach((s,idx)=>{
+    const b=el('button','tab'); b.type='button'; b.dataset.k=s.k;
+    b.setAttribute('role','tab'); b.setAttribute('aria-selected',s.k===slide?'true':'false');
+    b.appendChild(el('span','num',String(idx+1)));
+    b.appendChild(el('span',null,s.t));
+    if(idsOf(s).length) b.appendChild(el('b'));
+    b.addEventListener('click',()=>{stop();showSlide(s.k)});
+    box.appendChild(b);
+  });
+}
+
+function buildPipe(){
+  STAGES.forEach(st=>{
+    const d=el('button','stage'); d.type='button'; d.dataset.stage=st.id;
+    const cnt=NODES.filter(n=>n.s===st.id).length;
+    d.setAttribute('aria-label',st.t+',共 '+cnt+' 个知识点,进入这一页');
+    d.innerHTML='<span class="shead"><span class="stitle"></span>'+
+      '<svg width="20" height="20" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="7" fill="none" stroke="#e9ecf1" stroke-width="3"/>'+
+      '<circle class="rp" cx="9" cy="9" r="7" fill="none" stroke="var(--done)" stroke-width="3" stroke-linecap="round" stroke-dasharray="0 44" transform="rotate(-90 9 9)"/></svg>'+
+      '<span class="cnt mono" style="font-size:11px;color:var(--mut)"></span></span><span class="what"></span><span class="go"></span>';
+    d.querySelector('.stitle').textContent=st.t;
+    d.querySelector('.what').textContent=st.w;
+    d.querySelector('.go').textContent=cnt+' 个知识点 →';
+    d.addEventListener('click',()=>{stop();showSlide(G2S[st.id])});
+    pipe.appendChild(d);
+  });
+}
+
+function chipEl(id){
+  const c=slidebox.querySelector('.chip[data-id="'+id+'"]');
+  if(!c) return null;
+  const r=c.getBoundingClientRect();
+  return (r.width&&r.height)?c:null;   /* 只认当前页上看得见的卡片 */
+}
+
+function select(id){
+  sel=id;
+  const k=N2S[id];
+  if(k&&k!==slide) markSlide(k);
+  render();
+}
+
+function render(){
+  const n=BY[sel], pre=new Set(n.p), rel=new Set(n.r);
+  slidebox.classList.toggle('focus',!allRel.checked);
+  slidebox.querySelectorAll('.chip').forEach(c=>{
+    const id=c.dataset.id;
+    c.setAttribute('aria-pressed',id===sel?'true':'false');
+    c.classList.toggle('pre',pre.has(id));
+    c.classList.toggle('rel',rel.has(id)&&!pre.has(id));
+  });
+  renderDetail(n); dots(); rings(); prog(); drawEdges();
+}
+
+function dots(){slidebox.querySelectorAll('.chip').forEach(c=>{const n=BY[c.dataset.id];
+  c.querySelector('.dot').classList.toggle('on',n.k.every((_,j)=>done.has(n.i+'#'+j)))})}
+
+function rings(){STAGES.forEach(st=>{
+  let tot=0,ok=0;
+  NODES.filter(n=>n.s===st.id).forEach(n=>{tot+=n.k.length;n.k.forEach((_,j)=>{if(done.has(n.i+'#'+j))ok++})});
+  const st_=pipe.querySelector('.stage[data-stage="'+st.id+'"]'), C=43.98, v=tot?ok/tot*C:0;
+  st_.querySelector('.rp').setAttribute('stroke-dasharray',v+' '+(C-v));
+  st_.querySelector('.cnt').textContent=ok+'/'+tot;
+})}
+
+function prog(){const w=done.size/TOTAL*100;
+  document.getElementById('pfill').style.width=w.toFixed(1)+'%';
+  document.getElementById('ptxt').textContent='掌握标准已勾选 '+done.size+' / '+TOTAL+' 条 · 共 '+NODES.length+' 个知识点';
+  SLIDES.forEach(s=>{
+    const ids=idsOf(s); if(!ids.length) return;
+    const t=document.querySelector('#tablist .tab[data-k="'+s.k+'"] b'); if(!t) return;
+    const ok=ids.filter(id=>BY[id].k.every((_,j)=>done.has(id+'#'+j))).length;
+    t.textContent=ok+'/'+ids.length;
+    t.classList.toggle('full',ok===ids.length);
+  });
+}
+function renderDetail(n){
+  detail.innerHTML='';
+  const c1=el('div');
+  c1.appendChild(el('h2',null,n.t)); c1.appendChild(el('p','one',n.o));
+  c1.appendChild(el('h4',null,'什么时候用它'));
+  const ul=el('ul','scn'); n.u.forEach(x=>ul.appendChild(el('li',null,x))); c1.appendChild(ul);
+  const c2=el('div');
+  c2.appendChild(el('h4',null,'关键写法')); c2.appendChild(el('pre','api mono',n.a));
+  const c3=el('div');
+  c3.appendChild(el('h4',null,'怎么算掌握了 —— 逐条勾选'));
+  n.k.forEach((x,j)=>{
+    const key=n.i+'#'+j, lab=el('label','chk'), cb=document.createElement('input');
+    cb.type='checkbox'; cb.checked=done.has(key); if(cb.checked)lab.classList.add('ok');
+    cb.addEventListener('change',()=>{
+      if(cb.checked){done.add(key);lab.classList.add('ok')}else{done.delete(key);lab.classList.remove('ok')}
+      dots(); rings(); prog();
+    });
+    lab.appendChild(cb); lab.appendChild(el('span',null,x)); c3.appendChild(lab);
+  });
+  const links=n.p.map(x=>[x,'pre']).concat(n.r.map(x=>[x,'rel']));
+  if(links.length){
+    c3.appendChild(el('h4',null,'关联知识点(点一下跳过去)'));
+    const box=el('div','rels');
+    links.forEach(a=>{const b=el('button','lnk '+a[1],(a[1]==='pre'?'← 先学 ':'↔ ')+BY[a[0]].t);
+      b.type='button'; b.addEventListener('click',()=>{stop();select(a[0])}); box.appendChild(b)});
+    c3.appendChild(box);
+  }
+  detail.appendChild(c1); detail.appendChild(c2); detail.appendChild(c3);
+}
+
+function border(r,b,tx,ty){
+  const cx=r.left-b.left+r.width/2, cy=r.top-b.top+r.height/2;
+  const dx=tx-cx, dy=ty-cy;
+  if(!dx&&!dy) return [cx,cy];
+  const hw=r.width/2+3, hh=r.height/2+3;
+  const s=Math.min(dx?Math.abs(hw/dx):1e9, dy?Math.abs(hh/dy):1e9);
+  return [cx+dx*s, cy+dy*s];
+}
+function center(r,b){return [r.left-b.left+r.width/2, r.top-b.top+r.height/2]}
+function drawEdges(){
+  svg.innerHTML='<defs><marker id="ah" markerWidth="7" markerHeight="7" refX="6.5" refY="3.5" orient="auto">'+
+    '<path d="M0 0 L7 3.5 L0 7z" fill="var(--acc)"/></marker></defs>';
+  if(window.innerWidth<=1080) return;
+  const box=board.getBoundingClientRect(), all=allRel.checked, list=[];
+  if(all){NODES.forEach(n=>{n.p.forEach(p=>list.push([p,n.i,'pre']));
+    n.r.forEach(r=>{if(!BY[r].p.includes(n.i)&&!n.p.includes(r))list.push([n.i,r,'rel'])})});}
+  else{const n=BY[sel]; n.p.forEach(p=>list.push([p,sel,'pre'])); n.r.forEach(r=>list.push([sel,r,'rel']));
+    NODES.filter(m=>m.p.includes(sel)).forEach(m=>list.push([sel,m.i,'pre']));}
+  list.forEach(e=>{
+    if(e[0]===e[1]) return;
+    const A=chipEl(e[0]), B=chipEl(e[1]); if(!A||!B) return;   /* 不在本页就不画 */
+    const a=A.getBoundingClientRect(), b=B.getBoundingClientRect();
+    const ac=center(a,box), bc=center(b,box);
+    const s1=border(a,box,bc[0],bc[1]), s2=border(b,box,ac[0],ac[1]);
+    const x1=s1[0],y1=s1[1],x2=s2[0],y2=s2[1], dx=x2-x1, dy=y2-y1;
+    let c1,c2;
+    if(Math.abs(dy)>Math.abs(dx)){
+      const o=Math.max(24,Math.abs(dy)*.38), sg=dy>0?1:-1;
+      c1=[x1+dx*.12,y1+sg*o]; c2=[x2-dx*.12,y2-sg*o];
+    }else{
+      const o=Math.max(24,Math.abs(dx)*.38), sg=dx>0?1:-1;
+      c1=[x1+sg*o,y1]; c2=[x2-sg*o,y2];
+    }
+    const p=document.createElementNS(NS,'path');
+    p.setAttribute('d','M'+x1+' '+y1+' C'+c1[0]+' '+c1[1]+','+c2[0]+' '+c2[1]+','+x2+' '+y2);
+    p.setAttribute('fill','none');
+    p.setAttribute('stroke',e[2]==='pre'?'var(--acc)':'var(--rel)');
+    p.setAttribute('stroke-width',all?1:1.5);
+    p.setAttribute('opacity',all?.28:.75);
+    if(e[2]==='rel')p.setAttribute('stroke-dasharray','4 3');
+    else if(!all)p.setAttribute('marker-end','url(#ah)');
+    svg.appendChild(p);
+  });
+}
+function goStep(d){
+  step=(step+d+PATH.length)%PATH.length;
+  select(PATH[step]);
+  stepTxt.textContent='推荐学习路径 '+(step+1)+' / '+PATH.length;
+  const c=chipEl(PATH[step]);
+  if(c) c.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+function stop(){if(timer){clearInterval(timer);timer=null;playBtn.textContent='▶ 学习路径播放'}}
+playBtn.addEventListener('click',()=>{
+  if(timer){stop();return}
+  playBtn.textContent='⏸ 暂停';
+  goStep(1);
+  timer=setInterval(()=>{if(step>=PATH.length-1){stop();return}goStep(1)},2600);
+});
+document.getElementById('prev').addEventListener('click',()=>{stop();goStep(-1)});
+document.getElementById('next').addEventListener('click',()=>{stop();goStep(1)});
+allRel.addEventListener('change',render);
+document.getElementById('sprev').addEventListener('click',()=>{stop();slideStep(-1)});
+document.getElementById('snext').addEventListener('click',()=>{stop();slideStep(1)});
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT') return;
+  if(e.key==='ArrowRight'){stop();slideStep(1)}
+  if(e.key==='ArrowLeft'){stop();slideStep(-1)}
+  if(e.key==='ArrowDown'){e.preventDefault();stop();goStep(1)}
+  if(e.key==='ArrowUp'){e.preventDefault();stop();goStep(-1)}
+  if(/^[1-9]$/.test(e.key)&&+e.key<=SLIDES.length){stop();showSlide(SLIDES[+e.key-1].k)}
+});
+let rt; window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(drawEdges,120)});
+
+buildPipe();
+buildSlides();
+buildTabs();
+stepTxt.textContent='推荐学习路径 — / '+PATH.length;
+select('dataframe');
+markSlide('flow');
+render();
+</script>
+</div>
+</body>
+</html>
