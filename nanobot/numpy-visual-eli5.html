@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NumPy 全景图 · 场景 / 掌握标准 / 知识点关联</title>
+<style>
+:root{
+  color-scheme: light;
+  --ink:#15171c; --mut:#6b7280; --line:#e4e7ec; --bg:#fff; --soft:#f6f7f9;
+  --acc:#2f6bd8; --acc-soft:#e9effc; --rel:#b96c08; --rel-soft:#fdf3e2; --done:#12796a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:14px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+code,pre,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.wrap{max-width:1340px;margin:0 auto;padding:22px 26px 70px;position:relative}
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
+h1{font-size:19px;margin:0;letter-spacing:.2px}
+.sub{margin:2px 0 0;color:var(--mut);font-size:13px}
+.prog{min-width:250px}
+.pbar{height:5px;background:var(--soft);border-radius:3px;overflow:hidden}
+.pbar i{display:block;height:100%;width:0;background:var(--done);transition:width .25s}
+#ptxt{display:block;font-size:11.5px;color:var(--mut);margin-top:5px}
+
+/* ---------- 幻灯片外壳 ---------- */
+.tabs{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:16px 0 9px}
+.tab{display:flex;align-items:center;gap:7px;font:inherit;font-size:12.5px;padding:6px 12px;
+  border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:20px;cursor:pointer;
+  transition:background .15s,border-color .15s,color .15s}
+.tab:hover{border-color:var(--acc);color:var(--acc)}
+.tab b{font-size:11px;font-weight:600;color:var(--mut);font-family:ui-monospace,Consolas,monospace}
+.tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.tab[aria-selected="true"] b{color:rgba(255,255,255,.6)}
+.tab .num{font-size:10.5px;color:var(--mut);font-family:ui-monospace,Consolas,monospace}
+.tab b.full{color:var(--done)}
+.tab[aria-selected="true"] b.full{color:#8ddccf}
+.tab[aria-selected="true"] .num{color:rgba(255,255,255,.55)}
+.khint{font-size:11.5px;color:var(--mut);margin-right:4px}
+.slide{display:none}
+.slide.on{display:block;animation:fade .18s ease-out}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.slide>h3{font-size:14px;margin:0 0 3px;letter-spacing:.2px}
+.slide>.note{font-size:12.5px;color:var(--mut);margin:0 0 14px}
+.chipgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));gap:8px}
+.snav{display:flex;gap:6px;margin-left:auto}
+
+/* ---------- 主图:数组解剖 ---------- */
+.stage{display:grid;grid-template-columns:1.55fr 1fr;gap:26px;margin-top:18px;align-items:start}
+.stage.solo{grid-template-columns:1fr}
+.stage.solo .detail{display:none}
+.anat{position:relative}
+.anat svg{display:block;width:100%;height:auto}
+.anat .cap{font-size:11.5px;color:var(--mut);text-align:center;margin:4px 0 0}
+.hot{cursor:pointer}
+.hot circle{fill:#fff;stroke:var(--acc);stroke-width:1.4}
+.hot text{fill:var(--acc);font-size:10.5px;font-weight:700;text-anchor:middle;dominant-baseline:central;
+  font-family:ui-monospace,Consolas,monospace}
+.hot:hover circle{fill:var(--acc-soft)}
+.hot.on circle{fill:var(--acc);stroke:var(--acc)}
+.hot.on text{fill:#fff}
+.hot.pre circle{stroke:var(--acc);stroke-width:2.4}
+.hot.rel circle{stroke:var(--rel);stroke-width:2.4}
+.part{transition:opacity .15s}
+.part.on .pbox{fill:var(--acc-soft);stroke:var(--acc);stroke-width:1.6}
+.part.on text{fill:var(--acc);font-weight:700}
+.part.on .cell{stroke:var(--acc)}
+.gl{font-size:10px;fill:var(--mut)}
+.gm{font-size:10.5px;fill:#1f2937;font-family:ui-monospace,Consolas,monospace}
+.gt{font-size:11.5px;fill:var(--ink);font-weight:600}
+
+/* ---------- 详情面板 ---------- */
+.detail{border:1px solid var(--line);border-radius:10px;padding:15px 16px 17px;background:#fff;
+  position:sticky;top:16px}
+.d-tag{font-size:11px;color:var(--mut);letter-spacing:.4px}
+.d-h{font-size:16px;font-weight:700;margin:2px 0 4px}
+.d-o{color:#3c4350;margin:0 0 12px;font-size:13.5px}
+.d-sec{margin-top:13px}
+.d-sec>h4{font-size:11.5px;color:var(--mut);margin:0 0 6px;font-weight:600;letter-spacing:.4px}
+.d-sec ul{margin:0;padding-left:16px}
+.d-sec li{margin:0 0 3px;font-size:13px}
+pre.api{margin:0;background:var(--soft);border:1px solid var(--line);border-radius:7px;
+  padding:9px 10px;font-size:12px;line-height:1.65;white-space:pre-wrap;word-break:break-word;color:#1f2937}
+.chk{display:flex;gap:8px;align-items:flex-start;font-size:13px;margin:0 0 6px;cursor:pointer}
+.chk input{margin:4px 0 0;accent-color:var(--done);flex:none}
+.chk.ok span{color:var(--done)}
+.rels{display:flex;flex-wrap:wrap;gap:6px}
+.rels button{font:inherit;font-size:12px;padding:3px 8px;border-radius:20px;cursor:pointer;
+  border:1px solid var(--line);background:#fff;color:var(--ink)}
+.rels button:hover{border-color:var(--acc);color:var(--acc)}
+.rels button.pre{border-color:var(--acc);background:var(--acc-soft);color:var(--acc)}
+.rels button.rel{border-color:var(--rel);background:var(--rel-soft);color:var(--rel)}
+
+/* ---------- 控制条 ---------- */
+.ctl{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:22px 0 0;
+  padding:10px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.ctl button{font:inherit;font-size:12.5px;padding:5px 11px;border:1px solid var(--line);
+  background:#fff;border-radius:6px;cursor:pointer}
+.ctl button:hover{border-color:var(--acc);color:var(--acc)}
+.ctl .lbl{font-size:12px;color:var(--mut)}
+.ctl label{display:flex;align-items:center;gap:6px;font-size:12.5px;cursor:pointer}
+.lg{display:flex;gap:14px;margin-left:auto;font-size:11.5px;color:var(--mut);align-items:center}
+.lg i{display:inline-block;width:22px;height:0;border-top:1.6px solid var(--acc);
+  vertical-align:middle;margin-right:5px}
+.lg i.d{border-top-style:dashed;border-top-color:var(--rel)}
+
+/* ---------- 货架卡片 ---------- */
+#board{position:relative}
+.chip{display:flex;align-items:center;gap:8px;width:100%;text-align:left;font:inherit;font-size:12.5px;
+  padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);
+  cursor:pointer;transition:opacity .15s,border-color .15s,background .15s}
+.chip:hover{border-color:var(--acc)}
+.chip svg{flex:none;color:#8b93a3}
+.chip[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:#fff}
+.chip[aria-pressed="true"] svg{color:#fff}
+.chip .dot{flex:none;width:6px;height:6px;border-radius:50%;background:var(--line);margin-left:auto}
+.chip .dot.ok{background:var(--done)}
+.chip[aria-pressed="true"] .dot{background:rgba(255,255,255,.45)}
+.chip[aria-pressed="true"] .dot.ok{background:#8ff0dd}
+.chip.pre{border-color:var(--acc);background:var(--acc-soft)}
+.chip.rel{border-color:var(--rel);background:var(--rel-soft)}
+#board.focus .chip{opacity:.32}
+#board.focus .chip[aria-pressed="true"],#board.focus .chip.pre,#board.focus .chip.rel{opacity:1}
+#board.focus .hot{opacity:.35}
+#board.focus .hot.on,#board.focus .hot.pre,#board.focus .hot.rel{opacity:1}
+svg.edges{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:5;opacity:.6}
+
+/* ---------- 易混淆对照 ---------- */
+.cmp>h2{font-size:14px;margin:0 0 3px}
+.cmp>p{margin:0 0 14px;color:var(--mut);font-size:12.5px}
+.pairs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.pair{border:1px solid var(--line);border-radius:10px;padding:12px 13px}
+.pair h5{margin:0 0 8px;font-size:12.5px}
+.pair svg{display:block;width:100%;height:auto}
+.pair .why{font-size:12px;color:var(--mut);margin:8px 0 0}
+@media (max-width:1080px){
+  .stage{grid-template-columns:1fr}
+  .detail{position:static}
+  svg.edges{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div>
+    <h1>NumPy:一块连续内存 + 一份"怎么读它"的说明书</h1>
+    <p class="sub">6 页翻着看:先解剖<b>数组本身</b>,再学<b>取数</b>、<b>变形</b>、<b>运算</b>。点编号或卡片 → 右侧看它<b>什么时候用</b>、<b>怎么写</b>、<b>怎么算掌握了</b>、<b>连着谁</b>。</p>
+  </div>
+  <div class="prog">
+    <div class="pbar"><i id="pfill"></i></div>
+    <span id="ptxt">掌握进度 0 / 0</span>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="分页导航">
+  <div id="tablist" style="display:flex;gap:6px;flex-wrap:wrap" role="tablist"></div>
+  <span class="snav">
+    <span class="khint">1–6 / ← → 翻页 · ↑ ↓ 走路线</span>
+    <button class="tab" id="sprev" type="button" aria-label="上一页">‹</button>
+    <button class="tab" id="snext" type="button" aria-label="下一页">›</button>
+  </span>
+</nav>
+
+<div class="ctl">
+  <span class="lbl">学习路线</span>
+  <button id="prev" type="button">‹ 上一步</button>
+  <button id="play" type="button">▶ 自动播放</button>
+  <button id="next" type="button">下一步 ›</button>
+  <span class="lbl mono" id="steptxt"></span>
+  <label><input type="checkbox" id="allrel"> 显示本页全部关联</label>
+  <span class="lg">
+    <span><i></i>前置:先会它</span>
+    <span><i class="d"></i>常一起用</span>
+    <span><i style="border-top-color:#12796a"></i>已掌握</span>
+  </span>
+</div>
+
+<div id="board">
+<svg class="edges" id="edges" aria-hidden="true">
+  <defs>
+    <marker id="ah" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0.6 L7.4 4 L0 7.4 z" fill="#2f6bd8"></path>
+    </marker>
+  </defs>
+</svg>
+<div class="stage" id="stage">
+<div class="slidebox">
+<section class="slide on" data-slide="anat" role="tabpanel">
+<div class="anat">
+<svg viewBox="0 0 720 482" role="img" aria-label="ndarray 解剖图:怎么造、怎么描述、复制会不会牵连">
+  <defs>
+    <marker id="a2" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 1 L7 4 L0 7 z" fill="#9aa3b2"></path>
+    </marker>
+  </defs>
+
+  <!-- ① ~ ④ 四种造数组的入口 -->
+  <g class="part" data-part="n_array">
+    <rect class="pbox" x="6" y="14" width="168" height="44" rx="7" fill="#fff" stroke="#d6dae2"></rect>
+    <text class="gm" x="37" y="32">np.array(list)</text>
+    <text class="gl" x="37" y="47">手上已经有数据</text>
+  </g>
+  <g class="part" data-part="n_fill">
+    <rect class="pbox" x="184" y="14" width="168" height="44" rx="7" fill="#fff" stroke="#d6dae2"></rect>
+    <text class="gm" x="215" y="32">ones / zeros / full</text>
+    <text class="gl" x="215" y="47">先占位,值随后算</text>
+  </g>
+  <g class="part" data-part="n_seq">
+    <rect class="pbox" x="362" y="14" width="168" height="44" rx="7" fill="#fff" stroke="#d6dae2"></rect>
+    <text class="gm" x="393" y="32">arange / linspace</text>
+    <text class="gl" x="393" y="47">等差:按步长 / 按个数</text>
+  </g>
+  <g class="part" data-part="n_rand">
+    <rect class="pbox" x="540" y="14" width="168" height="44" rx="7" fill="#fff" stroke="#d6dae2"></rect>
+    <text class="gm" x="571" y="32">np.random.*</text>
+    <text class="gl" x="571" y="47">没真数据时先造一批</text>
+  </g>
+  <g class="hot" data-id="n_array" tabindex="0" role="button" aria-label="np.array 造数组">
+    <circle cx="23" cy="36" r="9.5"></circle><text x="23" y="36">1</text></g>
+  <g class="hot" data-id="n_fill" tabindex="0" role="button" aria-label="ones zeros full 占位">
+    <circle cx="201" cy="36" r="9.5"></circle><text x="201" y="36">2</text></g>
+  <g class="hot" data-id="n_seq" tabindex="0" role="button" aria-label="arange 与 linspace">
+    <circle cx="379" cy="36" r="9.5"></circle><text x="379" y="36">3</text></g>
+  <g class="hot" data-id="n_rand" tabindex="0" role="button" aria-label="随机数造数组">
+    <circle cx="557" cy="36" r="9.5"></circle><text x="557" y="36">4</text></g>
+  <g fill="none" stroke="#c9cfd8">
+    <path d="M90 58v12M268 58v12M446 58v12M624 58v12"></path>
+    <path d="M90 70h534"></path>
+    <path d="M357 70v18" marker-end="url(#a2)"></path>
+  </g>
+  <text class="gl" x="366" y="86">造出来的东西都是同一种:ndarray</text>
+
+  <!-- ndarray 本体 -->
+  <rect x="6" y="94" width="706" height="206" rx="10" fill="#fff" stroke="#e4e7ec"></rect>
+  <text class="gt" x="20" y="112">一个 ndarray = 一块连续内存 + 一份"怎么读它"的说明书</text>
+
+  <!-- ⑤ ~ ⑨ 说明书 -->
+  <rect x="20" y="118" width="252" height="172" rx="8" fill="#fafbfc" stroke="#eceff3"></rect>
+  <text class="gl" x="32" y="134">说明书 metadata:形状 / 类型 / 大小</text>
+  <g class="part" data-part="n_ndim">
+    <rect class="pbox" x="30" y="142" width="232" height="24" rx="5" fill="#fff" stroke="#e4e7ec"></rect>
+    <text class="gm" x="57" y="158">ndim = 3</text><text class="gl" x="120" y="158">轴数:几维</text>
+  </g>
+  <g class="part" data-part="n_shape">
+    <rect class="pbox" x="30" y="170" width="232" height="24" rx="5" fill="#fff" stroke="#e4e7ec"></rect>
+    <text class="gm" x="57" y="186">shape = (3,4,5)</text><text class="gl" x="162" y="186">每轴多长</text>
+  </g>
+  <g class="part" data-part="n_size">
+    <rect class="pbox" x="30" y="198" width="232" height="24" rx="5" fill="#fff" stroke="#e4e7ec"></rect>
+    <text class="gm" x="57" y="214">size = 60</text><text class="gl" x="126" y="214">3×4×5 个元素</text>
+  </g>
+  <g class="part" data-part="n_dtype">
+    <rect class="pbox" x="30" y="226" width="232" height="24" rx="5" fill="#fff" stroke="#e4e7ec"></rect>
+    <text class="gm" x="57" y="242">dtype = int64</text><text class="gl" x="150" y="242">每格存什么</text>
+  </g>
+  <g class="part" data-part="n_itemsize">
+    <rect class="pbox" x="30" y="254" width="232" height="24" rx="5" fill="#fff" stroke="#e4e7ec"></rect>
+    <text class="gm" x="57" y="270">itemsize = 8</text><text class="gl" x="144" y="270">每格 8 字节</text>
+  </g>
+  <g class="hot" data-id="n_ndim" tabindex="0" role="button" aria-label="ndim 轴数">
+    <circle cx="42" cy="154" r="9.5"></circle><text x="42" y="154">5</text></g>
+  <g class="hot" data-id="n_shape" tabindex="0" role="button" aria-label="shape 形状">
+    <circle cx="42" cy="182" r="9.5"></circle><text x="42" y="182">6</text></g>
+  <g class="hot" data-id="n_size" tabindex="0" role="button" aria-label="size 元素总数">
+    <circle cx="42" cy="210" r="9.5"></circle><text x="42" y="210">7</text></g>
+  <g class="hot" data-id="n_dtype" tabindex="0" role="button" aria-label="dtype 数据类型">
+    <circle cx="42" cy="238" r="9.5"></circle><text x="42" y="238">8</text></g>
+  <g class="hot" data-id="n_itemsize" tabindex="0" role="button" aria-label="itemsize 每格字节数">
+    <circle cx="42" cy="266" r="9.5"></circle><text x="42" y="266">9</text></g>
+
+  <!-- 连续内存 buffer -->
+  <text class="gl" x="296" y="140">一块连续内存 buffer(C 顺序:最后一个轴变化最快)</text>
+  <g class="part" data-part="n_itemsize">
+    <g class="cell" fill="#fff" stroke="#d6dae2">
+      <rect x="296" y="148" width="25" height="28"></rect><rect x="321" y="148" width="25" height="28"></rect>
+      <rect x="346" y="148" width="25" height="28"></rect><rect x="371" y="148" width="25" height="28"></rect>
+      <rect x="396" y="148" width="25" height="28"></rect><rect x="421" y="148" width="25" height="28"></rect>
+      <rect x="446" y="148" width="25" height="28"></rect><rect x="471" y="148" width="25" height="28"></rect>
+      <rect x="496" y="148" width="25" height="28"></rect><rect x="521" y="148" width="25" height="28"></rect>
+      <rect x="546" y="148" width="25" height="28"></rect><rect x="571" y="148" width="25" height="28"></rect>
+      <rect x="596" y="148" width="25" height="28"></rect><rect x="621" y="148" width="25" height="28"></rect>
+      <rect x="646" y="148" width="25" height="28"></rect><rect x="671" y="148" width="25" height="28"></rect>
+    </g>
+    <g class="gm" text-anchor="middle">
+      <text x="308" y="167">7</text><text x="333" y="167">3</text><text x="358" y="167">12</text>
+      <text x="383" y="167">0</text><text x="408" y="167">5</text><text x="433" y="167">9</text>
+      <text x="458" y="167">2</text><text x="483" y="167">8</text><text x="508" y="167">4</text>
+      <text x="533" y="167">1</text><text x="558" y="167">6</text><text x="583" y="167">11</text>
+      <text x="608" y="167">3</text><text x="633" y="167">7</text><text x="658" y="167">0</text>
+      <text x="683" y="167">5</text>
+    </g>
+    <text class="gl" x="296" y="192">每格 8 字节 × 60 格 = 480 字节(arr.nbytes),取数就是算偏移量</text>
+  </g>
+
+  <!-- shape 决定怎么读这块内存 -->
+  <text class="gl" x="296" y="208">↓ 内存一个字没动,shape 说它是 3 层 × 4 行 × 5 列</text>
+  <g class="part" data-part="n_shape">
+    <text class="gl" x="296" y="226">axis0 → 3 层</text>
+    <text class="gl" x="296" y="242">axis1 ↓ 4 行</text>
+    <text class="gl" x="296" y="258">axis2 → 5 列</text>
+    <g class="cell" fill="#fff" stroke="#d6dae2">
+      <rect x="380" y="212" width="65" height="52"></rect>
+      <rect x="500" y="212" width="65" height="52"></rect>
+      <rect x="620" y="212" width="65" height="52"></rect>
+    </g>
+    <g fill="none" stroke="#e8ebef">
+      <path d="M393 212v52M406 212v52M419 212v52M432 212v52M380 225h65M380 238h65M380 251h65"></path>
+      <path d="M513 212v52M526 212v52M539 212v52M552 212v52M500 225h65M500 238h65M500 251h65"></path>
+      <path d="M633 212v52M646 212v52M659 212v52M672 212v52M620 225h65M620 238h65M620 251h65"></path>
+    </g>
+    <g class="gl" text-anchor="middle">
+      <text x="412" y="278">arr[0]</text><text x="532" y="278">arr[1]</text><text x="652" y="278">arr[2]</text>
+    </g>
+  </g>
+
+  <!-- ⑩ ~ ⑭ 复制会不会牵连 -->
+  <g fill="none" stroke="#c9cfd8">
+    <path d="M120 300v12M360 300v12M600 300v12" marker-end="url(#a2)"></path>
+  </g>
+  <g class="part" data-part="n_alias">
+    <rect class="pbox" x="6" y="316" width="228" height="156" rx="8" fill="#fff" stroke="#d6dae2"></rect>
+    <text class="gt" x="40" y="341">b = a:没有复制</text>
+    <text class="gm" x="18" y="362">a is b  →  True</text>
+    <g class="cell" fill="#fff" stroke="#d6dae2">
+      <rect x="30" y="368" width="24" height="15"></rect><rect x="64" y="368" width="24" height="15"></rect>
+      <rect x="18" y="396" width="25" height="20"></rect><rect x="43" y="396" width="25" height="20"></rect>
+      <rect x="68" y="396" width="25" height="20"></rect><rect x="93" y="396" width="25" height="20"></rect>
+      <rect x="118" y="396" width="25" height="20"></rect><rect x="143" y="396" width="25" height="20"></rect>
+      <rect x="168" y="396" width="25" height="20"></rect><rect x="193" y="396" width="25" height="20"></rect>
+    </g>
+    <g class="gm" text-anchor="middle"><text x="42" y="380">a</text><text x="76" y="380">b</text></g>
+    <g fill="none" stroke="#9aa3b2"><path d="M42 383v10M76 383L60 393"></path></g>
+    <text class="gl" x="18" y="437">一个对象,两个名字</text>
+    <text class="gl" x="18" y="453">改 b 就是改 a,连 shape 都共享</text>
+  </g>
+  <g class="part" data-part="n_view">
+    <rect class="pbox" x="246" y="316" width="228" height="156" rx="8" fill="#fff" stroke="#d6dae2"></rect>
+    <text class="gt" x="302" y="341">视图:换说明书</text>
+    <text class="gm" x="258" y="362">b.base is a  →  True</text>
+    <g class="cell" fill="#e9effc" stroke="#9db7e6">
+      <rect x="258" y="396" width="25" height="20"></rect><rect x="283" y="396" width="25" height="20"></rect>
+      <rect x="308" y="396" width="25" height="20"></rect><rect x="333" y="396" width="25" height="20"></rect>
+      <rect x="358" y="396" width="25" height="20"></rect><rect x="383" y="396" width="25" height="20"></rect>
+      <rect x="408" y="396" width="25" height="20"></rect><rect x="433" y="396" width="25" height="20"></rect>
+    </g>
+    <g class="cell" fill="#fff" stroke="#d6dae2">
+      <rect x="266" y="368" width="24" height="15"></rect><rect x="326" y="368" width="24" height="15"></rect>
+    </g>
+    <g class="gm" text-anchor="middle"><text x="278" y="380">a</text><text x="338" y="380">b</text></g>
+    <g fill="none" stroke="#9aa3b2"><path d="M278 383L296 393M338 383L320 393"></path></g>
+    <text class="gl" x="258" y="437">两个对象,共用同一块内存</text>
+    <text class="gl" x="258" y="453">改 b → a 跟着变;基本切片同理</text>
+  </g>
+  <g class="part" data-part="n_copy">
+    <rect class="pbox" x="486" y="316" width="226" height="156" rx="8" fill="#fff" stroke="#d6dae2"></rect>
+    <text class="gt" x="542" y="341">拷贝:另开内存</text>
+    <text class="gm" x="498" y="362">b.flags.owndata → True</text>
+    <g class="cell" fill="#fff" stroke="#d6dae2">
+      <rect x="522" y="368" width="24" height="15"></rect><rect x="630" y="368" width="24" height="15"></rect>
+      <rect x="498" y="396" width="24" height="20"></rect><rect x="522" y="396" width="24" height="20"></rect>
+      <rect x="546" y="396" width="24" height="20"></rect><rect x="570" y="396" width="24" height="20"></rect>
+      <rect x="606" y="396" width="24" height="20"></rect><rect x="630" y="396" width="24" height="20"></rect>
+      <rect x="654" y="396" width="24" height="20"></rect><rect x="678" y="396" width="24" height="20"></rect>
+    </g>
+    <g class="gm" text-anchor="middle"><text x="534" y="380">a</text><text x="642" y="380">b</text></g>
+    <g fill="none" stroke="#9aa3b2"><path d="M534 383v10M642 383v10"></path></g>
+    <text class="gl" x="498" y="437">新对象 + 新内存,彻底分家</text>
+    <text class="gl" x="498" y="453">改 b → a 不变;astype 同样是复制</text>
+  </g>
+  <g class="hot" data-id="n_alias" tabindex="0" role="button" aria-label="b = a 别名">
+    <circle cx="24" cy="336" r="9.5"></circle><text x="24" y="336">11</text></g>
+  <g class="hot" data-id="n_view" tabindex="0" role="button" aria-label="view 视图">
+    <circle cx="264" cy="336" r="9.5"></circle><text x="264" y="336">12</text></g>
+  <g class="hot" data-id="n_sliceview" tabindex="0" role="button" aria-label="切片是视图">
+    <circle cx="286" cy="336" r="9.5"></circle><text x="286" y="336">14</text></g>
+  <g class="hot" data-id="n_copy" tabindex="0" role="button" aria-label="copy 深拷贝">
+    <circle cx="504" cy="336" r="9.5"></circle><text x="504" y="336">13</text></g>
+  <g class="hot" data-id="n_astype" tabindex="0" role="button" aria-label="astype 类型转换">
+    <circle cx="526" cy="336" r="9.5"></circle><text x="526" y="336">10</text></g>
+</svg>
+<p class="cap">这一页 14 个编号 = 一个数组"从哪来、怎么描述它、复制会不会牵连"的全部答案。</p>
+</div>
+</section>
+
+<section class="slide" data-slide="index" role="tabpanel">
+<h3>取数 · 从一堆数里精准挖出想要的那部分</h3>
+<p class="note">两条主线:切片(视图,快)和花式 / 布尔索引(复制,灵活)。挖不出来的时候,先看形状对不对。</p>
+<div class="chipgrid" id="sh-I"></div>
+</section>
+
+<section class="slide" data-slide="shape" role="tabpanel">
+<h3>变形 · 同一批数,换一种摆法</h3>
+<p class="note">reshape 和转置只是改"说明书";拼接和拆分才真的搬数据;广播是让形状不同的数组也能一起算。</p>
+<div class="chipgrid" id="sh-S"></div>
+</section>
+
+<section class="slide" data-slide="calc" role="tabpanel">
+<h3>运算 · 不写 for 循环,整块一起算</h3>
+<p class="note">逐元素运算 → 布尔判断 → 排序集合 → 压成统计量。NumPy 的性能优势全在这一页。</p>
+<div class="chipgrid" id="sh-C"></div>
+</section>
+
+<section class="slide" data-slide="real" role="tabpanel">
+<h3>落地 · 存取文件、线性代数、跑一遍真数据</h3>
+<p class="note">数据进得来、算得动、存得住,才算把 NumPy 用起来。</p>
+<div class="chipgrid" id="sh-P"></div>
+</section>
+
+<section class="slide" data-slide="cmp" role="tabpanel">
+<section class="cmp">
+<h2>四对最容易搞混的东西</h2>
+<p>左右对着看,比记文档快。</p>
+<div class="pairs">
+
+  <div class="pair">
+    <h5><code>arr[5:8]</code> 切片=视图 &nbsp;vs&nbsp; <code>arr[[5,6,7]]</code> 花式=复制</h5>
+    <svg viewBox="0 0 320 132" role="img" aria-label="切片是视图,花式索引是复制">
+      <text x="6" y="12" font-size="10.5" fill="#6b7280">arr[5:8] → 视图</text>
+      <g fill="#fff" stroke="#d6dae2">
+        <rect x="6" y="24" width="16" height="20"></rect><rect x="22" y="24" width="16" height="20"></rect>
+        <rect x="38" y="24" width="16" height="20"></rect><rect x="54" y="24" width="16" height="20"></rect>
+        <rect x="70" y="24" width="16" height="20"></rect><rect x="134" y="24" width="16" height="20"></rect>
+      </g>
+      <g fill="#e9effc" stroke="#2f6bd8">
+        <rect x="86" y="24" width="16" height="20"></rect><rect x="102" y="24" width="16" height="20"></rect>
+        <rect x="118" y="24" width="16" height="20"></rect>
+      </g>
+      <path d="M102 52v-8" fill="none" stroke="#2f6bd8"></path>
+      <rect x="78" y="52" width="48" height="15" rx="3" fill="#e9effc" stroke="#2f6bd8"></rect>
+      <text x="102" y="63" font-size="9.5" fill="#2f6bd8" text-anchor="middle">temp</text>
+      <text x="6" y="86" font-size="9.5" fill="#1f2937">temp[1] = 1024</text>
+      <text x="6" y="102" font-size="10" fill="#6b7280">→ arr[6] 也变成 1024</text>
+      <text x="6" y="118" font-size="10" fill="#2f6bd8">同一块内存,零拷贝</text>
+      <path d="M158 16v104" stroke="#eceff3" fill="none"></path>
+      <text x="170" y="12" font-size="10.5" fill="#6b7280">arr[[5,6,7]] → 复制</text>
+      <g fill="#fff" stroke="#d6dae2">
+        <rect x="170" y="24" width="16" height="20"></rect><rect x="186" y="24" width="16" height="20"></rect>
+        <rect x="202" y="24" width="16" height="20"></rect><rect x="218" y="24" width="16" height="20"></rect>
+        <rect x="234" y="24" width="16" height="20"></rect><rect x="298" y="24" width="16" height="20"></rect>
+      </g>
+      <g fill="#fdf3e2" stroke="#b96c08" stroke-dasharray="3 2">
+        <rect x="250" y="24" width="16" height="20"></rect><rect x="266" y="24" width="16" height="20"></rect>
+        <rect x="282" y="24" width="16" height="20"></rect>
+      </g>
+      <path d="M266 46v6h-48v8" fill="none" stroke="#b96c08"></path>
+      <g fill="#fdf3e2" stroke="#b96c08">
+        <rect x="202" y="60" width="16" height="20"></rect><rect x="218" y="60" width="16" height="20"></rect>
+        <rect x="234" y="60" width="16" height="20"></rect>
+      </g>
+      <text x="170" y="96" font-size="9.5" fill="#1f2937">b[1] = 1024</text>
+      <text x="170" y="112" font-size="10" fill="#6b7280">→ arr 完全不受影响</text>
+      <text x="170" y="128" font-size="10" fill="#b96c08">另开了一块新内存</text>
+    </svg>
+    <p class="why">判断口诀:方括号里是<b>冒号</b>就是视图,是<b>整数数组 / 布尔数组</b>就是复制。想要独立副本,写 <code>.copy()</code>。</p>
+  </div>
+
+  <div class="pair">
+    <h5><code>reshape(2,3)</code> 换断行 &nbsp;vs&nbsp; <code>.T</code> 换轴</h5>
+    <svg viewBox="0 0 320 132" role="img" aria-label="reshape 与转置的区别">
+      <text x="6" y="12" font-size="10.5" fill="#6b7280">np.arange(6).reshape(2,3)</text>
+      <g fill="#fff" stroke="#d6dae2">
+        <rect x="6" y="22" width="18" height="18"></rect><rect x="24" y="22" width="18" height="18"></rect>
+        <rect x="42" y="22" width="18" height="18"></rect><rect x="60" y="22" width="18" height="18"></rect>
+        <rect x="78" y="22" width="18" height="18"></rect><rect x="96" y="22" width="18" height="18"></rect>
+      </g>
+      <g font-size="9.5" fill="#1f2937" text-anchor="middle">
+        <text x="15" y="35">0</text><text x="33" y="35">1</text><text x="51" y="35">2</text>
+        <text x="69" y="35">3</text><text x="87" y="35">4</text><text x="105" y="35">5</text>
+      </g>
+      <path d="M60 42v10" fill="none" stroke="#9aa3b2"></path>
+      <g fill="#fff" stroke="#2f6bd8">
+        <rect x="24" y="56" width="24" height="24"></rect><rect x="48" y="56" width="24" height="24"></rect>
+        <rect x="72" y="56" width="24" height="24"></rect><rect x="24" y="80" width="24" height="24"></rect>
+        <rect x="48" y="80" width="24" height="24"></rect><rect x="72" y="80" width="24" height="24"></rect>
+      </g>
+      <g font-size="10" fill="#1f2937" text-anchor="middle">
+        <text x="36" y="72">0</text><text x="60" y="72">1</text><text x="84" y="72">2</text>
+        <text x="36" y="96">3</text><text x="60" y="96">4</text><text x="84" y="96">5</text>
+      </g>
+      <text x="6" y="122" font-size="10" fill="#6b7280">元素顺序没动,只是每 3 个换一行</text>
+      <path d="M158 16v104" stroke="#eceff3" fill="none"></path>
+      <text x="170" y="12" font-size="10.5" fill="#6b7280">再 .T → (3,2)</text>
+      <g fill="#fff" stroke="#b96c08">
+        <rect x="200" y="32" width="24" height="24"></rect><rect x="224" y="32" width="24" height="24"></rect>
+        <rect x="200" y="56" width="24" height="24"></rect><rect x="224" y="56" width="24" height="24"></rect>
+        <rect x="200" y="80" width="24" height="24"></rect><rect x="224" y="80" width="24" height="24"></rect>
+      </g>
+      <g font-size="10" fill="#1f2937" text-anchor="middle">
+        <text x="212" y="48">0</text><text x="236" y="48">3</text>
+        <text x="212" y="72">1</text><text x="236" y="72">4</text>
+        <text x="212" y="96">2</text><text x="236" y="96">5</text>
+      </g>
+      <text x="170" y="122" font-size="10" fill="#6b7280">行列互换,同一块内存换个读法</text>
+    </svg>
+    <p class="why">两个都返回<b>视图</b>、都不搬数据。区别是 reshape 保持元素的排列顺序,转置改变了"先走哪个轴"。</p>
+  </div>
+
+  <div class="pair">
+    <h5>广播能成 <code>(4,3)+(3,)</code> &nbsp;vs&nbsp; 广播报错 <code>(4,3)+(4,)</code></h5>
+    <svg viewBox="0 0 320 132" role="img" aria-label="广播规则:形状右对齐">
+      <text x="6" y="12" font-size="10.5" fill="#6b7280">形状右对齐,逐轴比较</text>
+      <g fill="#fff" stroke="#d6dae2">
+        <rect x="20" y="24" width="28" height="18"></rect><rect x="52" y="24" width="28" height="18"></rect>
+        <rect x="52" y="50" width="28" height="18"></rect>
+      </g>
+      <g font-size="10" fill="#1f2937" text-anchor="middle">
+        <text x="34" y="37">4</text><text x="66" y="37">3</text><text x="66" y="63">3</text>
+      </g>
+      <path d="M50 20v52M82 20v52" stroke="#c9cfd8" stroke-dasharray="3 2" fill="none"></path>
+      <text x="90" y="39" font-size="9.5" fill="#6b7280">(4,3)</text>
+      <text x="90" y="63" font-size="9.5" fill="#6b7280">(3,)</text>
+      <text x="6" y="90" font-size="10" fill="#12796a">3 = 3 → 把这一行复制 4 份</text>
+      <text x="6" y="106" font-size="10" fill="#6b7280">每一行都加同样的 [1,2,3]</text>
+      <text x="6" y="124" font-size="10" fill="#12796a">✓ 能广播,而且不真的占内存</text>
+      <path d="M158 16v104" stroke="#eceff3" fill="none"></path>
+      <text x="170" y="12" font-size="10.5" fill="#6b7280">同样右对齐,但对不上</text>
+      <g fill="#fff" stroke="#d6dae2">
+        <rect x="184" y="24" width="28" height="18"></rect><rect x="216" y="24" width="28" height="18"></rect>
+      </g>
+      <rect x="216" y="50" width="28" height="18" fill="#fdf3e2" stroke="#b96c08"></rect>
+      <g font-size="10" fill="#1f2937" text-anchor="middle">
+        <text x="198" y="37">4</text><text x="230" y="37">3</text><text x="230" y="63">4</text>
+      </g>
+      <path d="M214 20v52M246 20v52" stroke="#c9cfd8" stroke-dasharray="3 2" fill="none"></path>
+      <text x="254" y="39" font-size="9.5" fill="#6b7280">(4,3)</text>
+      <text x="254" y="63" font-size="9.5" fill="#b96c08">(4,)</text>
+      <text x="170" y="90" font-size="10" fill="#b96c08">3 ≠ 4,而且都不是 1 → 报错</text>
+      <text x="170" y="106" font-size="10" fill="#6b7280">ValueError: could not be broadcast</text>
+      <text x="170" y="124" font-size="10" fill="#b96c08">✗ 先 reshape(4,1) 再加</text>
+    </svg>
+    <p class="why">规则只有两条:形状<b>右对齐</b>;每个轴要么长度相等,要么其中一个是 <code>1</code>。想按行方向广播,就把它变成 <code>(n,1)</code>。</p>
+  </div>
+
+  <div class="pair">
+    <h5><code>axis=0</code> 压掉行 &nbsp;vs&nbsp; <code>axis=1</code> 压掉列</h5>
+    <svg viewBox="0 0 320 132" role="img" aria-label="axis 0 与 axis 1 的区别">
+      <text x="6" y="12" font-size="10.5" fill="#6b7280">arr.mean(axis=0) → 每列的均值</text>
+      <g fill="#fff" stroke="#d6dae2">
+        <rect x="20" y="20" width="80" height="60"></rect>
+      </g>
+      <path d="M40 20v60M60 20v60M80 20v60M20 40h80M20 60h80" stroke="#eceff3" fill="none"></path>
+      <path d="M30 84v10M50 84v10M70 84v10M90 84v10" stroke="#2f6bd8" fill="none" marker-end="url(#ah)"></path>
+      <g fill="#e9effc" stroke="#2f6bd8">
+        <rect x="20" y="98" width="20" height="18"></rect><rect x="40" y="98" width="20" height="18"></rect>
+        <rect x="60" y="98" width="20" height="18"></rect><rect x="80" y="98" width="20" height="18"></rect>
+      </g>
+      <text x="6" y="130" font-size="10" fill="#6b7280">(3,4) → (4,):标准化常用这个</text>
+      <path d="M158 16v110" stroke="#eceff3" fill="none"></path>
+      <text x="170" y="12" font-size="10.5" fill="#6b7280">arr.mean(axis=1) → 每行的均值</text>
+      <g fill="#fff" stroke="#d6dae2">
+        <rect x="176" y="20" width="80" height="60"></rect>
+      </g>
+      <path d="M196 20v60M216 20v60M236 20v60M176 40h80M176 60h80" stroke="#eceff3" fill="none"></path>
+      <path d="M258 30h10M258 50h10M258 70h10" stroke="#b96c08" fill="none"></path>
+      <g fill="#fdf3e2" stroke="#b96c08">
+        <rect x="272" y="20" width="20" height="20"></rect><rect x="272" y="40" width="20" height="20"></rect>
+        <rect x="272" y="60" width="20" height="20"></rect>
+      </g>
+      <text x="170" y="102" font-size="10" fill="#6b7280">(3,4) → (3,):算每条样本的水平</text>
+      <text x="170" y="122" font-size="10" fill="#6b7280">口诀:axis 指的是"被压掉"的那个轴</text>
+    </svg>
+    <p class="why">别背"0 是行 1 是列"。记成:<b>axis 就是被消灭掉的那一维</b>,结果的 shape 就是原 shape 去掉这一维。</p>
+  </div>
+
+</div>
+</section>
+</section>
+</div>
+<div class="detail" id="detail"></div>
+</div>
+</div>
+</div>
+<script>
+/* ---------- 小图标 ---------- */
+const IC={
+i_basic1d:'<rect x="1" y="6" width="22" height="7" fill="none" stroke="currentColor"/><rect x="9" y="6" width="8" height="7" fill="currentColor"/><path d="M6 6v7M9 6v7M17 6v7M20 6v7" stroke="currentColor" opacity=".45" fill="none"/>',
+i_assign:'<rect x="1" y="8" width="22" height="7" fill="none" stroke="currentColor"/><rect x="8" y="8" width="8" height="7" fill="currentColor"/><path d="M12 1v5" stroke="currentColor" fill="none"/><path d="M9.5 4.5L12 7.4l2.5-2.9z" fill="currentColor"/>',
+i_basic2d:'<rect x="1" y="1" width="22" height="16" fill="none" stroke="currentColor"/><rect x="1" y="1" width="10" height="8" fill="currentColor"/><path d="M12 1v16M1 9h22" stroke="currentColor" opacity=".45" fill="none"/>',
+i_fancy:'<rect x="1" y="1" width="13" height="16" fill="none" stroke="currentColor"/><g fill="currentColor"><rect x="1" y="1" width="13" height="4"/><rect x="1" y="13" width="13" height="4"/></g><rect x="18" y="3" width="5" height="12" fill="currentColor" opacity=".5"/>',
+i_ix:'<rect x="1" y="1" width="22" height="16" fill="none" stroke="currentColor"/><g fill="currentColor" opacity=".28"><rect x="1" y="5" width="22" height="4"/><rect x="9" y="1" width="5" height="16"/></g><rect x="9" y="5" width="5" height="4" fill="currentColor"/>',
+i_bool:'<rect x="1" y="4" width="22" height="10" fill="none" stroke="currentColor"/><g fill="currentColor"><rect x="1" y="4" width="5.5" height="10"/><rect x="12" y="4" width="5.5" height="10"/></g><path d="M6.5 4v10M12 4v10M17.5 4v10" stroke="currentColor" opacity=".45" fill="none"/>',
+s_reshape:'<rect x="1" y="7" width="9" height="4" fill="none" stroke="currentColor"/><path d="M11 9h3" stroke="currentColor" fill="none"/><rect x="15" y="4" width="8" height="10" fill="none" stroke="currentColor"/><path d="M15 9h8M19 4v10" stroke="currentColor" opacity=".45" fill="none"/>',
+s_T:'<g fill="none" stroke="currentColor"><rect x="1" y="2" width="9" height="14"/><rect x="14" y="5" width="9" height="8"/></g><path d="M10 5l4 4" stroke="currentColor" fill="none"/><path d="M1 7h9M1 11h9" stroke="currentColor" opacity=".4" fill="none"/>',
+s_concat:'<rect x="1" y="4" width="10" height="10" fill="currentColor" opacity=".35"/><rect x="13" y="4" width="10" height="10" fill="currentColor" opacity=".7"/><path d="M12 1v16" stroke="currentColor" stroke-dasharray="2 2" fill="none"/>',
+s_stack:'<rect x="3" y="2" width="18" height="6" fill="currentColor" opacity=".35"/><rect x="3" y="10" width="18" height="6" fill="currentColor" opacity=".7"/>',
+s_split:'<rect x="1" y="3" width="22" height="12" fill="none" stroke="currentColor"/><path d="M9 1v16M16 1v16" stroke="currentColor" stroke-dasharray="2 2" fill="none"/>',
+s_broadcast:'<rect x="1" y="2" width="22" height="14" fill="none" stroke="currentColor" opacity=".5"/><rect x="9" y="7" width="6" height="5" fill="currentColor"/><path d="M12 6V2.5M12 13v3.5M8 9.5H2M16 9.5h6" stroke="currentColor" fill="none" opacity=".7"/>',
+c_arith:'<path d="M4 3v8M1 7h6M15 4l7 7M22 4l-7 7" stroke="currentColor" stroke-width="1.4" fill="none"/><path d="M2 15h8M14 15h8" stroke="currentColor" fill="none" opacity=".5"/>',
+c_logic:'<path d="M4 3l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="13" y="6" width="5" height="6" fill="currentColor"/><rect x="19" y="6" width="4" height="6" fill="none" stroke="currentColor"/>',
+c_scalar:'<circle cx="4" cy="9" r="3" fill="currentColor"/><rect x="11" y="2" width="12" height="14" fill="none" stroke="currentColor"/><path d="M11 7h12M11 12h12M17 2v14" stroke="currentColor" opacity=".4" fill="none"/><path d="M7.5 9H10" stroke="currentColor" fill="none"/>',
+c_inplace:'<path d="M18 9a6 6 0 1 1-6-6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10.6 0.4l3.4 2.6-3.4 2.6z" fill="currentColor"/><path d="M9 9h6M12 6v6" stroke="currentColor" fill="none"/>',
+c_ufunc:'<path d="M1 10l3 5 4-13h14" fill="none" stroke="currentColor" stroke-width="1.4"/><rect x="12" y="5" width="4" height="4" fill="currentColor"/><rect x="18" y="5" width="4" height="4" fill="currentColor" opacity=".5"/>',
+c_pair:'<g fill="currentColor"><rect x="1" y="3" width="5" height="4"/><rect x="8" y="3" width="5" height="4" opacity=".4"/><rect x="1" y="11" width="5" height="4" opacity=".4"/><rect x="8" y="11" width="5" height="4"/></g><path d="M15 5h3M15 13h3" stroke="currentColor" fill="none"/><rect x="19" y="3" width="4" height="12" fill="currentColor" opacity=".7"/>',
+c_where:'<path d="M2 9h6l6-6h8M8 9l6 6h8" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="9" r="2" fill="currentColor"/>',
+c_sort:'<g fill="currentColor"><rect x="1" y="12" width="5" height="5"/><rect x="8" y="7" width="5" height="10"/><rect x="15" y="2" width="5" height="15"/></g>',
+c_set:'<circle cx="9" cy="9" r="7" fill="none" stroke="currentColor"/><circle cx="15" cy="9" r="7" fill="none" stroke="currentColor"/><path d="M12 2.6a7 7 0 0 0 0 12.8 7 7 0 0 0 0-12.8z" fill="currentColor" opacity=".4"/>',
+c_stats:'<g fill="currentColor" opacity=".75"><rect x="1" y="9" width="4" height="8"/><rect x="7" y="5" width="4" height="12"/><rect x="13" y="11" width="4" height="6"/><rect x="19" y="7" width="4" height="10"/></g><path d="M0 8h24" stroke="currentColor" stroke-dasharray="3 2" fill="none"/>',
+p_npy:'<path d="M2 2h16l4 4v11H2z" fill="none" stroke="currentColor"/><rect x="7" y="2" width="8" height="6" fill="currentColor"/><rect x="6" y="11" width="12" height="6" fill="currentColor" opacity=".45"/>',
+p_text:'<path d="M4 1h11l5 5v11H4z" fill="none" stroke="currentColor"/><path d="M7 8h10M7 11h10M7 14h6" stroke="currentColor" fill="none"/>',
+p_dot:'<g fill="none" stroke="currentColor"><rect x="1" y="4" width="8" height="10"/><rect x="15" y="4" width="8" height="10"/></g><circle cx="12" cy="9" r="1.6" fill="currentColor"/><path d="M1 9h8M19 4v10" stroke="currentColor" opacity=".4" fill="none"/>',
+p_linalg:'<path d="M5 1H2v16h3M19 1h3v16h-3" fill="none" stroke="currentColor"/><g fill="currentColor"><rect x="7" y="3" width="4" height="4"/><rect x="13" y="8" width="4" height="4"/><rect x="7" y="12" width="4" height="3" opacity=".45"/></g>',
+p_iris:'<circle cx="12" cy="9" r="2.4" fill="currentColor"/><g fill="none" stroke="currentColor"><ellipse cx="12" cy="4" rx="2.6" ry="3.4"/><ellipse cx="12" cy="14" rx="2.6" ry="3.4"/><ellipse cx="6" cy="9" rx="3.4" ry="2.6"/><ellipse cx="18" cy="9" rx="3.4" ry="2.6"/></g>'
+};
+const GNAME={N:'数组本体',I:'取数',S:'变形',C:'运算',P:'落地'};
+/* ---------- 知识点 ---------- */
+const NODES=[
+{i:'n_array',s:'N',t:'np.array:把 list 变成数组',o:`手上已经有数据,先让它变成能整块运算的 ndarray`,
+ a:`import numpy as np\nl = [1,3,5,7,9]\narr = np.array(l)         # array([1, 3, 5, 7, 9])\nnp.array([[1,2],[3,4]])   # 嵌套 list → 二维`,
+ u:[`从接口 / 数据库拿到 list,要做批量数学运算`,`想用切片、布尔筛选这些 list 做不到的写法`,`喂给 pandas / sklearn 之前先规整成数组`],
+ k:[`能说清 ndarray 与 list 的三点区别:同一种 dtype、连续内存、支持向量化`,`会用嵌套 list 造出指定形状的二维数组`,`知道 np.array 默认会复制数据,原 list 再改不影响数组`],
+ p:[],r:['n_fill','n_shape','n_dtype']},
+{i:'n_fill',s:'N',t:'ones / zeros / full:先占位',o:`形状先定下来,值随后再算`,
+ a:`np.ones(10)                          # 全 1\nnp.zeros((3,4))                      # 全 0,常用来占位\nnp.full(shape=[2,3], fill_value=2.718)\nnp.zeros_like(arr)                   # 形状跟着 arr`,
+ u:[`循环里要一格一格填结果,先开一个 zeros 当容器`,`做掩码 / 权重初始化,需要全 0 或全 1`,`需要一个和已有数组同形状的空壳(zeros_like)`],
+ k:[`知道 shape 传标量是一维、传元组或列表才是多维`,`能说出 np.zeros 默认 dtype 是 float64`,`会用 full 一步造常数数组,而不是 zeros 之后再加`],
+ p:['n_array'],r:['n_shape','n_dtype','s_reshape']},
+{i:'n_seq',s:'N',t:'arange / linspace:两种等差',o:`一个按步长走,一个按个数分`,
+ a:`np.arange(0, 20, 2)        # 步长 2,左闭右开,不含 20\nnp.linspace(0, 9, num=10)  # 首尾都要,平均分 10 个\nnp.arange(5)               # 0 1 2 3 4`,
+ u:[`造坐标轴刻度 / 采样点(画图前的 x)`,`需要"从 0 到 1 取 100 个点"这种均匀采样 → linspace`,`生成索引序列做实验`],
+ k:[`能说出 arange 右开、linspace 默认右闭(endpoint=True)`,`会算 linspace(0,9,10) 的步长是 1 而不是 0.9`,`知道 arange 配浮点步长可能多一个少一个元素,均匀采样优先 linspace`],
+ p:['n_array'],r:['s_reshape','c_arith','i_basic1d']},
+{i:'n_rand',s:'N',t:'np.random:造随机测试数据',o:`没有真数据时,先造一批像样的来练手`,
+ a:`np.random.seed(42)                 # 固定随机结果\nnp.random.randint(0, 100, size=10) # 整数,左闭右开\nnp.random.randn(5)                 # 标准正态,可为负\nnp.random.random(size=5)           # [0,1) 浮点`,
+ u:[`练习 / 演示时快速造一个 (10,8) 的数组`,`需要正态分布数据做统计实验(randn)`,`抽样、打乱、蒙特卡洛模拟`],
+ k:[`能区分 randint(整数)、random([0,1) 浮点)、randn(正态)`,`会用 size=(3,4,5) 一次造出高维数组`,`知道 seed 固定后结果可复现,调 bug 先固定种子`],
+ p:['n_array'],r:['n_shape','c_stats','i_bool']},
+{i:'n_ndim',s:'N',t:'ndim:几个轴',o:`先问"这是几维",再谈行和列`,
+ a:`arr = np.random.randint(0,100,size=(3,4,5))\narr.ndim               # 3\nlen(arr.shape) == arr.ndim   # 等价`,
+ u:[`报错说维度不匹配时,先打印 ndim 定位`,`写通用函数,按 ndim 分支处理一维 / 二维`,`图像 (H,W,3)、批数据 (N,H,W,C) 这类张量先数清轴`],
+ k:[`只看 shape 就能说出 ndim`,`知道 (5,) 和 (5,1) 不是一回事`,`能说出 axis 编号从 0 开始,最外层是 axis 0`],
+ p:['n_array'],r:['n_shape','s_reshape','c_stats']},
+{i:'n_shape',s:'N',t:'shape:每个轴多长',o:`数组的身份证,九成报错都从它看出来`,
+ a:`arr.shape          # (3, 4, 5)\narr.shape[0]       # 3,第一个轴的长度\narr.shape[-1]      # 5,最后一个轴\narr.reshape(12,5)  # 换一种读法`,
+ u:[`两个数组不能相加时,第一件事是对比 shape`,`拼接 / 广播前确认哪个轴对得上`,`喂给模型前检查 (样本数, 特征数)`],
+ k:[`能把 (3,4,5) 读成"3 层、每层 4 行 5 列"`,`会用 shape[0] / shape[-1] 取某个轴的长度`,`遇到报错能立刻打印双方 shape 判断问题出在哪个轴`],
+ p:['n_ndim'],r:['s_reshape','s_broadcast','s_concat','n_size']},
+{i:'n_size',s:'N',t:'size:一共几个元素',o:`所有轴长度乘起来,和 shape 是一套说法`,
+ a:`arr.shape   # (3,4,5)\narr.size    # 60 = 3*4*5\nlen(arr)    # 3,只是第一个轴!\narr.nbytes  # 480 = size * itemsize`,
+ u:[`估算内存占用(size × itemsize)`,`reshape 前确认元素总数能不能整除新形状`,`算比例,比如 (arr>90).sum() / arr.size`],
+ k:[`能由 shape 算出 size,反过来判断 reshape 是否合法`,`不会把 size 和 len(arr)(只有第一个轴)搞混`,`会用 size × itemsize 估内存`],
+ p:['n_shape'],r:['n_itemsize','s_reshape','c_stats']},
+{i:'n_dtype',s:'N',t:'dtype:一整块数据只有一种类型',o:`ndarray 快的前提:每格占一样大、类型一样`,
+ a:`arr.dtype                         # dtype('int64')\nnp.array([1,2,5], dtype='float32')\nnp.array([1, 'a'])                # 全被拉成字符串 <U1`,
+ u:[`内存吃紧时把 float64 降成 float32 / int8`,`读文件后发现数字变成字符串,要指定 dtype`,`做除法前确认不是整型,避免结果被截断`],
+ k:[`能说出 int8 / int64 / float32 / float64 各占几个字节`,`知道混入字符串会让整个数组变成字符串类型`,`能解释整型数组为什么不能 /= (结果是浮点,放不回去)`],
+ p:['n_array'],r:['n_itemsize','n_astype','c_inplace']},
+{i:'n_itemsize',s:'N',t:'itemsize / nbytes:每格多大',o:`64 位 ÷ 8 = 8 字节,取数就是算偏移量`,
+ a:`arr.dtype      # int64\narr.itemsize   # 8  = 64 / 8\narr.nbytes     # itemsize * size\narr.astype('int16').itemsize   # 2`,
+ u:[`大数组内存超标,评估换 dtype 能省多少`,`理解为什么 ndarray 能 O(1) 定位任意元素`,`和 C / 文件二进制格式对接时算字节数`],
+ k:[`能由 dtype 直接说出 itemsize(int32 → 4)`,`能解释"连续内存 + 固定格宽"如何让索引变成一次乘加`,`会用 nbytes 比较降精度前后的内存差`],
+ p:['n_dtype','n_size'],r:['n_astype','n_view','n_copy']},
+{i:'n_astype',s:'N',t:'asarray / astype:类型转换',o:`astype 一定返回新数组;asarray 已是数组就不复制`,
+ a:`np.asarray([1,3,5], dtype='float32')  # list → 数组\narr.astype('float32')                # 返回新数组,原数组不变\narr.astype(np.int32)                 # 浮点转整型会直接截断小数`,
+ u:[`loadtxt 读进来是 float,要转 int 当索引用`,`统一多个来源的 dtype 再做运算`,`降精度省内存 / 提速`],
+ k:[`知道 astype 总是拷贝,想省内存就别反复调用`,`能说出 asarray 与 array 的区别:前者已是同类型数组时不复制`,`知道 float → int 是截断而不是四舍五入(2.9 → 2)`],
+ p:['n_dtype'],r:['n_copy','c_inplace','p_text']},
+{i:'n_alias',s:'N',t:'b = a:根本没复制',o:`两个名字,一个对象,命运共同体`,
+ a:`a = np.random.randint(0,100,size=(4,5))\nb = a\na is b            # True,同一个对象\nb[0,0] = 1024     # a 也变了`,
+ u:[`把数组传进函数后原数组被改了,来这里找原因`,`故意共享同一个数组,让多处修改立即可见`,`排查"我明明没动 a"这类 bug`],
+ k:[`能说清赋值只是贴了个新标签,没有任何数据复制`,`会用 a is b 和 id(a) 判断是不是同一个对象`,`知道函数内修改传入数组会影响调用方`],
+ p:['n_array'],r:['n_view','n_copy','c_inplace']},
+{i:'n_view',s:'N',t:'view:换一份说明书,数据不动',o:`新对象,旧内存;改数据互相牵连,改形状互不影响`,
+ a:`b = a.view()\na is b            # False,两个对象\nb.base is a       # True,数据的根还是 a\nb.flags.owndata   # False,数据不属于自己\nb[0,0] = 1024     # a 跟着变`,
+ u:[`想换 shape / dtype 的解释方式但不想复制大数组`,`切片、reshape、转置的结果都是视图,理解它才不会误改原数据`,`大数据处理时避免不必要的内存拷贝`],
+ k:[`能用 base 和 flags.owndata 判断一个数组是不是视图`,`能解释"改元素会传染、改形状不会传染"`,`知道 a.view() 与 a = b 的区别(对象是否相同)`],
+ p:['n_alias'],r:['n_copy','n_sliceview','s_reshape','s_T']},
+{i:'n_copy',s:'N',t:'copy:另开一块内存',o:`彻底分家,以后各走各路`,
+ a:`b = a.copy()\nb.base is a        # False\nb.flags.owndata    # True\nb[0,0] = 1024      # a 不变\n\nbig = np.arange(1e8)\nsmall = big[::1000000].copy()   # 只留需要的\ndel big                          # 释放大内存`,
+ u:[`要在副本上做实验,不想动原始数据`,`只需要大数组的一小部分:切片后 copy,然后 del 原数组`,`把视图交给别人前先切断关联`],
+ k:[`知道 copy 是深拷贝,切片默认不是`,`能说出"切片 + copy + del"为什么能释放大内存(视图会让原数组无法回收)`,`会用 base / owndata 验证已经分家`],
+ p:['n_view'],r:['n_sliceview','i_fancy','n_astype']},
+{i:'n_sliceview',s:'N',t:'切片是视图,不是副本',o:`NumPy 和 list 最容易踩的一处不同`,
+ a:`arr = np.arange(10)\ntemp = arr[5:8]     # 视图\ntemp[1] = 1024\narr                 # 第 6 个元素也变成 1024\n\narr[5:8] = 12       # 整段赋值,广播到每个元素`,
+ u:[`修改子块想让原数组同步生效(图像局部处理)`,`发现"我只改了切片,原数组怎么也变了"`,`需要独立副本时记得 arr[5:8].copy()`],
+ k:[`能说出 list 切片是复制、NumPy 切片是视图`,`会用 arr[a:b] = 值 一次批量赋值`,`养成习惯:要独立数据就显式 .copy()`],
+ p:['n_view'],r:['i_basic1d','i_fancy','n_copy']},
+{i:'i_basic1d',s:'I',t:'一维索引与切片',o:`start:stop:step,左闭右开,负数从后数`,
+ a:`arr = np.arange(10)\narr[5]        # 5\narr[5:8]      # [5 6 7],左闭右开\narr[2::2]     # 从 2 开始每 2 个取 1\narr[::-1]     # 倒序\narr[1:7:2]    # [1 3 5]`,
+ u:[`取时间序列的最近 N 条 / 去掉表头几行`,`隔行采样、下采样(::10)`,`倒序、翻转数据`],
+ k:[`不用运行就能说出 arr[1:7:2] 的结果`,`知道 arr[::-1] 是视图不是复制`,`能解释省略 start / stop 时的默认值`],
+ p:['n_array'],r:['n_sliceview','i_basic2d','i_assign']},
+{i:'i_assign',s:'I',t:'切片赋值:一次改一片',o:`左边是切片,右边给一个值就自动铺满`,
+ a:`arr[5:8] = 12          # 三个位置全变 12\narr[arr > 90] = 90     # 截顶\narr[:, 0] = 0          # 二维:整列清零\narr[5:8] = [1,2,3]     # 长度对得上也可以逐个给`,
+ u:[`异常值截断 / 缺失值填充`,`把某一列、某几行统一置零或置默认值`,`按条件批量改写数据`],
+ k:[`知道右边给标量会广播到整片,给序列则要长度匹配`,`能说出这种赋值是原地修改,视图和原数组一起变`,`会用布尔条件作为赋值目标`],
+ p:['i_basic1d'],r:['i_bool','n_sliceview','s_broadcast']},
+{i:'i_basic2d',s:'I',t:'二维索引:一个逗号搞定',o:`arr[行, 列] 比 arr[行][列] 更快也更清楚`,
+ a:`arr2d = np.array([[1,3,5],[2,4,6],[-2,-7,-9],[6,6,6]])\narr2d[0,-1]      # 5,等于 arr2d[0][-1]\narr2d[:2,1:]     # 前两行 × 第 2 列往后\narr2d[:, 0]      # 第一列,结果是一维\narr2d[1]         # 第二行`,
+ u:[`取表格的某几行某几列`,`按行取样本、按列取特征`,`图像裁剪 img[y1:y2, x1:x2]`],
+ k:[`能说出 arr[a][b] 与 arr[a,b] 的差别(前者多生成一个中间视图)`,`知道 arr[:,0] 降成一维、arr[:,0:1] 保持二维`,`能把正索引换算成等价的负索引`],
+ p:['i_basic1d','n_shape'],r:['i_fancy','i_ix','s_T']},
+{i:'i_fancy',s:'I',t:'花式索引:用整数数组挑',o:`想要哪几个就列出来,可重复、可乱序,结果一定是复制`,
+ a:`arr1[[1,3,3,5,7]]        # 可重复取\narr2d[[1,3]]             # 取第 2、4 行\narr2d[([1,3],[2,4])]     # 点对点:(1,2) 和 (3,4) 两个元素\narr2d[[1,3]][:, [2,4]]   # 先挑行,再挑列`,
+ u:[`按排序后的索引重排数据(配 argsort)`,`随机抽样、打乱顺序、有放回抽样`,`按一批 id 取出对应的行`],
+ k:[`能区分 arr[[1,3]](两行)与 arr[[1,3],[2,4]](两个元素)`,`知道花式索引一定复制,改结果不影响原数组`,`会用它配合 argsort 完成重排`],
+ p:['i_basic2d'],r:['i_ix','n_copy','c_sort']},
+{i:'i_ix',s:'I',t:'np.ix_:挑出一个矩形区域',o:`行列做笛卡尔积,而不是点对点配对`,
+ a:`arr2d[np.ix_([1,3,3],[2,4,4])]\n# 等价于 arr2d[[1,3,3]][:, [2,4,4]]\n# 第一个列表是行号,第二个是列号,交叉出一个块`,
+ u:[`从大表里抽出指定行 × 指定列的子表`,`按行列名映射成索引后取子矩阵`,`重排 + 抽取一步完成`],
+ k:[`能说清 ix_ 与 arr[rows, cols] 点对点写法的区别`,`知道 ix_ 等价于连续两次花式索引,但只走一遍`,`会写出结果的 shape:(len(rows), len(cols))`],
+ p:['i_fancy'],r:['i_basic2d','c_stats']},
+{i:'i_bool',s:'I',t:'布尔索引:按条件筛',o:`先得到一张 True/False 的同形状地图,再用它取数`,
+ a:`names = np.array(['Will','Ella','Will','Ada'])\ncond = names == 'Will'     # [True False True False]\nnames[cond]                # ['Will' 'Will']\n\narr = np.random.randint(0,100,size=(10,8))\narr[arr > 90]              # 一维结果,只有满足条件的值\narr[(arr>90) | (arr<10)]   # 多条件用 & |,别用 and or`,
+ u:[`筛掉异常值 / 取出满足阈值的样本`,`按标签列过滤对应的数据行`,`统计满足条件的比例:cond.mean()`],
+ k:[`知道条件数组必须和被索引数组形状对得上`,`记得多条件用 & | ~ 并且每段加括号`,`能解释为什么二维数组布尔索引的结果是一维`],
+ p:['c_logic'],r:['i_assign','c_where','c_stats']},
+{i:'s_reshape',s:'S',t:'reshape:同一批数换个摆法',o:`元素个数不变,只改"说明书"`,
+ a:`arr = np.random.randint(0,10,size=(3,4,5))\narr.reshape(12,5)     # 60 个元素重新分\narr.reshape(-1,5)     # -1 表示这一维自动算\narr.reshape(60)       # 拉平,等价 arr.ravel()\narr.flatten()         # 拉平但返回副本`,
+ u:[`把图像 (28,28) 拉成 784 的向量喂给模型`,`一维结果 reshape(-1,1) 变成列向量`,`把长数组按每 5 个一组重排`],
+ k:[`能判断某个 reshape 是否合法(size 必须整除)`,`知道 -1 只能出现一次,由 size 反推`,`能说出 reshape / ravel 返回视图,flatten 返回副本`],
+ p:['n_shape','n_size'],r:['n_view','s_T','s_broadcast']},
+{i:'s_T',s:'S',t:'转置:行列互换 / 调轴顺序',o:`数据一格没动,只是换了读取顺序`,
+ a:`arr.T                          # (3,5) → (5,3)\nnp.transpose(arr2, axes=(2,0,1))  # (3,6,4) → (4,3,6)\narr.T is arr                   # False,是视图\narr.T.base is arr              # True`,
+ u:[`矩阵乘法前把 (n,m) 摆成 (m,n)`,`图像通道顺序 (H,W,C) ↔ (C,H,W)`,`把"每行一个样本"换成"每列一个样本"`],
+ k:[`能说出 axes=(2,0,1) 的含义:新的第 0 轴取原来的第 2 轴`,`知道转置是视图,改它会改原数组`,`能区分 .T(逆序所有轴)与 transpose(指定顺序)`],
+ p:['s_reshape'],r:['p_dot','n_view','i_basic2d']},
+{i:'s_concat',s:'S',t:'concatenate:沿指定轴接起来',o:`除了要接的那个轴,其他轴长度必须一致`,
+ a:`a = np.array([[1,2,3]]); b = np.array([[4,5,6]])\nnp.concatenate([a,b], axis=0)   # (2,3) 上下接\nnp.concatenate([a,b], axis=1)   # (1,6) 左右接`,
+ u:[`把分批读入的数据合成一个大数组`,`训练集 + 验证集合并`,`给样本追加新特征列(axis=1)`],
+ k:[`能提前判断哪些形状能接、报错信息指向哪个轴`,`知道 axis=0 是"加行"、axis=1 是"加列"`,`知道 concatenate 会产生新数组(复制)`],
+ p:['n_shape'],r:['s_stack','s_split','s_broadcast']},
+{i:'s_stack',s:'S',t:'hstack / vstack:更顺手的写法',o:`concatenate 的语义化外套,读起来更像人话`,
+ a:`np.hstack((a,b))    # 水平,等价 axis=1(二维)\nnp.vstack((a,b))    # 竖直,等价 axis=0\nnp.stack((a,b))     # 注意:会多出一个新轴!`,
+ u:[`拼接几列特征成一个特征矩阵(hstack)`,`把多条一维记录摞成二维表(vstack)`,`把多张同尺寸图片摞成一个批次(stack)`],
+ k:[`能说出 hstack / vstack 对一维数组的特殊行为(hstack 首尾相连,vstack 变成两行)`,`能区分 stack(新增轴)与 concatenate(不增轴)`,`知道它们都不是原地操作`],
+ p:['s_concat'],r:['s_split','s_broadcast']},
+{i:'s_split',s:'S',t:'split / vsplit / hsplit:切开',o:`给份数就平均分,给索引列表就按断点分`,
+ a:`arr = np.random.randint(0,10,size=(6,5))\nnp.split(arr, 2, axis=0)          # 平均分两份,必须能整除\nnp.split(arr, [2,3], axis=1)      # 按索引 2、3 断开成 3 份\nnp.vsplit(arr, 3)                 # 竖直平均分 3 份\nnp.array_split(arr, 4, axis=0)    # 不能整除时用这个`,
+ u:[`切分训练集 / 验证集 / 测试集`,`把特征矩阵按列拆成几组`,`大数组分块处理`],
+ k:[`知道 split 平均分时必须整除,否则报错(用 array_split)`,`能说出传列表时的断点语义:[2,3] → [:2]、[2:3]、[3:]`,`记得结果是一个列表,里面是视图`],
+ p:['s_concat'],r:['i_basic2d','s_stack']},
+{i:'s_broadcast',s:'S',t:'广播:形状不同也能一起算',o:`从右往左对齐,长度相等或其中一方是 1 才行`,
+ a:`arr1 = np.arange(12).reshape(4,3)\narr1 + np.array([1,2,3])       # (4,3)+(3,)  → 行方向复制 4 份\narr1 + np.array([[1],[2],[3],[4]])  # (4,3)+(4,1) → 列方向复制 3 份\narr1 + np.array([1,2,3,4])     # 报错!(3) 对不上 (4)`,
+ u:[`每列减去该列均值做标准化:arr - arr.mean(axis=0)`,`给整个数组加同一个偏置向量`,`用 (n,1) 与 (1,m) 造出 n×m 的组合矩阵`],
+ k:[`能手算两个 shape 能否广播,并说出结果 shape`,`知道要按列减均值时为什么有时需要 keepdims=True 或 reshape(-1,1)`,`能解释广播不真的复制数据,所以省内存`],
+ p:['n_shape','s_reshape'],r:['c_arith','c_scalar','c_stats']},
+{i:'c_arith',s:'C',t:'加减乘除幂:逐元素',o:`对应位置一对一算,不是矩阵乘法`,
+ a:`arr1 = np.array([1,2,3,4,5])\narr2 = np.array([2,3,1,5,9])\narr1 - arr2\narr1 * arr2      # 逐元素相乘,不是矩阵乘\narr1 / arr2      # 结果是浮点\narr1 ** arr2     # 幂`,
+ u:[`两列数据相减求差值 / 相除求比率`,`按元素施加权重`,`替代 Python 的 for 循环,快几十倍`],
+ k:[`能说清 * 与 @ / np.dot 的区别`,`知道整数除法结果自动变 float64`,`能解释向量化为什么比 for 快(底层 C 循环、无 Python 对象开销)`],
+ p:['n_array'],r:['c_scalar','s_broadcast','p_dot','c_inplace']},
+{i:'c_logic',s:'C',t:'比较运算:得到一张布尔地图',o:`结果不是 True/False 一个值,而是同形状的布尔数组`,
+ a:`arr1 < 5\narr1 == arr2       # 逐元素比较\n(arr1 > 2) & (arr1 < 5)   # 多条件用 & |\nnp.all(arr1 > 0)   # 全部满足?\nnp.any(arr1 > 4)   # 有一个满足?`,
+ u:[`生成筛选条件给布尔索引用`,`统计满足条件的个数:(arr>90).sum()`,`断言检查:np.all(arr >= 0)`],
+ k:[`知道比较结果是数组,不能直接放进 if(要用 all / any)`,`记得多条件必须用 & | ~ 并加括号`,`会用 sum() / mean() 直接统计布尔数组`],
+ p:['c_arith'],r:['i_bool','c_where','c_stats']},
+{i:'c_scalar',s:'C',t:'数组与标量:标量传播到每格',o:`最简单的广播:一个数配上整块数据`,
+ a:`arr = np.arange(1,10)\narr + 5\narr * 5\n1 / arr\narr > 3`,
+ u:[`单位换算(全体 × 系数)、去偏置(全体 - 常数)`,`归一化:(arr - arr.min()) / (arr.max() - arr.min())`,`取倒数、百分比换算`],
+ k:[`能把标量运算看成广播的特例`,`知道整型数组 + 浮点标量会整体升成浮点`,`会用它一行写完归一化`],
+ p:['c_arith'],r:['s_broadcast','c_inplace','c_ufunc']},
+{i:'c_inplace',s:'C',t:'+= 、*= :原地修改',o:`不新建数组,直接改这块内存,所以受 dtype 限制`,
+ a:`arr1 = np.arange(5)     # int64\narr1 += 5               # 原地,arr1 还是 int64\narr1 *= 5\n# arr1 /= 5             # 报错:结果是浮点,塞不回 int\narr2 = arr1.astype(np.float32)\narr2 /= 5               # 可以`,
+ u:[`大数组循环累加,避免每步都新建数组`,`内存紧张时省掉临时对象`,`就地累计计数器 / 权重更新`],
+ k:[`能解释整型数组为什么不能 /= (类型不能自动提升)`,`知道原地操作会影响所有视图和别名`,`能说出 a = a + 1 与 a += 1 的区别`],
+ p:['c_scalar','n_dtype'],r:['n_alias','n_view','n_astype']},
+{i:'c_ufunc',s:'C',t:'通用函数:整块做数学',o:`sqrt / square / exp / log / sin / round / clip …都是逐元素`,
+ a:`arr = np.array([1,4,8,9,16,25])\nnp.sqrt(arr)          # 开平方\nnp.square(arr)\nnp.exp(arr); np.log(arr)\nnp.clip(arr, 2, 16)   # 小于 2 的抬到 2,大于 16 的压到 16\nnp.round(arr/3, 2); np.ceil(arr/3); np.floor(arr/3)`,
+ u:[`特征做 log / sqrt 变换让分布更均匀`,`clip 截断异常值到合理区间`,`四舍五入、取整用于展示或分桶`],
+ k:[`知道 ufunc 逐元素、返回新数组、形状不变`,`能说出 clip 与 where 各自适合什么场景`,`记得 log(0) 会得到 -inf 并给出警告`],
+ p:['c_arith'],r:['c_pair','c_stats','c_where']},
+{i:'c_pair',s:'C',t:'maximum / minimum / inner:成对比较',o:`两个数组对位取大取小,或算内积`,
+ a:`x = np.array([1,5,2,9,3])\ny = np.array([2,4,3,7,1])\nnp.maximum(x,y)     # 对位取较大:[2 5 3 9 3]\nnp.minimum(x,y)\nx.max()             # 注意:这是单个最大值,不是对位\nnp.inner(x,y)       # 向量内积`,
+ u:[`两套指标取逐位上限 / 下限(比如做 clip 的变体)`,`ReLU:np.maximum(arr, 0)`,`算相似度 / 投影时用 inner`],
+ k:[`能区分 np.maximum(对位,两个数组)与 arr.max()(聚合,一个值)`,`会用 np.maximum(arr,0) 实现 ReLU`,`知道 inner 对一维就是点积`],
+ p:['c_ufunc','c_logic'],r:['c_stats','p_dot','c_where']},
+{i:'c_where',s:'C',t:'np.where:向量化的 if-else',o:`条件为真取前者,为假取后者`,
+ a:`cond = np.array([True,False,True])\nnp.where(cond, arr1, arr2)          # 真取 arr1,假取 arr2\nnp.where(arr3 < 15, arr3, -15)     # 大于等于 15 的统一置 -15\nnp.where(arr > 0, 1, 0)            # 二值化\nnp.where(arr > 90)                 # 只给条件 → 返回索引!`,
+ u:[`条件替换:异常值改成默认值`,`打标签 / 二值化(大于阈值记 1)`,`只传一个参数时当 argwhere 用,拿到满足条件的位置`],
+ k:[`能用 where 改写一个 for + if 循环`,`知道三参数返回值、单参数返回索引元组`,`能说出 where 与"布尔索引赋值"的取舍(前者不改原数组)`],
+ p:['c_logic'],r:['i_bool','c_pair','c_stats']},
+{i:'c_sort',s:'C',t:'sort / argsort:排序与排序索引',o:`arr.sort() 原地改,np.sort() 返回副本,argsort 给顺序`,
+ a:`arr = np.array([9,3,11,6,17])\nnp.sort(arr)        # 返回新数组,原数组不动\narr.sort()          # 原地排序,原数组被改!\narr.argsort()       # 从小到大的索引\narr[arr.argsort()[::-1]]     # 按降序重排\nnp.sort(arr2d, axis=1)       # 每行各自排序`,
+ u:[`取 Top-N:argsort 后取最后几个索引`,`按某一列排序整张表(argsort 那一列,再花式索引全表)`,`排序后做去重 / 求中位数`],
+ k:[`能说出 arr.sort() 与 np.sort(arr) 的区别`,`会用 argsort + 花式索引实现"按某列排整表"`,`知道 axis 决定沿哪个轴排,默认 -1(每行)`],
+ p:['i_fancy'],r:['c_stats','c_set','p_iris']},
+{i:'c_set',s:'C',t:'集合运算:交并差与去重',o:`把数组当集合看,结果自动排序且唯一`,
+ a:`A = np.array([2,4,6,8]); B = np.array([3,4,5,6])\nnp.intersect1d(A,B)   # 交集 [4 6]\nnp.union1d(A,B)       # 并集 [2 3 4 5 6 8]\nnp.setdiff1d(A,B)     # 差集,A 有 B 没有 [2 8]\nnp.unique(A)          # 去重\nnp.in1d(A,B)          # A 的每个元素在不在 B 里(布尔)`,
+ u:[`找两批 id 的重合部分 / 只在一侧出现的部分`,`统计类别数:len(np.unique(labels))`,`用 in1d 做批量成员判断,再配布尔索引`],
+ k:[`知道这些函数会先展平再去重并排序`,`会用 np.unique(x, return_counts=True) 数每类个数`,`能区分 in1d(布尔数组)与 intersect1d(交集值)`],
+ p:['c_sort'],r:['i_bool','c_stats','p_iris']},
+{i:'c_stats',s:'C',t:'统计函数 + axis:算哪个方向',o:`axis 指的是"被压掉的那个轴"`,
+ a:`arr = np.random.randint(0,10,size=(4,5))\narr.mean()              # 全部元素的均值\narr.mean(axis=0)        # 压掉行 → 每列一个值,长度 5\narr.mean(axis=1)        # 压掉列 → 每行一个值,长度 4\narr.argmax(); np.argwhere(arr > 5)\nnp.cumsum(arr); np.median(arr); arr.std(); arr.var()\nnp.cov(arr, rowvar=True); np.corrcoef(arr, rowvar=True)`,
+ u:[`按列算均值 / 标准差做特征标准化`,`按行汇总每个样本的总量`,`看特征之间的相关性(corrcoef)决定要不要去掉冗余特征`],
+ k:[`能不假思索说出 axis=0 是"每列"、axis=1 是"每行"`,`能区分 max(值)与 argmax(索引)、argwhere(位置)`,`知道 rowvar=True 表示每行是一个变量`],
+ p:['s_broadcast'],r:['c_sort','c_where','p_iris','p_linalg']},
+{i:'p_npy',s:'P',t:'save / savez / load:NumPy 自己的格式',o:`原样存原样取,dtype 和 shape 都不丢`,
+ a:`x = np.random.randn(5); y = np.arange(0,10)\nnp.save('x_arr', x)                      # → x_arr.npy\nnp.savez('some.npz', xarr=x, yarr=y)     # 多个数组,key 任意\nnp.load('x_arr.npy')\nnp.load('some.npz')['yarr']              # 按 key 取\nnp.savez_compressed('some.npz', xarr=x)  # 压缩版`,
+ u:[`缓存中间计算结果,下次直接 load 省时间`,`把预处理好的特征矩阵存盘`,`一个文件里打包多个数组(npz)`],
+ k:[`能说出 npy(单个)与 npz(多个,按 key)的区别`,`知道 save 会自动补 .npy 后缀`,`能解释为什么 npy 比 csv 更适合存中间结果(不丢 dtype、更快更小)`],
+ p:['n_dtype'],r:['p_text','n_copy']},
+{i:'p_text',s:'P',t:'savetxt / loadtxt:读写 csv 和 txt',o:`跨工具交换数据用文本,记得指定分隔符和 dtype`,
+ a:`arr = np.random.randint(0,10,size=(3,4))\nnp.savetxt('arr.csv', arr, delimiter=',')\nnp.loadtxt('arr.csv', delimiter=',', dtype=np.int32)\nnp.loadtxt('data.csv', delimiter=',', skiprows=1)   # 跳表头\nnp.loadtxt('data.csv', delimiter=',', usecols=(0,2)) # 只要某几列`,
+ u:[`读别人给的 csv 做数值分析(纯数字表)`,`把结果导出给 Excel / 同事`,`跳过表头、只取需要的列`],
+ k:[`知道 savetxt 默认存成浮点科学计数,要用 fmt 控制格式`,`会用 skiprows / usecols 处理带表头或多余列的文件`,`知道文本文件里有非数字时 loadtxt 会报错(该换 pandas 或 genfromtxt)`],
+ p:['p_npy','n_astype'],r:['p_iris','n_dtype']},
+{i:'p_dot',s:'P',t:'矩阵乘积:dot 与 @',o:`前一个的最后一维必须等于后一个的第一维`,
+ a:`A = np.array([[4,2,3],[1,3,1]])      # (2,3)\nB = np.array([[2,7],[-5,-7],[9,3]])  # (3,2)\nnp.dot(A,B)     # (2,2)\nA @ B           # 同上,推荐写法\nA * A           # 这是逐元素,完全不同!`,
+ u:[`线性回归、神经网络的每一层都是矩阵乘`,`坐标变换 / 旋转矩阵`,`加权求和:权重向量 @ 特征矩阵`],
+ k:[`能由两个 shape 判断能不能乘,并说出结果 shape`,`绝不会把 * 和 @ 用混`,`知道一维 @ 一维就是点积`],
+ p:['s_T','c_arith'],r:['p_linalg','c_pair','s_broadcast']},
+{i:'p_linalg',s:'P',t:'linalg:逆、行列式、特征值、分解',o:`线性代数工具箱,先会用再补理论`,
+ a:`from numpy.linalg import inv, det, eig, qr, svd\nA = np.array([[1,2,3],[2,3,4],[4,5,8]])\ninv(A)          # 逆矩阵\ndet(A)          # 行列式,为 0 则不可逆\neig(A)          # 特征值、特征向量\nsvd(A); qr(A)   # 分解\nnp.linalg.solve(A, b)   # 解方程组,比 inv(A)@b 更稳`,
+ u:[`最小二乘 / 解线性方程组`,`PCA 降维背后就是特征分解 / SVD`,`判断矩阵是否奇异(det 接近 0)`],
+ k:[`知道只有方阵才有逆,det=0 时 inv 会报错`,`能说出解方程优先用 solve 而不是 inv @ b 的原因(数值更稳、更快)`,`知道 eig 返回的是元组(值, 向量),向量按列存放`],
+ p:['p_dot'],r:['c_stats','i_ix']},
+{i:'p_iris',s:'P',t:'实战:鸢尾花花萼数据全流程',o:`读文件 → 排序去重 → 一串统计量,把前面的点串起来`,
+ a:`data = np.loadtxt('./iris.csv', delimiter=',')\ndata.sort(axis=-1)              # 原地排序,注意会改 data\nnp.unique(data)                 # 去重(自动排序)\nnp.sum(data); np.cumsum(data)\nnp.mean(data); np.std(data); np.var(data)\nnp.min(data); np.max(data)\ndata.mean(axis=0)               # 按列看每个指标`,
+ u:[`拿到一份数值表,先跑一遍描述性统计摸清分布`,`交作业 / 出报告前的快速数据体检`,`作为 pandas 之前的过渡练习`],
+ k:[`能独立完成"读入 → 检查 shape/dtype → 统计 → 输出"整条链`,`知道 data.sort(axis=-1) 是原地且按行排,会改坏原始数据(需要先 copy)`,`会主动用 axis 分别看整体和每一列,而不是只看全局均值`],
+ p:['p_text','c_stats','c_sort'],r:['c_set','n_shape','c_ufunc']}
+];
+const BY={}; NODES.forEach(n=>BY[n.i]=n);
+const TOTAL=NODES.reduce((s,n)=>s+n.k.length,0);
+const PATH=['n_array','n_shape','n_dtype','i_basic1d','i_basic2d','i_bool','s_reshape','s_broadcast','c_arith','c_ufunc','c_stats','c_sort','c_where','n_view','p_text','p_iris'];
+const done=new Set();
+let cur=null, step=0, timer=null;
+const $=s=>document.querySelector(s);
+function el(t,c,x){const e=document.createElement(t); if(c)e.className=c; if(x!=null)e.textContent=x; return e;}
+const board=$('#board'), detail=$('#detail'), edges=$('#edges'), allrel=$('#allrel');
+
+/* ---------- 幻灯片 ---------- */
+const SLIDES=[{k:'anat',t:'数组解剖',g:'N'},{k:'index',t:'取数',g:'I'},
+  {k:'shape',t:'变形',g:'S'},{k:'calc',t:'运算',g:'C'},
+  {k:'real',t:'落地',g:'P'},{k:'cmp',t:'易混淆对照',g:null}];
+const G2S={N:'anat',I:'index',S:'shape',C:'calc',P:'real'};
+let slide='anat';
+function markSlide(k){
+  slide=k;
+  document.querySelectorAll('.slide').forEach(s=>s.classList.toggle('on', s.dataset.slide===k));
+  document.querySelectorAll('#tablist .tab').forEach(b=>b.setAttribute('aria-selected', b.dataset.k===k?'true':'false'));
+  $('#stage').classList.toggle('solo', k==='cmp');
+}
+function showSlide(k){
+  markSlide(k);
+  const g=(SLIDES.find(s=>s.k===k)||{}).g;
+  if(g && (!cur || BY[cur].s!==g)){
+    const first=NODES.find(n=>n.s===g);
+    if(first){ cur=first.i; render(); return; }
+  }
+  drawEdges();
+}
+function slideStep(d){
+  const i=SLIDES.findIndex(s=>s.k===slide);
+  showSlide(SLIDES[(i+d+SLIDES.length)%SLIDES.length].k);
+}
+function buildTabs(){
+  const box=$('#tablist');
+  SLIDES.forEach((s,idx)=>{
+    const b=document.createElement('button');
+    b.className='tab'; b.type='button'; b.dataset.k=s.k; b.setAttribute('role','tab');
+    b.setAttribute('aria-selected', s.k===slide?'true':'false');
+    b.appendChild(el('span','num',String(idx+1)));
+    b.appendChild(el('span',null,s.t));
+    if(s.g) b.appendChild(el('b'));
+    b.addEventListener('click',()=>{stop(); showSlide(s.k);});
+    box.appendChild(b);
+  });
+}
+
+/* ---------- 货架卡片 ---------- */
+function chipEl(n){
+  const b=document.createElement('button');
+  b.className='chip'; b.type='button'; b.dataset.id=n.i; b.setAttribute('aria-pressed','false');
+  b.innerHTML='<svg width="24" height="18" viewBox="0 0 24 18" aria-hidden="true">'+(IC[n.i]||'')+'</svg>';
+  b.appendChild(el('span',null,n.t));
+  b.appendChild(el('span','dot'));
+  b.addEventListener('click',()=>{stop(); select(n.i);});
+  return b;
+}
+['I','S','C','P'].forEach(g=>{
+  const box=$('#sh-'+g);
+  NODES.filter(n=>n.s===g).forEach(n=>box.appendChild(chipEl(n)));
+});
+document.querySelectorAll('.hot').forEach(h=>{
+  h.addEventListener('click',()=>{stop(); select(h.dataset.id);});
+  h.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault(); stop(); select(h.dataset.id);}
+  });
+});
+const gcnt=el('span'); gcnt.style.cssText='display:block;font-size:11px;color:#6b7280;margin-top:2px';
+$('.prog').appendChild(gcnt);
+
+/* ---------- 选中与渲染 ---------- */
+function ownsNode(k,id){
+  const sl=document.querySelector('.slide[data-slide="'+k+'"]');
+  return !!(sl && sl.querySelector('.hot[data-id="'+id+'"], .chip[data-id="'+id+'"]'));
+}
+function select(id){
+  cur=id;
+  const k=G2S[BY[id].s];
+  /* 当前页上已经有这个知识点的锚点就不翻页 */
+  if(k && k!==slide && !ownsNode(slide,id)) markSlide(k);
+  render();
+}
+function render(){
+  const n=BY[cur]; const pre=new Set(n.p), rel=new Set(n.r);
+  board.classList.add('focus');
+  document.querySelectorAll('.chip').forEach(c=>{
+    const id=c.dataset.id;
+    c.setAttribute('aria-pressed', id===cur?'true':'false');
+    c.classList.toggle('pre', pre.has(id));
+    c.classList.toggle('rel', rel.has(id)&&!pre.has(id));
+  });
+  document.querySelectorAll('.hot').forEach(h=>{
+    const id=h.dataset.id;
+    h.classList.toggle('on', id===cur);
+    h.classList.toggle('pre', pre.has(id));
+    h.classList.toggle('rel', rel.has(id)&&!pre.has(id));
+  });
+  document.querySelectorAll('.part').forEach(p=>p.classList.toggle('on', p.dataset.part===cur));
+  renderDetail(n); dots(); prog(); syncStep(); drawEdges();
+}
+/* ---------- 详情面板 ---------- */
+function renderDetail(n){
+  detail.innerHTML='';
+  detail.appendChild(el('div','d-tag',GNAME[n.s]));
+  detail.appendChild(el('div','d-h',n.t));
+  detail.appendChild(el('p','d-o',n.o));
+
+  let s=el('div','d-sec'); s.appendChild(el('h4',null,'什么时候用它'));
+  const ul=el('ul'); n.u.forEach(x=>ul.appendChild(el('li',null,x)));
+  s.appendChild(ul); detail.appendChild(s);
+
+  s=el('div','d-sec'); s.appendChild(el('h4',null,'关键写法'));
+  const pre=el('pre','api mono',n.a); s.appendChild(pre); detail.appendChild(s);
+
+  s=el('div','d-sec'); s.appendChild(el('h4',null,'怎么算掌握了(勾掉它)'));
+  n.k.forEach((x,idx)=>{
+    const key=n.i+'#'+idx;
+    const lab=el('label','chk'+(done.has(key)?' ok':''));
+    const cb=document.createElement('input'); cb.type='checkbox'; cb.checked=done.has(key);
+    cb.addEventListener('change',()=>{
+      if(cb.checked){done.add(key); lab.classList.add('ok');}
+      else{done.delete(key); lab.classList.remove('ok');}
+      dots(); prog();
+    });
+    lab.appendChild(cb); lab.appendChild(el('span',null,x)); s.appendChild(lab);
+  });
+  detail.appendChild(s);
+
+  const links=[].concat(n.p.map(x=>[x,'pre']), n.r.map(x=>[x,'rel']));
+  if(links.length){
+    s=el('div','d-sec'); s.appendChild(el('h4',null,'关联知识点(先会前置,再练常配)'));
+    const wrap=el('div','rels');
+    links.forEach(([id,kind])=>{
+      if(!BY[id]) return;
+      const b=document.createElement('button'); b.type='button'; b.className=kind;
+      b.textContent=(kind==='pre'?'← ':'~ ')+BY[id].t;
+      b.addEventListener('click',()=>{stop(); select(id);});
+      wrap.appendChild(b);
+    });
+    s.appendChild(wrap); detail.appendChild(s);
+  }
+}
+
+/* ---------- 进度 ---------- */
+function okOf(n){ return n.k.every((_,idx)=>done.has(n.i+'#'+idx)); }
+function dots(){
+  NODES.forEach(n=>{
+    const ok=okOf(n);
+    const c=document.querySelector('.chip[data-id="'+n.i+'"] .dot');
+    if(c) c.classList.toggle('ok', ok);
+    const h=document.querySelector('.hot[data-id="'+n.i+'"] circle');
+    if(h) h.style.stroke = ok ? '#12796a' : '';
+  });
+}
+function prog(){
+  $('#pfill').style.width=(done.size/TOTAL*100).toFixed(1)+'%';
+  $('#ptxt').textContent='掌握进度 '+done.size+' / '+TOTAL+' 条自测';
+  gcnt.textContent=['N','I','S','C','P'].map(g=>{
+    const ns=NODES.filter(n=>n.s===g);
+    return GNAME[g]+' '+ns.filter(okOf).length+'/'+ns.length;
+  }).join(' · ');
+  SLIDES.forEach(s=>{
+    if(!s.g) return;
+    const t=document.querySelector('#tablist .tab[data-k="'+s.k+'"] b');
+    if(!t) return;
+    const ns=NODES.filter(n=>n.s===s.g);
+    const ok=ns.filter(okOf).length;
+    t.textContent=ok+'/'+ns.length;
+    t.classList.toggle('full', ok===ns.length);
+  });
+}
+/* ---------- 关联连线 ---------- */
+function anchorEl(id){
+  const cands=[document.querySelector('.chip[data-id="'+id+'"]'),
+               document.querySelector('.hot[data-id="'+id+'"] circle')];
+  for(let i=0;i<cands.length;i++){
+    const c=cands[i]; if(!c) continue;
+    const r=c.getBoundingClientRect();
+    if(r.width&&r.height) return c;   /* 只连当前页上看得见的锚点 */
+  }
+  return null;
+}
+function border(r,b,tx,ty){
+  const cx=r.left-b.left+r.width/2, cy=r.top-b.top+r.height/2;
+  const dx=tx-cx, dy=ty-cy;
+  if(!dx&&!dy) return [cx,cy];
+  const hw=r.width/2+3, hh=r.height/2+3;
+  const s=Math.min(dx?Math.abs(hw/dx):1e9, dy?Math.abs(hh/dy):1e9);
+  return [cx+dx*s, cy+dy*s];
+}
+function center(r,b){ return [r.left-b.left+r.width/2, r.top-b.top+r.height/2]; }
+function drawEdges(){
+  while(edges.childNodes.length>1) edges.removeChild(edges.lastChild);
+  if(window.innerWidth<=1080) return;
+  const b=board.getBoundingClientRect();
+  const list=[];
+  const push=(f,t,k)=>{ if(f!==t&&BY[f]&&BY[t]) list.push([f,t,k]); };
+  if(allrel.checked){
+    const seen=new Set();
+    NODES.forEach(n=>{
+      n.p.forEach(x=>{ push(x,n.i,'pre'); seen.add(x+'>'+n.i); seen.add(n.i+'>'+x); });
+      n.r.forEach(x=>{ if(!seen.has(n.i+'>'+x)){ seen.add(n.i+'>'+x); seen.add(x+'>'+n.i); push(n.i,x,'rel'); } });
+    });
+  }else{
+    const n=BY[cur];
+    n.p.forEach(x=>push(x,cur,'pre'));
+    n.r.forEach(x=>{ if(n.p.indexOf(x)<0) push(cur,x,'rel'); });
+    NODES.filter(m=>m.p.indexOf(cur)>=0).forEach(m=>push(cur,m.i,'pre'));
+  }
+  edges.style.opacity = allrel.checked ? '.22' : '.62';
+  list.forEach(([f,t,k])=>{
+    const ef=anchorEl(f), et=anchorEl(t);
+    if(!ef||!et) return;
+    const rf=ef.getBoundingClientRect(), rt=et.getBoundingClientRect();
+    if(!rf.width||!rf.height||!rt.width||!rt.height) return;  /* 不在当前幻灯片上 */
+    const [fcx,fcy]=center(rf,b), [tcx,tcy]=center(rt,b);
+    const [sx,sy]=border(rf,b,tcx,tcy), [tx,ty]=border(rt,b,fcx,fcy);
+    const dx=tx-sx, dy=ty-sy;
+    let c1,c2;
+    if(Math.abs(dy)>Math.abs(dx)){
+      const o=Math.max(28,Math.abs(dy)*.38), sg=dy>0?1:-1;
+      c1=[sx+dx*.12, sy+sg*o]; c2=[tx-dx*.12, ty-sg*o];
+    }else{
+      const o=Math.max(28,Math.abs(dx)*.38), sg=dx>0?1:-1;
+      c1=[sx+sg*o, sy]; c2=[tx-sg*o, ty];
+    }
+    const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d','M'+sx+' '+sy+' C'+c1[0]+' '+c1[1]+' '+c2[0]+' '+c2[1]+' '+tx+' '+ty);
+    p.setAttribute('fill','none');
+    p.setAttribute('stroke', k==='pre'?'#2f6bd8':'#b96c08');
+    p.setAttribute('stroke-width', allrel.checked?'1':'1.4');
+    if(k==='rel') p.setAttribute('stroke-dasharray','4 3');
+    else p.setAttribute('marker-end','url(#ah)');
+    edges.appendChild(p);
+  });
+}
+/* ---------- 学习路线播放 ---------- */
+const steptxt=$('#steptxt'), playBtn=$('#play');
+function syncStep(){
+  const idx=PATH.indexOf(cur);
+  if(idx>=0){ step=idx; steptxt.textContent='路线 '+(idx+1)+' / '+PATH.length; }
+  else steptxt.textContent='(支线知识点)';
+}
+function goStep(d){
+  step=(step+d+PATH.length)%PATH.length;
+  select(PATH[step]);
+}
+function stop(){ if(timer){clearInterval(timer); timer=null; playBtn.textContent='▶ 自动播放';} }
+$('#prev').addEventListener('click',()=>{stop(); goStep(-1);});
+$('#next').addEventListener('click',()=>{stop(); goStep(1);});
+playBtn.addEventListener('click',()=>{
+  if(timer) return stop();
+  playBtn.textContent='❚❚ 暂停';
+  goStep(1);
+  timer=setInterval(()=>goStep(1),2800);
+});
+allrel.addEventListener('change',drawEdges);
+let rtm=null;
+window.addEventListener('resize',()=>{clearTimeout(rtm); rtm=setTimeout(drawEdges,120);});
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT') return;
+  if(e.key==='ArrowRight'){stop(); slideStep(1);}
+  if(e.key==='ArrowLeft'){stop(); slideStep(-1);}
+  if(e.key==='ArrowDown'){e.preventDefault(); stop(); goStep(1);}
+  if(e.key==='ArrowUp'){e.preventDefault(); stop(); goStep(-1);}
+  if(/^[1-6]$/.test(e.key)){stop(); showSlide(SLIDES[+e.key-1].k);}
+});
+$('#sprev').addEventListener('click',()=>{stop(); slideStep(-1);});
+$('#snext').addEventListener('click',()=>{stop(); slideStep(1);});
+
+/* ---------- 启动 ---------- */
+buildTabs(); prog(); dots(); select('n_array');
+</script>
+</body>
+</html>
