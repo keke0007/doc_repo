@@ -1,4 +1,63 @@
+Post
 
+See new posts
+Conversation
+Chasen
+@chasen_liao
+上次我分享过 pi-fff，就是为了优化上下文。它确实能让搜索更准，少把整目录灌进窗口。
+
+但这几天实测发现，AI 还是容易过度设计，抽象层写一堆用不上的；写完还可能反复跑测试来验证，测试日志也很占上下文，半小时下来窗口被吃掉一块，agent 开始忘事，然后就 compact，关键细节丢失，返工又来一轮
+
+所以这几天又装了 4 个插件，专门堵这几个漏洞，让 Pi 的上下文更加干净了 👇
+
+1️⃣ ponytail：治过度设计
+
+名字起得很随意，本质是懒资深开发模式。它每轮往会话里注入一套规则，核心是一把梯子：先问这段代码该不该存在，再看仓库里有没有现成的，然后依次是标准库、平台原生特性、已装依赖，一步能走通就不往下走，最后才轮到写新代码。
+
+有意思的是 README 明说，这套规则从来不是「省最少 token」，省 token 只是副作用。本质是只写任务需要的代码，而且不许砍验证、错误处理、安全和可访问性
+
+官方拿 Haiku 4.5 跑过基准：代码行数降到无规则基线的 46%，token 用量降到 78%，成本 80%
+
+装完有四个档位，/ponytail full 切档。还有两个命令我常用：/ponytail-review 审刚改的代码是不是过度设计，/ponytail-audit 直接审整个仓库找该删的东西
+
+我现在的配置是默认 off，正经写代码切 full，偶尔拿 review 给代码减肥
+
+另外它不挑平台，官方说适配 20 个 agent，Claude Code、Codex 也能装
+
+>    pi install npm:@dietrichgebert/ponytail
+
+
+每人都说的必备 Hermes 插件
+
+Hermes 跨脑同步 + 预算闸 + 技能自进化 + QQ 正门 + Discord 实时声线五连杀 🔥
+全网玩家把 Hermes 玩成了下一代「会在多家 harness 之间认人 + 会先报还剩几发子弹 + 会自己造下一把武器 + 能从 QQ 正门进出 + 能在 Discord 里边说边干」：
+
+1️⃣ Signet-AI/signetai（https://github.com/Signet-AI/signetai）
+
+跨 Hermes / Claude Code / Codex / OpenCode / Pi 同步记忆、AGENTS.md、会话记录、机构知识和密钥。 “Agent 第一次有自己的身份证，而不是每换一家 harness 就失忆一次”！
+
+2️⃣ nujovich/hermes-telemetry（https://github.com/nujovich/hermes-telemetry）
+
+预算强制执行 + 可观测插件：在 runaway 账单发生前刹车，而不是事后对发票发呆。 “会干活的 Agent 终于先报还剩几发子弹，再冲锋”！
+
+3️⃣ pingchesu/hermes-curator-evolver（https://github.com/pingchesu/hermes-curator-evolver）
+
+证据驱动的技能进化：出报告、dry-run 提案、候选检索、带门禁的 apply。 “会干活还不够，得会给自己造下一把武器，而且先给人类看刀谱”！
+
+4️⃣ shynloc/Hermes-Agent-QQ-Plugin（https://github.com/shynloc/Hermes-Agent-QQ-Plugin）
+
+走 QQ 官方开放平台 API，私聊 / 群 / 频道双向文字、语音、图片、文件，无需 NapCat。 “Hermes 第一次从正规门口进 QQ，而不是翻墙进群”！
+
+5️⃣ Capslockb/hermes-live-discord-agent-plugin（https://github.com/Capslockb/hermes-live-discord-agent-plugin）
+
+Discord 全双工语音 ↔ Gemini Multimodal Live，带 function calling、空闲挂断、转写、3 分钟一键安装。 “语音不再是录音笔，是 Hermes 在频道里真的能听能回能动手”！
+
+//
+
+这波直接把 Hermes 从「会自我进化的单兵」推到「跨 harness 认人、先控预算、带门禁自进化、走官方聊天入口、能在语音频道施工」的完整操作系统。今晚装，明天生产力直接起飞
+
+
+https://github.com/keplerTR/LocalAI-Advisor
 得否
 @wangdefou
 ·
