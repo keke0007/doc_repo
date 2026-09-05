@@ -1,0 +1,539 @@
+https://github.com/nklmilojevic/sofka
+https://github.com/apache/maka/blob/main/docs%2Fblogs%2Fmulti-agent-scheduling.zh-CN.md
+https://t.co/gHiG9syjN4
+现在最新的工作流就是：用 Astra 做系统设计 在“pi”里面 Astro 用不了多少额度 还是能耐用的 然后 可以再用最后的系统设计和 coding 设计 用国产模型来跑就行了
+
+https://x.com/niaoshu/status/2080726744697634818
+https://x.com/niaoshu/status/2081274561673547910
+https://github.com/runesleo/bookmark-digest
+
+Leo｜LeoLabs.me
+@runes_leo
+·
+3h
+我把 X 收藏夹改成了一个会自动消化的 Agent 收件箱。
+
+以后看到值得留的内容，我只负责点一下收藏。
+
+剩下的流程交给 Agent：
+
+1. 定时读取新收藏
+2. 去重并判断有没有价值
+3. 分配去向：研究、内容、产品、任务，或者无需行动
+4. 下游真正产出结果
+5. 写下验收回执
+6. 显式开启后，自动取消已经处理完成的收藏
+7. 重新打开原帖，确认真的取消成功
+
+也就是说，收藏不再等于「以后再看」。
+
+它会直接进入工作流：
+
+收藏一次
+→ Agent 自动消化
+→ 变成研究、内容或任务
+→ 完成后从收件箱清走
+
+这里最重要的安全门是：只有真实产物和验收回执都存在，才能判定处理完成。
+
+抓取失败、数据不完整、原帖身份对不上，都会立即停止并保留收藏，不会拿「空结果」冒充收件箱已经清零。
+
+账号修改默认关闭。自动清零需要先审查自己的处理流程，再显式打开。
+
+https://github.com/vectorize-io/hindsight
+
+https://github.com/ByteByteGoHq/system-design-101
+https://x.com/NiallxYoung/status/2095769528785617353
+我研究了一个挺实用的 Coding Agent 整理方法：
+
+让它扫描历史对话，找出你至少重复说过 3 次的工程要求，再分类：
+
+AGENTS.md / Skill / lint-test-check / 人工判断
+
+我自己试了，确实挖出了不少反复强调但一直没沉淀下来的规则。
+
+完整提示词：
+
+分析全部历史对话，找出我反复向 Coding Agent 提出的工程要求。
+
+仅统计：
+- 至少在 3 个独立对话出现
+- 对未来项目仍有通用价值
+- 不属于某个一次性功能需求
+
+将候选项分为：
+
+1. 适合写入 AGENTS.md
+2. 适合做成 Skill
+3. 适合变成 lint/test/check
+4. 仍然应该保留为人工判断
+
+输出重复次数、出现的对话和建议原因。
+
+不要修改任何文件。
+
+分享我目前的 Agentic Coding 组合： 
+1、Orca 
+@orca_build
+  https://onorca.dev 壳，自由搭配多Agent，并行多项目、工作树） 
+2、OMP （ https://omp.sh ，主要的运行时，自由接入几乎所有的 model 组合使用。
+advisor on 功能让高智力 model 作为快速model的协同，可以及时纠偏，速度和质量达到平衡。
+当前推荐组合 Grok4.6/Gemini-3.8flash/GLM-5.3-flash作为执行，Kimi-K3作为监督）
+3、AI 项目管理与开发 mutica （ https://multica.ai 自动化异步代码编写、过夜任务、自动化巡查、项目管理及跟踪）
+
+https://github.com/Makson179/Bello
+https://x.com/Kay2289123/status/2094322706091213195
+https://m.youtube.com/watch?v=ToK8L3b-aCA
+https://github.com/f/prompts.chat
+https://github.com/linshenkx/prompt-optimizer
+https://github.com/HandsOnLLM/Hands-On-Large-Language-Models
+https://github.com/othorizon/easy-agent-team
+
+To view keyboard shortcuts, press question mark
+View keyboard shortcuts
+Post
+
+See new posts
+Conversation
+烟花老师
+@teach_fireworks
+从今天起我会开始更新这个harness系列：
+主要是围绕Codex,ClaudeCode,Kimi 三种 harness 工具的 Agent 并行能力底层实现对比，抽丝剥茧。
+
+三者的共同点都是"主 Agent + 隔离上下文子 Agent"的 fork-join 模型，在 2026 年收敛到了同一个抽象：
+
+主 Agent 派发子 Agent，子 Agent 在独立上下文窗口里跑完一个限界任务，只把结论摘要回流主上下文，中间推理和工具调用记录不污染主会话。
+
+目标一致：对抗 context pollution / context rot，并把可并行的读密集型工作摊到多个 worker 上。
+差异在调度原语、进程模型、文件隔离和生命周期语义上。
+
+1. 运行时与进程模型
+Claude Code --分层最细，四种并行面
+
+• Subagents：同进程内的 Agent/Task 工具调用，独立 context window，返回摘要。
+
+Main Agent 做 orchestration，Subagent 用独立 context 做局部工作，然后压缩成结果返回。
+
+普通 Subagent 启动时是一个新的 context window，它看不到 Main Agent 已经积累的完整 conversation history，也看不到 Main Agent 已经 Read 过的所有文件。
+
+Context isolation 是整个 Subagent 架构的核心。
+
+Subagent 本质是一个 configurable agent runtime。
+
+Anthropic 自己现在的 prompting guidance 也明确建议，最新 Claude 模型已经可以原生判断什么时候适合做 subagent orchestration，不需要 system prompt 写一大堆显式路由规则。
+
+最近的趋势：
+它已经从一个简单的 context-isolated worker，发展成了 model-driven hierarchical agent runtime：Main Agent 动态分解任务，Subagent 独立管理 context / model / tools / permissions / memory / worktree，还可以继续向下 delegation；Fork 则提供低成本的 full-context parallel branch。
+
+这个系列的完整内容我会陆续更到自己的这个墨问专栏：
+https://note.mowen.cn/detail/BK50EWuYefDipiC32ZMiT
+11:05 PM · Sep 2, 2026
+·
+2,481
+ Views
+Relevant
+Crio Songo
+@shuizhuyu
+·
+7h
+这个底层对比分析太实用了，上下文污染一直是多Agent干活的老大难问题。蹲一个后续更新，正好最近要做类似的并行任务框架，急需这些底层实现细节做参考。
+烟花老师
+@teach_fireworks
+·
+7h
+感谢反馈
+
+
+入门 AI 不在于你学没学会，而是在于你去学什么。
+分享4个最近/曾经看过的 AI/Inference/RL 强化学习分享视频，教程。团队成员说很有帮助，一直好评
+
+看完之后你会大概入门：
+1. 为什么我 LLM 的 推理 非常关键？
+2. 在推理过程中，KV Cache 发挥了什么样的作用？
+3. GPU 的 memory 和算力是怎样的权衡？
+4. 为什么互联如此重要？
+5. 强化学习是如何做的？为什么是下一阶段 AI 增长的关键点？
+
+1/ Understanding the LLM Inference Workload - Mark Moyou, NVIDIA 
+https://youtube.com/watch?v=z2M8gKGYws4&t=237s
+
+2/ Post-Training Nemotron With RL: Multi‑Environment Training for Reasoning and Tool-Using Agents
+https://nvidia.com/en-us/on-demand/session/gtc26-s81558/
+
+3/ Fast & Efficient LLM Inference with vLLM
+https://deeplearning.ai/courses/fast-and-efficient-llm-inference-with-vllm
+
+
+https://www.v2ex.com/t/1238942#reply44
+https://github.com/lixuvip/codex-agent-orchestration-skill
+我也在解决这个问题，有几个点可以优化。你可以看看 cf 和 google 怎么解决的：
+https://blog.cloudflare.com/ai-code-review/
+https://cloud.google.com/blog/topics/threat-intelligence/staying-ahead-of-adversarial-ai-through-agentic-source-code-review
+
+你这一套我用了半年，干个活要 1 小时才能干好一个需求，太慢了，于是我在优化这个过程。这个痛点是显而易见的，因为每个模型都喜欢扣细节，然后就对不上。越多就越扯皮。我认可 cf 和 google 的处理方式，我也在测试，不要每个角色都给最牛逼的模型，按情况用低一档的就行，比如你说的那个 ui ，说实话，这是很机械的活，用用 opus/sol 是大炮打蚊子，不要给每个角色喂重复上下文，我的处理方式是我用 pi 来做，所以每个 agent 是一个独立的 session ，这一件事不完 session 是不结束的。这样就后面的重复其实缓存命中率非常高。
+
+效果怎么样不好说，我要解决的是干活太慢，不是干活质量的问题。目标是 review 一次 5 分钟内解决战斗
+
+
+octos-org/octoscode
+
+https://x.com/gattouz0
+
+
+1. 默认快速开发。
+2. Web/UI/SaaS 默认 TypeScript。
+3. Agent/AI/API/自动化/数据处理默认 Python。
+4. 所有长期沉淀的运维和管理工具默认 Python。
+5. Bash/PowerShell 仅用于启动、安装和极短胶水代码。
+6. Shell 一旦包含复杂状态、API、JSON、重试、并发，迁移 Python。
+7. 长期常驻 daemon、网络工具、大规模并发服务，
+   在 Python 原型验证后允许升级为 Go。
+8. Rust 不作为默认语言，只有明确性能/底层需求时使用。
+9. 不因“技术上更高级”主动重写已经正常工作的代码。
+
+
+https://metapi.lilililwan.xyz/sign-up?aff=HxE1
+
+在本站别人那抄来的适用于 codex 的 AGENTS.md ，自己略微改了一下，其它 agent 改改也能用：
+
+```
+## Windows 约束
+**当前环境是 Windows 10 / pwsh7**
+- 默认禁止使用 Bash 语法，除非确定此 shell 处在 Linux 环境
+- 不要使用 Bash 引号/转义习惯，在 PowerShell 命令里，复杂正则优先用单引号包裹。
+- 如果正则本身同时包含单引号和双引号，优先拆成多个简单 rg 命令。
+- 执行多行 Python 禁止使用 Bash heredoc ；改用 PowerShell here-string | python -
+- pwsh 中，语句块表达式（如 `foreach`、`if`）不能直接作为管道输入。 需要先使用 `$()` / `@()` 包裹，或先赋值给变量。 普通命令输出可直接进入管道，无需额外包裹。
+- PowerShell 使用 `rg` 时，通配目录必须先用 `Get-ChildItem -Filter` 展开为真实路径，禁止直接把含 `*` 的搜索路径传给 `rg`。
+
+
+https://www.anthropic.com/research/multiagent-systems
+
+年轻人的破局密码，就这五个。
+
+英语
+纳斯达克
+AI
+YouTube
+早起
+
+
+https://metapi.lilililwan.xyz/sign-up?aff=HxE1
+
+
+Samgor
+@biggor888
+·
+3h
+我的开发经验，无偿分享给有缘人，把以下内容写入 AGENTS.md （我现在只用 Codex CLI）：
+
+```
+UI 设计应默认收敛、克制、常规；尺寸与间距根据界面类型、信息密度、平台习惯、使用频率和视觉层级判断，不写死统一规格，也不主动放大。辅助入口、设置、开关、工具按钮不应抢视觉中心。常见功能必须使用大众通用、用户一眼可识别的图标隐喻，优先成熟图标库、系统图标或行业通用符号，不为差异化自创奇怪图标；自定义图标也必须保持常见轮廓、比例和语义。除非明确要求强调，否则优先用位置、分组、轻微颜色、hover、tooltip、分隔线和状态反馈表达层级，避免夸张尺寸、重色块、大圆角、厚边框、强阴影、装饰性渐变和营销页式布局。实现后必须与同屏元素对比检查，若显得突兀、过大、过重或破坏信息密度，应主动收敛。
+```
+
+这个约束可以让你的项目不那么 AI 一点点。
+
+
+
+跨仓库开发最烦什么？每次切项目都得给AI从头科普一遍代码结构。
+
+codebase-memory-mcp直接把整个代码库吃进去，吐出一张知识图谱，查询快到亚毫秒级，号称能省掉99%的token开销。
+
+平时在多个项目间反复横跳的，这玩意正好卡在痛点上了。
+
+搞RAG或者代码智能方向的，这项目值得你花时间翻一翻。
+
+
+一个用AI写了2000+小时代码的人，把自己2026年整套Agentic Engineering工作流公开了。
+
+@DavidOndrej1
+  过去3年花了超过2000小时和AI一起写代码，还采访了不少重度Agent用户。
+
+他的这套配置已经不是Claude Code/Codex选哪个的问题了，而是在搭一套真正的多Agent生产系统。
+
+几个我觉得比较有意思的点：
+
+- 他现在最看重的不是Agent界面，而是Agent状态管理。
+- 主界面用bb，同时会用cmux、Ghostty、Herdr。
+- Herdr可以直接显示每个Agent当前是done、idle、blocked还是running。
+- 他甚至自己做了Corral，给Agent加优先级。
+- P1 Agent完成后永远排在P4前面。
+
+他的判断是，再过3-6个月，大部分人不会再直接和一个Agent聊天，而是和一个Manager Agent交互，由它管理大量Worker Agent。
+
+Cloud Agent几乎是确定方向。
+
+他引用Cursor内部数据称，今年年初Cloud Agent产生的merged PR占比只有10%-15%，现在已经接近60%。
+
+但他又不想被Cursor、Codex这些平台锁死。
+
+所以他的方案非常简单：
+
+自己买VPS，装Herdr，然后SSH进去跑Agent。
+
+电脑关机、断网，Agent照样继续工作。
+
+相当于用几美元成本自己搭了一个80分版本的Cloud Agent。
+
+Harness开始严重分工。
+
+Pi Agent负责极简通用；
+Cursor CLI负责多模型；
+Hermes、Prime Agent负责高不确定性的自我改进任务；
+Claude Code和Codex继续处理传统Coding Agent工作。
+
+他不会试图找一个Agent解决所有问题，而是根据任务选Harness、模型和订阅额度。
+
+重复工作全部产品化。
+
+一句话能完成的操作做成snippet。
+
+多步骤流程直接做成Skill。
+
+比如他每天都会用/ask-then-build，让AI写代码之前先把关键架构决策一个个问清楚。
+
+代码完成后，再分别让GPT-5.6 Sol和Fable 5 Review，最后合并问题。
+
+多Agent真正跑起来之后，Git Worktree、权限、数据库只读账号、Push Lock这些原本很工程化的东西，会重新变得重要。
+
+因为当20-30个Agent并行工作时，问题已经不是模型会不会写代码。
+
+而是怎么避免它们互相改代码、抢资源、碰生产数据库，以及谁先处理谁。
+
+我觉得这篇最有意思的其实是这个变化：
+
+Agentic Engineering正在从怎么把一个Coding Agent用好，进入怎么管理一群Agent。
+
+模型只是其中一层。
+
+上面开始出现Interface、Runtime、Harness、Skill、权限、任务优先级、环境隔离和Manager Agent。
+
+越来越像一套新的工程基础设施了。
+
+
+https://github.com/stablyai/orca
+
+发票识别我们做过两版
+
+第一版 OCR 加规则，识别率九成七，单张成本几乎为零，跑在自己机器上
+
+第二版换成多模态模型，图它能直接理解版式，不用为每种票据写模板。综合识别率九成五，比 OCR 低两个点，但省掉了模板维护
+
+上线之后出了一次事。有一张发票的金额栏被折痕挡了一半。OCR 那版会返回空值，走人工
+
+多模态那版返回了一个完整的金额：8,640.00
+
+那张票的真实金额中间那位被挡住了。模型补了一个 4
+
+它不是识别出了 4。它是觉得这里应该有一位数字，而 8640 是个合理的金额
+
+我们回查了三个月的记录，类似的补全有七处，其中两处对不上账
+
+后来改回混合方案：结构化字段走 OCR，版式理解走模型
+
+有人问结构化的为什么要用 OCR
+
+我说因为它便宜。而且它看不清的时候会返回空，它不会自己编一个字出来
+
+
+https://github.com/powerycy/goutoujunshi/blob/main/SKILL.md
+
+从混乱到有序：上下文驱动的 AI 开发工作流实践
+
+来自 GitLab 团队博客，团队认为：AI 时代开发效率的瓶颈从原来的工具能力，转为了上下文。管理上下文的能力、识别问题的判断力，以及持续打磨工具的底层能力。
+https://about.gitlab.com/blog/building-an-ai-dev-workflow/
+
+# GitLab 团队优化后的 AI 工作流长什么样？
+
+· 优先级主动送上门：会话启动时，AI 自动加载活跃任务、阻塞项、历史决策，并按他定义的顺序呈现（搁置事项 → 他人评审请求 → 待回答问题 → 自己被阻塞的 MR）。他不再花时间想"该做什么"。
+· 专注范式改变：过去深度开发需要数小时不被打扰；现在 15–30 分钟的碎片窗口就能开工，因为 AI 负责瞬间重建上下文。
+· 并行多 MR：用 git worktree + 隔离测试数据库 + "认领机制"（claiming system），多个 AI 会话同时推进多个 MR，互不踩踏。
+· 重复任务程序化：如每周 epic 状态汇报，AI 自动拉取数据、对比上周、生成增量报告。
+· Token 效率工程化：他甚至为 GitLab API 和 OpenCode 插件贡献了优化代码，并自建本地 MCP 服务器封装常用模式——让工具做数据收集，LLM 只做推理。
+
+# 五条核心经验
+
+1. 指令要"外科手术式"精确，不要模糊
+关键技巧：当 AI 犯错时，不要只纠正它，而是问它"什么指令能防止你下次再犯"，然后让它记下来。久而久之形成一套贴合自己实际工作流的指令集（AGENTS.md 体系），而非泛泛的最佳实践。
+
+2. 并行会话需要"协调原语"
+多会话并行的问题本质是经典的并发编程问题：竞态、重复劳动、互相删除。解法也类似——认领/释放（claim/release）、状态追踪、上下文共享。作者为此构建了 opencode-memory：一个持久化语义记忆系统，后来长成包含 76 万+ 代码实体、1.5 万+ 记忆、2.7 万+ 链接的知识图谱，并与 GitLab 官方的 Orbit（SDLC 知识图谱）打通——本地记忆管会话级上下文，Orbit 管跨 SDLC 的全局视图。
+
+3. 动手前先查重
+AI 把"从想法到原型"的成本压缩到一周，导致大量人独立造出雷同的轮子（他发现 PyPI 上早有同名包）。他的自省很尖锐：
+
+"我是认真查过是否已有方案，还是 AI 让写代码太容易，以至于我跳过了所有尽职调查？"
+
+能贡献就不要分叉——他选择给 OpenCode 的 GitLab 插件提交改进，非 fork。
+
+4. 从"主动回忆"到"被动上下文注入"
+记忆系统建好后的下一步，是让 AI 无需提示就自动想起相关上下文：提到 MR 编号，历史决策自动浮现；准备写评论，评论规范自动加载。30 天内自动注入有效率达 91%，显式调用记忆工具的次数从平均 17 次降到 0。剩余的失败案例促使他加了"启动门"（boot gate）——强制 AI 在动手前先停下来加载指令。
+
+5. AI 仍然做不到的事
+全文最有分量的部分。AI 能稳定执行程序、能被要求改进自身指令、能在有原语时协调——但它不会隐式地察觉问题：感觉不到流程别扭，不会意识到"这周第三次踩同一个坑"，没有多年凌晨两点调试生产系统磨出来的模式识别。
+
+作者的亲身案例：AI 热情地构建功能，同时在自己的工具里引入并发 bug、用同步操作把自己阻塞——它毫无察觉。人指出架构缺陷后，AI 几分钟就修好了。模式是：人发现问题，AI 快速执行修复。
+
+# 底层认知：两层递进
+
+1. 投资工具本身（磨刀）：不要试图安顿进某个"新常态"，工具下周可能就过时。正确姿势是把工作流本身当作优化对象——他为 AI 辅助开发的需要，直接给 GitLab 贡献了新的 API 端点。形成正循环：更好的工具 → 更高产能 → 更多余力改进工具。
+
+2. 代码已成商品，判断力才是报酬来源："我们不再主要靠敲代码获得报酬，要靠知道什么代码应该存在。" AI 放大人的判断——好决策和坏决策都会被放大。Vibe coding 能走很远，但即便经过最彻底的 AI 评审，设计上的质量保障与深思熟虑，AI 尚不能独立提供。
+
+
+https://github.com/getsentry/sentry
+
+https://www.tinkercad.com/
+
+从混乱到有序：上下文驱动的 AI 开发工作流实践
+
+来自 GitLab 团队博客，团队认为：AI 时代开发效率的瓶颈从原来的工具能力，转为了上下文。管理上下文的能力、识别问题的判断力，以及持续打磨工具的底层能力。
+https://about.gitlab.com/blog/building-an-ai-dev-workflow/
+
+# GitLab 团队优化后的 AI 工作流长什么样？
+
+· 优先级主动送上门：会话启动时，AI 自动加载活跃任务、阻塞项、历史决策，并按他定义的顺序呈现（搁置事项 → 他人评审请求 → 待回答问题 → 自己被阻塞的 MR）。他不再花时间想"该做什么"。
+· 专注范式改变：过去深度开发需要数小时不被打扰；现在 15–30 分钟的碎片窗口就能开工，因为 AI 负责瞬间重建上下文。
+· 并行多 MR：用 git worktree + 隔离测试数据库 + "认领机制"（claiming system），多个 AI 会话同时推进多个 MR，互不踩踏。
+· 重复任务程序化：如每周 epic 状态汇报，AI 自动拉取数据、对比上周、生成增量报告。
+· Token 效率工程化：他甚至为 GitLab API 和 OpenCode 插件贡献了优化代码，并自建本地 MCP 服务器封装常用模式——让工具做数据收集，LLM 只做推理。
+
+# 五条核心经验
+
+1. 指令要"外科手术式"精确，不要模糊
+关键技巧：当 AI 犯错时，不要只纠正它，而是问它"什么指令能防止你下次再犯"，然后让它记下来。久而久之形成一套贴合自己实际工作流的指令集（AGENTS.md 体系），而非泛泛的最佳实践。
+
+2. 并行会话需要"协调原语"
+多会话并行的问题本质是经典的并发编程问题：竞态、重复劳动、互相删除。解法也类似——认领/释放（claim/release）、状态追踪、上下文共享。作者为此构建了 opencode-memory：一个持久化语义记忆系统，后来长成包含 76 万+ 代码实体、1.5 万+ 记忆、2.7 万+ 链接的知识图谱，并与 GitLab 官方的 Orbit（SDLC 知识图谱）打通——本地记忆管会话级上下文，Orbit 管跨 SDLC 的全局视图。
+
+3. 动手前先查重
+AI 把"从想法到原型"的成本压缩到一周，导致大量人独立造出雷同的轮子（他发现 PyPI 上早有同名包）。他的自省很尖锐：
+
+"我是认真查过是否已有方案，还是 AI 让写代码太容易，以至于我跳过了所有尽职调查？"
+
+能贡献就不要分叉——他选择给 OpenCode 的 GitLab 插件提交改进，非 fork。
+
+4. 从"主动回忆"到"被动上下文注入"
+记忆系统建好后的下一步，是让 AI 无需提示就自动想起相关上下文：提到 MR 编号，历史决策自动浮现；准备写评论，评论规范自动加载。30 天内自动注入有效率达 91%，显式调用记忆工具的次数从平均 17 次降到 0。剩余的失败案例促使他加了"启动门"（boot gate）——强制 AI 在动手前先停下来加载指令。
+
+5. AI 仍然做不到的事
+全文最有分量的部分。AI 能稳定执行程序、能被要求改进自身指令、能在有原语时协调——但它不会隐式地察觉问题：感觉不到流程别扭，不会意识到"这周第三次踩同一个坑"，没有多年凌晨两点调试生产系统磨出来的模式识别。
+
+作者的亲身案例：AI 热情地构建功能，同时在自己的工具里引入并发 bug、用同步操作把自己阻塞——它毫无察觉。人指出架构缺陷后，AI 几分钟就修好了。模式是：人发现问题，AI 快速执行修复。
+
+# 底层认知：两层递进
+
+1. 投资工具本身（磨刀）：不要试图安顿进某个"新常态"，工具下周可能就过时。正确姿势是把工作流本身当作优化对象——他为 AI 辅助开发的需要，直接给 GitLab 贡献了新的 API 端点。形成正循环：更好的工具 → 更高产能 → 更多余力改进工具。
+
+2. 代码已成商品，判断力才是报酬来源："我们不再主要靠敲代码获得报酬，要靠知道什么代码应该存在。" AI 放大人的判断——好决策和坏决策都会被放大。Vibe coding 能走很远，但即便经过最彻底的 AI 评审，设计上的质量保障与深思熟虑，AI 尚不能独立提供。
+
+
+ortools
+
+
+最近用 Codex 真的拉开了效率差距
+
+我比较推荐这套 5 步：
+
+① Plan：复杂需求别直接开写，先让 Codex 读项目、拆任务、列风险和验收条件，再批准执行，OpenAI 自己也建议大型改动先规划再 Code
+
+② Fork：遇到两个实现方向，直接分叉会话分别试，不污染主线，CLI 已支持 /fork，但目前仍有部分稳定性反馈
+
+③ Annotate：页面、代码、Markdown 哪里不满意，直接圈出具体位置让 Codex局部修改，不用整段重做
+
+④ Plugin：把外部工具、数据和工作流能力装进 Codex
+
+⑤ Skill：把反复使用的规则、Prompt、流程固化，下次直接复用
+
+Codex 从 0 到 1 最值得学的，不是让 AI 多写代码，而是：先规划、分支试错、精准修改，最后把成功流程沉淀下来
+
+https://github.com/shareAI-lab/learn-claude-code
+
+Andrej Karpathy 在 OpenAI 和 Tesla 工作了 8 年
+
+上周，他将自己所知的一切浓缩成一堂免费的 2 小时讲座
+
+Agents → Loops → Graphs → Self-Improving Systems
+
+人们花 15K 美元参加的 bootcamp 教的内容还不如这个多
+
+这堂讲座胜过大多数付费 AI 工程课程
+
+你现在可能没有 2 小时时间
+
+
+Uber 的 Agent 软件工厂实践：六因子成本方程
+
+来自 
+@UberEng
+ 团队 
+@udaykiran
+ 分享在全公司落地 AI Coding Agent 的完整运营体系。
+https://uber.com/us/en/blog/efficient-software-factory/
+
+过去的半年，Uber 实践带来的核心变化：
+· 70%+ 的 Pull Request 由本地或云端 Agent 完成
+· 自建 3600 个 Skills、每天 3 万次执行
+· 周活跃用户增长 7 倍，周请求量增长 9.4 倍，但总 AI 支出自 4 月起基本持平
+· 固定同一模型做对照：每千次请求成本从峰值下降 34%，每会话成本从 6 月峰值下降 52%
+
+# Uber 的方法论框架
+
+1. 四层架构 + 成本方程。 Uber 把 Agent 会话组织为四层（从专用到通用，越高层对成本/质量/模型选择的控制力越强），并把每次会话成本分解为六个相乘的因子：用户数 × 每用户请求数 × 每请求输入 token × 输出 token × token 单价等。前两项（采用率）要促增长，中间三项（Agent 自身产生的额外开销）是优化主战场。
+
+2. 度量体系。 按周/月追踪五层指标：组合层（钱花在哪）、单位经济（每用户/每请求/每 token 成本）、模型经济（哪个模型发布真正改变了账单）、驱动因子分解（成本变动精确归因、不留残差）、托管 Agent 产出（按"每个合并 PR / 每次 review / 每条告警"计价，并监控回滚率、F1、MTTR 等质量信号）。
+
+# 关键优化手段
+
+模型选择——用真实工作做基准测试。 以代码评审 Agent uReview 为例：用真实 PR（含已知 bug、分难度）建 benchmark，测精度/召回/F1 + 成本/时延，在同一 harness 后切换任意模型，持续迁移到 Pareto 最优点——换模型后 F1 提升的同时单次评审成本大幅下降。另一个大杠杆：子 Agent 默认用更弱更便宜的模型，主模型只负责拆解和验收。
+
+Token 压缩——每一轮都重发全部上下文，所以每省一点都会复利放大：
+· 400K 自动压缩阈值（即使是 1M 上下文模型）+ 推理强度默认 Medium
+· Prompt 缓存 TTL 经济学：缓存读仅 0.1 倍价格，但 5 分钟写入 1.25 倍、1 小时写入 2 倍。因工程师常闲置超 5 分钟，交互式会话改用 1 小时 TTL；短命的子 Agent 保持 5 分钟
+· MCP 工具改走 CLI：100+ 工具的 schema 预载会占 50K–70K token 且每轮重发。Uber 把 1000+ 内部 MCP 服务统一走网关、投影为 CLI 命令按需解析，配合"工具搜索"按需加载
+· Code-mode 批处理：把"发查询→轮询 2–5 次→取结果"这类多轮交互改成一段 Python 脚本在子进程跑，只回传摘要。实测同样 SQL 查询省 55%–71% token，宽表查询省近 100%；批量工作流节省超 90%
+· SaaS 厂商的 MCP（动辄 34–49 个工具、数万 token schema）同样收编进网关 + CLI + 专用 Skills
+
+上下文工程——最贵的浪费是"Agent 找不到信息"。 Uber 构建了 AI Context Graph：2400 万节点、8000 万条边，整合 30+ 内部系统（服务、团队、事故、PR、文档、部署、数据集血缘）。对照实验：有图谱的 Agent 38 秒答对；没有的花了 20 分钟、起了 2 个子 Agent、报 3 次错，最后还得出错误结论。
+
+可见性与教育（软性）： 终端状态栏实时成本计数器；按 50/80/100% 预期花费发 Slack 提醒而非硬性限额；会话分析仪表盘自动识别 16 种浪费反模式（如简单任务用了 Opus、大 payload 滞留上下文、缓存过期后全价重建、开场预载 10 万 token 指令等），并给出具体金额影响和修复建议。
+
+
+https://github.com/warpdotdev/common-skills
+
+
+这些年我在硅谷各种大厂加起来，面试的也有上百人了，最近我喜欢在一面考察一下 candidate 对 AI 推理内部流程的认知。浓缩成了一张图，建议收藏，如果彻底搞懂，不论是搞股市投资，还是想转 AI 肯定都有帮助
+
+起因是：我的投研团队一位成员最近在从 SDE 转 AI infra，经常跟我聊职业发展的事，我跟他讲完全搞懂了这张图，AI 这扇门才算踏进了半只脚，仅仅是半只，未来道阻且长
+
+你是否好奇，当你给 AI 发一句话，后面到底发生了什么？
+
+很多人以为，点下「发送」后，模型马上开始“吐字”
+
+其实一条流式请求，先要经过：
+HTTPS / 鉴权 → 模板化和分词 → 路由、排队与 KV 容量
+等 Prefill 处理完未缓存的 Prompt，首个 Token 才出现
+之后才进入真正的循环
+
+Decode + sampling → 增量反分词 → 封装成事件 / SSE 分块 → 客户端
+
+所以 AI 推理这件事，不只是 GPU 算得快不快
+首 Token 需要看如何均衡高并发排队和 Prefill，持续输出看 Decode，如何在有限的硬件资源（算力、存储）下服务更多人，需要优化 KV Cache
+
+这里边门道很深。因此，我说搞懂这张图才算踏进了半只脚
+
+今天下午坐在咖啡厅，我找了好多资料，帮我投研团队的成员规划了未来 12 周的学习路线
+
+我在想要不要让ta开一个 X 的账号，把他每天学习的课程路径和好的资源都整理下来。如果他 12 周之后能找到不错的工作，相信大家跟完这个也可以
+
+
+https://luvus.dev/
+
+https://github.com/Agents365-ai/drawio-skill
+
+https://github.com/BytePioneer-AI/codex-host
+
+https://github.com/livialima/linuxupskillchallenge
+
+https://github.com/sandroandric/AgentHandover
+https://www.warp.dev/skill-doctor
