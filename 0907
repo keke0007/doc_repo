@@ -1,0 +1,428 @@
+基于我们所有的聊天内容，请告诉我一个你认为我非常有必要知道，但大概率还不知道的知识
+
+https://github.com/TrenTorch/TrenTorch
+https://m.youtube.com/watch?v=x7drE24geUw
+https://github.com/luoling8192/ai-coding-principles
+https://github.com/DistSysCorp/ddia
+https://ddia.qtmuniao.com/#/
+https://ddia.vonng.com/
+https://github.com/marikagura/kimi-core/blob/main/docs%2FDESIRE-STUDY.md
+这 3 个开源平台，把 LLM 开发门槛进一步降低：
+
+1. AutoAgent
+用自然语言描述需求，让 AI Agent 自动完成任务，适合快速搭建智能应用。
+🔗https://github.com/HKUDS/AutoAgent
+
+2. AnythingLLM
+开源自托管 AI 工作空间，集成 RAG、文档问答和 Agent 能力，数据可以留在本地。
+🔗 https://github.com/Mintplex-Labs/anything-llm…
+
+3. Open Agent Platform
+基于 LangGraph 的可视化 Agent 编排平台，可以拖拽设计多 Agent 工作流。
+🔗 https://github.com/langchain-ai/open-agent-platform
+从“写代码调用模型”，到“搭建完整 AI 工作流”，这些工具正在降低 AI 应用开发门槛。
+适合想快速体验 AI Agent，又不想从零写工程代码的人。
+
+https://github.com/orbi-build/orbi
+https://github.com/orbi-build/orbi/issues/133
+系统设计提思路：
+
+怎么讲这道题
+
+这类"实时监控+自动调控"的系统设计题,面试官真正想看的是你能不能讲清楚一条从"观测到数据变化"到"安全地改变设备状态"的完整闭环,尤其是中间那些容易踩坑的边界情况。上面的图分三层,逐层拆开说。
+
+第一层:采集传输层——先解决"数据靠不靠谱"
+
+设备(智能电表/传感器)按固定周期上报功率数据,同时带心跳。这里的关键是心跳机制本身就是离线检测的基础：网关维护一份"设备影子"(最后一次上报时间+状态),超过心跳超时阈值(比如3个周期未上报)才判定离线,而不是网络抖动一次就误判。协议上用 MQTT 这类支持 QoS 和遗嘱消息(LWT)的轻量协议比较合适,断线时 broker 能主动标记设备离线。
+
+第二层:实时评估层 这是防误触发的核心
+
+这一层要讲两个技术点,面试官通常会追问:
+
+抗抖动:功耗数据天然有毛刺(设备启停、测量噪声),不能拿单个采样点做判断。用滑动窗口/EWMA 做平滑,或者要求连续 N 个周期都超阈值才算真正异常。
+防误触发:光平滑还不够,还要用滞回阈值(hysteresis)：比如超过 90% 触发降载,要降到 70% 以下才恢复,避免数值卡在临界点反复横跳导致设备频繁开关;高影响的动作(比如切断整栋楼供电)还要叠加多条件确认+冷却期,不能单一指标一超就动手。
+
+第三层:控制执行层：下发指令要"可控可撤销"
+
+评估层给出决策后,不能直接无脑发指令,这里有几个安全垫:
+限流+分级下发:同一批设备不要瞬间全部下发,做灰度/分批,避免"雪崩式"联动。
+幂等+重试:指令带唯一 ID,网络重发不会导致重复执行。
+闭环校验:指令发出后,不能假设它一定生效：要等下一次设备上报,确认状态真的改变了,没变则告警或重试,而不是"发完就算完成"。
+离线设备不下发:如果设备当前标记为离线,策略引擎应该跳过下发或转入告警,而不是把指令堆积在队列里等它"复活"再一次性执行(可能造成设备行为突变)。
+
+图里右侧那条虚线回路就是"执行结果 → 重新观测 → 再评估"的闭环,这是整个系统的灵魂——没有这条线,系统就只是单向的监控大屏,而不是"调控平台"。
+
+如果面试官继续深挖,大概率会问到:滞回阈值怎么设定(静态 vs 基于历史基线动态调整)、多设备联动降载时怎么排序(优先级策略)、以及指令下发失败后的降级方案——这几个可以提前想好例子备用。
+
+
+https://drive.google.com/file/d/1NLWUo0L7pJ4Ui9G4_-tKaWnIgwyfbvsq/view?pli=1
+
+https://x.com/pvncher/status/2095991462416490862
+
+这篇文章最核心的判断是：
+GPT-6 Astra 出来后，最需要做的一件事：把过去一年攒下来的agent.md和skill，各种loop/harness重新整理一遍
+
+旧模型不够稳时，我们习惯把每一步写死：动手前先读完一堆文件，每次修改都跑一遍完整测试，任何动作都回来问一句
+
+但Astra 的判断力更强，这些曾经有用的规矩，现在可能让它变慢、犹豫，甚至做完第一步就停下来等你
+
+装太多 Skill 也会帮倒忙，可以理解成给 AI 按需翻阅的小抄。装得越多，它越难分清什么时候该用哪一张。为了全部塞进脑子里，每张小抄的用途还会被压短，最后更容易选错
+
+https://github.com/perplexityai/pplx-garden
+
+昨天开源「微信个人情报库」后，有很多朋友卡在了第一步：不知道本机key去哪找，微信聊天记录怎么解密。
+
+对于这个问题，我之前就是让Codex帮我跑通的，所以这次把首次接入流程也补进了Skill，代码和配置说明已经更新到GitHub。
+
+直接让Codex安装和配置即可，
+把以下提示词发给Codex：
+
+请从 https://github.com/Rion-Wu-tech/wechat-intelligence-hub 安装微信CLI和微信个人情报库，接入这台电脑上我自己的微信。
+先读取仓库说明，检查是否已经安装、当前配置是否可用；已有可用配置或key就复用，不覆盖我的个人Profile和数据。
+缺少依赖由你处理；确实缺key时，由你核验并准备固定版本工具，说明影响、经我确认后执行。我负责登录微信和完成系统授权，不会把密码或key发给你。
+完成数据库验证和配置后，告诉我能读取哪些范围、还有什么未就绪；再协助初始化个人情报库。遇到错误请定位并修复，不要把一堆命令交给我，也不要无限重试。
+
+
+Post
+
+See new posts
+Conversation
+刘屿之外
+@Lucian_Lc7
+OpenAI Codex 团队的 Eric Provencher 这贴纯干货
+
+省流一下主要观点：
+
+1、别一股脑装一堆 Skill。
+
+每个 Skill 的 name 和 description，在真正调用之前就要先放进上下文里给模型做路由。
+
+Skill 越多、description 越长，占的上下文越多。塞到一定程度，description 会被截断，甚至有些 Skill 直接掉出可见列表，最后模型更容易选错。
+
+所以 description 应该尽量短，只写清楚：这个 Skill 是干什么的、什么时候该用、什么时候不该用。
+
+2、SKILL.md 别再写成一本操作手册。
+
+以前喜欢把第一步、第二步、第三步全写进去，因为模型不太靠谱，得牵着走。
+
+现在更推荐 progressive disclosure，也就是渐进式加载。
+
+根 SKILL.md 只负责路由：告诉模型有什么能力，需要某类知识再去读对应的 references，需要执行东西再去调用 scripts。
+
+用不到的东西就别提前塞进上下文。
+
+3、少写死流程，尤其是低风险任务。
+
+以前很多 Skill 都是非常详细的 Recipe，恨不得模型每一步都必须按照规定走。
+
+Astra 对任务本身的判断能力已经强很多了，很多地方没必要规定过程。
+
+当然，高风险操作、不可逆操作，该写死的还是要写死。
+
+作者这里的意思不是“以后都随便干”，而是：规则写多细，要跟出错的风险匹配。
+
+4、AGENTS.md 也该清库存了。
+
+尤其是这种：
+
+“每次修改前必须先读完整 README、架构文档、Repo Map……”
+
+以前可能有必要，现在很多时候纯属烧上下文。
+
+应该改成需要什么读什么，文档也应该在真正相关的任务里再引用。
+
+而且过期文档如果还强制模型阅读，比没有文档还麻烦。
+
+5、“每次改完都必须跑所有测试”这种规则也要重新看。
+
+以前模型经常写完代码就算完，所以大家习惯在 AGENTS.md 里强制它测试。
+
+Astra 自己已经会主动验证很多东西。
+
+没必要不分任务大小，每次都强制跑一整套测试。真正需要强制验证的高风险场景单独规定。
+
+6、少写“先停下来问我”。
+
+这是以前给模型上的另一层保险：
+
+“不确定先问我。”
+
+“做到这里必须停止。”
+
+“修改之前必须确认。”
+
+Astra 对这些边界执行得很认真，所以很容易代码刚写完第一版就停下来找你 Review，后面的运行、测试、修 Bug、重新验证全不干了。
+
+所以现在更重要的是告诉它：
+
+什么才算真正完成。
+
+比如任务不是“把功能写出来”，而是：
+
+写完 → 跑起来 → 验证结果 → 修掉本次修改造成的问题 → 再验证。
+
+如果你确实需要它做到某一步停下来等 Review，再明确写这个停止点。
+
+7、Prompt 也少规定过程，多定义 Done。
+
+想让它继续调查，就说调查到什么程度。
+
+想让它自己修问题，就把修复包含在完成条件里。
+
+想保留人工决策点，就明确哪些事情必须回来找你。
+
+核心不是把 Agent 下一步该迈哪只脚都写进去，而是把目标、权限、边界和完成条件说清楚。
+
+8、也别看完以后把护栏一键删光。
+
+Repo 里的 Skill 和 AGENTS.md 不一定只有 Astra 在读。
+
+团队里可能还有 GPT-5.6 Sol、Claude 或其他模型。
+
+对 Astra 已经多余的规则，对别的模型可能还有用。
+
+所以作者建议的是重新审计，不是无脑删：
+
+这条规则当初是为了解决什么问题？现在这个问题还存在吗？谁还需要它？
+
+说到底就是一件事：
+
+过去一年我们写了很多规则，其实是在给模型补能力。
+
+模型换代以后，Prompt、Skill 和 AGENTS.md 也会产生“指令债务”。
+
+模型都升级了，给它干活的说明书也得跟着升级。
+
+
+https://github.com/ReflexioAI/reflexio
+别再被漂亮的总召回率糊弄：Agent最危险的错，往往是过程违规、答案却碰巧正确。
+
+https://arxiv.org/abs/2609.00038
+
+作者搭建确定性客服环境，以oracle生成正确轨迹，在指定步骤注入单点故障并重放，精确标注位置、类型及结果是否存活。Outcome-only Judge总召回率0.61，但loud为84%，silent仅45.1%，还误报33%的正确轨迹；逐步rubric把silent召回提到77%且零误报，代价约3倍。边界也明确：单一客服域、干净单点故障，且未测前沿模型。
+
+OpenSEO
+
+Hermes 命令速查表，可以保存一下。
+
+ 包括最近上线的一堆实用的命令：  
+• /goal 
+• /loop 
+• /heartbeat 
+• /bg 
+• /btw 
+• /plan 
+• /review 
+• /refine 
+• /moa 
+• /busy
+• /learn
+
+虽然在大多数时候，可以不使用命令，但在一些场景下，使用命令可以更加高效。
+
+
+AI Agent 出问题，很多时候不是模型能力不够，而是行为失控没人发现。
+
+幻觉、错误调用工具、偏离目标、被提示注入影响，这些问题往往在真正造成损失前，很难被察觉。
+
+iFixAi 做的事情，就是给 Agent 做“体检”。它不只看最终答案，而是分析整个运行过程，检查智能体有没有出现异常行为。
+
+项目提供多项检测项，覆盖事实编造、操控风险、欺骗行为、不可预测性、决策透明度等方向，最后生成 A-F 评级报告。
+
+它可以测试自己的 Agent，也能接入第三方模型和服务，用于开发阶段的安全评估。
+
+未来 Agent 越来越复杂，除了让它“会做事”，也需要知道它“会不会乱做事”
+
+https://github.com/ifixai-ai/iFixAi
+
+https://x.com/LearnWithBrij/status/2096605507830026589
+
+AI 编程的下一阶段，可能不是写更好的 Prompt，而是设计更好的工作流。
+
+很多人还在反复调 Prompt，但一些开发者已经开始把 AI Agent 当成一个自动化系统来设计，这种思路被称为 Loop Engineering。
+
+核心理念很简单：不要每次手动指挥 AI，而是建立一套能持续运行的循环，让 Agent 自动发现任务、执行、检查、记录状态。
+
+这个开源项目把这套方法整理成了可直接使用的框架：
+
+Automations：定时触发任务
+Worktrees：隔离开发环境
+Skills：沉淀项目知识
+Plugins / MCP：连接外部工具
+Sub-agents：执行与验证分离
+STATE：保存跨会话状态
+
+项目还提供多个生产级模式和 CLI 工具，支持 Claude Code、Codex 等 AI 编程环境。
+
+未来真正拉开差距的，可能不是谁更会问 AI，而是谁更会设计让 AI 持续工作的系统。
+
+
+https://github.com/cobusgreyling/loop-engineering
+
+对于一个 vibe coding 项目，
+是开一个 Session 开 N 个 Subagent，还是 N 个 Session？
+
+我的原则是：
+
+评估后，如果可以共享一个目标、共享大量上下文、生命周期短 → Subagent。
+
+反之如果任务需要独立交付、有自己的代码状态、要跑很久 → 独立 Session + Worktree。
+
+这是我最近正在实践的一套重型 vibe coding harness, 覆盖了完整的生命周期，目标是达到专业研发团队的交付和上线标准。还在不断打磨和实践中，等成熟后开源出来（又给自己挖了一个大坑🕳，今年任务艰巨啊😅）：
+
+这套研发 Harness 面向复杂、长周期、多人并行式的软件工程任务。
+
+前沿模型负责主控 Agent，承担架构设计、任务拆解、模型路由、跨模块决策和最终集成；
+
+具体开发任务则分发到多个独立 Session 与 Worktree，由中高端模型作为 Lead Agent 执行，并调用更快的 Subagent 完成检索、测试、评审等工作。
+
+整个系统通过 Project State、Task DAG、Task Contract 和 Handoff Protocol 保持长期项目状态与任务边界，避免多 Agent 并行时出现上下文污染、接口漂移和重复修改。
+
+最终由独立的 Integration Session 完成架构检查、契约校验、回归测试和 Merge Gate，再进入 Release Session 执行发布准备、部署验证、Smoke Test 与可观测性检查，形成从设计、开发、集成到上线的完整工程闭环。
+
+https://github.com/JordyZomer/lemmalog
+
+https://x.com/TaNGSoFT/status/2096557547608326384
+
+我是一定会坚持学习和使用英文的，不但我要坚持，我儿子也要学，学校不教，我也会教他， 我还会给他找老师。 
+
+初中的他饿，就可以自己学习math academy 的课程， 全英文网课， MIT 和斯坦福最好的公开课， 最好的计算机科学课程。 
+
+他很早就能接触到 axriv 这样的论文网站， huggingface 或 github 网站， 可以访问全球的优质的信息资源。
+
+不管英文是不是主修课程， 但在我全家来看， 一定是最重要的基础课程。 
+
+就这样。
+
+
+https://github.com/daizw/agent-harness
+
+𝗖𝗹𝗮𝘂𝗱𝗲 𝗖𝗼𝗱𝗲 学习清单（从装机到能带项目）
+
+别先囤 200 个链接。按这个顺序走，重复的课可以跳。
+
+𝟭 环境（当天搞定）
+
+Anthropic 文档：http://code.claude.com/docs/en/overview
+Boris Cherny 本人工作流：http://x.com/bcherny，日常设置详解 http://howborisusesclaudecode.com
+CLAUDE.md 怎么写，决定后面智能体聪不聪明：http://code.claude.com/docs/en/memory
+Advent of Claude：31天技巧速查，作者 Ado Kukic（Anthropic DevRel）http://x.com/adocomplete，全文在 http://adocomplete.com/advent-of-claude-2025
+
+𝟮 正经课（选 1–2 门，别全上）
+
+http://DeepLearning.AI — Claude Code: A Highly Agentic Coding Assistant：http://deeplearning.ai/courses/claude-code-a-highly-agentic-coding-assistant
+Anthropic Skilljar — Claude Code in Action：http://anthropic.skilljar.com/claude-code-in-action
+DAIR AI — Claude Code for Everyone：http://dair-ai.thinkific.com/courses/claude-code
+Coursera — Claude Code: Software Engineering with Generative AI Agents（Vanderbilt）：http://coursera.org/learn/claude-code
+
+𝟯 手感（比再看一门课有用）
+
+Prompting Best Practices 官方：http://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices
+官方 Best Practices for Agentic Coding：http://code.claude.com/docs/en/best-practices
+Claude Code 101 入门：http://anthropic.skilljar.com/claude-code-101
+搜「40+ tips from an ex-Google engineer」那类笔记，当速查，不当圣经
+
+𝟰 仓库（装进自己的 repo 里用）
+
+awesome-claude-code：http://github.com/hesreallyhim/awesome-claude-code
+claude-code-cheat-sheet：http://github.com/wilwaldon/claude-code-cheat-sheet
+awesome-claude-skills：http://github.com/travisvn/awesome-claude-skills
+awesome-claude-code-subagents：http://github.com/VoltAgent/awesome-claude-code-subagents
+awesome-mcp-servers：http://github.com/punkpeye/awesome-mcp-servers
+vibe-coding-playbook：http://github.com/plamen5rov/vibe-coding-playbook
+
+𝟱 视频（通勤看，不代替上手）
+安装 → 2026 workflow → Skills → 多 agent → 自己搭一个 life/dev co-pilot
+𝟲 值得盯的人
+Boris Cherny 
+@bcherny
+、Ray Amjad 
+@theramjad
+、Joe Njenga @aisoftwareengineer、Alex Albert 
+@alexalbert__
+
+https://github.com/donvito/codex-astra-luna-orchestrator
+
+https://cs329z.stanford.edu/
+
+不要动不动就自动化。
+
+把一个错误的需求或者错误的方向自动化，结果还是错误的。
+
+马斯克的五步工作法：质疑-删除-简化-加速迭代-自动化，对于做AI SaaS产品来讲，含金量还在提升。
+
+特别是AI越强大，工具越多，人类越喜欢跳过前面四步，一上来就自动化。
+
+https://x.com/AYi_AInotes/status/2096237863247765704
+
+大家好不容易翻墙出来还是要多看看英推区的优质内容， 比如这个视频，整整 60 分钟,Anthropic 资深工程师刚放出来的这门多 Agent 架构课, 直接把市面上卖 500 刀的所谓培训课干得粉碎!
+没有一句空洞废话,全在讲怎么用状态图把一群 Agent 焊成一支自进化的工程团队, 把 1 小时视频嚼烂,核心就这 4 级台阶:
+1️⃣ 计划模式与 CLAUDE.md 筑底: 别一上来就让模型盲打代码,用固定的项目规范文件把规则说死,先出完整计划再动手;
+2️⃣ 构建 Skills 武器库与 Hooks 刹车片: 给 Agent 注入专属技能包,并在执行关键写入与删除前,用钩子机制强制拦截审批;
+3️⃣ 主从子代理矩阵协同: 彻底放弃单兵全能的幻想,大模型当总指挥拆解任务,把具体脏活派发给不同上下文的独立子代理;
+4️⃣ 自改进循环与状态图闭环: 最狠的一招,把 Agent 锁在状态图回路里,写完必须自己跑测试、看报错、自我修改,不跑通自测绝不交差。
+
+大家别再花冤枉钱买那些二道贩子的什么提示词和AI课了, 官方工程师已经把多 Agent 协作的底盘代码摆在台面上了。
+带完整时间戳和中文笔记整理在下面了,收藏起来慢慢啃!
+
+https://x.com/LuBtc888/status/2096252765114933291
+
+https://x.com/yuanwangnan/status/2096111681835557092
+
+好久没看到这么精彩的和 AI 无关的技术文章了：《Reverse Engineering Linear's Sync Engine: A Detailed Study》
+https://github.com/wzhudev/reverse-linear-sync-engine
+
+讲的是 Linear 客户端同步方案（Linear Sync Engine） 的逆向讲解，如果体验过 LInear 的就能感受到它的操作非常丝滑。这篇文章把模型怎么定义 怎么进 IndexedDB 事务怎么上报 服务端怎么回 delta 怎么做部分加载和 undo讲的非常清楚 还对技术细节感兴趣的朋友可以收藏好好读读。
+
+Linear CTO 也称赞过这篇文章。我觉得整体读的体感非常好，学到了很多，同时也很赞同乐观更新这种做法。
+
+
+https://github.com/wzhudev/reverse-linear-sync-engine
+
+RAG vs Agentic RAG vs Agent Memory
+
+A useful simplified model:
+RAG retrieves in one shot.
+Agentic RAG chooses sources.
+Agent memory adds read/write state.
+
+The shift: retrieval control and persistent context.
+
+
+https://github.com/nikolai-vysotskyi/trace-mcp
+
+https://github.com/zwc456baby/my-tv-webview
+
+https://github.com/Willxup/cpa-usage-keeper
+
+@木舟  https://wzyp.cn/item/1onm7m
+
+Post
+
+See new posts
+Conversation
+Chasen
+@chasen_liao
+上次我分享过 pi-fff，就是为了优化上下文。它确实能让搜索更准，少把整目录灌进窗口。
+
+但这几天实测发现，AI 还是容易过度设计，抽象层写一堆用不上的；写完还可能反复跑测试来验证，测试日志也很占上下文，半小时下来窗口被吃掉一块，agent 开始忘事，然后就 compact，关键细节丢失，返工又来一轮
+
+所以这几天又装了 4 个插件，专门堵这几个漏洞，让 Pi 的上下文更加干净了 👇
+
+1️⃣ ponytail：治过度设计
+
+名字起得很随意，本质是懒资深开发模式。它每轮往会话里注入一套规则，核心是一把梯子：先问这段代码该不该存在，再看仓库里有没有现成的，然后依次是标准库、平台原生特性、已装依赖，一步能走通就不往下走，最后才轮到写新代码。
+
+有意思的是 README 明说，这套规则从来不是「省最少 token」，省 token 只是副作用。本质是只写任务需要的代码，而且不许砍验证、错误处理、安全和可访问性
+
+官方拿 Haiku 4.5 跑过基准：代码行数降到无规则基线的 46%，token 用量降到 78%，成本 80%
+
+装完有四个档位，/ponytail full 切档。还有两个命令我常用：/ponytail-review 审刚改的代码是不是过度设计，/ponytail-audit 直接审整个仓库找该删的东西
+
+我现在的配置是默认 off，正经写代码切 full，偶尔拿 review 给代码减肥
+
+另外它不挑平台，官方说适配 20 个 agent，Claude Code、Codex 也能装
+
+>    pi install npm:@dietrichgebert/ponytail
+
+
