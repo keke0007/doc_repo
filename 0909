@@ -1,0 +1,164 @@
+https://github.com/google/adk-python
+
+
+Sumanth
+@Sumanth_077
+·
+10h
+Loop vs Graph Engineering: Clearly Explained!
+
+A loop is an autonomous cycle where an agent plans, acts, verifies the result, and keeps iterating until it reaches a stopping condition.
+
+The basic pattern is simple:
+
+Plan → Act → Verify → Repeat
+
+Loop engineering is about making that cycle reliable. You decide what context survives between iterations, how the agent evaluates its own work, when it should retry, how failures are handled, and what condition finally ends the run.
+
+This works well when one agent can own a coherent task from start to finish.
+
+The problem starts when the work itself becomes more structured.
+
+Some tasks need to happen in parallel. Different agents may need different context, tools, memory, or permissions. Certain steps may require human approval, while others can continue automatically. At that point, trying to force everything through one loop makes the system harder to reason about.
+
+That is where graph engineering becomes useful.
+
+A graph makes the workflow explicit. Nodes represent units of work such as agents, tools, validators, or deterministic functions, while edges define how state and control move between them.
+
+The important part is that loops and graphs are not competing architectures.
+
+A loop can itself be one node inside a larger graph.
+
+For example, a research agent may run its own Plan → Act → Verify loop, while a separate analysis agent runs another loop. A graph can then coordinate when those agents start, what context they receive, how their outputs are combined, and what happens next.
+
+So the practical distinction is:
+
+• Loop Engineering: design one autonomous execution cycle around a task
+• Graph Engineering: design how multiple execution cycles, tools, and decision points coordinate through shared state and explicit control flow
+
+You usually start with a loop when one agent can handle the task end to end.
+
+You move to a graph when the work needs parallel execution, specialized agents, different permissions, explicit branching, or clearer control over how state moves through the system.
+
+Graph engineering does not replace loop engineering. It becomes useful when one loop is no longer enough to hold the workflow together.
+
+I've shared the full article in the comments!
+
+
+https://x.com/Kay2289123/status/2097751257536667827
+
+https://github.com/MemTensor/memmy-agent
+https://github.com/cathrynlavery/diagram-design
+https://github.com/scarletkc/agents/tree/main/skills%2Fproduct-writing
+𝗠𝗜𝗧 𝗦𝗹𝗼𝗮𝗻 𝟭𝟱.𝟳𝟳𝟯 𝗛𝗮𝗻𝗱𝘀-𝗼𝗻 𝗗𝗲𝗲𝗽 𝗟𝗲𝗮𝗿𝗻𝗶𝗻𝗴（2024 春）已上架 OCW。
+
+偏动手：网络怎么搭、怎么训，再到 CNN、Transformer、LLM 与文生图。设计原则是 light on math, heavy on intuition。
+需要一点 Python 和基本机器学习概念，不会写代码也可以跳过 notebook，把主线听完。
+
+授课人 𝗥𝗮𝗺𝗮 𝗥𝗮𝗺𝗮𝗸𝗿𝗶𝘀𝗵𝗻𝗮𝗻，Sloan 的 Professor of the Practice（AI/ML）
+
+适合要在业务里落地深度学习和生成式模型的人，不是定理课。
+
+讲义：https://ocw.mit.edu/courses/15-773-hands-on-deep-learning-spring-2024/lists/lecture-notes/
+视频：https://ocw.mit.edu/courses/15-773-hands-on-deep-learning-spring-2024/video_galleries/lecture-videos/
+
+
+https://github.com/jordan-gibbs/hyperresearch
+
+https://x.com/0xlangeai/status/2097645454846804235
+
+https://x.com/coder_left
+一些良好的工作习惯
+1.不给下一环节增加麻烦。
+2.不默认其他人已知道。
+3.把握重点。重点前置、放大、突出，反复强调、检查。
+4.有效沟通。先确定沟通目的、对象，后确定沟通方法。
+5.固定文字。形成备忘、流程、规则、计划、总结之类，避免走形。
+6.随时复盘。总结经验教训，固化正确，避免重复犯错。
+
+https://github.com/www222fff/free-router
+
+分享一套由架构师 Brij Kishore Pandey 提出的标准，
+是目前避免 Agent 上下文膨胀最优雅的工程解法。
+
+90% 的人都把 CLAUDE.md 当成普通的提示词文件,难怪你的 AI 永远像个乱改代码的弱智实习生: 
+把代码规范、API 格式、业务逻辑全往根目录死命塞, 模型还没动工,注意力就被几千行无用说明给稀释光了。
+
+想让 Claude Code 真正变成常驻在你代码库里的资深架构师, 你需要的不是写更长的 Prompt,而是这套把上下文物理切开的项目解剖学:
+
+1️⃣ 根目录只放极简骨架（四维契约）: 只写系统是做什么的目标、文件在哪的地图、允许禁止什么的死规则,以及怎么完成任务的工作流,绝不堆砌具体代码;
+
+2️⃣ 业务上下文下沉到子目录: 很多人不知道 Claude 会自动读取子目录的独立记忆,在 src/api 和持久化目录下分别建局部 CLAUDE.md,模型钻进哪个模块才读哪份手册;
+
+3️⃣ 工作流封装进 .claude/skills: 代码审查、重构、发布流程不要每次口头重打,全部固化成可复用技能,用完即走;
+
+4️⃣ 刚性护栏交给 .claude/hooks: 关键改动前强制触发自动化检查,不符合规范直接代码级打回,绝不靠模型的自觉。
+
+提示词做减法,工程结构做加法, 保持上下文的最小化与精确性,模型才能在你的代码库里大杀四方。
+
+你现在的项目根目录,还塞着一份几千字的大杂烩提示词吗?
+
+https://subboost.org/
+
+让他给我找到重复的可以被抽的工作流
+
+让她根据领导给我的任务 同事给我的提问  工作方式，蒸馏一份适合在这个公司更方便 更舒服的干活经验给 agent 用
+
+你一个 agent 开发，然后做的时候你发现有什么不对劲，或者加活，你和另一个 agent 聊，出活成文档，给回开发队列去
+
+基于我们所有的聊天内容，请告诉我一个你认为我非常有必要知道，但大概率还不知道的知识。
+
+https://v1.mk/JlUl1nP
+
+https://github.com/asdlokj1qpi233/subconverter 这个二开的好用 我没找到可用的服务
+
+如果你想从零开始学习 Agent 架构，这三个 GitHub 项目一定不能错过：
+
+1. all-agentic-architectures：看懂不同架构怎么工作
+
+收录了 35 种 Agent 架构，覆盖工具调用、任务规划、记忆、RAG 和多 Agent 协作，配有代码、Notebook 和评测工具。适合拿同一个任务换几种架构运行，观察它们怎么拆任务、调用工具、检查结果。
+
+https://github.com/FareedKhan-dev/all-agentic-architectures
+
+2. ai-agents-from-scratch：亲手搭出一个 Agent
+
+用 JavaScript 和本地模型，从基础的模型调用开始，逐步加入工具、记忆和 ReAct 循环。跟着示例，可以看清 AI 如何选择工具、读取执行结果，再决定下一步。适合有一点编程基础、想弄懂 Agent 运行过程的人。
+
+https://github.com/pguso/ai-agents-from-scratch
+
+3. harness-books：理解编程 Agent 背后的工程设计
+
+两本围绕 Claude Code 和 Codex 的第三方架构分析书，讲模型之外的系统怎么组织：任务如何持续执行、工具权限怎么管、上下文太长怎么处理、出错后如何恢复。适合开始思考「自己的 Agent 怎样才能稳定干活」时阅读。
+
+https://github.com/wquguru/harness-books
+
+建议学习顺序：先跟第二个搭出基础 Agent，再用第一个对比架构，最后读第三个补上工程设计。
+
+
+Post
+
+See new posts
+Conversation
+Chasen
+@chasen_liao
+上次我分享过 pi-fff，就是为了优化上下文。它确实能让搜索更准，少把整目录灌进窗口。
+
+但这几天实测发现，AI 还是容易过度设计，抽象层写一堆用不上的；写完还可能反复跑测试来验证，测试日志也很占上下文，半小时下来窗口被吃掉一块，agent 开始忘事，然后就 compact，关键细节丢失，返工又来一轮
+
+所以这几天又装了 4 个插件，专门堵这几个漏洞，让 Pi 的上下文更加干净了 👇
+
+1️⃣ ponytail：治过度设计
+
+名字起得很随意，本质是懒资深开发模式。它每轮往会话里注入一套规则，核心是一把梯子：先问这段代码该不该存在，再看仓库里有没有现成的，然后依次是标准库、平台原生特性、已装依赖，一步能走通就不往下走，最后才轮到写新代码。
+
+有意思的是 README 明说，这套规则从来不是「省最少 token」，省 token 只是副作用。本质是只写任务需要的代码，而且不许砍验证、错误处理、安全和可访问性
+
+官方拿 Haiku 4.5 跑过基准：代码行数降到无规则基线的 46%，token 用量降到 78%，成本 80%
+
+装完有四个档位，/ponytail full 切档。还有两个命令我常用：/ponytail-review 审刚改的代码是不是过度设计，/ponytail-audit 直接审整个仓库找该删的东西
+
+我现在的配置是默认 off，正经写代码切 full，偶尔拿 review 给代码减肥
+
+另外它不挑平台，官方说适配 20 个 agent，Claude Code、Codex 也能装
+
+>    pi install npm:@dietrichgebert/ponytail
