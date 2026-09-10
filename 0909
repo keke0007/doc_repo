@@ -1,6 +1,21 @@
 https://github.com/google/adk-python
 
+https://github.com/shanraisshan/claude-code-best-practice
+如果只是希望在当前的 session 状态下继续跑别的东西，比如我经常用来分析任务健康度：
+Claude有/btw
+ChatGPT有/side
+但是这和 sub-agent 并不存在替代关系Sub-agent 和主 agent 是要互通的，非常适合隔离大文件拆分后的 context。
 
+比如你 sub-agent 可以有 10 个，各自去阅读一些资料并整理，这样就不会把一个巨大任务所有的内容都塞到一个 context，让它反复的压缩
+https://github.com/jjyaoao/HelloAgents/blob/main/docs%2Fsubagent-guide.md
+https://github.com/luongnv89/claude-howto/blob/main/zh%2F04-subagents%2FREADME.md
+https://github.com/VoltAgent/awesome-claude-code-subagents
+https://github.com/earthtojake/text-to-cad
+https://github.com/liquidslr/system-design-notes
+https://github.com/rohitg00/ai-engineering-from-scratch
+https://github.com/HKUDS/DeepTutor
+https://x.com/AYi_AInotes/status/2097857102190403825
+https://github.com/uditgoenka/autoresearch
 Sumanth
 @Sumanth_077
 ·
