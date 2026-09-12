@@ -5,3 +5,5 @@ https://github.com/huangruiteng/loopx
 https://www.zdoc.app/zh/agenticloops-ai/agentic-ai-engineering
 https://github.com/DEEP-JLU/Awesome-Graph-Engineering
 https://github.com/ChaoYue0307/awesome-loop-engineering/blob/main/README.zh-CN.md
+
+https://github.com/KimYx0207/AI-Coding-Guide-Zh/tree/main/docs/claude-code
