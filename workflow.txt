@@ -1,0 +1,42 @@
+推荐这个视频，Matt Pocock 给他的 162K 星 skill 仓库做了第一个教程。他演示了整个工作流——从空目录安装 skill，到 /grill-with-docs 审查文档，到 /to-spec 生成 spec，到 /to-tickets 拆成任务，到 /implement 实现代码，到 /code-review 审查。全程在 Claude Code 里完成。
+
+Matt Pocock 的 Skill 工作流教程（视频转录）
+
+安装
+
+npx skills add mattpocock/skills
+
+安装程序会扫描 38 个 skill——其中"Matt Pocock skills"是官方认证的，"other skills"是他还在实验的。他建议按空格全选官方的然后回车。
+
+安装程序支持 Claude Code、Codex 等多种 agent。推荐选 SimLink 方式安装以获取符号链接。安装范围：团队选 project（每个人用同一套），个人选 global。
+
+关键点：Skills 不占上下文
+
+Matt 的 skill 都是用户调用的（user-invoked），不是自动加载到上下文的。跑 /context 查看时，虽然装了全部 skill，总共只占 660 tokens——"非常非常轻"。
+
+配置
+
+装完后运行 setup mattpocock skills。这步配置 issue tracker——skill 需要存放 spec 和 ticket 的位置。支持 Jira、Linear、本地 Markdown 等。"大家总问我技能能不能和 Jira/Linear 一起用。它就一个命令——跟 agent 说你想配什么，它自己去配。"
+
+核心五步流
+
+1. /grill-with-docs——让 agent 审查你的文档/设计稿，提出尖锐问题
+2. /to-spec——把审查结果转化成 spec
+3. /to-tickets——把 spec 拆成单个可执行的 ticket
+4. /implement——实现代码
+5. /code-review——审查实现
+
+Matt 说这五个步骤是他推荐的 "main flow"——新手入门所需的一切。
+
+来源：Matt Pocock (
+@mattpocockuk
+), "Skills repo tutorial", 2026-07-09
+https://x.com/mattpocockuk/status/2075218406266036236
+Skills repo: https://github.com/mattpocock/skills (162K stars)
+
+#Skill实践 #ClaudeCode #Agent工作流
+
+
+I tested it and got a really good feeling from it. I’d love to see how you recommend using it in the flow:
+
+/wayfinder -> /to-spec -> /to-tickets -> /implement -> /code-review
