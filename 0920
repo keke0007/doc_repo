@@ -1,0 +1,485 @@
+https://github.com/langchain-ai/agents-from-scratch
+
+https://fmhy.net/
+
+一位微信好友，分享了一份他们团队目前在做的事情，发来一份文档
+提炼了下这份文档里关于Vibe Coding的一些观点和心法，团队是前nasa科学家和comcast工程师，很有启发：
+
+1. AI越来越强，但AI创造的软件，反而越来越难以被信任
+
+2. 模型独立，不代表判断独立，AI时代真正的瓶颈，变成了人的判断力，从软件工程视角，真正稀缺的能力会变成：定义问题、选择方向、制定标准、判断结果
+
+3. 代码和测试可以完全一致，结果依然可能是错的，这是因为，AI答案和评测标准高度一致，也可能一起建立在错误的问题定义之上，所以，我们还有一个很重要的需要关注的问题：我们解决的是正确的问题吗？
+
+4. 目前AI一个最大的问题，会很容易基于一个错误的答案，自己验证，自己通过，然后制造一种危险的确定感，错误+验证通过，比单纯的错误更危险
+
+5. 换一个模型，并不天然意味着获得了独立审查，现在很多人的AI Review方法是：Claude写完，然后GPT Review，看起来已经交叉验证。但如果GPT看到的是Claude已经写好的PRD、推理和结论，它很容易被前面的框架锚定，所以真正的多Agent协作应该考虑“信息独立性”
+
+6. 先独立思考，再比较收敛。先让不同的AI独立思考，再互相比较，不要让5个Agent一上来就讨论，有价值的多Agent讨论，来自独立信息路径
+
+7. 什么能够证明这件事情成功了？也就是定义成功的标准是什么？做事之前先回答：什么证据证明成功
+
+8. 项目的流程，每一个关口都要有证据，不能等到最终交付才验证，比如需求、定义、设计、开发、验证、交付，每一个环节，都需要有对成功的定义
+
+9. 客户应该购买结果，而不是自己拼一堆工具，比如，不需要对用户表达那么多的Agent、MCP、API、工作流等等，只需要表达一个目标，一套系统，一个可验证结果
+
+10. 每一次经过验证的交付，都让下一次交付变得更好，定义了一个真正的AI原生组织应该具备的能力：组织不能只是完成任务，还必须从每一次任务中学习
+
+11. 一个真正的AI员工，每完成一次任务，都应该让下一次同类任务做得更好
+
+这套心法或原则，总结下：先定义正确的问题，再独立形成判断；先定义成功证据，再开始执行；过程中持续验证，完成后沉淀经验，让下一次做得更好
+
+
+最近在玩obsidian整理笔记，交给ai整理完之后我都懵了。
+
+这个笔记的内容我怎么一个都不认识，从框架结构到知识点梳理，我全都交给ai了。
+
+而我做的只是往里面塞东西，就导致笔记不是笔记，反而成了ai的吃灰仓库。
+
+人还是不能什么都交给ai，特别是总结和归纳的部分，因为思考本身就是学习的过程。
+
+后来我学精了，在每个知识点的下面分成了ai梳理的部分和我自己理解的部分，在阅读过后亲手敲下我自己的理解，也就是内化
+
+等我再玩两天，写个小白玩obsidian的全过程
+
+
+Loop 是真的小。但花时间的地方全在 loop 外面：护栏、状态持久化、幂等重试、审计日志。骨架一晚上就能画完，把它变成敢在生产里跑的东西，才是工程量。
+
+
+国产 Agent 不放心，第三方开源 Agent 来帮你🔥
+
+前面整理过一轮国产 Agent，这次把目前比较值得关注的第三方开源项目也盘一下：
+
+1、OpenCode｜功能完整，Plan、Sub-agent、权限、Skill 基本都有，偏开箱即用
+
+2、Pi Agent｜极简 Harness，核心很轻，Extension、Skill、Package 随便自己组
+
+3、Goose｜偏通用 Agent，除了 Coding，还能接大量 MCP 和外部工具
+
+4、OpenHands｜更偏自治工程师，可以跑长任务、GitHub 工作流和自动化
+
+5、Cline｜IDE 原生路线，和 VS Code / JetBrains 结合比较深，权限控制也比较完善
+
+大家来一起用 Pi 吧；根据自己的个人喜好拼一个你喜欢的 pi。
+
+https://github.com/bestony/bestony-pi 这是我拼的 Pi
+
+这套题看着像八股，但做过 agent 项目的人能一眼分出真痛点和摆设：真痛点是工具调用的超时/重试/幂等、上下文越堆越长的裁剪、eval 怎么闭环。至于 ReAct vs Plan-and-Execute，实际选型多半是预算和延迟逼出来的，不是架构品味。
+
+
+发现去年那阵子我也迷过AI Agent，鼓捣出来的玩意儿跑是能跑，可总差那么点意思，算不上真正好用。
+
+后来刷完LangChain官方的《Agents From Scratch》，才反应过来：技术本身不缺，缺的是工程化那套打法。
+
+这套东西牛就牛在，它带你从零手搓一个能打理Gmail的智能助手，一步步来，做完真能上线干活。
+
+1⃣ 学习路径安排得明明白白，从基础代理一路到高阶玩法，不走冤枉路
+2⃣ 邮件助手全程实操，分类、自动回复挨个搭起来
+3⃣ 拿LLM当评审来做效果评估，不靠感觉瞎调
+4⃣ 人机配合这块想得周到，要害操作交给你把关，不乱来
+5⃣ 记忆机制真能落地，代理用久了越来越懂你
+6⃣ 末尾直接对接Gmail API，跑通真实业务，绝非demo玩具
+环境搞定就能开跑，还配了测试方案，边干边验，不玩虚的。
+GitHu：http://github.com/langchain-ai/a
+
+
+搭 Agent 卡在‘能对话’，多半是工具没接上。
+
+有人整理过一份 Hermes 集成清单，下面三个比较常被提起。
+
+Obsidian：可把指定目录里的笔记、反向链接交给 Agent 读和改。
+官方建议先划一块目录，不要一上来开放整个 vault。
+
+Reddit：适合看用户怎么抱怨产品。不是无广告池，当调研材料即可。
+
+InsForge：给编程 Agent 用的开源后端，认证、数据库、存储、边缘函数可以走 MCP 或 CLI，少手搭一套。
+
+🔗https://github.com/InsForge/InsForge
+
+
+
+网上的 ML 课两头跑：公式看到退，或只教调包。
+
+GeostatsGuy 这套课走中间：电子书 Applied Machine Learning in Python 讲思路，YouTube 能对着听，演示 notebook 在 MachineLearningDemos。
+
+仓库大约 20 个工作流，回归、分类、聚类、降维都有，例子小，容易跑完。当课上看板用，不是从零手写 30 个算法，也不是 GAN 教程全集。
+
+传送https://github.com/GeostatsGuy/Ma
+
+
+分享一下我私藏的 10 个高质量信息源：
+
+Buzzing (http://buzzing.cc) 打破信息茧房的神器。把 Hacker News、Reddit、Product Hunt 的海外热帖实时抓取并翻译成中文标题，每天扫 3 分钟知晓全球趋势。
+
+Product Hunt (http://producthunt.com) 全球新玩具广场。每天看野生独立开发者手搓出来的 AI 工具、插件和微型产品，副业灵感直接拉满。
+
+Mobbin (http://mobbin.com) & Godly (http://godly.website) 做产品的审美外挂。Mobbin 拆解全球顶级 App 的真实界面与交互，Godly 汇聚全网最顶级的网页设计，不知道怎么排版时直接抄作业。
+
+Indie Hackers (http://indiehackers.com) 独立开发者的清醒剂。不聊融资 PPT，只聊真实的个人产品变现、获客踩坑和真实 MRR 账单。
+
+Reddit r/SideProject (http://reddit.com/r/SideProject) 全球个人项目的单点突破现场。全是野生极客为了解决自己痛点做出来的小 MVP，最接地气的造轮子参考。
+
+Reddit r/LocalLLaMA (http://reddit.com/r/LocalLLaMA) 开源大模型的大本营。DeepSeek、Qwen 的显存极限压榨、量化方案首发测评，全网最新的本地模型黑客都在这里。
+
+LINUX DO (http://linux.do) 大模型实测与逆向第一线。哪家模型降智了、API 怎么低成本玩，这里的抓包和实测比官方公告快好几天。
+
+NodeSeek (http://nodeseek.com) 出海基建与穷鬼折腾大本营。想把 Cloudflare 榨干、搞海外电话卡、淘便宜 VPS，技术深度全网最硬。
+
+GitHub Trending Daily (http://github.com/trending) 看每天蹿升最快的开源工具。只挑一个人肉身搓出来、能立刻解决单一痛点的轻量级项目。
+
+阮一峰网络日志 (http://ruanyifeng.com/blog) 每周五必看。开源小软件推荐 + 技术趋势沉淀，视野极宽，非常适合做每周信息大扫除。
+
+这本书挺好的 推荐给大家
+​
+​电子版的排版很烂 我买了本纸质版
+​
+​经营者养成笔记 柳井正
+​
+​我觉得日本的创业者写的书还是非常不错的，以前有两本书，我觉得也挺不错的，就是 7-11 的创始人写的
+​
+​个人觉得自媒体挣钱和零售业有很大的相似性
+​
+​零售业的三大核心是  位置 流量和产品
+​
+​自媒体的三大核心是 品牌、流量和内容
+​
+​感觉差不多 而且都是啊 出一天工(开一天门) 挣一天钱
+
+
+Barret李靖
+@Barret_China
+·
+Apr 14
+Spec-driven development (SDD) 的通用实现基本会参照 openspec，实践下来，效果还是一般，大模型会偷懒，任务拆解不充分，也缺少 review 过程。
+
+想让 Agent 持续跑长程任务，同时确保交付质量，需要让它明确项目目标，并将任务拆解到最小颗粒度，再让每个小任务在干净的环境下执行，执行之后，用子 Agent 对当前提交的代码进行 review，进入到 review → feedback → modify → review 的循环。
+
+每个环节都需要精心构造最有效的 context，例如 review 过程，需要给定代码上下文、修改记录、验证手段、脚本工具库等等。
+
+真实项目的执行过程，会包含立项、拆迭代、拆任务等过程，将这套流程复刻到 coding agent 的 plan 过程，依然奏效。如图一，它是一个跑了大概半天任务，而对于更复杂的任务，可以跑一两天不停歇。
+
+每个 sprints 和 tasks 的执行过程，以及 review 的规范，尽量严苛，可以考虑编写脚本的方式来保障质量，例如架构必须分层，L2 可以调用 L1 和 L0，倘若 L0 调用了 L2 就是反模式，需要报错阻断，这种规则问题就可以交给 eslint + governance scripts 来保障的。code review 过程中，也可以要求 AI 根据需要，自主编写文档/程序来确保项目规则/脚本持续沉淀。
+
+
+https://x.com/yanhua1010/status/2101257759497089171
+
+
+最近 Jev 挺火，我拿它去 12306 查了趟动车票，看看这种浏览器 Agent 到底能不能干点日常的活。
+
+用的是 Browser Use 开源的 Jev Ultrafast，一个主打速度的浏览器 Agent，可以自己操作网页，完成你交给它的任务。
+
+我这次用 Pi + DeepSeek 跑的，消耗也挺低。看着它在浏览器里操作，最后把车次整理出来，还挺有意思。
+
+过程放视频里了
+
+
+深度学习核心路线：
+
+Transformer：Attention / QKV / Multi-Head / FFN / LayerNorm / 残差
+
+CNN / RNN 脉络（理解即可，不是主线）
+
+训练技巧：warmup / 学习率调度 / 梯度裁剪
+
+从零实现 mini Transformer（参考 nanoGPT），训练字符级语言模型并生成文本
+
+验收：手写 attention 讲清 QKV；训出能生成文本的小模型
+
+
+AI 编程最容易被忽略的成本，是 Agent 每次开新会话都要重新理解项目。
+
+之前讨论过的方案、约束和决策留在旧聊天里，新 Agent 进来还是一张白纸。
+
+brain.md 就是在仓库里加一层持久记忆：
+
+1️⃣ 纯 Markdown，人和 AI 都能直接读
+2️⃣ Claude Code、Codex 等多个 Agent 可以共享
+3️⃣ 零依赖 CLI 管理，统一命令写入
+4️⃣ 按“当前理解 + 时间线”记录，变更还保留原因和证据链
+
+一句话：把散落在聊天记录里的项目记忆，真正放回代码仓库。
+🔗 https://github.com/mindmuxai/brain.md
+
+
+AI 正在降低个人做产品、接项目和启动业务的门槛，但只会聊天远远不够。给自己 30 天，按“架构基础→提示与上下文→自动化→专业进阶”走完这套免费路线，才能真正用 Claude Code 构建项目。
+
+第一阶段：看懂系统怎么运转
+
+1. AI Agent 架构：理解代理如何判断任务、调用工具并执行操作  
+相关链接：  
+https://t.co/UVXMAJ2KFp  
+https://t.co/YGitnNpPrk
+
+2. Claude Code 101：掌握 Anthropic 编码工具的基本用法  
+https://t.co/8dDOSJj2A2
+
+3. 项目实战演示：观察 Claude Code 从需求到成品的完整构建过程  
+https://t.co/4IXAiPVRhf
+
+第二阶段：提升指令与上下文能力
+
+4. Anthropic 提示词工程指南：系统学习专业提示词的设计方法  
+https://t.co/s7jwIc81Ce
+
+5. 交互式提示词课程：通过 GitHub 练习巩固提示词技巧  
+https://t.co/CAFQzugpBL
+
+6. CLAUDE.md 与记忆机制：让 Claude 持续理解项目背景、约束和规则  
+https://t.co/lXNipiovCJ
+
+第三阶段：连接工具并自动化工作
+
+7. MCP 协议：把 Claude 接入 Slack、GitHub、Google 和数据库等外部服务  
+https://t.co/YpC8B9aKIJ
+
+8. Skills：封装重复流程与自定义功能，在不同任务中反复调用  
+https://t.co/HeeDkzdXQN
+
+第四阶段：补齐进阶知识与现成资源
+
+9. Claude Code 完整指南：开发者社区整理的开源技巧手册  
+https://t.co/TCND9apRAw
+
+10. Awesome Claude Code：集中查找可直接使用的脚本、Skills 和插件  
+https://t.co/7LeLcLrN80
+
+11. Anthropic Academy：13 门官方免费课程，并提供证书  
+https://t.co/WHFh8LKFab
+
+12. Claude 官方文档：遇到功能、配置和接口问题时的完整参考入口  
+https://t.co/KcjU7WR6AE
+
+https://github.com/keyuchen21/agentic-engineering-handbook
+
+一个系统化的 Agent 工程学习路线图手册：Agentic Engineering Handbook。
+
+它把散落在 OpenAI 博客、Anthropic 工程文、SDK 文档、cookbook、论文里的 179 个精选资源，整成一份从"手写 Agent Loop"到"生产落地/eval/安全"的结构化学习路径。​ 
+
+学习路径分 7 阶段（Phase 0–6）​：
+
+Phase 0：从零手写 Agent Loop（基于 shareAI-lab/mini-claude-code，给了 v0–v4 可跑 Python 代码：bash agent → 模型当 agent → 结构化规划 → 子代理 → skills）
+
+Phase 1：Agent 基础（该不该建 agent 的 4 问检查表、Building Effective Agents 等）
+
+Phase 2：MCP & 工具生态
+
+Phase 3：Context / Memory / Skills（含 Agent Skills 规范、上下文工程）
+
+Phase 4：Harness & 长程 Agent（mini coding harness 练习）
+
+Phase 5：Coding / Workspace Agents（Codex / Claude Code 风格工作流）
+
+Phase 6：Evals / Safety / Production（smoke/macro eval 套件练习）
+
+
+Pi 写代码时最麻烦的，不一定是它不会写，而是它明明知道规则，跑久了还是会忘。
+
+pi-warden 就是专门解决这个问题的。
+
+它会在 Pi 每次 write、edit、bash 之前或之后做检查，把问题直接反馈给 Agent，让它自己修，不是每次都弹窗问你。
+
+几个数字比较直观：
+
+• 150 组 A/B 测试：不开 Warden 时出现 6 次规则违规，开启后是 0 次
+
+• 321 个真实会话
+
+• 一共检查了 17,160 次工具调用
+
+• 实际只拦了 42 次
+
+• 其中用户随后批准了 5 次，也就是说 37 次拦截最终被保留
+
+• 单次判断大约消耗 1000 input tokens
+
+• 成本约 $0.00004/次
+
+• 延迟大约 0.3 秒
+
+• 还做了 109 轮连续稳定性测试，13,952 个 case，100% 通过，0 score drift
+
+它主要盯这些问题：
+• Agent 有没有违反项目自己的 pi-warden.md
+• 连续用同一种错误方法重试
+• 没跑测试就直接说“已经完成”
+• 写出硬编码密钥、关闭 TLS 这类安全问题
+• 执行 rm -rf、数据库 reset、force push 这种不可逆操作
+• 工具输出太长，把上下文撑爆
+• 子 Agent 的结果到底值不值得打断主 Agent
+• 回复开始重复、跑死循环
+这里我比较喜欢的一点是：大部分问题只提醒 Agent，不拦。
+
+只有破坏性命令、明确 deny 规则，或者不可逆概率超过阈值时才真正 hold。正常代码修改还是继续跑，所以不会把自动模式变成“点确认模拟器”。
+
+需要 Pi 0.85+、Node.js 22.19+。没有 TypeSafe key 也能跑一部分离线检查。
+
+最近一直在看 Pi 的多 Agent 和自动化工具，反而觉得这种 guardrail 比再堆几个 Agent 更实用。Agent 跑得越久、权限越大，越需要一层能随时把它拉回任务边界的东西。
+
+GitHub：https://github.com/DevMortimer/pi-warden
+
+
+https://x.com/KengGuangLong/status/2101092381366026265
+
+https://x.com/jowaywang/status/2101188610355810764
+
+
+https://blog.joway.io/posts/ai-coding-principle/
+
+业务 JSON 心跳 + Redis 超时
+
+AI 写代码总是“能跑就算完”？Addy Osmani 开源的 agent-skills，直接给 Agent 加了一套工程化开发流程。
+
+从 DEFINE → PLAN → BUILD → VERIFY → REVIEW → SHIP，把开发拆成 6 个阶段，对应 /spec、/plan、/build、/test、/review、/ship 等命令。
+
+1️⃣ 先写规格，再拆任务
+2️⃣ 增量开发 + 测试验证
+3️⃣ 代码审查、安全、性能都有专门技能
+4️⃣ 内置“反偷懒”机制，尽量防止 Agent 跳步骤
+
+简单说，就是让 AI 不只是写代码，而是按一套完整的工程流程把项目往上线推进。
+🔗 https://github.com/addyosmani/age
+
+
+真正教你做生意的中文书，其实不多。
+
+几本国内搞钱好书。
+
+1.《段永平投资问答录：商业逻辑篇》
+作者：段永平
+
+“别天天研究风口，先搞懂这门生意到底赚的是什么钱。”
+
+核心：段永平反复讲的东西其实很朴素，商业模式、用户需求、长期价值、差异化，以及一家公司到底凭什么持续赚钱。
+
+很多人做生意第一反应是哪里火就去哪里，他更关注的是：消费者为什么长期愿意买你的东西？竞争对手为什么抢不走？十年以后这个需求还在不在？
+
+真正搞懂一门生意，比猜下一波风口重要得多。
+
+2.《生意的本质》
+作者：卫哲
+
+“营业额再大，算不清客户和利润，也可能只是白忙。”
+
+核心：教你把一门生意拆回最基本的几笔账。
+
+客户是谁，客户为什么买，获客成本多少，服务一个客户要花多少钱，一个客户最终能贡献多少价值。
+
+很多小生意最容易犯的错，就是只看每天进账多少钱，却从来没算过自己为了赚这笔钱付出了多少成本。
+
+流水不是利润，忙也不等于赚钱。
+
+3.《大败局》
+作者：吴晓波
+
+“想学怎么赚钱，先看看别人是怎么把赚到的钱亏回去的。”
+
+核心：专门研究中国企业怎么从巅峰走向失败。
+
+盲目扩张、现金流断裂、多元化失控、管理跟不上、老板判断失误。
+
+最有价值的地方，是你会发现很多今天创业者觉得自己第一次遇到的问题，二三十年前早就有人用真金白银踩过一遍。
+
+成功经验可能很难复制，失败的坑却经常重复出现
+
+
+强烈推荐学习下cline 的jev-browser 是如何使用jev 实现快速browser use 的，这是jev 应用最实用的领域之一，源码我已经找到了：
+
+https://github.com/cline/plugins/tree/main/plugins/jev-browser
+
+
+
+meng shao
+@shao__meng
+·
+4h
+斯坦福大学「CS146S: The Modern Software Developer」课程，下周正式开始。
+
+主讲老师 
+@mihail_eric
+ 把公开了代码/作业的开源项目：
+https://github.com/mihail911/modern-software-dev-assignments
+
+课程地址
+https://themodernsoftware.dev
+
+详情介绍在这 👇
+
+
+另外想提升审美的各位，这还有另一本圣经必读，学去吧！
+
+《写给大家看的设计书》GitHub的PDF地址
+https://github.com/SwaggyLang/HWS
+
+《写给大家看的设计书》知乎笔记地址
+https://zhuanlan.zhihu.com/p/99720701
+
+refactoring-ui的知乎笔记地址
+https://zhuanlan.zhihu.com/p/694343432
+
+很多 Linux 课程让你背命令，但真到服务器上还是不会用。
+
+这个开源项目 Linux Upskill Challenge，直接把学习做成 20 天实战挑战，每天 1～2 小时，不讲一堆理论，直接上手。
+
+1️⃣ 从 SSH、文件导航开始
+2️⃣ 再到用户、权限、进程、服务、网络和安全
+3️⃣ 最后把日志、服务器管理这些串起来
+支持 Ubuntu Server，可以丢到 AWS、GCP、Azure、DigitalOcean，或者自己的虚拟机里练。
+目标很简单：20 天后，至少能自己管一台 Linux 服务器。
+
+免费开源，还能跟着社区一起学。
+🔗 https://github.com/livialima/linuxupskillchallenge
+
+
+https://x.com/I_am_oil_oil/status/2100896700932190659
+
+
+如果大家想要学习如何使用 AI 做出好看的设计，真的非常推荐这篇文章 ：https://lennysnewsletter.com/p/how-to-turn-your-ai-into-a-world
+
+我自己看完之后发现有很多共鸣，发现很多自己正在做的实践与一些顶级的设计师也是一致的。
+
+这篇文章里面不仅仅讲了很多理念，而且给了了很多很落地的实操方案，主要是以下八点：
+
+1. 让 AI 探索不同的设计风格。在设计前让 AI 提供几种不通的方案，明确指出配色、字体和布局都要有区别，再挑选喜欢的方向。
+
+ 2. 把设计要求描述得更具体、更大胆。只说“高级、好看、有创意”，AI 很难理解我们想要什么。可以尝试像素游戏、立体城市、非对称排版等明确的方向。没有想法的时候，先让 AI 提出多种思路，再根据自己的喜好逐步细化。
+
+3. 让另一个 AI 独立评审设计。一个 AI 负责实现，另一个 AI 只根据页面截图提出设计建议，不携带之前的开发记录。建议要具体到哪里需要调整、应该怎样调整，再通过几轮修改和评审完善设计。
+
+4. 通过图片生成丰富页面。除了让 AI 编写页面代码，还可以要求它生成符合设计风格的背景图、插画和装饰素材，再搭配适当的光影或立体效果，让页面有更鲜明的特点。
+
+5. 通过视频生成实现复杂动画。可以先生成纯色背景的视频，再去除背景，作为页面里的动画素材。也可以让动画的播放进度跟随鼠标移动或页面滚动，实现连续的交互效果。
+
+6. 删除没有实际作用的元素。检查多余的文字、发光效果、渐变和容器。图片已经表达清楚的内容，不必再重复解释。但难以理解的图标和操作，仍然需要保留必要的文字提示。
+
+7. 检查并减少明显的 AI 痕迹。留意反复出现的蓝紫渐变、相似的卡片布局，以及不合适的 emoji 图标。
+
+8. 亲自修改页面文案。AI 提供初稿后，我们再逐句检查标题、按钮和说明文字。删除空泛、难懂的表达，用自然、具体的话说明产品有什么作用、用户可以完成什么操作
+
+
+别再每天刷两小时 X 看二手 AI 消息了，真正想追 AI 前沿，直接盯一手源。
+
+1️⃣ AI News — 每日汇总 AI 社区、产品和论文动态，一篇顶你刷半天。
+https://news.smol.ai
+
+2️⃣ The Batch — 吴恩达团队的 AI 周报，不只是新闻，还有对行业趋势的判断。
+https://deeplearning.ai/the-batch/
+
+3️⃣ Hugging Face Papers — 每天社区票选热门 AI 论文，追新模型、新技术非常方便。
+https://huggingface.co/papers
+
+4️⃣ alphaXiv — 可以理解成“论文评论区”，除了看论文，还能看同行的讨论、质疑和补充。
+https://alphaxiv.org
+
+5️⃣ arXiv http://cs.AI — 最原始的一手论文源，新研究很多都是先出现在这里。
+https://arxiv.org/list/cs.AI/recent
+
+6️⃣ LMArena — 大模型真人盲测竞技场，直接看不同模型真实 PK，而不是只看厂商跑分。
+https://lmarena.ai
+
+7️⃣ Artificial Analysis — 模型选型神器，质量、速度、价格等指标放一起横向比较。
+https://artificialanalysis.ai
+
+信息差很多时候不是你知道得少，而是别人已经在看源头，你还在看别人转述。
+
+
+https://x.com/shao__meng/status/2100912473218171005
