@@ -1,3 +1,306 @@
+https://x.com/charliejhills/status/2101340060931203351
+
+Your Claude Code install is missing a few things.
+
+Here are 40 additions (grouped by what they do):
+
+I've hoarded over a hundred Claude repos this year.
+
+These cover workflows, skills, memory and tools, plus reference libraries worth keeping open.
+
+BUILD A WORKFLOW
+
+1. learn-claude-code → Learn how agents work.
+2. karpathy-skills → Cut common coding mistakes.
+3. superpowers → Plan, build and test.
+4. ponytail → Keep the code simple.
+5. gstack → Add planning and review workflows.
+6. ECC → Add skills, memory and checks.
+7. oh-my-claudecode → Coordinate agent teams.
+8. Archon → Build repeatable coding workflows.
+
+ADD SKILLS
+
+ 9. taste-skill → Improve your designs.
+10. anthropics skills → Browse official skills.
+11. mattpocock skills → Add engineering skills.
+12. wshobson agents → Find specialist agents.
+13. claude-plugins → Browse official plugins.
+14. addyosmani skills → Add engineering checks.
+15. ui-ux-pro-max → Get interface design guidance.
+16. awesome-claude-skills → Find more skills.
+
+KEEP THE CONTEXT
+
+17. planning-with-files → Keep plans in files.
+18. claude-mem → Carry context across sessions.
+19. codegraph → Map the code's connections.
+20. graphify → Connect code and documents.
+21. repomix → Pack a repo into one file.
+22. agentmemory → Give agents persistent memory.
+23. beads → Track work across sessions.
+
+CONNECT TOOLS
+
+24. multica → Assign issues to coding agents.
+25. firecrawl → Turn websites into usable text.
+26. cc-switch → Manage your coding tool setup.
+27. context7 → Fetch current code documentation.
+28. vibe-kanban → Manage agent tasks on a board.
+29. github-mcp → Work with GitHub from Claude.
+30. playwright-mcp → Let Claude use a browser.
+31. serena → Find and edit relevant code.
+32. claude-code-router → Route model requests.
+33. awesome-mcp-servers → Find more connectors.
+
+PROMPTS & USAGE
+
+34. system-prompts-ai → Study AI tool prompts.
+35. best-practice → Read Claude Code practices.
+36. codex-plugin-cc → Add Codex reviews in Claude.
+37. claude-hud → See your session usage.
+38. rtk → Trim command output.
+39. headroom → Compress what the model reads.
+40. caveman → Get shorter replies (much shorter).
+
+So pick one for the job you're doing.
+
+Open its repo, follow the setup instructions and try it on a real task before adding the next one.
+
+My Claude resource vault 
+
+→ https://charliehills.substack.com/p/resource
+
+Repost ♻️ to help someone in your network.
+
+Stop asking which AI model is best.
+
+Build these:
+
+• MCP server
+• RAG pipeline
+• AI coding agent
+• Voice assistant
+• Browser automation agent
+• Multi-agent workflow
+• AI search engine
+• AI copilot
+• AI eval framework
+• Production AI SaaS
+
+The future belongs to builders.
+Not prompt collectors.
+
+
+https://lilianweng.github.io/posts/2026-07-04-harness/
+
+最会写博客的AI研究员 莉莉安.翁 关于Harness的博客 不得不读！
+如果你真的没时间读 不防看看我的总结
+
+《Harness Engineering for Self-Improvement》
+作者：Lilian Weng
+原文链接：https://lilianweng.github.io/posts/2026-07-04-harness/
+
+核心观点
+文章聚焦递归自我改进（Recursive Self-Improvement, RSI） 的近中期实现路径。作者认为，当前真正可落地的 RSI 不太可能从模型直接改写自己的权重开始，而更可能先从Harness（部署层/编排层） 的工程优化入手。
+
+Harness 的定义：围绕基础模型的外围系统，负责编排执行、思考与规划方式、工具调用与行动、上下文感知与管理、产物存储、结果评估等。它相当于模型与真实世界之间的“运行时 + 操作系统”。
+成功的 coding agent（Claude Code、Codex 等）已经证明：Harness 的重要性并不亚于模型本身的原始智能。
+
+三大设计模式
+1Workflow Automation（工作流自动化）
+目标导向的循环：计划 → 执行 → 观察/测试 → 改进 → 再执行，直到目标达成。模型会分析自身轨迹和失败案例，通过“agent runtime”迭代，而不是静态 prompt。
+2File System as Persistent Memory（文件系统作为持久记忆）
+长视野任务中，日志、代码 diff、实验记录、错误轨迹等远超上下文窗口。把状态和产物持久化到文件系统（通过 bash 等工具读写），是当前最实用的记忆方案。
+3Sub-agent and Backend Jobs（子代理与后台任务）
+主代理可并行生成多个子代理，并管理后台任务。关键是把并行过程做成显式、可检查的（日志、状态文件），而不是把所有东西塞进临时对话上下文。
+Coding Agent 案例
+主流 coding agent 的工具接口已相对稳定，主要包括：
+•文件系统操作（glob、grep、read、edit、apply_patch 等）
+•Shell 执行
+•Git / LSP
+•Web 搜索与浏览器
+•产物生成
+•后台任务与子代理管理（spawn/resume/wait/interrupt agent 等）
+Harness 层 vs 核心智能
+
+作者的近中期预测：
+1Harness 会朝着元方法论方向进化（优化“如何得到更好答案的机制”，而不只是答案本身）。
+2成熟的 Harness 反过来支持自动研究循环，让模型持续改进，同时更强的模型又会防止 Harness 过度工程化。
+最终很多 Harness 技巧可能被模型内化（类似 prompt engineering 的演变），但与外部上下文、工具、评估的接口会长期存在。
+
+Harness 优化方法（文章重点）
+
+优化对象从简单到复杂大致演进：prompt → 结构化上下文 → 工作流 → Harness 代码 → 优化器代码本身。
+•Context Engineering
+◦ACE（Agentic Context Engineering）：把上下文当作不断演化的“playbook”，用 Generator / Reflector / Curator 维护条目化记忆。
+◦MCE（Meta Context Engineering）：双层优化——外层进化“如何管理上下文的技能”，内层优化具体上下文内容。
+◦Meta-Harness：直接优化“决定如何存取信息”的代码本身。
+•Workflow Design
+手工设计（AI Scientist、ScientistOne、Autodata）+ 自动搜索（ADAS 用元代理搜索 agent 工作流代码；AFlow 用 MCTS 优化图结构工作流）。
+•Self-Improving Harness
+把整个 Harness 当作可优化的代码。经典例子是 STOP（Self-Taught Optimizer）：优化“改进器”本身。后续工作进一步强调可观察性和 harness 更新能力 vs 利用能力的分离。
+•Evolutionary Search（进化搜索）
+AlphaEvolve、Darwin Gödel Machine（DGM）等：维护候选程序/Harness 池，用 LLM 生成修改，按性能筛选。DGM 允许 agent 修改自己的 harness 代码，在 SWE-bench 等任务上取得明显提升。
+•Joint Optimization with Model Weights
+尝试同时更新 Harness 和模型权重（SIA、Continual Harness 等），但目前证据仍较初步，训练稳定性和 Goodhart 效应是主要挑战。
+
+未来挑战
+1评估器太弱（尤其是主观任务如新颖性、品味）。
+2长视野任务的记忆与上下文管理。
+3对负面结果的忽视与偏差。
+4进化过程中多样性崩溃。
+5奖励黑客（reward hacking）。
+6长期可维护性 vs 短期任务表现。
+7人类监督的介入时机与方式。
+
+总体结论
+Harness Engineering 是当前通往 RSI 最现实、最可操作的路径之一。它把“如何让模型更好地工作”本身变成可搜索、可优化、甚至可自我改进的对象。代码是通用表示语言，文件系统是实用记忆层，进化搜索和元优化是主要方法论。
+近中期更可能看到的是：更强的模型 + 不断自我改进的 Harness 形成正反馈，而不是模型直接重写权重。真正的科学发现级 RSI 仍面临评估、可靠性和长期一致性等根本难题。
+
+MCP meets agent skills
+
+MCP already gave agents a standard way to connect to tools, resources, and external systems.
+
+Now it also defines a standard way to discover and load Agent Skills directly from MCP servers.
+
+The flow is simple:
+
+→ connect to MCP server
+→ discover available skills
+→ inspect skill metadata
+→ load the relevant 𝗦𝗞𝗜𝗟𝗟.𝗺𝗱 only when needed
+
+Under the hood, Skills are served through MCP’s existing Resources primitive.
+
+That means 𝗦𝗞𝗜𝗟𝗟.𝗺𝗱, references, scripts, examples, and other supporting files are exposed as resources that the client can read on demand.
+
+This is especially useful for context window management.
+
+Instead of loading every workflow instruction upfront, the agent can first discover what skills are available and pull in only the one required for the current task.
+
+A useful mental model is:
+
+tools = what the agent can do
+resources = what the agent can access
+skills = how the agent should perform a reusable workflow
+
+Previously, that workflow knowledge often lived separately in docs, repos, prompt files, or custom integrations.
+
+Now the MCP server can expose the capability and the playbook for using it together.
+
+So you get:
+
+→ standardized skill discovery
+→ on-demand context loading
+→ cleaner distribution and versioning
+→ reusable workflows that travel with the server
+
+MCP was already the connection layer.
+
+Skills now add a standardized way to ship reusable agent know-how on top of it.
+
+The illustration below visually summarizes everything that we discussed so far.
+
+Read more: https://github.com/modelcontextprotocol/ext-skills
+
+Building AI agents on Azure feels overwhelming until you see the full roadmap.
+
+Microsoft Foundry Agent Service + Microsoft Agent Framework give you everything but only if you follow the right sequence.
+
+Here’s the step-by-step flow:
+
+→ 𝗗𝗲𝗳𝗶𝗻𝗲 𝘁𝗵𝗲 𝗔𝗴𝗲𝗻𝘁 𝗚𝗼𝗮𝗹
+Choose one clear business outcome, decide what the agent should automate, set boundaries, and define when humans must review.
+
+→ 𝗖𝗿𝗲𝗮𝘁𝗲 𝗮 𝗙𝗼𝘂𝗻𝗱𝗿𝘆 𝗣𝗿𝗼𝗷𝗲𝗰𝘁
+Set up the workspace to manage agents, models, tools, data, and Azure resources securely.
+
+→ 𝗖𝗵𝗼𝗼𝘀𝗲 𝘁𝗵𝗲 𝗥𝗶𝗴𝗵𝘁 𝗠𝗼𝗱𝗲𝗹
+Use stronger models for reasoning and faster models for simple workflows. Compare cost, speed, and accuracy.
+
+→ 𝗪𝗿𝗶𝘁𝗲 𝗔𝗴𝗲𝗻𝘁 𝗜𝗻𝘀𝘁𝗿𝘂𝗰𝘁𝗶𝗼𝗻𝘀
+Define role, limits, tone, response rules, tool usage, and escalation instructions.
+
+→ 𝗖𝗼𝗻𝗻𝗲𝗰𝘁 𝗘𝗻𝘁𝗲𝗿𝗽𝗿𝗶𝘀𝗲 𝗞𝗻𝗼𝘄𝗹𝗲𝗱𝗴𝗲
+Use RAG, Azure AI Search, vector search, file search, and Blob Storage to ground answers.
+
+→ 𝗔𝗱𝗱 𝗠𝗲𝗺𝗼𝗿𝘆 𝗮𝗻𝗱 𝗖𝗼𝗻𝘁𝗲𝘅𝘁
+Store useful conversation history, user preferences, workflow state, and privacy-safe memory.
+
+→ 𝗔𝘁𝘁𝗮𝗰𝗵 𝗧𝗼𝗼𝗹𝘀 𝗮𝗻𝗱 𝗔𝗰𝘁𝗶𝗼𝗻𝘀
+Let the agent analyze files, connect APIs, use functions, trigger workflows, and complete controlled tasks.
+
+→ 𝗨𝘀𝗲 𝗠𝗖𝗣 𝗳𝗼𝗿 𝗜𝗻𝘁𝗲𝗴𝗿𝗮𝘁𝗶𝗼𝗻𝘀
+Standardize tool access so agents can connect with business systems safely.
+
+→ 𝗕𝘂𝗶𝗹𝗱 𝗠𝘂𝗹𝘁𝗶-𝗔𝗴𝗲𝗻𝘁 𝗪𝗼𝗿𝗸𝗳𝗹𝗼𝘄𝘀
+Coordinate multiple agents around one business outcome using Microsoft Agent Framework.
+
+→ 𝗔𝗱𝗱 𝗚𝘂𝗮𝗿𝗱𝗿𝗮𝗶𝗹𝘀
+Test accuracy, detect hallucinations, limit permissions, add approvals, and protect sensitive actions.
+
+→ 𝗗𝗲𝗽𝗹𝗼𝘆 𝘁𝗼 𝗥𝗲𝗮𝗹 𝗖𝗵𝗮𝗻𝗻𝗲𝗹𝘀
+Publish into Teams, Microsoft 365 Copilot, Azure Bot Service, custom apps, or API endpoints.
+
+→ 𝗠𝗼𝗻𝗶𝘁𝗼𝗿 𝗮𝗻𝗱 𝗜𝗺𝗽𝗿𝗼𝘃𝗲
+Track failures, latency, cost, feedback, tool usage, and update prompts, tools, and workflows.
+
+The real goal is not a demo agent.
+
+It is an agent that is grounded, governed, monitored, and useful inside real business workflows.
+
+𝗕𝗲𝗰𝗼𝗺𝗲 𝗯𝗲𝘁𝘁𝗲𝗿 𝗮𝘁 𝗔𝗜 𝗶𝗻 𝗷𝘂𝘀𝘁 𝟭 𝗺𝗶𝗻𝘂𝘁𝗲 𝗮 𝗱𝗮𝘆. 𝗝𝗼𝗶𝗻 𝗺𝘆 𝘄𝗲𝗲𝗸𝗹𝘆 𝗻𝗲𝘄𝘀𝗹𝗲𝘁𝘁𝗲𝗿 𝘄𝗵𝗲𝗿𝗲 𝗜 𝗱𝗼𝗰𝘂𝗺𝗲𝗻𝘁 𝘁𝗵𝗲 𝗿𝗲𝗮𝗹-𝘄𝗼𝗿𝗹𝗱 𝗷𝗼𝘂𝗿𝗻𝗲𝘆 𝗼𝗳 𝗔𝗜 𝘁𝗿𝗮𝗻𝘀𝗳𝗼𝗿𝗺𝗮𝘁𝗶𝗼𝗻. 
+
+
+Post
+
+See new posts
+Conversation
+Aiswarya Venkitesh
+@AiswaryaVenkit1
+An AI agent without memory starts from zero every time.
+
+It may generate a smart response, but it cannot maintain context, learn from previous interactions, or coordinate effectively with other agents.
+
+That is why production-ready agents need different types of memory for different jobs:
+
+→ Short-term memory tracks the current conversation, tool calls, messages, and temporary workflow state.
+
+→ Long-term memory preserves useful information across sessions, users, and repeated interactions.
+
+→ Knowledge memory grounds responses in documents, policies, product data, and enterprise information.
+
+→ Episodic memory recalls previous actions, decisions, outcomes, and completed tasks.
+
+→ Semantic memory stores facts, concepts, preferences, and relationships for later retrieval.
+
+→ Procedural memory captures workflows, rules, instructions, and repeatable task procedures.
+
+→ Shared memory gives multiple agents access to common context, knowledge, and task updates.
+
+Azure provides different building blocks for each layer, including Microsoft Foundry Agent Service, Microsoft Foundry Memory, Azure Cosmos DB, Azure AI Search, Azure OpenAI Service, Azure Cache for Redis, Azure SQL Database, Azure Functions, and Logic Apps.
+
+The key is not choosing one database and calling it “memory.”
+
+A reliable architecture separates temporary state, durable user context, enterprise knowledge, past experiences, learned facts, procedures, and multi-agent coordination.
+
+Because better models can improve reasoning.
+
+But the right memory architecture gives agents continuity, context, and the ability to become genuinely useful over time.
+
+Which type of memory is the hardest to implement in your agent architecture
+
+第五代大模型(astra/fable)問市後最新 prompt 技巧指引如下：
+
+- requirements, 
+- output contracts, 
+- invariants, 
+- validation, 
+- transformation, 
+- knowledge, 
+- observation
+
 IoT 入门常缺成套小例子。
 
 这个仓是作者的 100 天挑战：ESP32、ESP8266、Pico 上用 MicroPython，从读传感器到网页仪表盘都有，不少带代码和接线图。
