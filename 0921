@@ -1,0 +1,439 @@
+IoT 入门常缺成套小例子。
+
+这个仓是作者的 100 天挑战：ESP32、ESP8266、Pico 上用 MicroPython，从读传感器到网页仪表盘都有，不少带代码和接线图。
+
+DHT11、PIR、超声波这些常见模块能翻到，ADC、PWM、Wi-Fi、部分项目有 Wokwi。Hackster 介绍过，Adafruit 通讯里也出现过。
+
+传送https://github.com/kritishmohapat
+
+
+模型训练啃了一堆，真要上线反而不知道从哪下手。我以前调参、跑分都还行，一碰到部署和监控就发虚。
+
+哈佛这套开源教材《Machine Learning Systems》补的就是这段。源起 CS249r，在线书在 mlsysbookai。
+
+不主攻把 acc 调高，讲单机怎么把系统搭起来，再讲分布式、数据、部署和盯着它跑。
+
+边缘和板子上的实验也有。配套 TinyTorch，二十来个模块，从张量开始自己搓一个能训练的小框架。
+
+2026 版还在改。当系统课读，不是公司上线手册。
+
+https://github.com/harvard-edge/c
+
+使用Ai创建网站的时候，你应该会对自己的UI不满意，你可以直接丢给大模型让它自己对UI做选择，也可以让他自己思考或者去网上搜索，这里有几个可以提供给它做参考的：
+1 Beautiful UI ： https://beautifului.dev 
+2 BeUI ： https://beui.dev 
+3 Rare UI ：https://rareui.com 
+4 Transitions — https://transitions.dev 
+5 shadcn/ui ： https://ui.shadcn.com
+是的，我让Ai自己选择搭配整体风格的UI
+
+
+早先翻到的 RL 和 LLM 资料，要么飘要么浅。
+
+直到这门 UCLA 公开课《Reinforcement Learning of Large Language Models》，从强化学习接到语言模型训练，线才清楚。主讲是数学系的 Ernest K. Ryu。
+
+2025 春的课后来重录上了 YouTube，幻灯和作业在课程页。先修大概到图像分类就行，深度 RL 那几讲要会一点条件期望。
+
+第一章过 MDP、策略梯度、A3C、PPO，也有 GRPO。
+第二章补语言模型和 Transformer。
+第三章拆 RLHF，PPO、DPO 都讲；
+另有一讲可验证奖励 RLVR。有 Jupyter 和练习。
+
+直达http://ernestryu.com/courses/RL-LLM
+
+
+英语流利说那一套，已经能够被 Jev + 网易有道的实时 ASR 模型 Confucius4-R2T2 平替了，更关键的是，R2T2 和项目仓库都是开源的！！！
+
+两个模型的分工其实挺好玩的🙂
+
+R2T2 是真流式，以低至 160ms 的间隔往外吐词，而且还有个 stable prefix 的机制，已经提交的文本只增加不修改。传统流式 ASR 会来回改词，例如，I want to book 可能会变成 I want to look，给人看字幕还行，但下游要是接了另一个模型，它就得跟着反复撤销自己刚做的判断。正因为有了 R2T2 这一层创新，我们才能做到直接把识别出来的内容拿过来，计算漏读多读和错读。
+
+再说到最近很火的 Jev，它只能在事先声明的内容里回答：是否、选一个、1–5 打分。所以项目中我们只问它文本层面的事，例如，读的是不是原文那个词、错法属于哪一类、整段意思有没有走样。之所以用 Jev，关键还是——快！
+
+如果你有NVIDIA的卡，不妨试试本地部署一下，小显存也能跑起来，实时ASR模型+实时分类模型，效果顶尖。很适合本地部署起来，在家大声朗读练起来 👇
+
+R2T2模型：https://huggingface.co/netease-youdao/Confucius4-R2T2
+开源项目：https://github.com/wquguru/dasheng
+
+想搞懂 AI 行业的钱流向哪儿，斯坦福有一门课直接请来了当事人。
+这门斯坦福的课，每周请一位 AI 产业链上的一线创始人来讲AI的经济学。
+
+Databricks、Vercel、OpenAI、Anthropic、Groq 的人都来了。MS&E 435《AI 超级周期经济学》，从算力到应用逐层拆解。
+
+课程资料和 YouTube 视频都在官网：
+https://mse435.stanford.edu
+youtube:https://youtube.com/watch?v=LNSvp-9b-J0&list=PLoROMvodv4rOAe_DtQYOCKy6_x3irEYV1
+
+
+
+一份从零开始学习各种强化学习算法的合集：all-rl-algorithms。
+
+涵盖了 18 种经典强化学习算法的 Python 实现，从基础 Q-Learning 到高级 PPO、A3C、MADDPG 等多种算法。
+
+GitHub：http://github.com/FareedKhan-dev/all-rl-algorithms
+
+专注于基础原理，对初学者极其友好，并提供 Notebook，可以边学习边动手写
+
+https://github.com/jackfrued/Python-100-Days
+
+python - 100天从新手到大师
+https://github.com/jackfrued/Python-100-Days
+这个GitHub项目通过100天的学习，帮助人们从Python新手成长为大师。项目内容涵盖了从Python基础语法到高级编程技巧的广泛话题，包括Web开发、数据科学、机器学习等领域的应用。提供了丰富的学习资源和实践案例，适合各个层次的学习者。
+
+
+跟大家分享一本开源免费的 Python 地理空间编程书籍：《GIS 编程入门》。
+
+涵盖了从 Python 基础到高级地理空间数据分析的完整学习路径，并提供丰富的代码示例，可在线实践运行。
+
+GitHub：http://github.com/giswqs/intro-gispro
+
+同时，书籍提供了多个语言版本，包括英文、中文、日本、韩文等 8 种语言。
+
+适合想系统学习地理空间编程的初学者，学习完成后还可获得课程认证的证书。
+
+
+这是你在GitHub上能找到的最好的免费Python课程之一！🐍
+
+这是一个以实践为导向的高级Python编程课程，已在企业培训领域经过数百次严格测试，使用超过十年。本课程由《Python Cookbook》第三版（O'Reilly）和《Python Distilled》（Addison-Wesley）的作者David Beazley编写，并以创作共享许可证发布。没有广告，无需跟踪，无弹窗，无需订阅新闻稿，也无需AI。
+
+目标受众
+
+本课程适合希望超越短脚本，编写更复杂程序的Python程序员。课程主题聚焦于在流行库和框架中使用的编程技术。主要目标是更好地理解Python语言本身，以便您能理解他人的代码，并将新获得的知识应用到自己的项目中。
+
+您已经了解一些Python。这不是一门面向初学者的课程。对于更多的入门材料，你可以考虑学习实用Python编程课程。
+
+这是由 
+@dabeaz
+ 提供的一门以练习为主导的高级Python编程课程：
+
+http://github.com/dabeaz-course/
+
+
+https://github.com/dabeaz-course
+
+
+AI最严厉的父亲
+@dashen_wang
+·
+Sep 2
+我最近自用的。
+
+收藏吧。
+
+1. 默认快速开发。
+2. Web/UI/SaaS 默认 TypeScript。
+3. Agent/AI/API/自动化/数据处理默认 Python。
+4. 所有长期沉淀的运维和管理工具默认 Python。
+5. Bash/PowerShell 仅用于启动、安装和极短胶水代码。
+6. Shell 一旦包含复杂状态、API、JSON、重试、并发，迁移 Python。
+7. 长期常驻 daemon、网络工具、大规模并发服务，
+   在 Python 原型验证后允许升级为 Go。
+8. Rust 不作为默认语言，只有明确性能/底层需求时使用。
+9. 不因“技术上更高级”主动重写已经正常工作的代码。
+
+
+Airbnb 高级机器学习工程师面经
+
+四轮现场面试，重点考生产环境经验，不是理论背诵。
+
+## 第一轮：机器学习经验与建模权衡
+
+围绕过往推荐、预测项目展开。常见追问：
+
+- 为什么选简单方案，没用更复杂的模型
+- 精确率、召回率、延迟、成本怎么取舍
+- 离线指标和线上指标不一致怎么处理
+
+**思路**：按"业务约束 → 候选方案 → 取舍理由 → 上线验证"讲，每一步落到具体数字或场景。离线线上不一致，重点讲怎么定位差异来源：训练数据分布漂移、离线指标选错、还是线上有未建模的约束（库存、时效性）。
+
+## 第二轮：家庭友好房源分类系统设计
+
+要求设计一套判断房源是否适合家庭入住的系统，覆盖问题定义、标签来源、特征、模型选型、离线线上指标。
+
+**思路**：
+
+1. **问题定义**：明确"家庭友好"对应的业务目标，提升预订转化，还是减少退款投诉，目标不同后续设计都会变。
+2. **标签来源**：房东自填标签不可靠，用房客筛选行为、评论关键词、订单后评分反推弱标签，配合小规模人工标注校准。
+3. **特征**：结构化字段（床型、房间数）、评论文本、图片（婴儿床、围栏、楼层）、房东历史入住记录、地理上下文。
+4. **模型**：多模态融合，优先可解释、能快速上线的方案，比如梯度提升树加文本/图片打分作为输入特征。
+5. **指标**：离线看 AUC，标签质量单独评估；线上盯预订转化率、退款率、对搜索排序的下游影响。
+
+## 第三轮：用户嵌入与两阶段检索排序
+
+设计个性化房源检索排序系统，提高预订转化。两阶段架构，涉及位置偏差。
+
+**思路**：
+
+- **召回**：双塔模型生成用户和房源语义向量，从百万级房源捞出千级候选，重点是召回率和延迟。
+- **排序**：细粒度特征交叉，加入用户房源交互特征、实时上下文（搜索意图、日期、人数），优化转化率。
+- **位置偏差**：曝光位置影响点击和预订数据，直接用历史点击当标签会学到位置偏差。处理方式：位置特征显式建模、随机化曝光做去偏实验、IPS 逆倾向得分加权训练样本。
+
+## 第四轮：编程 —— 浮点数硬币找零
+
+硬币面额为浮点数，例如 [0.20, 0.75, 1.50]，目标金额 3.00，求最少硬币数。
+
+**思路**：
+
+1. 乘以 100 转成整数分，避免浮点误差。
+2. 面额非标准硬币系统，贪心不可行，用完全背包型 DP。
+3. `dp[i]` 表示凑出金额 `i` 分所需最少硬币数，`dp[0] = 0`，其余初始化无穷大。
+4. 转移：`dp[i] = min(dp[i], dp[i - c] + 1)`，遍历每种面额 `c`。
+5. 答案 `dp[target]`，无穷大则凑不出来。
+
+```python
+def min_coins(coins, target):
+    scale = 100
+    coins = [round(c * scale) for c in coins]
+    target = round(target * scale)
+
+    dp = [float('inf')] * (target + 1)
+    dp[0] = 0
+    for i in range(1, target + 1):
+        for c in coins:
+            if c <= i:
+                dp[i] = min(dp[i], dp[i - c] + 1)
+
+    return dp[target] if dp[target] != float('inf') else -1
+```
+
+时间复杂度 O(target × len(coins))。追问回溯具体用了哪些硬币，加一个 `choice` 数组记录每个状态用的最后一枚硬币即可。
+
+
+想搞清楚 AI Agent 到底是什么，先别急着装 LangChain。
+
+我刚看到一个挺适合入门的开源课程：A Tour of Agents。它把 Agent 拆成几块最朴素的东西，直接在浏览器里跑，默认还有 mock，不用先配 API key。
+
+可以按这个顺序练：
+
+1. 先写一个函数，向模型发请求；
+2. 用一个 dict 注册工具，让模型返回工具名和参数；
+3. 加一个 while loop：有工具调用就执行，把结果塞回消息，再问模型；
+4. 把 messages 放到函数外，Agent 才有上下文；
+5. 再加 state、memory、输入输出检查；
+6. 最后做一个简单的任务队列，理解它为什么能“自己安排下一步”。
+
+课程一共 9 课，最后把这些东西压到大约 60 行 Python 里。重点不是让你永远手写 Agent，而是先看清楚框架替你藏掉了什么。
+
+我的建议：先跑完前 3 课，再决定项目要不要上框架。很多“高级能力”，底层其实就是函数、字典、列表和循环。
+
+课程：https://tinyagents.dev
+源码：https://github.com/ahumblenerd/to
+
+
+https://github.com/dabeaz-course/python-mastery
+
+GitHub 上一份较全面讲解检索增强生成（RAG）技术的实用教程：All RAG Techniques。
+
+使用简洁易懂的方式实现了 20+ 种 RAG 技术，不依赖 LangChain、FAISS 等框架，只用基础 Python 库构建，旨在让我们更容易理解 RAG 的工作原理。
+
+GitHub：https://github.com/FareedKhan-dev/all-rag-techniques
+
+涵盖从基础 RAG 到语义分块、查询转换、重排序、图形 RAG、层次 RAG 等高级技术。
+
+同时每个 Jupyter 笔记都包含具体 RAG 技术的简要解释、实现步骤以及代码示例。
+
+适合想深入了解 RAG 技术的开发者或研究人员学习。
+
+
+
+黄赟
+@huangyun_122
+·
+Aug 2, 2023
+铁锤哥认为的，最好的 Python 高级教程：
+https://github.com/dabeaz-course/python-mastery
+
+以练带学，编程不再枯燥  !!
+
+一直认为，做出一个对自己有用的软件作品，是编程最高效的途径。大学时，就用 VFP 做了很多统计学作业，顺利从农业转入计算机
+
+现在用 ChatGPT 教我做出各种小工具，有不知不觉学了点 Python, Go，有用
+黄赟
+@huangyun_122
+·
+Aug 2, 2023
+铁锤哥认为的，最好的 Python 高级教程：
+https://github.com/dabeaz-course/python-mastery
+
+以练带学，编程不再枯燥  !!
+
+一直认为，做出一个对自己有用的软件作品，是编程最高效的途径。大学时，就用 VFP 做了很多统计学作业，顺利从农业转入计算机
+
+现在用 ChatGPT 教我做出各种小工具，有不知不觉学了点 Python, Go，有用
+
+
+Latest
+People
+Media
+Lists
+
+See new posts
+Search timeline
+Bill The Investor
+@billtheinvestor
+·
+Mar 5
+4 个 AI 代理。4 种体育。
+
+每个代理用自己的 机器学习模型 观看并分析各自的体育项目。
+
+给每个代理 500 美元。一周后的结果：
+
+NERVE：网球（+540%）
+$500 → $3,200
+
+PHANTOM：NBA（+486%）
+$500 → $2,928
+FROST：冰球（+395%）
+$500 → $2,474
+
+SIEGE：足球（+336%）
+$500 → $2,182
+系统架构
+Show more
+
+CFC4N
+@CFC4N
+·
+Apr 17, 2024
+https://github.com/elastic/otel-profiling-agent
+可以直接支持JAVA、PHP、Python、GO等高级语言程序的可观测性。不依赖高级语言的符号表、DWARF信息，直接解析到JAVA层的语言符号。 笔者稍微实验了一下，甚至可以作为未来RASP的技术方案。规避了Java Agent动态注入带来STW性能抖动的问题。强得可...可...可...怕...怕...。
+Leige
+@LeigeSee
+·
+Jul 25, 2024
+“程序员只能解决更高级的程序员已经解决过的问题”
+初学编程的妹纸想要用程序处理一个她人工处理非常简单的问题。
+然而我却没能给出她解决方案，各种AI也不能。
+我告诉她这个问题要解决起来很复杂，不是你一个初学者能搞定的。
+Show more
+Orange AI
+@oran_ge
+·
+May 5, 2023
+看完了吴恩达的视频教程《ChatGPT Prompt Engineering for Developers》，虽然视频很短但内容非常精华，每一个开发者都应该看看。
+Show more
+Mr Panda
+@PandaTalk8
+·
+Apr 15, 2024
+如果你觉得python难学， 那就对了。 
+python号称脚本界的c++， 虽然Python易于入门，但它也具有许多高级特性和概念。
+如装饰器、生成器、迭代器、上下文管理器、元类等
+
+对于初学者来讲，一旦你看到别人的代码用了一些看不懂东西， 很有可能是py的高级特性， 这些高级特性包括的设计模式和软件工程方面技巧。 
+
+如果写的少、看的少， 是非常难理解的。 
+
+新手村的人， 直接练乾坤大挪移， 大概率就是吐血身亡的下场。
+
+所以，最好找个导师带着练， 我试了AI大模型还不太行， 他的回答取决提问者的水平。 水平越高的人，提问水平越高， 大模型回答水平也越高。
+Barret李靖
+@Barret_China
+·
+Dec 19, 2023
+推荐一个内容比较全面的 Python 免费在线学习资料，《Python Cookbook in Chinese》 3rd Edition，https://python3-cookbook.readthedocs.io/zh-cn/latest/index.html，它的受众是想深入理解 Python 语言机制和现代编程风格的有经验的 Python 程序员；原作者是 David Beazley ，https://dabeaz.com，有着接近 40 年的开发经验。
+这本书大部分内容集中于标准库、框架和应用程序中广泛使用的高级技术，包括元编程、并发编程、测试和调试、C语言拓展等等。
+
+你也可以把它的项目代码克隆下来，https://github.com/yidao620c/python3-cookbook，直接进入到 notebook/ipynb 目录，在 VSCode 上一边看书，一边执行代码，Jupyter notebook 的学习体验做的还是非常不错的。
+如果你对 Python 基础知识还不够了解，推荐先看看《Python 语言基础 50 课》，https://github.com/jackfrued/Python-Core-50-Courses，跟着文档或视频把代码敲一遍，差不多也就入门了。
+我陆陆续续学习了一周，内容差不多都看完了。对有足够编程经验的人来说，Python 的学习门槛并不高。
+
+在探索了一圈后发现，Python 社区的建设是真的相当完善，尤其是文档，内容丰富且质量非常高，我觉得这跟 Python 之父 Guido 有着莫大的关系，Python 的发展基本都围绕高质量的文档和讨论进行的。
+如果有对 Python 的发展做贡献的想法，可以关注 Python Enhancement Proposals (PEPs)，https://peps.python.org，这里列举了 Python 社区从 2000 年至今的所有新特性、变更和改进的标准文档，参与 PEP 的讨论和实现，可以对 Python 语言的发展产生实质性的影响
+
+最近听过最深刻的一次 AI Native 分享。
+听完京东零售产研团队对 AI Native 的思考，很有启发。做个笔记。
+
+1、不知道大家注意到没，Codex、Claude 这类 Agent 工具最近都在不断接入第三方系统。甚至 Anthropic 还做了 Claude Tag 这个直接面向企业的 AI 产品。
+
+因为大家都已经意识到，AI 可以提高个人效率，但个人效率提高并不直接等于企业效率的提高，中间其实隔着很多 Gap。
+
+一个新技术如果真的想改变整个组织的生产力，光让某几个员工变得更强远远不够，它最后一定要进入企业的流程、协作和生产系统。
+
+2、回头看工业革命，也是如此。真正发生质变的是怎么把蒸汽机等等技术成果彻底融入到企业的生产流程，绝对不是说某个工匠突然拥有了趁手的工具，然后工业革命就来了。不是这个逻辑。
+
+还有刚经历过的信息革命，大家应该感受会更深刻。前几年，行业的热词就是数字化，因为只有把原来依赖人协作的业务流程，逐步变成可以被系统承载和驱动的流程，企业的运转方式才会真正发生改变。
+
+到了 AI 时代，逻辑其实没有什么大变化。一个程序员的 Coding 效率可能提高很多倍。但公司的研发效率，并不会因此同步提高很多倍。
+
+只有当 AI 从个人工具继续进入企业的 Context、流程和协作系统之后，它才会彻底变成组织的生产力。
+
+3、还记得吧？年初的时候，很多大公司都在疯狂的 Tokenmaxxing。但现在回头看，终究是一场 Fomo。
+
+因为从业务角度看，无论模型多强，如果缺失 Context，最后模型的能力还是发挥不出来。
+
+真正拉开企业应用差距的，还是模型之外的 Context。这些 Context 包括员工经验、历史决策、行业 Know-How，以及不同场景之间复杂的约束关系。
+
+最终企业能否用好 AI 的关键就变成，怎么能够更好地把这些 Context 喂给 AI。
+
+4、京东零售产研团队把企业智能概括成三个核心要素，Model、Context 和 Learning Loop。Model 和 Context 刚刚都介绍了，而且我相信大家也都比较熟悉。
+
+让我心有戚戚焉的是他们提出的 Learning Loop。
+
+简单理解，Learning Loop 就是把我们和 AI 交互过程中产生的判断和反馈，再重新写回 Context
+
+
+说明：
+1. 建议挑 2~5 个核心项目详细展示，常规项目简写（包括已完成和进行中的）；项目颗粒度建议无需特别细，复杂度较高或耗时约 1 周以上可称为项目，切勿把任务、功能当做流水账写
+2. 不必追求完美，真实就好。文档不必花哨，用事实和数据说话，避免空泛描述
+3. 真实填写亮点和不足，不足也是成长的证明
+4. 述职会由 HR 主持，组内成员轮流述职，可能会邀请一些关键协作人旁听
+5. 文档可以详实，述职会上必须有重点、高效，控制讲述时间
+6. 这个期间前后，HR 也会邀请你的项目协作人和 LD 进行协作反馈
+
+
+https://platform.stepfun.com/?invite_code_v2=DICJMFWB
+
+给 agent 做 evals 之前，先确认 trace 能完整回放一次会话：每次 tool call、中间步骤、最终响应都得在。没有 trace 的评测等于靠回忆写小说，错误永远复现不出来。先把回放做扎实，再谈打分
+
+
+https://x.com/Suu766/status/2100836664365256781
+
+Twitter (X) System Design
+
+在后端数据库存储服务中，ScyllaDB 是核心数据库基础设施
+在 2017 年，Twitter 部署了10000 个节点的 ScyllaDB 存储集群
+https://scylladb.com/tech-talk/managing-10000-node-storage-clusters-twitter-scylla-summit-2017/
+差不多 10 年过去了，ScyllaDB 存储集群相信会更大
+
+这是 Twitter 生产级架构的文章和视频，帮助了解 X 后端架构设计
+https://dilipkumar.medium.com/twitter-system
+
+感谢 龙哥贡献 PR，让我的 基于 Palantir Ontology 的交互式本体智能教学平台  有了 live 站可以给大家看
+
+https://ontology-learning.xiaods.workers.dev  挂在 CF 赛博名字，大家看看，有最新本体案例我也会持续更新，当然是我的 agent 在关注更新。我就给它交代了任务
+
+
+人类办公三件套：Word、PPT、Excel
+
+AI agent 三件套：Markdown、HTML、DuckDB
+
+ 一一对应：文档、呈现、数据。 
+
+区别是后三个全是纯文本 + 开放格式，agent 读写零摩擦。给 agent 造工具时先喂这三个，比一上来就接 Office API 务实多了
+
+
+EvoOntology：让数据Agent更懂业务
+
+这个项目是给做数据分析的AI助手打造的一本“业务词典”。很多时候，企业里的表格、数据库只记录了代号和数字，AI很难直接看懂背后的真实业务含义，每次做分析都容易猜错或者重复摸索。EvoOntology的作用就是梳理这些隐藏的业务规则，形成结构化的知识库。
+
+而且，它能一边看着AI干活，一边自动补充和修正这本词典，让AI越用越聪明、越来越懂你的业务。
+
+Github：https://github.com/ruc-datalab/EvoOntology
+论文：https://arxiv.org/abs/2609.15779
+
+
+做AI Agent已经半年了，从最初的懵懂到现在可以交付生产级的Agent。在这个过程中，对Agent的理解逐渐加深。
+现在回看，对Agent理解的一个转折点是在微信公众号上看了不少“三元同学”写的文章，逐渐对上下文等概念有了清晰的理解。后来，买了她在Sitor上面的课程，系统学习了Agent。在这些基础打牢后，现在吸收理解包括AI Inference，Agent评测这些知识就更容易了，也是体会一把知识的飞轮。
+如果大家对AI Agent感兴趣，可以在公众号上关注“三元同学”，下面附一些我感觉不错的文章：
+1.https://mp.weixin.qq.com/s/h5QyZ07G7Kj9xi2gUTltMw
+2. https://mp.weixin.qq.com/s/ViQU8mCuLFjLwziOZShhvw
+3. https://mp.weixin.qq.com/s/N1WgUN8ddXrw0p0o5IiykA
+
+对AI感兴趣的朋友可以多交流交流。
+
+Jev 这个接口设计最有意思的点：把「判断」变成了可测试的函数签名。state 放上下文，questions 定义判断标准和候选项——LLM 的输出第一次有了稳定的输入契约，可以写单测了。agent 系统最缺的就是这种把模糊判断收敛成可验证接口的原语。
+
+
+现在 agent 的记忆系统都在重演数据工程的老路：原始轨迹存下来，定期 rollup 成分层摘要，检索时只看视图。作为写过 ETL 的后端看着挺亲切，但有个坑必须提醒：分层越多，"记住的"和"实际发生的"偏差越大。先把 L1 原始轨迹做成可回放、可审计，再谈分层压缩。
