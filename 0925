@@ -1,0 +1,195 @@
+最近关于 Agent 开发一点疯狂的想法。
+
+现在的 PR 开发，有点像“面向事件”：
+提 PR → 跑 CI → review → 改代码 → 再 review。
+
+Agent 时代可能更像 K8S：面向状态。
+人只定义 desired state：
+bug 不再复现
+p99 回归 < 2%
+测试全部通过
+
+然后 Agent 不断 reconcile，直到：
+current state == desired state
+
+未来写代码，也许不是 git push，
+
+而是：
+kubectl apply -f spec.yaml
+
+剩下的，交给 Agent 疯狂 reconcile
+
+
+开源 AI Agent 领域又杀出一匹黑马！斩获近 70k Stars 的 oh-my-openagent（OmO）彻底把多模型协同编程推到了新高度。
+
+很多开发者还在各种订阅和模型配置之间反复横跳，而 OmO 的野心很直接：不做大模型厂商的围墙花园，而是做底层算力的编排大师。与其忍受单一供应商的高昂账单，不如让每种模型干它最擅长的事。
+
+这次更新中最吸睛的几大杀手级特性：
+
+1️⃣ 一键进入极速作战模式（ultrawork / ulw）：在 Prompt 里只要敲下 mass ulw，所有纪律 Agent（Discipline Agents）就会全员出动。从架构推演、代码检索到深度实现，Agent 会像不知疲倦的高级工程师一样持续自主推进，直到把任务彻底跑通闭环。
+
+2️⃣ 真正的团队协作与 DAG 图工程：配合 omo-herdr-dag 的实时可视化界面，你可以在终端直观看到任务图谱流转。Lead Agent 统一调度最多 8 位细分领域专家并行工作，甚至能拉起多位“严苛评审员”在写代码前对方案疯狂找茬，大幅降低返工率。
+
+3️⃣ 首创 Hashline 哈希锁定编辑：传统代码 Agent 经常因为模型“记忆偏差”改错行或覆盖上下文。OmO 引入内容哈希锚点（LINE#ID），一旦文件状态在读取后变动立即拦截，杜绝脏代码产生。
+
+4️⃣ 三大版本灵活适配：不仅深度支持 OpenCode（Ultimate 完整版）和 Codex CLI（Light 轻量版），还推出了开箱即用的独立版 OmO Native（直接通过 bun add -g omo-ai@beta 安装）。
+
+想体验真正“多 Agent 团队并行接管项目”的极客们，可以直接查阅官方的 安装指引 上车上手！
+
+https://github.com/code-yeongyu/oh-my-openagent/
+
+
+前TikTok机器学习工程师Huimin Xie认为，JEV可能会改变推荐和搜索系统。
+
+它把通用语义推理带入判别式推理：输入任意上下文，快速输出经过校准的结构化决策。
+
+在一个案例中，JEV + Perfectly通过复杂查询分析500名ECCV 2026研究者及其论文，效果与Claude的一款模型相当。
+
+
+https://x.com/jinchenma_ai/status/2103134192444064084
+
+https://muse.ai/join
+
+TapNow 正在招聘一名 Agent 工程师（QA 方向）。
+你要负责把 QA Agent 调教好：让测试用例先行，让 Agent 能够可靠执行、正确判断、提供证据，并与开发 Agent 形成 TDD 闭环。
+我们不要求传统测试背景，更看重你使用、开发和评测 Agent 的深度。如果你真正用 Coding Agent 做生产，并且想参与一个还没有标准答案的方向，欢迎来聊。
+
+
+https://x.com/GoGoFly23/status/2101159349968138414
+
+AI全自动设计PCB教程：从MCP配置到KiCad与嘉立创EDA实战
+这期视频完整演示如何让 AI Agent 直接操作 EDA 软件完成 PCB 设计。
+
+从 KiCad MCP、EasyEDA Agent 的安装配置，到 AI Agent 与 KiCad、嘉立创 EDA 的连接测试，再到实际 PCB 项目的设计流程，一步步讲清楚 AI 是如何进入电子设计工作流的。
+
+配置完成后，可以直接通过自然语言让 AI 操作 EDA 软件，完成原理图绘制、元器件摆放、PCB布局布线，以及 ERC、DRC 检查等任务。
+
+视频中还以 FPV 无人机飞控 PCB 为例，展示如何通过提示词让 AI 从设计需求出发逐步完成 PCB 工程
+
+https://x.com/MiracleBro89757/status/2101161988076572845
+
+高频发布下的精准测试落地：BDD写行为场景，少mock多链路；Java用Ekstazi做文件级精准选择，pytest通过「变更→接口→功能」映射只跑受影响用例。开发扛工具和代码测试，测试定场景验收。组合拳直接控住回归范围和速度。
+https://hail-earthquake-d93.notion.site/AI-coding-3e08249bdc4f80eda08af91fcdcdf01d
+
+
+高频发布下的精准测试落地：BDD写行为场景，少mock多链路；Java用Ekstazi做文件级精准选择，pytest通过「变更→接口→功能」映射只跑受影响用例。开发扛工具和代码测试，测试定场景验收。组合拳直接控住回归范围和速度。
+https://hail-earthquake-d93.no
+
+ N8N 发布 V3 后，作为 N8N 的自定义节点开发者要注意一下 
+n8n-node dev 以前是 npx n8n@latest，3.0 不再往 npm 发可运行包，这条命令会去拉官方镜像。
+
+本机没装 Docker / Podman 会直接起不来。测试工作流也不再落在 ~/.n8n-node-cli/.n8n，而是直接挂 volume ，旧数据也不会自动迁。要沿用自己起的实例，用 n8n-node dev --external-n8n，并对着那个实例设 N8N_DEV_RELOAD=true。钉版本用 --n8n-image http://docker.n8n.io/n8nio/n8n:。在升 3.0 前先把测试流导出一份。
+
+https://x.com/huangcheng943/status/2102695088401047920
+
+写一个小功能时，我以前常常先把实现堆出来，再补测试。速度看着快，出了边界 Bug 才发现，补上的测试全是照着现有代码猜答案。
+
+test-driven-development Skill 的顺序很死板，但确实有用：
+1. 先写一个只描述单一行为的测试，名字说人话；
+2. 运行，亲眼确认它因为功能缺失而失败，不是拼写错误；
+3. 只写让它转绿的最小实现；
+4. 重构之后再跑测试，仍然绿才开始下一个用例。
+
+修 Bug 时也一样：先让测试复现问题，然后再修。这样过几周回来看，这个 case 还在替你守着。
+
+调用模板：
+$test-driven-development 用 TDD 实现 <功能/修复>：先定义一个可观察行为，写最小失败测试；确认失败原因后再写最小实现并复跑全部相关测试。
+
+免费范围：这是流程型 Skill，本地测试可免费；CI、云构建或外部 API 仍会产生原本成本。第三方 Skill 先看 SKILL.md，别把可执行脚本和读取权限当成小事。
+
+接上上一帖：
+
+
+https://github.com/lobehub/acceptance
+
+Q4：作为非工程师，怎么判断 Vibe Coding 出来的代码是否靠谱？比如 GPT 写的代码常有大量不必要的安全验证、过度防御。
+
+我的观点可能有争议，越是有编程经验的人可能越不认同，一年前的我也不会认同：不用太在意代码细节。整不整洁、有没有冗余、是否过度防御，都不是关键。
+
+你把自己当 QA，看三件事：
+1. 功能完不完整；
+2. 性能好不好，跑一下看 CPU 内存占用，我的 App 有段时间内存很高，就让 AI 去优化；
+3. 安全是最高优先级，SQL 注入、弱密码这类常识测试要做，拿不准找专业的人。
+
+其他实现细节没那么重要，就像高级语言编译成汇编你本来也看不懂，当黑盒就好。
+
+真正的重点在两头：
+
+一是拆分，拆成 Agent 刚好能处理的小模块，一次一个小模块，AI 的产出比绝大多数程序员的平均水平高；
+
+二是验收，功能、性能、安全把住，细节不用管
+
+https://x.com/AYi_AInotes/status/2097653239713788256
+
+https://harness-agent.ai/book/
+
+真的是只是诅咒：我以为所有程序员都知道什么是 E2E 测试，因为 AI 时代没这个真干不下去。
+
+E2E测试(End-to-End，端到端测试)是一种模拟真实用户操作的软件测试方法。它从头到尾检查整个应用程序的流程，验证前端、后端、数据库以及第三方服务是否能正常协同工
+作。
+
+
+oh my pi 的 hub 真的舒服啊     比 cc 流畅多了
+
+
+需求产品既不参与交互设计，也不参与业务设计，全给你想 都做完了，然后立马去提一堆不重要的但是工作一堆堆的优化，问就是阿里 字节都这么干 。
+
+
+https://github.com/MACOS-DO/sub4api
+
+体制内的教育失败：年复一年地学习公式和刻板记忆，却几乎没人教孩子如何生活。如何处理金钱，建立健康的人际关系，了解自己的身体，应对焦虑，管理情绪。可正是这些事情，是我们每天都要面对的
+
+https://github.com/getpaseo/paseo
+
+Vibecoding 九步流：
+
+验证想法 → 需求分析 → 结构拆解 → 设计定调 → 代码构建 → 测试打磨 → 部署上线 → 增长迭代 → 讲清故事
+
+
+blog.yanli.one/pycon-china-2026-agent-platform-zh
+
+本文根据我在 PyCon China 2026 上的演讲《如何设计 Agent 制度体系与运行平台》整理，幻灯片版本见 https://blog.yanli.one/slides/pycon-china-2026-agent-platform-zh/
+
+
+https://x.com/KakaluoteW45042/status/2102935226326630723
+
+
+斯坦福大学 CS329Z: Engineering AI Agents 课程正式开始，第一讲课件已公开 
+@stanfordnlp
+
+
+课程定位：从"模型"到"系统"的工程学覆盖：简单 LLM 流水线 → 复合 AI 系统 → 自主 Agent。三位讲师：
+@Diyi_Yang
+ 
+（斯坦福 NLP 教授，人机交互与社会计算方向）
+@michaelryan207
+
+（DSPy 核心贡献者，自动评估 AutoMetrics 作者）
+@jyangballin
+ 
+（SWE-agent / SWE-bench / SWE-smith 作者，软件工程 Agent 领域最重要的研究者之一）
+
+课程地址：https://cs329z.stanford.edu
+第一讲课件：https://cs329z.stanford.edu/static/slides/lecture01.pdf
+
+
+https://x.com/huangjinbo/status/2102954598050992388
+
+Stop asking which AI model is best.
+
+Build these:
+
+• MCP server
+• RAG pipeline
+• AI coding agent
+• Voice assistant
+• Browser automation agent
+• Multi-agent workflow
+• AI search engine
+• AI copilot
+• AI eval framework
+• Production AI SaaS
+
+The future belongs to builders.
+Not prompt collectors.
+
