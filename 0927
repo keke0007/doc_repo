@@ -1,0 +1,427 @@
+把编码 agent 改造成一个会为你定制课程的老师。规划学习路线、出课、跟踪薄弱点，还能生成视频、模拟、图片和 PDF。
+
+https://github.com/madhvantyagi/Gnos
+
+
+推荐一本量化交易入门开源书：《XQuant：人人都是量化交易员》。
+
+很多人想学量化，一看到金融理论、数学公式和策略代码就劝退，这本书反而很适合零基础入门。
+
+它从量化交易基础开始讲，每个章节都配有动手实验，边学边写策略、边跑结果，不是一上来就给你灌一堆公式。
+
+想学量化又不知道从哪里开始，可以先从这本免费的开源书啃起。
+
+在线阅读：http://xingwudao.github.io/xquant-beginner/
+
+
+🎯 ML面试常考：大模型训练最基本的步骤？
+
+三步：**预训练 → 监督微调 → 强化学习**。
+
+**预训练**：海量无标注文本，自回归预测下一个 token。学到语言规律和世界知识，代价是巨大算力。
+
+**监督微调（SFT）**：高质量"指令-回答"对，让模型学会按要求回答，而不是顺着文本往下写。
+
+**强化学习（RLHF）**：奖励模型打分 + PPO 优化，让输出符合人类偏好：有用、无害、诚实。
+
+一句话记忆：**预训练学知识，微调学听话，强化学习学做人。**
+
+
+给 coding agent 整理文档的笨办法：只维护代码里读不出来的东西。
+
+契约类必须人工养：API 行为、invariant、当初为什么这么设计，量小但读不出来。
+描述性 wiki 基本放弃，让模型自己读代码探索。
+
+烂文档比没文档更坑：模型会照着过期信息自信地跑。
+
+
+网安这行想入，却卡在第一步不知往哪踩？刚刷到一个 GitHub 仓库，70 个网络安全实战项目全塞里头了，还免费开源。
+
+它那条难度线拉得特别顺，零基础的小白能一步步爬到高阶老鸟。想学的几乎全覆盖：入门就是哈希识别和端口扫描，往中间走有 JWT/OAuth 漏洞靶场、TLS 指纹识别，再上去还能玩供应链攻击模拟这种进阶套路。
+
+Python、Go、C++ 全都在支持范围内，每个项目都带着完整源码和学习文档，不是扔一堆代码让你干瞪眼。别光收藏落灰了，照着撸一遍才是正经事。
+🔗 http://github.com/CarterPerez-dev/Cybersecurity-Projects
+
+
+AI 结对编程最烦的一点：换个项目、开个新对话，之前聊过的背景和决策全没了。
+
+OpenContext 就是给编程 Agent 加一层长期记忆。
+
+① 不用换 Agent，Codex、Claude、OpenCode CLI 都能接
+② 一句 oc init 自动生成 Skills 和斜杠命令，先读取历史上下文再开始干活
+③ 记忆可以跨项目复用，Agent 还能直接读写自己的知识库
+这样以后不用每次都从头解释“这个项目为什么这么设计”。
+
+免费开源，适合经常用 AI 写代码的人折腾。
+🔗 https://github.com/0xranx/OpenContext
+
+
+
+小路带你60天系统设计面试准备
+
+Day 1/60｜系统设计面试，先别急着画架构图
+
+这个系列按 system-design-notes 中文版的顺序，60 天刷完 28 个系统设计主题。每天一篇，每篇讲透一个点。
+
+系统设计面试挂掉的人，大多不是技术不行，而是开场 5 分钟就跳进细节，45 分钟下来连需求都没对上。
+
+四步法：
+
+1️⃣ 理解问题、定范围（3–10 分钟）：问清核心功能、规模、平台，把假设写下来。
+2️⃣ 高层设计、拿认可（10–15 分钟）：画方块图，做back of the envolope估算，走use cases。把面试官当队友。
+3️⃣ 深入设计（10–25 分钟）：只深挖key components，谈bottleneck，不炫技。
+4️⃣ 收尾（3–5 分钟）：指出局限，总结 trade-off，聊改进。
+
+四步法是脚手架：时间可以按 45 分钟灵活浮动，但顺序别反。需求没对齐的高层设计，画得越漂亮，偏得越远。
+
+💡 思考题：下次模拟面试，试试前 5 分钟只提问不画图，你忍得住吗？
+
+
+真的太好用了，堪称本地 Agent 路由神器，切换模型极为顺手。
+
+跟 yetone 佬互关了很久，虽不知为何最近被取关了，但这不重要，好工具依然值得全力推荐。
+
+发现 X 上不少老友，走着走着就散了，有的取关，有的甚至拉黑，也不明就里。其实人生也是如此，年少时是一群伙伴，成年后又换了一批。我有个发小，后来因为观念相左，如今几乎无法交流，渐行渐远。如同在 X 上一样，很多旧相识悄然断了联系，想起来难免有些唏嘘。
+
+https://github.com/yetone/magpie
+
+备战技术面试快崩了？兴许不是你不够拼，而是路子跑偏了。推个开源项目：面试指南。不堆资料、不搞题海，直接甩出一套能落地的备战流程。它提炼自近百场面试（面试官+候选人双视角），提示直白、表达干脆，照着做就成。篇幅不长，通读一遍比刷一周题单还管用。GitHub
+
+🔗：https://github.com/nas5w/interview-指南
+
+https://carbon.ms/self-hosted
+
+https://yanshutech.com/miniharness.html
+
+
+https://x.com/uudonX/status/2103702131903746537
+
+https://x.com/ityouknows/status/2103701104374734951
+
+
+https://x.com/QingQ77/status/2103734564103315816
+
+
+
+https://x.com/dongsheng211/status/2103637359271317876
+
+
+https://x.com/bkdgiffug/status/2103700338876481885
+https://x.com/Ryrenz/status/2103742870091903045
+https://x.com/youyuy88/status/2103483159039922619
+https://x.com/mylifcc/status/2103741862481948811
+
+https://github.com/CometixSpace/CCursor
+
+Post
+
+See new posts
+Conversation
+GitTrend
+@GitTrend0x
+爆款 Hermes 插件🔥 
+
+Hermes 记忆维基 + 双脑浏览器 + Bot 办公室 + SSH 工位 + 谷歌订阅五连杀！
+
+全网玩家把 Hermes 玩成了下一代「记忆能翻页 + 浏览器有微循环 + Bot 有工位 + 远程是工牌 + 订阅正大光明进场」：
+
+1️⃣ NousResearch/hermes-memory-wiki（https://github.com/NousResearch/hermes-memory-wiki）
+
+官方亲儿子：Dashboard 里长出 Memory Wiki——按主题翻会话史，外加 MEMORY.md / USER.md 只读审计台。 hermes plugins install hermes-memory-wiki “Agent 到底记住了什么，第一次能当百科翻，而不是靠猜”！
+
+2️⃣ GoldenLoaf24h/browserclaw（https://github.com/GoldenLoaf24h/browserclaw）
+
+双脑 Chrome 自动化：1-based DOM 索引 + 视觉兜底 + Jev 微循环 + 本地 MCP 桥。 hermes plugins install browserclaw “浏览器第一次按毫秒点下一格，而不是每点一次按钮烧一轮前沿模型”！
+
+3️⃣ Adolanium/hermes-office（https://github.com/Adolanium/hermes-office）
+
+Desktop 里一整层办公桌：Bot Mode 智能体坐成一排，看得见谁在值班。 hermes plugins install hermes-office “Bot 第一次有工位，而不是一堆后台进程在黑暗里加班”！
+
+4️⃣ Adolanium/hermes-ssh（https://github.com/Adolanium/hermes-ssh）
+
+单文件 SSH 工作区插件：连接、远程工位、进舱操作全在 Desktop 里办。 hermes plugins install hermes-ssh “远程机器第一次是工牌工位，而不是再手敲一套 ssh 配置”！
+
+5️⃣ soyelmismo/hermes-antigravity-subscription（https://github.com/soyelmismo/hermes-antigravity-subscription）
+
+官方路径实验件：用已登录的 agy CLI，把 Antigravity / Gemini 订阅接进 Hermes 模型槽。 hermes plugins install antigravity-subscription-directsdk “谷歌订阅第一次是工牌，而不是再抄一把 API Key 进 .env”！
+
+//
+
+这波直接把 Hermes 从「会自我进化的单兵」推到「记忆可翻阅、浏览器有双脑、Bot 有办公室、远程有工牌、订阅能进场」的完整操作系统。今晚装，明天记忆和舰队一起起飞。
+
+
+https://github.com/loopx-project/loopx
+
+https://x.com/AomyYing/status/2103065408538333555
+
+https://t.co/dsGRDufV9h
+
+别再手搓 Prompt 了，Stanford 这套框架想直接把 Prompt Engineering 变成“编程”。
+
+项目叫 DSPy。
+
+它的思路很直接：
+
+你负责用 Python 定义任务和模块，
+DSPy 负责优化 Prompt、示例，甚至模型权重。
+也就是说，不再是：
+
+改一句 Prompt → 跑一次 → 看效果 → 再改一句。
+
+而是把整套 AI Workflow 当程序来写，然后根据评测结果自动优化。
+
+现在可以拿它做：
+
+RAG
+
+Agent Loop
+分类器
+多阶段 LLM Pipeline
+Prompt 自动优化
+Few-shot 示例自动选择
+模型权重优化
+DSPy 全称是 Declarative Self-improving Python。
+
+我觉得它最有价值的地方，是把 Prompt 从一段写死的字符串，变成了整个 AI 系统里可以被评测和优化的参数。
+
+做复杂 Agent 或 RAG 的，可以看看这个项目。
+
+GitHub：https://github.com/stanfordnlp/dspy
+
+#Agent #RAG #opensource
+
+ 绝了。。这个网站把市面上的付费教程全给免费公开了
+
+从小白、AI产品经理、OPC/创业者，连最近的 Jev 、Grok Bot 都有免费课程，太夸张了
+
+感兴趣的可以去看看 👉 https://chaojifeng.me/free-courses
+
+这周帮其他团队电话面试了几个应聘垂直业务 agent 研发的候选人，基本上我开头一个问题就能初筛掉 90% 的面试者：
+
+/goal 命令是如何实现的？
+
+真正做过 harness 的人才知道 goal 有多难搞：完成判断、验收标准、状态持久化、异常兜底、预算控制、上下文压缩不丢任务、缓存命中不被打乱。。。
+
+「从零手写大模型」系列完结了
+https://nano-ai.tech/articles/
+推理篇 15 篇，训练篇 5 篇，共 20 篇
+
+从模型的基本结构
+到如何生成文字，再到损失、梯度与参数更新
+把学习过程整理成了一套完整笔记
+每一篇都有可练习的代码示例
+
+📖 推理篇 · 15 篇
+01｜LLM From Scratch：整体大纲路线
+02｜Tokenizer：分词器
+03｜Embedding：嵌入层
+04｜Positional Encoding：位置编码
+05｜Self-Attention：自注意力机制
+06｜Multi-Head Attention：多头注意力机制
+07｜Residual Connection：残差连接
+08｜LayerNorm：层归一化
+09｜FFN：前馈神经网络
+10｜Activation Function：激活函数
+11｜Transformer Block：Transformer 模块
+12｜Transformer Stack：Transformer 堆叠
+13｜Loading Pretrained Weights：加载预训练权重
+14｜Text Generation：文本生成
+15｜Interpretability：可解释性
+
+🛠 训练篇 · 5 篇
+01｜Loss Function：损失函数
+02｜Backpropagation：反向传播
+03｜Gradient Descent：梯度下降
+04｜Adam Optimizer：Adam 优化器
+05｜Learning Rate Scheduling：学习率调度
+
+推理篇，理解模型如何一步步算出下一个 token
+训练篇，理解模型如何从误差中学习、更新参数
+
+欢迎一起学习、交流，也欢迎指出笔记里的问题
+
+这项目 NCE，把《新概念英语》全四册做成了在线点读页面。
+
+纯前端静态站点，把美音音频和中英对照文本整合在一起。浏览器打开就能用，每句都能单独点击播放，手机电脑都适配，跟读练习比翻书配光盘省事不少。
+
+四册从零基础到高阶，词汇量600到4000词，入门到备考雅思／托福基本够用。
+
+我用下来的感受：加载速度还行，音频托管在外部，首次播放可能要缓冲一下；中文字幕标注了是 AI 生成的，偶尔有小误差，辅助理解够用；另外留了个"外挂资源"机制，自己的音频和字幕按目录结构打包好就能接进同一个播放器，扩展性不错。
+
+作为免费开源项目，它不做商业化服务，主要价值就是把经典教材的音频和文本做了个方便整合。
+
+🔗 地址：https://github.com/iChochy/NCE
+
+https://x.com/Xudong07452910/status/2103650764912476432
+
+Anthropic 的前线工程师分享了一个非常值得个人和团队学习的观察。
+
+以前需要几年、全员投入的代码现代化项目，现在借助 Agent 可能几个月甚至几周就能完成。
+
+但速度上来以后，新的瓶颈开始转向组织本身。代码改得太快，测试、Review、审批和上线流程反而跟不上了。
+
+所以他们总结了一套六步框架。最核心的思路其实很简单——先把什么算「做对了」定义清楚，再让 Agent 大规模动手。
+
+比如提前建立 certificate，把测试、性能、兼容性、安全等验证条件写清楚；再按照改动风险设计 Review 和上线规则。因为 Agent 生成的代码量，很快就会超过人类逐行看 diff 的能力。
+
+我也认同其中的一个实践思路。
+
+AI 把改代码这一步压缩得越短，验证、理解和组织协调的重要性反而越高。
+
+AI Coding 已经从「帮人写代码」，开始进入「怎么管理机器大规模改代码」的阶段。
+
+对于很多工程团队来说，真正要重新设计的可能是整个开发流程了。
+
+免费 AI 课散在各站，付费路径又贵。
+
+free-ai-resources-x 把公开课、教程按大约 30 类排好，仓库写着 411 条以上，来源常见斯坦福、Google、DeepMind、Hugging Face。
+
+零基础顺序：Python、数学、机器学习，再到项目。聊天机器人、视觉、部署也能往对应分类翻。
+
+🔗https://github.com/CelaDaniel/free-ai-resources-x
+
+
+https://github.com/mksglu/context-mode
+
+想入门强化学习，论文啃不动，博客又零散，系统还不太劝退的资料难道好找？
+
+《The Little Book of Reinforcement Learning》这本开源书，页数不多，从基础概念一路铺到常用算法。
+
+PyTorch 代码全套附上，书里每个算法都有能跑的实现，读一段练一段。
+
+GitHub：http://github.com/alxndrTL/little-book-rl
+
+另外还配了一份动态规划的详细推导，想抠数学细节的可以对着翻。
+
+对强化学习有兴趣、打算从零起步的朋友，这本小书拿来当起点挺合适。
+
+AX：谷歌开源的Agent调度系统
+
+专门用来管理和运行“AI 智能体”的调度系统。现在的 AI 不仅能回答问题，还能像真人助理一样，自主使用各种工具、查阅资料甚至编写运行代码来完成复杂任务。但当海量的 AI 助理同时运转时，后台就需要一个强有力的“交通指挥中心”来统一分配计算资源并确保安全。AX 承担的就是这个指挥官的角色。
+
+它主要解决了普通服务器难以应对的几个实际难题：
+
+1）提供安全的独立运行空间：AI 可能会在后台运行各种代码，AX 会给每个 AI 分配独立的虚拟沙盒，限制好内存和算力，防止程序失控或相互干扰。
+
+2）提前准备好工作环境：在 AI 开始工作前，系统会自动把代码库、工具接口和依赖文件准备妥当，让 AI 可以随时投入工作。
+
+3）随时暂停与恢复：当 AI 暂时空闲时，系统能保存当前进度并休眠，等需要时再从原进度继续，以此节省大量的运行成本。
+
+4）支持实时排查：管理者能够随时进入 AI 当前工作的后台环境，像站在 AI 身后一样观察具体进度并排查问题。
+
+Github：https://github.com/google/ax
+
+AI Agent 拍板做了决定，事后问它“凭什么”，它却支支吾吾讲不清？
+
+Semantica 这个开源项目，瞄准的就是这个尴尬。
+
+它的路子不是往向量库里硬塞数据，而是搭一张知识图谱，把实体、关系、事实跟决策全串成一条线。
+
+几个关键设计：
+
+1️⃣ 决策可追溯：每一步都留痕，事后能顺着因果链往回倒查
+2️⃣ 来源可追踪：基于 W3C PROV-O 标准，每条事实都能追到原始文档
+3️⃣ 确定性推理：Datalog、SPARQL、Rete 这些规则引擎都支持，不是全靠 LLM 瞎猜
+4️⃣ 数据直接建图：还能对接 Databricks、Snowflake 这类数据平台
+金融风控、医疗记录、合规审计这些场景，最怕 AI 只扔结论不给过程。
+Semantica 要干的事就一件：让 Agent 不光会做决定，还得把“为什么”留下来。
+🔗：https://github.com/semantica-agi/semantica
+
+
+Android 自动化终于不用写脚本了。
+
+Google 开源的 ARTEMIS，直接说想做什么，它就能自己跨 App 点击、输入，跑完整套流程。Codex / Claude Code 也能用它控制测试手机。
+
+人说目标，软件自己找路。这才像 AI 时代的自动化。
+
+https://github.com/google/artemis
+
+我在想怎么把 coding agent 放到云上，做大规模自动化 review + QA，从接口测试到前后端一起 e2e
+目前已经有手动触发执行的流程了
+但是受制于 token 消耗和 infra 资源，全自动覆盖还有不少挑战
+已经在调研 
+https://github.com/kubernetes-sigs/agent-sandbox
+https://github.com/google/ax
+
+整理了 Agentic AI 系统设计中文笔记：智能体架构模式、记忆系统、工具设计、RAG、上下文工程、安全护栏、可观测性、成本优化……18 个技术专题 + 10 个面试实战案例，从 demo 到生产级全覆盖 👇
+https://github.com/lukeTheNeuromancer/agentic-ai-system-design-primer-zh
+
+
+https://x.com/swadeshkumar_/status/2103311773390807428
+
+https://github.com/lukeTheNeuromancer/ml-papers-explained-zh
+
+https://github.com/Nicolepcx/ai-agents-the-definitive-guide
+
+AI 写代码早就不算新鲜事了，可分支管理、代码审查、测试这些零碎活，难道不还是得靠人去收尾？
+
+AgentSys 这开源工具，塞了 24 个插件、49 个 Agent、44 个 Skill，拼成一条结构化流水线。
+
+每个 Agent 只盯一件事，流水线按阶段切好，前一步没过去就别想跳，运行状态跨会话也能保住。
+
+GitHub：http://github.com/agent-sh/agentsys
+
+Claude Code、Codex、OpenCode、Cursor、Kiro 五个平台都吃得下，装完插件自己从各仓库拉。
+
+想让 AI 编程助手的流程也自动跑起来，这套系统值得瞅瞅。
+
+发现GitHub 上最近冒出一份 Claude Code 学习指南，从入门一路讲到多 Agent 自动化，这种资料难道不值得瞄一眼？
+
+每个知识点都配了能直接复制进项目里用的提示词、配置文件和示例代码。
+
+GitHub：http://github.com/wesammustafa/Claude-Code-Everything-You-Need-to-Know
+
+模型对比、推理深度调节、动态工作流这些进阶主题也都有，内容跟着版本走，一直保持同步。
+
+正在用 Claude Code 或者准备入坑的哥们儿，拿它当参考手册翻，挺合适
+
+神经网络到底是怎么“学会”的？  
+
+核心其实就两步：  
+① 前向传播：输入一路经过计算节点，得到最终结果，同时把中间计算过程记录下来。  
+② 反向传播：从结果倒着走，用链式法则把每个节点的局部导数一路乘回去，最终得到每个参数对 Loss 的梯度。  
+所以所谓“训练神经网络”，本质上就是：  
+算一遍 → 看错多少 → 把误差沿计算图反向传回去 → 调整参数 → 再算一遍。  
+无数个简单的乘法、加法和链式法则叠起来，就成了今天训练大模型的核心机制。
+
+接手一个陌生项目，最耗时间的往往不是写代码，而是先搞懂代码之间到底怎么串起来。
+
+Ix 做的就是给整个代码库建立一张“系统地图”。
+
+它用 tree-sitter 解析 26 种语言，把符号、调用、导入等关系整理成可查询的知识图谱，而且数据直接保存在本地。
+
+你可以用它快速查：
+① 某个组件负责什么
+② 数据是怎么一路流转的
+③ 改一个文件可能影响哪些地方
+
+人可以查，AI Agent 也能用，特别适合分析大型或陌生代码库。
+🔗 https://github.com/ix-infrastructure/Ix
+
+
+想研究 Coding Agent 基本原理的朋友们，可以关注一下这个项目。
+
+社区有人把 Claude Code 还原出来的 47 万行 TypeScript 源码，重新喂给 Claude 本人，让它逐行阅读自己的实现，整理出了一套 17 章的中英双语架构拆解。
+
+不管是想自己手搓 Coding Agent，还是魔改开源 Harness，这套代码走读和设计模式都非常值得存下来研读。
+
+项目地址：
+https://github.com/openedclaude/claude-reviews-claude
+
+在线阅读：
+https://openedclaude.github.io/claude-reviews-claude/zh-CN/
+
+
+应用宝团队端对端开发流程的关键点
+
+- AI 负责认知，脚本负责执行
+- 长链路必须状态化
+- 知识库必须结构化
+- Agent 必须职责隔离
+- 执行步骤必须脚本化
+
+https://ai-native.alistatic.com/app/ainativeinfra/ai-native-handbook-web/index
+
+https://github.com/pallavi-shekhar/ai-engineering-interview-questions-company-wise
+
+https://lilianweng.github.io/posts/2026-07-04-harness/
