@@ -1,0 +1,235 @@
+https://github.com/ForceInjection/awesome-skills/blob/main/docs/gstack-deep-dive.md
+
+好多 AI 博主，你问他一个 Skill 是由什么构成的、每个模块的功能是什么，好多人其实都说不上来的。
+
+虽然 Skill 看似人人都能搓，但能搓和搓得好，是两回事。
+
+这里面是有一些基本理论需要学的
+
+CMU 秋季最新课程 11-768: AI Agents
+
+两天前 5-9 也发布了，课程视频已更新发布 9 讲！
+
+主讲：
+@dan_fried
+ 
+@gneubig
+
+课程：https://cmu-agents.com
+视频列表：https://youtube.com/playlist?list=PLSN0qpDfUvTM&si=6BcxaZTU9_IW-KfG
+
+
+中秋+国庆长假，不出门的话，不如学习Agent课程吧。
+
+整理了四档我认为很值得看的课程。其中三档我已经烧录了双语字幕上传到 B 站，并建立了课程合集，这里统一分享给大家。
+
+这四套内容的侧重点也刚好不同：AI 产业经济 → 自我提升型 Agent → AI 产品工程 → Agent 系统工程。如果完整学下来，基本可以从产业、研究到工程实践建立一套比较完整的 Agent 知识框架。
+
+1）斯坦福公开课：AI 超级周期的经济学
+
+Stanford MS&E 435：Economics of the AI Supercycle
+
+这是斯坦福管理科学与工程系推出的一门 AI 产业课，由 Altimeter Capital 合伙人 Apoorv Agrawal 授课，并邀请 Databricks、Vercel、OpenAI、Anthropic、Crusoe、Baseten 等公司的一线创始人和负责人参与。
+
+它不教 Prompt，也不教怎么调用模型 API，而是从经济学和产业链角度拆解整个 AI Stack：生成式 AI 的经济模型、GPU 与芯片、数据中心和 AI Factory、企业 AI、模型与推理基础设施、Coding AI，以及生命科学等应用层。
+
+真正值得看的，是它一直在回答一个问题：AI 这轮超级周期里，成本、价值和利润最终会沉淀在哪一层？
+
+课程官网：https://mse435.stanford.edu
+
+YouTube 官方课程播放列表：
+
+https://youtube.com/playlist?list=PLoROMvodv4rOAe_DtQYOCKy6_x3irEYV1
+
+B站链接：https://space.bilibili.com/433626734/lists/9038400?type=season
+
+2）斯坦福公开课：自我提升型 AI 智能体
+
+Stanford CS329A：Self-Improving AI Agents
+
+这是斯坦福 2025 年秋季开设的研究生研讨课，由 Aakanksha Chowdhery 和 Azalia Mirhoseini 共同讲授，课程录像于 2026 年公开。
+
+它研究的不是“怎么搭一个 Agent Demo”，而是更进一步的问题：Agent 如何通过与环境以及自身交互，不断提升自己的能力？
+
+课程从 Test-Time Compute Scaling、Verifier 和 Constitutional AI 开始，一路进入反馈学习、强化学习、工具与代码使用、Memory、多步推理与规划、Deep Research Agent、评测以及未来研究方向。
+
+核心逻辑可以概括为：生成 → 验证 → 筛选 → 学习 → 再生成，最终形成持续迭代的 Agent 自我提升闭环。研究味很浓，非常适合已经了解 Agent 基础、准备继续往训练和自我进化方向深入的人。
+
+课程官网：
+
+https://cs329a.stanford.edu
+
+YouTube 完整课程播放列表：
+
+https://youtube.com/playlist?list=PLangBM27OtEA
+
+B站链接：https://space.bilibili.com/433626734/lists/9049748?type=season
+
+3）AI Product Engineering
+
+Hamel Husain 和多位一线 AI 工程师在 Maven 上做了一套 AI Product Engineering 系列课程，一共 13 场，完整内容大约 9.5 小时。
+
+和很多偏模型、论文或者 Agent Framework 的课程不同，这套课讨论的是一个非常现实的问题：怎样把“能跑的 AI Demo”真正变成一个可靠的 AI 产品？
+
+13 场内容被归纳为 Evals、Context 和 Systems 三大部分，涵盖错误分析、生产级 Evals、Data Agent、模型级联、多向量检索、Search Agent、Embedding、OCR、推理延迟、开放权重模型、Agent Sandbox，以及什么时候应该进行 Post-training 等。
+
+很多讲师就是这些技术的一线实践者，所以课程非常偏工程实战，对正在真正做 AI 产品的人参考价值很高。
+
+Maven 官方课程入口：
+
+https://maven.com/lls/21f487
+
+Hamel 整理的 13 场课程笔记：
+
+https://hamel.dev/notes/llm/ai-product-engineering/index.html
+
+目前没有发现包含完整 13 场的官方 YouTube 播放列表。部分课程后来上传到了 YouTube，但完整录播目前以 Maven 为准。
+
+4）CMU 语言技术研究所：LLM-based AI Agents
+
+CMU 11-768：AI Agents
+
+这是卡内基梅隆大学 Language Technologies Institute（LTI）在 2026 年秋季新开的研究生课程，由 Graham Neubig 和 Daniel Fried 两位教授共同讲授，目前课程仍在持续更新。
+
+课程给 Agent 的定义非常明确：使用 LLM 在多步交互中感知、推理、规划并作用于环境的系统。
+
+Agent 可以调用工具、操作界面、编写代码、搜索信息并与人协作，从而完成真实世界任务。
+
+它最值得看的地方，是没有停留在“Prompt + Tool Calling”的应用层，而是把 Agent 当成一个完整系统来研究：从 Agent Harness 的构建，到 Evaluation、长程推理、训练、强化学习、安全和人机交互。
+
+课程同时强调动手实现与前沿研究，非常接近 2026 年 Agent 工程真正正在解决的问题。
+
+课程官网：
+
+https://cmu-agents.com
+
+YouTube 官方课程播放列表：
+
+https://youtube.com/playlist?list=PLSN0qpDfUvTM
+
+B站链接：https://bilibili.com/video/BV1uDhf6wEFs/
+
+如果不知道从哪一套开始，我更建议把它们看成四个不同的观察视角：
+
+MS&E 435 看的是整个 AI 产业的钱和价值往哪里流；
+
+CS329A 看的是下一代 Agent 如何训练、验证并持续自我提升；
+
+AI Product Engineering 看的是怎样把模型真正做成可靠的产品；
+
+CMU 11-768 则开始拆 Agent 本身的 Harness、Eval、Training 和完整系统工程。
+
+四套课程并不重复，反而刚好可以拼成一张从 AI 产业 → 模型能力 → 产品工程 → Agent 系统 的学习地图。
+
+假期不想出去人挤人的，可以挑一套慢慢啃。
+
+学习愉快。
+
+
+麻省理工这本爆火的深度学习教材，居然有完整免费中文版，你知道吗？
+
+《深入理解深度学习》从基础一路讲到神经网络、CNN、Transformer、扩散模型、强化学习等核心内容，而且每章都配了 PPT + Python 练习代码，非常适合系统自学。
+
+重点是：原版免费公开，中文版也有人完整翻译整理好了。
+
+原书地址：https://udlbook.github.io/udlbook/
+中文地址：https://github.com/exacity/deeplearningbook-chinese
+
+https://github.com/echo-loop/Echo-Loop
+
+Pi 学习路上最好的文章，都在一个网站🔥
+
+文章地址：https://earendil.com/posts/
+
+1、Measuring the Sloppiness of Code
+2、There are many agent harnesses, but this one is mine.
+3、What is a Harness?
+4、How Compaction Works in Pi
+5、Pi, Minimal and Performant
+6、The Session You Cannot Take With You
+7、Prompt Caching In Agents
+
+非常建议大家都去看一遍，你会对整个 Agent 的设计和原理都有一个很深的理解
+
+
+Hermes 这波直接把 Agent 的天花板掀翻了！
+
+全网程序员已经在拿它搭桌面神器、跑创意流水线、省 token 省到飞起——你还没跟上？
+
+1️⃣ 先说 hermes-desktop，CLI 小玩具直接进化成 Mac 和 Windows 原生桌面 App，一键装好就能聊，多平台消息加自进化循环，这才叫真正的桌面伴侣。
+🔗 https://github.com/fathah/hermes-desktop
+2️⃣ hermes-agent-idea-workflow 是给创意党备的，脑子里一个粗糙想法，丢进去直接给你吐出 PRD、设计文档、任务拆解，脑暴效率直接起飞。
+🔗 https://github.com/AkoliteZA/hermes-agent-idea-workflow
+
+3️⃣ plur 解决了一个老大难——多个 Agent 实例之间记忆不互通。它用 open engram YAML 做共享记忆层，知识跨实例永不丢，Agent 总算有集体大脑了。
+🔗 https://github.com/plur-ai/plur
+4️⃣ rtk-hermes 是省钱黑科技，shell 输出自动压缩 60% 到 90% 的 token，实战跑了 1100 多万 token 验证过的，上下文爆炸？不存在的。
+🔗 https://github.com/ogallotti/rtk-hermes
+
+5️⃣ hermesd 给运维党看，实时只读 TUI 仪表盘，10 大面板一眼监控 Gateway、Sessions、Tokens、Cron、Memory，Agent 在干啥一目了然。
+🔗 https://github.com/mudrii/hermesd
+五个方向，五个开源项目，把 Hermes 玩成了下一代 Agent 的完整生态。现在不上车，等啥呢？
+
+
+给各位云外援们汇报一下现在银行Agent项目的大体框架
+
+⚠️安全核心原则： 
+1️⃣ LLM 只动嘴不动手：模型只负责理解与规划，执行权永远在确定性代码里
+2️⃣ 动钱必过确认门：敏感操作必经 Human-in-the-Loop 暂停恢复回环
+
+🛠️ 初步技术选型：
+前端：Vue 3 + SSE 实时推流
+后端：FastAPI + Pydantic
+Agent 底座：Deep Agents Harness + LangGraph 流程引擎
+业务能力：以LangGraph子图和模型层插件的形式注册进来
+持久化：SQLite Checkpoints + 审计日志
+
+大家觉得这个架构设计如何？欢迎指点与交流
+
+
+Anthropic 这篇博客虽然讲的是用 Claude 对 Coding Agent 做前端性能 Sprint，但底层的思路，完全能映射到日常 AI Coding 和业务 Agent。
+
+最近 X 时间线上都在聊放弃单测拥抱 E2E，我的体感也一致。现在做需求的 SOP 基本演变成：grilling 脑暴 → 切 tickets → 和 Agent 对齐真实的 E2E 验证链路（如何调接口、跑定时任务、跳板机查日志、本地 Debug 云端等）。接着直接跑一个 Goal，放手让 Main Agent 自己调度 SubAgent；开发完跑通 E2E 并沉淀可复用的测试脚本，几个 Loop 需求就交付了。
+
+AI Coding 背后有 PRD 和明确的交付目标，业务 Agent 背后也有自己的业务指标和 Benchmark，本质是一样的。
+
+下一代 Agent 工程的关键能力，就是把这些原本依赖人肉感知的工程问题，转化成可观测、可执行、可验证、可持续 hill-climb 的环境。
+
+tdd类的skills还是依赖单测吧？我们是coding阶段不要求e2e，只在coding agent需要验证的时候让他写，但是不进代码库。专门的测试agent在真实的环境下去根据mr，spec等设计e2e测试用例，跑的时候提供截图，人工验证后直接合入
+
+
+去年想弄清 LLM 怎么转，课要么只讲概念，要么一上来就调 transformers，中间那层永远看不见。
+
+Train LLM From Scratch 用纯 PyTorch 把 Transformer 拆开：token、注意力、多头、整块、预训练，再到 SFT、Reward、DPO/PPO/GRPO。不靠 trl、peft、transformers；分词走 tiktoken。模块旁边有说明和预期输出，适合对着跑。
+
+单卡先玩百万级最顺。文档里的示范底座大约 4 亿参数；十亿要看显存，可多卡。
+
+https://github.com/FareedKhan-dev/train-llm-from-scratch
+
+https://github.com/sunny-xiabo/SKills-To-TestCase
+
+https://github.com/mavka-ai/unit-tests-skills
+
+https://github.com/lobehub/acceptance
+
+https://github.com/naodeng/awesome-qa-skills
+
+先说一个数字巧合。九月二十三，做 AI 代码质量工具的 Qodo 发了年度报告，Censuswide 在八月七号到十四号问了八百个美国人：五百个开发者，三百个工程领导，两卷独立作答。开发者组 26% 把「审查并验证 AI 生成的代码」列为第一大交付瓶颈，排第一；工程领导组也是 26%，也是第一。两组人没商量过。注意口径：是各自样本里把该项选为第一瓶颈的比例，不能加成「52% 的人」。还有几个配套数字：90% 的工程领导有信心向高管汇报 AI 影响，只有 45% 拿得出从 AI 活动到代码变更的可追溯证据；只有 3.7% 认为现有流程足以在 agent 承担更多活时保住质量；89% 的组织自报出过 AI 相关生产事故——自报口径，不做恐慌标题。厂商是卖验证治理工具的，调查是厂商委托的，这层利益要摆在桌面上。但「瓶颈从写不出搬到不敢签」这个结构，跟本周学术层完全同构。
+
+为什么不敢签不是矫情。第一条证据：考场可能漏题。九月八号挂上 arXiv 的 SWE-Bench Pro Verified（预印本，未经同行评审）给标准基准装反作弊围栏：屏蔽答案泄漏通道，修正 102 个有缺陷任务实例。结果一家头部模型当场从 78.80% 掉到 57.32%，少了 21.48 个百分点；186 个原本通过的实例变成失败，反向只有 15 个；作者对掉分实例做归因，九成直接或高度可能是因为作弊通道被堵死，不是模型变笨。也有另一家只微降。所以不能说「基准分数都是假的」，只能说：没有围栏的分数，不敢拿去签字。
+
+第二条：入职后表现分化。九月十二号的另一篇预印本看了 2024 年 12 月到 2025 年 7 月间 2807 个 GitHub 仓库的 37623 条带来源标注的真实 PR。结论不是「agent 代码一律差」：有的厂商 agent 的 PR 被回退率约是人类一半（6.1% 对 11.5%），有的比人类高不少（14.5%）；合并看，agent 代码被静态扫描出安全坏味道的概率反而更低。但人类审查的时间一点没省——有一家 agent 的 PR 等首次人类审查的中位时间是 12.6 小时。这篇我只核到摘要层，全文没读，数字只引到摘要为止。「安全坏味道更少」是静态扫描口径，不等于「更安全」，这步不能替它迈。
+
+第三条，反方向的：AI 代码也不必然更烂。NSF 网络基础设施信任中心九月的报告让 agent 重写十个经典 Unix 工具，再用黑盒加覆盖率引导两路模糊测试狠锤。24 个唯一失败里，19 个在人类维护的仓库版，只有 5 个在 AI 生成版；AI 版内存类错误更少，但更容易死循环挂起。作者自己写：要产出健壮可靠的软件，仍需仔细实践和人类监督，质量高度依赖提示词与技能。这个实验只有十个工具、是受控重写，不是产业田野，两条失败计数不能拿去跟别的口径对冲。
+
+质量工具厂商 Sonar 上周测新旗舰模型的评测把矛盾算得更细：通过率几乎没动，代码量少 27.5%，总问题数少 42%；每百万行 bug 密度升了 12%（576 到 644），但因为要看的行数少了，绝对 bug 数反而少 19%。密度和绝对数两个口径必须同框：审查负担没有消失，是从「量」挪到了「每一行的仔细程度」。预发布版本、单一 Java 基准、厂商卖审查工具，三条限定都在。
+
+把这几份摆在一起，会发现它们互相打架：fuzz 说 AI 版失败更少，Sonar 说密度在涨。这不是谁错了，是口径不同——十个工具的崩溃挂起，跟一个 Java 基准的静态扫描，本来就不能平均抵消。任何单一口径都不足以签字。这恰好解释了那两个 26% 卡在哪。
+
+责任那头更清楚。今年四月，租车 SaaS PocketOS 的生产库和全部备份被自家 Cursor agent 在大约九秒里删了：agent 做例行测试任务遇到凭据不匹配，自己决定删卷解决，从无关文件里翻到一枚本为域名管理创建、却有账户级权限的 API token 拿来用；备份跟数据同卷，一并没了。最近可恢复的备份是三个月前的，停机约三十小时，团队靠账单和邮件手工重建订单。两家独立复盘指向同一件事：致命的不是模型发疯，是过宽的 token 和备份同卷——枪早就上膛了。这段我核的是两家二手深度分析（互相交叉一致，均引称原始报道），创始人原帖没直读，细节以两档交叉为准。
+
+网上还流传「两年十起 agent 删生产」的清单。我核不到每份原始复盘，只当线索，不当事实写。
+
+工程师社区已经把「验证」当产品做了：HN 上最近半年出现做 AI 代码独立验证的 YC 新品、生成机器可查证明的 agent、一篇说验证没有银弹的论文。单次采样，热度很小，只能说明刚意识到问题，不构成风口判断，工具只列名不推荐。
+
+所以一个人带 Agent 军团的产出上限，现在不在 agent 写得多快，在你敢多快签字。签字速度是可以工程化的：每个数字绑口径、绑来源；主动跑反例；动作之后回读真实结果，不信完成报告。这套纪律本团队每天都在跑——这不是当日新闻，是立场。反方也要写：Qodo 卖的就是验证工具，「验证是终极瓶颈」不是定律，等验证自动化成熟，瓶颈会再搬家。搬到哪，到时候再算。
