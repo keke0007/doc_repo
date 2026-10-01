@@ -1,0 +1,828 @@
+非常同意“一切 infra 值得为 agent 重新做一遍，入口为先” 的理念。我们团队最近开源的https://github.com/MiniMax-AI/OpenAgentCore 做的就是这一层。
+
+它是一个可以self-host的agent core（我们对agent core的定义是围绕agent loop的所有周边，包括 sandbox、模型本身、harness..etc），对外提供openai的agent-api；
+
+至于为什么叫“Open”AgentCore，是因为每个组件都是充分解耦的、每一条边界都是协议，core 和 sandbox、core 和 runtime、runtime 和 harness 之间都是定义好的 protocol，任何一个部件都可以单独换掉，不会被绑在某一家上。
+
+Btw，现在还有一个比较遗憾的地方，因为我们不希望自己维护一个定制化的harness，而是把这一层的复杂度留给各家harness、让他们去管权限管调度管上下文，所以我们会把这一块通过我们上文说的协议化去放开，通过少量兼容性代码即可接入任何一个harness，例如claudecode、codex等。
+
+这个选择也带来一个比较遗憾的地方。各家harness的 tool execution都内嵌在自己的agent loop里，实现方式也各不相同，所以目前executor和agent loop还没有分开。要分开，就得在所有harness的执行路径上做统一拦截（或者是其他什么方案，有想法的欢迎来贡献代码），这部分还需要研究，这也是我们一直没有大规模宣传它的原因。
+
+Anyway，早期版本已经可以用了，欢迎大家来体验，有问题直接提 issue。
+
+
+好久没有给大家分享工具了！
+很多朋友都会选择 Obsidian 来做自己的创作知识库
+
+下面的5个插件工具几乎是必备的：
+
+1️⃣Claudian：使用claude 或者 codex来整理笔记，辅助写作。
+2️⃣Obsidian Web Clipper：网页上看到的东西一键导入到 obsidian 来做素材收集
+3️⃣WeRead：同步微信读书、读书划线、想法积累都会被同步在obsidian 当中。
+4️⃣Excalidraw：把零散观点画成关系图，链接相关笔记
+5️⃣Kaitox：把写好的 Markdown 图文转成 X 长文草稿
+
+收集素材 → 梳理关系 → 动手写作 → 输出分享。都包含了！希望可以帮到大家
+
+参与面试的还有技术主管，说了关于一些企业 AI 落地的一些观点
+
+数据安全是非常重要的，业务落地涉及的数据都比较隐私，如果使用三方服务是不现实的，后面更倾向于本地部署一套系统，包括模型以及配套的 Harness
+
+聊了一下，大概是后面就是自研 Agent，既有面向客户的，也有面向企业内部的，各个部门各种业务都要 AI 落地，估算工作量大概要做个 3~5 年
+
+他也肯定我的 AI 相关知识储备，以及对 AI 的看法，但是批评我在 AI 实践过于激进，比如只注重技术的广度而不是深度，全面拥抱 AI 等等
+
+不过他应该是想告诉我，AI 是有很大的局限性，要摸清 AI 的边界，而不是无脑用 AI
+
+我顺便问了一下研发团队的工作经验，大多是 7、8年工作经验，我 3 年，所以我在面试过程中暴露出来的技术深度缺失，他们是持包容态度的
+
+
+Chasen
+@chasen_liao
+·
+12h
+“新版本 Pi 如何开启 code mode” 👇
+
+在 ~/.pi/agent/settings.json 加一行就行：
+
+  "defaultTools": ["+codemode"]
+
++codemode 是追加，不会把 read / bash / edit / write 清掉。改完 /reload 或新开一局，工具列表里会出现 codemode
+
+单次临时开：
+
+  pi --tools read,bash,edit,write,codemode
+
+或者就直接发提示词给 Pi ：“开启 code mode 这个工具”
+
+
+今天把 Obsidian 大合集发出来后，感觉松了口气算是告一段落了！本来两个月前我也只是一个 Obsidian 小白，边摸索边分享，慢慢的就拼凑出来一个合集！
+
+接下来想分享点别的，比如：
+1、创业系统读书清单
+2、如何做个人工作台
+3、AI如何赋能医疗行业产品市场工作
+4、个人知识库产品如何找客户
+5、自媒体内容创作工作流
+
+日拱一卒，慢慢来吧，另外也会把时间分给国内的自媒体，把在x里学到的知识，不追热点（根本赶不上😂）、不卷内容，而是回归第一性原理如何搞钱💰！哈哈
+
+
+
+
+想系统学 AI Agent，又不知道从哪里开始？可以看看 NirDiamant/GenAI_Agents。
+
+这个仓库整理了 50+ 个实战教程，从简单对话 Agent 一直覆盖到多 Agent 系统，每个案例都有代码和说明。
+
+① LangGraph、MCP 等框架实战
+② 教育、科研、客服、HR、合同分析
+③ 新闻聚合、购物助手、任务管理、QA 测试
+④ GIF、音乐、游戏等创意类 Agent
+另外还有一套 17 个模块的完整课程，从提示词开始，一步步搭到可运行的生产系统。
+
+不管是刚学 Agent，还是开发时需要找参考实现，这个仓库都值得收藏。
+🔗 https://github.com/NirDiamant/Gen
+
+
+Pi 配上 Subagent，有点 Multi-Agent 的味道了🔥
+
+推荐一个最近在玩的插件：jopqior/pi-subagents
+
+可以直接在 Pi 里面拉起多个独立的 Subagent，而且不是再开几个 CLI 子进程，是直接跑在 Pi 自己的 Runtime 里面
+
+1、每个 Subagent 都是独立的
+
+可以有自己的 Model、Thinking、Tools、System Prompt 和 Session
+
+比如主 Agent 负责整体任务，再单独开一个 Research、一个 Coding、一个 Review，各干各的。
+
+2、可以并行跑，而且中途还能管
+
+默认可以同时跑多个 Subagent，后台干活的时候你还能继续跟主 Agent 聊。
+
+跑偏了可以 Steering，跑完了还能 Resume 原来的 Session，不是一次性问完就没了。
+
+3、不同 Subagent 还能分配不同模型
+
+配合 pi-subagents-model-selector，可以让：
+
+Research → Gemini
+Coding → Claude
+Review → GPT
+
+谁适合干什么就分给谁，不需要所有 Agent 都用一个模型。
+
+这个插件火起来也有一段时间了，最新版本也更新了 MCP，现在是子线程也火起来了
+
+连 PI 慢慢更新的跟 OMP 一样了，那我还不如直接去隔壁使用 OMP🤣
+
+
+agent 跑到一半你插话，这句新指令该打断当前 run，还是排队等它跑完再消化？产品默认替你猜，猜错就白烧 token。更好的做法是把打断权显式交给用户：直接发送=打断，快捷键=排队。harness 的交互语义，比堆酷炫功能实在多了
+
+看看Openai当年的创始团队：
+
+Ilya 走了，Karpathy 走了，Schulman 和 Leike 连夜投奔了 Anthropic，连 CTO 都走了。 真正懂技术、有信仰的灵魂人物跑得干干净净。
+
+现在的 OpenAI 哪还是什么科技圣地，庙还在，真和尚全跑了，只剩下一个满嘴跑火车的资本掮客，带着一帮精算师在门口挨个收香火钱
+
+之前发过一期视频讲如何激发 AI 的创造能力做出不平庸的设计，这次把里面的方法整理成了一个 Skill，让 Agent 每次都按这套方法论来做：https://github.com/oil-oil/oil-ui
+
+1. 先定调性，把“高级”“简洁”这种词翻译成具体的文字、留白和颜色
+2. 每个方向从一个具体的灵感出发，比如一种材质、一个场景
+3. 先定首屏骨架再写文案，在不同的几个设计方向之间尽可能做到完全不同
+4. 内置了对比的模版页，可以非常方便的对比不同 Demo
+5. 选定后做成页面，在电脑和手机上截图检查，最后做减法
+
+除了设计流程，Skill 里还写了不少我对 AI 审美的观察心得。我自己实测即便使用非常便宜的 DeepSeek、mimo、gpt luna，也可以设计出很不错的设计效果，任何场景 UI 设计都可以用。
+
+除了开源 skill，我还第一次做了付费 Skill，叫做 Oil UI Pro：https://skillpay.alipay.com/shelf/product?productId=P0806000207812874&merchantId=2088022260532460，这里面提供了更多 UX 相关的洞察。
+
+希望这个 Skill 帮助大家把任何 AI 模型的设计能力推到极限，后续会持续更新～
+
+message table
+
+id  sessionId  type(skill or toll)   jsonl
+
+https://mp.weixin.qq.com/s/bOuPdZhX4sfLzuQ575FPBQ
+
+Linux 排障这事儿，光啃文档真记不住，得真刀真枪在机器上踩坑才行。
+
+SadServers 就是干这个的——一个在线练习平台，每道题甩给你一台真的 Linux 服务器，浏览器一开就是终端。
+
+题目会告诉你哪儿出了问题，搞定后自动验证，一关一关往下闯。
+
+仓库收好：http://github.com/SadServers/sadservers
+
+数据库、Web 服务器、Docker、Kubernetes 这些常见运维场景都覆盖了，入门到进阶都有题。
+
+听说不少公司已经拿它当面试实操环节了，想练手或者备运维面试的，这个可以存一下。
+
+测试用例的问题是“大部分人（甚至 agent 的默认执行流程也是）将它当作 代码实现后的免费添头”
+这么做的后果是：用例变成对源码的第三人称复述
+
+“从代码到测试用例”其实和“从 spec 到 代码”一样，需要单独的工作流（而不是免费添头）。用例和代码一样也会腐败、冗余，需要定期维护、精简
+前者甚至比后者重要得多，因为对 AI Coding 来说 code is cheap，重要的是信任，好的测试用例是信任的基石
+
+基于此，当下社区的风潮是“不再考虑传统软件工程的测试金字塔，而是聚焦在 e2e”
+因为通过设计 spec，某种程度上你可以在代码实现的同时兼顾用例质量（通过 BDD），这是对投入精力的权衡
+
+并不是说 单元测试 不再重要，而是没有精力维护“好的单元测试”
+
+
+harness 开始进化出机械化工具。目前包含自动化检查有：
+
+- 恒等分支检查
+- 静默丢弃错误信息检查
+- 硬编码私钥密钥检查
+- 测试代码覆盖率检查
+- 僵尸文件排查
+- 僵尸模块检测
+- 僵尸 api 排查
+
+等
+
+
+https://tetral.ai/blog/the-next-scaling-problem/
+
+非常推荐大家去看 
+@YangLi_leo
+ 写的这篇文章: The Next Scaling Problem。前段时间也受到了群里大佬的高度赞赏。
+
+文章里几个比较重要的章节和理念值得大家一看：
+
+1. A computer should be something the agent calls, not somewhere the agent lives
+2. Write ahead of execution
+3. A durable participant
+4. Scaling the system around intelligence
+
+介绍了为什么要让 agent live outside of sandbox，把cloud agents存算隔离的架构解释得非常透彻，以及提供了架构如何enable multi-agent workspace 的非常好的insight。
+
+https://github.com/sorrycc/tiller
+
+读书改变命运：工程师与科技爱好者的精选必读书单，这是个 GitHub 项目。
+
+它面向工程师和科技爱好者，走的是系统阅读这条路，帮你搭起一套能长期复利的认知与能力结构。书单讲究基础、思想与实践并重，适合那种打算长期打磨自己的人。https://github.com/0voice/expert_readed_books
+
+
+https://github.com/joeseesun/qiaomu-obsidian-dev
+
+
+Anthropic 这回出手够阔气的，22 门 Claude 课程说送就送，一分钱不收。
+
+我一门门硬啃完了，有的确实注水，有的则是硬货。怕你像没头苍蝇一样乱撞，我按从零到进阶的次序给你理顺了，照着刷就行。
+
+一、入门先走稳，别一上来就啃硬骨头
+01 Claude 101
+🔗 https://academy.claude.com/courses/claude-101
+02 Claude 协作入门
+🔗 https://academy.claude.com/courses/introduction-to-claude-cowork
+二、写代码的盯紧这几门，Claude Code 现在真能扛活
+03 Claude Code 101
+🔗 https://academy.claude.com/courses/claude-code-101
+04 Claude Code 实战
+🔗 https://academy.claude.com/courses/claude-code-in-action
+05 Agent 技能入门
+🔗 https://academy.claude.com/courses/introduction-to-agent-skills
+06 Subagents 子代理入门
+🔗 https://academy.claude.com/courses/introduction-to-subagents
+三、要接 API、做开发的，平台这块别绕过去
+07 Claude 平台 101
+🔗 https://academy.claude.com/courses/claude-platform-101
+08 基于 Claude API 开发
+🔗 https://academy.claude.com/courses/building-with-the-claude-api
+09 MCP 入门
+🔗 https://academy.claude.com/courses/introduction-to-model-context-protocol
+10 MCP 进阶话题
+🔗 https://academy.claude.com/courses/model-context-protocol-advanced-topics
+11 Claude 与 Amazon Bedrock
+🔗 https://academy.claude.com/courses/claude-with-amazon-bedrock
+12 Claude 与 Vertex AI
+🔗 https://academy.claude.com/courses/claude-with-google-cloud-s-vertex-ai
+四、基础素养这块，覆盖面特别广，总能挑到适合你的
+13 AI 素养框架与基础
+🔗 https://academy.claude.com/courses/ai-fluency-framework-foundations
+14 AI 能力与局限
+🔗 https://academy.claude.com/courses/ai-capabilities-and-limitations
+15 开发者 AI 素养
+🔗 https://academy.claude.com/courses/ai-fluency-for-builders
+16 小企业 AI 素养
+🔗 https://academy.claude.com/courses/ai-fluency-for-small-businesses
+17 学生 AI 素养
+🔗 https://academy.claude.com/courses/ai-fluency-for-students
+18 非营利组织 AI 素养
+🔗 https://academy.claude.com/courses/ai-fluency-for-nonprofits
+19 教育者 AI 素养
+🔗 https://academy.claude.com/courses/ai-fluency-for-educators
+20 K-12 教育者 AI 素养
+🔗 https://academy.claude.com/courses/ai-fluency-for-k-12-educators
+21 K-12 培训师培训
+🔗 https://academy.claude.com/courses/ai-fluency-for-pk-12-train-the-trainer
+22 AI 素养教学
+🔗 https://academy.claude.com/courses/teaching-ai-fluency
+我猜你现在多半会默默点个收藏，然后再也不点开。躺在收藏夹里的课，跟没有基本没差别。
+所以想问你一句：上一门真正从头学到尾的免费课，是啥时候的事了？
+我自己挺汗颜，上一门学完的还得追溯到两年前。
+免费的东西，大家往往不拿它当回事，可 Claude 这些课要是真啃透了，值回的可不止一星半点。别又收着落灰了，今晚就挑一门点开看看。
+
+
+在一个无人在意的角落里，Codex 把 TODO 工具默认关掉了。
+
+之前经常看到 agent 一上来就列好 TODO，安排得明明白白，后面就不怎么更新了。任务都做完了，todo list还显示第一项还在进行中，后面几个还没开始。
+
+我八月份和群友聊 harness 的时候，就说过这个问题，还想把自己搭的 dsh harness preset 里的 TODO 拿掉试试。没想到 OpenAI 也干了 😂
+
+我觉得现在模型跟 prompt 已经跟得挺好了。尤其 long-horizon task，中间变量很多，可能一个地方研究很久，遇到 blocker，用户还会进来 steer 一下。再加上 subagent 各自跑，TODO 很难一直跟实际进度同步，有时候维护这个清单也挺麻烦。
+
+对 agent 来说，可能最好的 TODO 就是 prompt/spec 里面写好的 checklist，再告诉它 must complete。它自己通过 reasoning，基本也知道现在做到哪了，还差什么，没必要再维护一份差不多的东西。
+
+所以我觉得，古早那套靠 TODO、goal 工具提醒agent做事的 harness，都要慢慢被淘汰了
+
+
+发现现在很多网站针对自动化操作都做了很多的限制，最近在为简单简历做一个 BOSS 直聘插件，让 ChatGPT 去 CDP 操作 chrome 或者是 grok bot 云端操作，都会被直接打到空白页面。
+直到我看到了这个帖子：https://github.com/loks666/get_jobs/discussions/250
+这个库和讨论内容都让我大开眼界啊，在 AI 时代，各种奇淫巧技充满巧思，还有后面针对于自动化反制手段的讨论都干货满满，非常好的技术帖子。
+
+
+https://x.com/Stephen4171127/status/2104902120042279371
+
+为了争取到
+@LinearUncle
+ 的面试机会，先把关于的 goal 设计的实现方案发出来，但我个人感觉比起 goal 的设计，整个队列的设计更考验 Harness 整体的设计能力
+——
+读这张图时，注意三点：
+
+1. 等待不等于暂停。 等权限、问卷或指定任务结果时，Goal 可以仍是 active，只是暂不续跑；用户主动暂停后，结果到达不能擅自解除暂停。
+
+2. 说“完成”不等于立即完成。 默认会发起一次单独的模型调用，检查目标、完成声明和证据摘要。
+
+3. 这个判定器不会自己操作工具。 它沿用该会话的模型配置，不是另一个会重新读文件、运行测试的验收 Agent。配置关闭判定，或未接入判定器时，代码存在直接采纳完成声明的兼容分支。
+
+Agent 设计大致有两种范式：Agent 整体跑在 sandbox 里，或者 Agent 在外、tools 在 sandbox 里执行。
+
+我的观察是，不少大厂更偏向前者：Agent、文件系统和开发工具都在同一个环境里，隔离更直观，做 Agent 也更省心。这未必只是“不差钱”，也是用一些资源开销换工程上的简单。
+
+我更关注后者：把 Agent 和执行环境的生命周期解耦，Agent 持续存在，sandbox 按需创建、复用和回收。但复杂度也转移到了平台层，需要协调状态、工作区持久化、故障恢复，以及多用户的数据和权限隔离。
+
+最近在看 celld、Rivet（
+@rivet_dev
+）和 LayerFS（
+@yifanxu_ephai
+）。它们不完全属于同一种架构，但分别在运行时、状态管理和文件系统上，提供了值得借鉴的思路。
+
+
+发现现在很多网站针对自动化操作都做了很多的限制，最近在为简单简历做一个 BOSS 直聘插件，让 ChatGPT 去 CDP 操作 chrome 或者是 grok bot 云端操作，都会被直接打到空白页面。
+直到我看到了这个帖子：https://github.com/loks666/get_jobs/discussions/250
+这个库和讨论内容都让我大开眼界啊，在 AI 时代，各种奇淫巧技充满巧思，还有后面针对于自动化反制手段的讨论都干货满满，非常好的技术帖子。
+
+整个 RAG 行业要被掀翻了
+
+研究人员搞出了一种全新的 RAG 方案，几乎绕开了传统 RAG 依赖的所有东西：
+
+不用向量数据库
+不用数据嵌入
+不用切块
+不用相似度搜索
+
+它叫 PageIndex
+
+它不再把文档切成碎片丢进 Pinecone，而是建一棵树状索引，让大模型像人看书一样在里面推理查找
+
+FinanceBench 准确率 98.7%，超过排行榜上所有向量 RAG
+
+完全免费，开源
+
+给团队一个可以自己部署的项目管理工具，管 issue、cycle、模块和路线图，替代 Jira、Linear、Monday、ClickUp 这类商业方案。
+
+https://github.com/makeplane/plane
+
+Plane 是个开源项目管理平台，对标 Jira、Linear、Monday、ClickUp，管 issue、跑迭代、拆模块、排路线图都在这。工作项编辑器支持富文本和文件上传，能加子属性、引用关联 issue。
+
+啃了好几遍 Claude Code、Cursor 的官方文档，对它们底层到底怎么跑还是一头雾水？📖
+
+有位老哥干脆把自己钻研 AI 的笔记整个开源了，拿 Pi-Agent SDK 当活体样本，一章接一章地拆源码。足足 10 章，架构设计、Agent 循环、模型调用、工具系统、上下文压缩、会话管理，全都囊括进去。
+
+每章只死磕三件事：是什么、怎么写、为何非这么写不可。
+
+TypeScript 和 Python 两个版本并排放着，哪版顺眼用哪版。网页、Markdown、PDF 三种形式任选，断网了也能慢慢啃。
+🔗 https://github.com/buchidonggua/dg-ai-notes
+
+
+卧槽，
+@yetone
+ 搞的这个 Magpie，简直是模型切换工具的终结者。
+
+它就做一件事：一个本地网关，给所有 Agent 喂所有模型。你已有的 Claude、Codex、Copilot、Devin、Grok、Cursor 订阅，都可以共享给别的 Agent 用。
+
+网关同时支持 OpenAI Chat Completions、OpenAI Responses、Anthropic Messages、Gemini 四种 API。
+
+还支持自动路由：多个 provider 上的同一模型会收成一个模型池，路由策略自己配。
+
+开源，GUI、TUI、CLI 三套界面；桌面端用 Go + Wails，UI 很好看，也很轻，不到 15 MB，macOS / Linux / Windows 通吃。
+
+https://github.com/yetone/magpie
+
+我去，谷歌开源的这玩意，让AI帮你查数据库还不怕它乱来🔥
+
+做开发总得让AI帮忙查数据，但怕它乱改乱删，只能自己写SQL。😭 写好提示词"只准查不准改"，结果它照样可能给你来个大惊喜。
+
+谷歌开源的 MCP Toolbox 工具，从根上管住AI的手！👇
+
+✅ 谷歌官方出品，1.6万Star，一键连上20多种数据库
+✅ 不说"请只读"，直接给底层只读保护，写工具压根不加载
+✅ 谁能用哪些功能拆开配，分析、客服各拿各的工具
+✅ 调用前先验证身份，机密不硬编码，日志可审计
+
+🔗 https://github.com/googleapis/mcp-toolbox
+
+做开发、管数据、玩AI Agent的赶紧动起来，还瞅啥瞅！🤓
+
+与其每天看那些注水的 AI 新闻和提示词大全，不如去把这个跑一遍： https://github.com/pageman/sutskever-30-implementations
+别再收藏吃灰了，先挑第 13 篇的 Attention 跑一下看看。
+
+https://nv-pu-sa.pages.dev/
+
+oh my pi的subagent指哪打哪
+
+subagent 策略（task.*）
+
+ ```yaml
+   task:
+     batch: false              # task 工具保持扁平单 spawn schema，不开 batch
+     maxConcurrency: 3
+     maxRecursionDepth: 1      # subagent 只能再往下套一层
+     disabledAgents: [security-reviewer]
+     agentModelOverrides: {}   # 不按 agent 覆写模型 → 全部走 task role（内置 scout/sonic
+ 另有自带预算）
+     enableEffort: false       # 调用方不能改 subagent 的 thinking level
+     enableLsp: false          # subagent 不给 lsp 工具，省 token
+     maxEffort: max            # 因上一条实际未生效
+     isolation.enabled: false  # subagent 直接跑在当前 checkout，不开隔离副本
+ ```
+
+把tool包装为skill渲染就好
+
+https://mail.zknu.edu.cn/cgi-bin/login
+
+准备程序员技术面试的，可以收藏这份开源指南。
+
+guia-entrevistas-de-programacion 把常见面试知识整理到了一起：
+
+① 设计模式、软件架构
+② Clean Code
+③ 算法与数据结构
+④ 按编程语言、技术方向整理常见问题
+整体结构比较清楚，适合面试前当目录用，哪里薄弱就重点补哪里。
+
+不管是准备跳槽，还是想系统复习基础，都可以留一份。
+🔗 https://github.com/DevCaress/guia-entrevistas-de-programacion
+
+
+经常有人问我，平时的网络环境是怎么搭的，怎么才能稳定、顺畅地用上各种 AI 工具。
+
+昨晚系统梳理了一遍，把自己正在用的家庭网络、专线和全球节点，做成了一个网站 🌐
+
+网络拓扑、设计思路、实测数据、踩过的坑，还有每个月花多少钱，都放上去了。
+
+👉 https://net.zuoluo.tv
+
+先说结论：这套方案不适合大多数普通用户，搭建和维护都需要花精力。
+
+但如果你和我一样，既想要「低延迟、高带宽、高稳定」，又想把成本控制住，里面的一些思路应该值得参考。
+
+也可以把链接丢给你的 AI，结合你现有的网络配置，看看哪些地方还有优化空间。
+
+折腾这么多年，给自己存个档，也分享给同样爱折腾的朋友 🤓
+
+网上那些 DevOps 题库翻下来，一眼就能看出是拼的，跟真实面试差着十万八千里。
+
+DevOps-Interview-Guide 换了条路子：收了 151 份真实面试记录，来自 85 家公司，内容全是候选人当场记下来的，没有经过二手转述。
+
+方向覆盖 Kubernetes、Docker、Terraform、AWS、CI/CD、Linux、监控告警这些。
+
+GitHub：http://github.com/litu54/DevOps-Interview-Guide
+
+同一家公司如果被面过好几轮，每轮会单独存成一个文件，不同轮次、不同面试官风格的差别都能看出来。
+
+要是你正在找 DevOps 或 SRE 的岗位，翻几家目标公司的记录，比闷头刷通用题有用得多
+
+Claude Code 怎么做「Eval Design」和「Hillclimbing」？
+
+来自 A\ 这篇工程方法论，作者 
+@RLanceMartin
+ 分享了如何把「评测设计」和「爬山优化」这两个 AI 工程中最关键也最容易自我欺骗的环节，产品化为 Claude Code 里的两个命令：/claude-api build-eval 和 /claude-api hillclimb，对应 Skills 也开源在 claude-api skill 中了。
+
+博客地址：
+https://claude.dev/blog/automating-eval-design-and-hillclimbing/
+开源地址：
+https://github.com/anthropics/skills/tree/main/skills/claude-api
+
+“设计评测、并在其上提升性能而不自我欺骗，是很难的。” 常见的自欺路径有三条：
+1. 任务选取偏差：挑容易生成、容易打分的任务，而不是真正关心的任务；
+2. 对抗性采样陷阱：专门挑模型失败的案例来构建评测，测到的不是任务的内在难度，是该模型的“失败指纹”。换一个模型，这套评测就失真了。正确做法是“因为人类专家判断它难才选它”；
+3. 评分器配置错误：博客强调“评分失误是评测被错误配置的最常见方式之一”，而且往往要在人工抽查打分时才暴露。
+
+好评测的四条标准
+本质上是从心理测量学/实验设计借来的信度效度框架：
+1. 任务镜像生产：任务分布必须代表你真正关心的东西，而非便于评分的东西
+2. 性能随模型能力/努力程度单调变化：如果最强模型最高努力也做不好，多半是任务有歧义或评分器坏了，这是把“可区分性”当作评测健康度的诊断信号
+3. 前沿模型留有头部空间：最强配置应明显低于 100%（基线已 ~95%+ 时，评测失去区分度，应转而优化成本）
+4. 低运行间方差：四个来源：任务歧义、评分器对相同输出给出不同判定、配置不一致（如 effort 未统一施加）、环境状态泄漏（残留文件、git 历史直接暴露答案）
+
+build-eval：评测自动化的关键设计
+工作流不应该是黑箱生成，是带人工审批关卡的引导式流程，输入采样按代表性排序：生产对话记录 → bug 报告/工单 → 5–10 个人工手写案例 → 从代码库合成的案例。
+
+评分器选择遵循最便宜够用原则：
+· 输出受限时用程序化验证（精确匹配、固定标签、schema 校验、测试通过）；
+· 开放式输出用 LLM-as-judge，但有三条纪律：rubric 写成“可核验的陈述”而非 1–5 分量表；有基线输出时用随机顺序的成对比较；裁判模型不能是被测模型本身（避免自我偏好）。
+
+自动化诊断是亮点：评分器对同一输出跑两次检验稳定性；检查管道问题（超时、API 错误、答案被截断）；基线过高时发出头部空间警告；每个案例输出 JSON 行 + 完整转录，并生成带置信区间的本地结果页。
+
+hillclimb：爬山的核心是防过拟合
+适用面判断是前提，可爬山的表面需满足三个条件：迭代便宜（prompt、skill 而非大改 harness 代码）、变化可归因（改什么就影响什么）、目标定义清晰。一个普适的稳健目标：性能持平前提下降成本，即使在饱和评测上也有效。
+
+防过拟合机制构成了一个完整的实验协议：
+· 随机 train/test 划分，测试集永远不看；
+· 判定规则：训练集升 + 测试集平 = 疑似过拟合 → 回滚；两者同升才保留；
+· “绝不把失败案例内容粘贴进 prompt”，这是最直接的过拟合通道，补丁必须针对根因（重写问题段落），而非表面措辞；
+· 把答案保持在模型结构性接触不到的位置，防 reward hacking；
+· 开跑前先验证评测噪声小于你想采取行动的最小改进幅度，否则增加重复次数或案例数；
+· 连续 2–3 轮停滞时，对剩余失败按根因分类，这一步往往会暴露评测自身的 bug（歧义任务、harness 错误、评分器缺陷），剔除后只留真实失败继续迭代；
+· 最终以测试集上表现最好的版本收尾，若增益在噪声范围内则明确建议不要合并。
+
+两个案例：数字表现
+案例一：客服成本优化（44 张工单，30 训练 / 14 留出）。基线 Opus 4.8 高努力档：74.4% 决策准确率，4.6 美分/单。爬山过程展示了典型的“先减负再降配”路径：清理 prompt 中的工具调用仪式、草稿步骤和矛盾规则 → 换 Opus 5.5 低努力档（87.8%，1.9 美分）→ 降级到 Sonnet 5 低努力档（88.9%，约 1 美分）→ 针对性改进路由规则后训练集 98.9%。留出测试集：90.5% vs 原始 78.6%，成本约为原来的五分之一。
+
+案例二：claude-api skill 自身提能（66% → ~88%）。这个过程更像一次诊断式复盘：补齐 8 个缺失功能覆盖 → 74%；修 C#/Java 类型表错误 → 77%；停滞后的根因分析发现模型在凭训练先验写过时的 API 形态（如已被新版 Opus 拒绝的固定预算 thinking），在 skill 顶部加迁移表 → 80%；随后甚至揪出评测自身的缺陷（一个任务只要求捕获一种错误但评分器要求至少三种错误的调用链；另一个评分器与文档矛盾，实测 API 证明文档是对的）→ ~88%。
+
+https://x.com/hylarucoder/status/2104076282107723935
+
+
+https://github.com/EverMind-AI/Raven/tree/main/skills/git-story-film
+
+后端视角看确实成立：agent 链路里最先出问题的从来不是模型，是队列积压、重试风暴、状态存储、沙箱逃逸、trace 缺失这些老问题。agent infra 大半是把后端基建换了个名字重新做一遍，做过分布式系统的人优势会越来越明显。
+
+一点没有企业 AI 设计思维。
+
+企业 AI 设计思维：
+1、 解耦式架构、模块化设计、API 抽象化设计
+2、 尊重开源同时尊重商业，不要再问我买你这个和我用开源有什么区别这样的问题了，回答一次就是浪费生命
+3、 只关注乙方团队做过什么案例，而不是具体聊自己的业务具体问题
+4、 缺少全局设计，不具备信息安全意识，在企业里大谈特谈个人提效，但从不谈背后的信息安全和权限等级
+
+网上那些 DevOps 题库翻下来，一眼就能看出是拼的，跟真实面试差着十万八千里。
+
+DevOps-Interview-Guide 换了条路子：收了 151 份真实面试记录，来自 85 家公司，内容全是候选人当场记下来的，没有经过二手转述。
+
+方向覆盖 Kubernetes、Docker、Terraform、AWS、CI/CD、Linux、监控告警这些。
+
+GitHub：http://github.com/litu54/DevOps-Interview-Guide
+
+同一家公司如果被面过好几轮，每轮会单独存成一个文件，不同轮次、不同面试官风格的差别都能看出来。
+
+要是你正在找 DevOps 或 SRE 的岗位，翻几家目标公司的记录，比闷头刷通用题有用得多
+
+说一下A\现在的工程师工作流程：
+所有MTS的claude session共享。
+所有的项目共享。每个人可以搜到其他人的session history.
+每个人可以抢占其他人的tasks去做，谁做出来credit是谁的。
+平均一个人有7-10个tasks在queue里，做的快的飞快。
+做的慢的，queue里的7个task一眨眼就被人家抢走6个，自己那个还没做完
+
+
+https://github.com/owlman/CS_StudyNotes/blob/master/02_%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA%E5%AD%A6%E4%B9%A0%2F%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD%2F00.%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E5%9B%BE%2F%E5%85%B3%E4%BA%8E%20AI%20%E7%9A%84%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF%E5%9B%BE.md
+
+https://github.com/harvard-edge/cs249r_book
+
+大量时间投入模型训练，一到上线落地阶段就手足无措。调参、跑分是我的强项，但部署、监控相关工作一直是薄弱项。
+
+哈佛开源《Machine Learning Systems》，源自 CS249r，在线电子书 mlsysbookai，专门解决这类痛点。
+
+全书不以提升模型准确率为目标，先教单机系统搭建，再拓展分布式、数据链路、模型部署和运行监控。 
+
+包含边缘设备、开发板相关实验。配套 TinyTorch 一共二十多个模块，从张量底层开始，自己动手搭建能完成训练的简易框架。 2026 版持续修改完善。
+
+它属于系统学习用书，不要直接当作企业项目上线手册。
+🔗：http://github.com/harvard-edge/cs249r_book
+
+
+
+nanobot 的做法是在toolcall失败之后返回具体报错信息+tool hint, 让模型可以从环境中获得反馈重新做出判断
+
+更进一步来讲， harness给模型带来的能力就是从真实世界中获得真实的反馈，就像人类一样， 如果一个程序失败只报了exit 1， 或者干脆静默， 人也会懵逼的
+
+
+背单词这事儿，有人干脆整出了一个完整的开源网站。
+
+WordsFunny 是一套全栈英语单词学习项目，词库超过 15 万词，既能直接拿来背，也能自己部署。
+
+项目本身也很值得程序员参考，技术栈用了 React Router v7、tRPC、PostgreSQL、Drizzle、Docker 等，GitHub 上目前已经有 1.2K Star。
+
+想背单词的直接拿去用，想学全栈开发的直接拿来抄作业。
+
+🔗https://github.com/SteveSuv/remix-words-funny
+
+
+刷到个AI/ML仓库，13本经典PDF免费拿，值得存。
+
+从深度学习面试、LLM 基础，一路到强化学习、机器学习、矩阵数学、Agent、上下文工程、ML 系统、多智能体 RL，铺得相当开。
+
+1️⃣ 400+ 道深度学习面试题
+2️⃣ LLM、Agent、强化学习资料
+3️⃣ 机器学习 + 矩阵数学，随查随用
+4️⃣ 还塞了哈佛 ML 系统这类实战向内容
+平时写代码碰上公式，直接搜 PDF 比翻纸质书快得多；准备面试也能拿来突击。
+一个仓库，把常用的 AI/ML 参考资料全攒齐了。
+🔗 https://github.com/AniruddhaChattopadhyay/Books
+
+
+分享 7 个帮 AI Agent 找技能、接工具和查数据的核心生态平台，避免反复造轮子，有需求前先检索是否已有实现，而不是埋头苦干自己实现！
+
+覆盖 MCP 工具中枢、业务工作流（Skills）分发及 AI 专属搜索，让 Agent 从单纯聊天变成能查能干活的数字员工。
+
+Smithery (https://smithery.ai) - 全球最大 MCP 与 Skill 分发中枢，支持 Agent 自搜自装
+CocoLoop (https://hub.cocoloop.cn) - 国内首选 Agent 技能集市，免梯加速与安装闭环
+SkillsMP (https://skillsmp.com) - 收录 300 万+ GitHub 实践文件的只读技能灵感库
+Skillstore (https://skillstore.io) - 带代码审计与安全风险分级的技能合规商店
+Exa API (https://exa.ai) - 专为 AI 投喂干净 Markdown 的神经语义搜索引擎
+Awesome MCP (https://mcpservers.org) - 开源 MCP 项目精选静态导航与源码字典
+http://atypica.AI (https://atypica.ai/auth/signup?ref=vw7qqEFT) - 模拟虚拟焦点小组的消费者洞察多智能体平台
+
+其中Smithery和CocoLoop可以给agent配置，达到在对话里一句话实现“自主检索并一键安装”的闭环工具。
+
+单独说一个atypica是模拟商业模式的，你有什么好的商业idea到底能不能行，可以先用这个平台模拟一下，避免一条路走到黑，及时止损！
+
+
+分享 7 个帮 AI Agent 找技能、接工具和查数据的核心生态平台，避免反复造轮子，有需求前先检索是否已有实现，而不是埋头苦干自己实现！
+
+覆盖 MCP 工具中枢、业务工作流（Skills）分发及 AI 专属搜索，让 Agent 从单纯聊天变成能查能干活的数字员工。
+
+Smithery (https://smithery.ai) - 全球最大 MCP 与 Skill 分发中枢，支持 Agent 自搜自装
+CocoLoop (https://hub.cocoloop.cn) - 国内首选 Agent 技能集市，免梯加速与安装闭环
+SkillsMP (https://skillsmp.com) - 收录 300 万+ GitHub 实践文件的只读技能灵感库
+Skillstore (https://skillstore.io) - 带代码审计与安全风险分级的技能合规商店
+Exa API (https://exa.ai) - 专为 AI 投喂干净 Markdown 的神经语义搜索引擎
+Awesome MCP (https://mcpservers.org) - 开源 MCP 项目精选静态导航与源码字典
+http://atypica.AI (https://atypica.ai/auth/signup?ref=vw7qqEFT) - 模拟虚拟焦点小组的消费者洞察多智能体平台
+
+其中Smithery和CocoLoop可以给agent配置，达到在对话里一句话实现“自主检索并一键安装”的闭环工具。
+
+单独说一个atypica是模拟商业模式的，你有什么好的商业idea到底能不能行，可以先用这个平台模拟一下，避免一条路走到黑，及时止损！
+
+https://x.com/dongsheng211/status/2104358245452357684
+
+本轮新增 2 条（492 → 494）：
+
+1. ollaya（基础设施）：707⭐ / Rust / Apache-2.0 ——「像 Ollama 跑 LLM 那样在本地跑决策模型」，对外提供与 TypeSafe 线格式完全一致的 /v1/systemone，所以现有 Jev 客户端只要把 TYPESAFE_BASE_URL 指过去就能用。它也诚实报出推荐模型 0.722 的准确率（Jev 0.738），并附了一个教 agent 何时该用它的 skill。
+
+2. pg-jev（基础设施）：372⭐ ——  PostgreSQL 扩展，用自然语言条件筛选、排序、归类数据行：SELECT * FROM  people WHERE jev(people, 'the name is European')，每行一次 Jev 判断，另有 jev_prob 与 jev_choice 两个函数。
+
+📂 http://github.com/yibie/awesome-
+
+
+https://x.com/SoulSloop99/status/2104178238083748028
+
+想系统学 AI Agent，不一定非得先买课。Galileo 把 4 本相关电子书免费公开了。
+
+一共 500+ 页，覆盖：
+
+① Mastering AI Agents：Agent 架构与实战
+② Mastering RAG：检索、向量库等核心知识
+③ Mastering Multi-Agent Systems：多智能体协作
+④ Mastering LLM-as-a-Judge：模型评测与 Agent 评估
+从 RAG 到多 Agent，再到评测和减少幻觉，基本把常见问题串了一遍。
+
+想入门或系统补课，可以先拿来当资料库。
+🔗 https://galileo.ai/mastering-genai-series
+
+
+
+所以最近折腾 Omarchy 给我最大的感觉，其实不是又换了一套 Linux。
+
+是以前我们讨论 AI Agent，很多东西都漂在操作系统上面。
+
+现在这些东西开始往下面沉了。
+
+模型负责想。
+
+Agent 负责分工。
+
+Jev 负责做大量高频的小判断。
+
+Browser 和 Computer Use 负责执行。
+
+Plugin 和 Shell 把这些能力真正放进桌面。
+
+等这些层真正接起来以后，所谓 AI PC 才开始有点样子。
+
+以后真正拉开差距的可能不是谁手里有最多的模型。
+
+而是谁把每一个模型，每一个 Agent，每一个工具，都放到了它最应该待的位置。
+
+https://x.com/ReynoldDai/status/1877567266788905422
+
+想系统学 AI Agent，不一定非得先买课。Galileo 把 4 本相关电子书免费公开了。
+
+一共 500+ 页，覆盖：
+
+① Mastering AI Agents：Agent 架构与实战
+② Mastering RAG：检索、向量库等核心知识
+③ Mastering Multi-Agent Systems：多智能体协作
+④ Mastering LLM-as-a-Judge：模型评测与 Agent 评估
+从 RAG 到多 Agent，再到评测和减少幻觉，基本把常见问题串了一遍。
+
+想入门或系统补课，可以先拿来当资料库。
+🔗 https://galileo.ai/mastering-genai-series
+
+
+https://x.com/ReynoldDai/status/1877567266788905422
+
+https://github.com/QwenLM/qwen-code
+
+真的顶，qwen-code 把一个能自己拆任务、自己记事的编程搭子直接装进了你的终端。
+
+GitHub 上 2.8 万 star，去年 6 月才建的仓库，一千四百多个 issue 还开着，用的人真不少。
+
+平时改一个 bug 要横跨好几个文件，以前的流程是复制一段贴进网页对话框，它问你上下文你再贴一段，来回五六轮才说清楚。qwen-code 是直接在仓库里跑的：SubAgents 帮你把活拆开，Auto-Memory 记住这个项目的约定，要接自己的工具就走 MCP。
+
+模型侧很松：OpenAI、Anthropic、Gemini、Qwen 几套协议都支持，也能指向本机的 Ollama 或者 vLLM。终端之外还有桌面端、实验性的 Web UI、VS Code 和 Zed、JetBrains 插件，连钉钉、微信、飞书都能接进去。
+
+它的底子是从 Google Gemini CLI v0.8.2 分出来的，从 v0.1 起就不再跟上游同步，自己走多协议多平台这条路，现在一天能滚好几个 nightly。官方在 SWE-bench Verified 的 500 道题上用 Qwen 3.7 Max 跑到了 76% 到 78%。
+
+第三方也在拿它当后端，Claudable 这类开源 web builder 的可选 agent 列表里，它和 Claude Code、Codex 摆在一起。
+
+写代码这件事，正在从「人开编辑器」变成「人开 agent」。
+
+GitHub：
+
+https://www.v2ex.com/t/1245050#reply4
+
+准备技术面试，可以收藏一份这种“知识点大合集”。
+
+这个开源指南把常见面试内容集中整理了：
+
+① 设计模式
+② 软件架构与 Clean Code
+③ 算法和数据结构
+④ 按编程语言、技术方向分类的常见问题
+
+结构比较清楚，适合面试前查漏补缺，也可以当长期复习目录。
+🔗 https://github.com/DevCaress/guia-entrevistas-de-programacion
+
+
+X上90%AI博主都在教你收藏，真正能看的就这10个。
+
+1、
+@emollick
+：不讲训练模型，专讲普通人怎么把AI用进工作和学习。
+2、
+@swyx
+：盯AI Engineer路线，看模型怎么变成能上线的产品。
+3、
+@bearliu
+：Vibe Coding和生成式UI实战，适合看AI怎么改写产品开发。
+4、
+@xiaohu
+：每天扫新模型、新工具和热点变化，信息来得快。
+5、
+@Gorden_Sun
+：AI资讯日报，适合追新模型、新产品和热点变化。
+6、
+@Jason23818126
+：整理AI工具、机会和超级个体玩法，信息源很实用。
+7、
+@tuturetom
+：AI Agent开发和开源项目实战，上手路径清楚。
+8、
+@HiTw93
+：低调高产的独立开发者，AI编程工具和开源实战多。
+9、
+@lilianweng
+：前OpenAI研究员，论文和前沿方法拆得深。
+10、
+@Smartpigai
+：大厂程序员视角，把AI实践直接接到搞钱路径上。
+
+这10个值得先收进列表，学AI会轻松很多。
+
+
+我们组在多人合作时遇到了 agent 环境下的数据同步问题，这时候和 agent 互通的 saas leapworld 有效地解决了燃眉之急。前提是这个 saas 需要做的足够灵活，模块化和 ai native, 我不认为 saas 在AI时代已死，但是我认为所有的旧 saas 需要在 agent 定义下重构或重新进行产品设计。
+
+以前翻过的PDF、Word、网页，过段时间再找，跟大海捞针一样？
+
+OpenKB 换了个玩法：把源文档直接编译成一套能互相跳转的 Wiki 知识库，摘要、概念、实体、引用自动织到一起。
+
+1️⃣ 不碰 Vector DB，靠 PageIndex 树索引啃下长文档
+2️⃣ 多模态原生支持，图表内容也照吃不误
+3️⃣ 知识持续沉淀，不用每次把资料重翻一遍
+4️⃣ 自带 Web UI，还能导出 Agent Skill 供 Claude Code、Codex 调用
+一句话，就是把“看过但忘了”的东西，一点点养成自己的可检索知识库。
+🔗 https://github.com/VectifyAI/OpenKB
+
+
+
+https://x.com/shao__meng/status/2104092484867703138
+
+
+章工
+@435hz
+·
+1h
+一个人能力强弱怎么判断?
+随便说一个吧，那些能自己
+
+1、独立搞定用上 ChatGPT
+2、搞定海外银行卡
+3、搞定海外手机号
+4、搞定美股开户、入金、出金
+5、搞定美债、美元、保险
+6、搞定身份、海外资产配置
+
+以及一个人能看到一个关键词就能自己通过各种途径找出答案、做出来的人，人生不会差的。
+
+
+AI最严厉的父亲
+@dashen_wang
+·
+3h
+构架师 · 人性卷，三篇写完了。
+
+01｜为什么你带出来的人，最后都看不起你
+教，是一种上位。距离带来敬畏，亲近产生轻视。
+
+https://x.com/dashen_wang/status/2104033205578068162
+
+02｜拆
+毁灭和创造是同一股能量。你不给它找靶子，它就会找上你。
+
+https://x.com/dashen_wang/status/2104036973854040143
+
+03｜最先撤离的人，不会告诉你他去了哪里
+钢琴从阶梯变成陷阱，用了二十年。AI 把所有技能变成钢琴，只要两三年。
+https://x.com/dashen_wang/status/2104037472036434393
+
+三篇连起来读：
+别人怎么拆你，你怎么拆世界，世界怎么拆掉所有人。
+
+https://x.com/I_am_oil_oil/status/2104026605492527555
+
+非常推荐非技术背景的同学学习一下 Git 和 GitHub 相关的知识，对于日常使用 AI 以及 Vibe Coding 都有很大的帮助！
+
+学会了 Git 了不用担心 AI 把自己幸幸苦苦调了很长时间的产物直接改坏，使用 AI 时的心智负担可以大大降低。
+
+这个视频想录很久了，一直觉得 Git 相关的概念太多了，但是没有想到花了一天的时间就录好了。
+
+在 AI 时代学习 Git 真的比以前自己一个一个命令手敲简单多了，只需要了解基本的概念以及如何跟 AI 表达，就能够把 Git 和 GitHub 很好的用起来
+
+程序员不是找不到工作，只是再也很难找到像过去那样体面又高薪的的工作了。  
+
+时代变了，你的 coding 绝技在AI面前变得廉价。  
+这个观点其实很朴素，只是我们很难接受这个现实。  
+
+接受现实是一件好事，尽快放下包袱，去寻找市场上更值钱的东西。  
+
+我认为当下最有价值的能力，不是单项技能练到顶的那种，而是把多项能力综合运用的人。 
+
+ 比如你可以同时搞定市场研究、需求调研、用户访谈、产品UI/UX设计、编码和测试、产品增长和社区运营。  
+
+也就是说， AI 更强大之后，需要你具备更强的综合能力，毫无疑问，AI 时代对人的能力要求更苛刻了。
+
