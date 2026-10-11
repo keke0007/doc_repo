@@ -1,0 +1,498 @@
+https://x.com/fttt007/status/2109198989358755980
+
+我把我的两个 PI Durable 项目都 开源了 🔥
+
+pi-durable-edge：https://github.com/xiaomoBoy/pi-durable-edge
+
+pi-durable-assistant：
+https://github.com/xiaomoBoy/pi-durable-assistant
+
+pi-durable-assistant 这个项目是整合了两个项目在里面，一个是 wx-bot 这里要感谢劳伦斯大佬
+@LawrenceW_Zen
+的项目，可以让我很轻松地就接入到微信当中
+
+比较有特点的就是可以长时间续存 AI 的状态，关上电脑 或者是结束任务 回来也能继续任务，这其实就是 pi-durable 的能力
+
+现在我都把它封装成了 docker 容器，你可以对接自己的模型 部署到自己的服务器上去 对应的文档我已经写得很详细了 基本上到手就能直接跑
+
+pi-durable-edge 这个项目会比较特殊一点，因为这是我在写完第一个项目之后 看到了 Cloudflare 支持 PI Durable，我就想尝试打造一个直接使用 Cloudflare 上的服务搭建的项目
+
+没想到整个过程异常的顺利，用到的服务都是免费的，没有其他额外的费用，但前提是你使用的都是免费版本 如果是付费版本的话 就要监控一下额度 防止付费
+
+基础能力和第一个一样，唯一的区别就是现阶段还不能对接到微信上 但是可以对接到 Cloudflare 的服务当中 直接更新项目即可自动化部署
+
+后期的话会考虑到接入微信或者其他聊天客户端，最好的方案就实现一键化部署 只需要点击就能直接使用，前提你只需要有一个 Cloudflare 账号即可
+
+https://x.com/Zen_with_AI/status/2109203349438410955
+
+如果现在想转行 AI，我会重点关注 Agent Infra 这个方向。
+
+整理了 6 个值得学习的核心方向：
+
+1.Agent Runtime：让 AI 自主调用工具、循环执行任务。
+
+2.Context & Memory：管理上下文、记忆和任务状态。
+
+3.Multi-Agent：任务拆分、调度与多 Agent 协作。
+
+4.Durable Execution：任务中断后能恢复，长时间稳定运行。
+
+5.Sandbox & MCP：安全执行代码，连接外部工具。
+
+6.Evaluation：监控成本、排查错误、评估执行效果。
+
+让 Agent 干活不难，难的是让它 7×24 小时稳定、可靠、低成本地干活
+
+你说得对，但我将要开始探针、快照、证据、门禁、夹具，还有哈希、冒烟、基线了
+我要先建立唯一基线，再进行可追溯备份，先进行最小改动，我先进行一轮烟测，检查89个门禁是否通过，上线前进行一轮全量dry-run，上线后校验哈希值，最后进行一轮实测的验收矩阵
+
+
+准备开始学习AI Agent，以及准备Agent面试的朋友们，推荐看看这篇，根据一手面试经验总结的AI Agent学习线路。
+AI Agent已经广泛应用在多个领域了，以我所在的汽车行业为例：结合语音助手，车企们已经开始做复杂任务的工作；智能驾驶领域，大家也在做智能驾驶场景的Agent。
+
+https://x.com/chasen_liao/status/2109081301819310578
+
+https://github.com/thevibeworks/claude-code-docs
+
+https://x.com/AndyL5cc/status/2108582898291139060
+
+很多人可能从一开始，就用错了 Claude。
+
+最近看到一段 30 分钟的深度实操视频，才发现高手调教 Claude，靠的根本不是提示词玄学。
+
+总结 5 条核心经验：
+
+1. 结构化： 用 XML 分隔规则、角色和数据，别把指令揉成一坨。
+2. 做减法： 及时删除旧模型遗留的限制，别让过时的 Prompt 拖后腿。
+3. 善用工具： 复杂计算交给代码，喊一万遍「务必准确」也没用。
+4. 给足上下文： 告诉 AI 不同选择的收益和代价，而不只是下命令。
+5. 建立闭环： 生成→评估→修复，比一个巨型 Prompt 更灵活可靠。
+
+真正会用 AI 的人，早就从研究提示词，升级到设计 Agent 工作流了。
+
+https://x.com/LaoK201106/status/2108781788252492034
+
+如果你想做AI相关的工作，不妨考虑一下Agent Infra这个新兴领域。我最近也在入门这个领域，做了一些调研，记录了这个领域需要的技能清单，欢迎收藏，保存，我也会继续分享在这个领域的学习心得。
+
+完整 List：
+1.Agent Runtime：理解 Agent Loop、Tool Calling、Streaming、Session，理解并实现一个最小可用Agent，而不是只调用一次模型 API。
+2.上下文与状态管理：喂给大模型的上下文决定了这一轮模型能看到什么，也很大程度上决定模型做的决策质量；State 会保存任务当前执行到了哪里。需要处理上下文裁剪、压缩、Checkpoint、任务状态，长期记忆与短期上下文。
+3.任务队列与 Worker：把任务通过 Queue 分发给 Worker 执行，并控制并发、优先级、Backpressure 和 Worker Pool。
+4.调度与多 Agent 编排：把复杂任务拆成多个子任务，支持DAG、Reviewer、Handoff 和 Human-in-the-loop。
+5.Durable Execution：Agent 即使运行几十分钟甚至几个小时后，也不会因为进程重启而导致任务的丢失，需要持久化执行状态、Checkpoint、Replay、Resume 和 Recovery。
+6.Retry、Timeout 与幂等：模型、工具、网络和 Worker 等各方面都会遇到问题；系统要能判断什么时候重试、什么时候超时，以及避免 git push、发邮件、创建资源等操作被重复执行。
+7.分布式状态与一致性：多个 Orchestrator、Worker 和数据库共同维护 Task State，需要理解 Transaction、WAL、Lease、Heartbeat、Replication、Consistency 以及故障恢复。
+8.Sandbox 与执行环境：Coding Agent 会执行 Shell、Git、Python、构建和测试，需要为每个 Agent 提供隔离的文件系统、进程、网络和资源环境，并限制 CPU、内存和执行时间。
+9.工具基础设施与 MCP：Agent 不只是调用几个 Function，还需要统一管理 Shell、Filesystem、Browser、Database、API 等工具；MCP 可以作为 Agent 与外部工具、资源之间的一种标准接口。
+10.权限、安全与 Secrets：控制 Agent 能访问哪些文件、调用哪些工具、连接哪些网络和读取哪些密钥，涉及 Authentication、Authorization、ACL、Secret Management 和 Audit。
+11.可观测性与调试：Agent Task 的完整执行过程会通过trace记录下来，用 Metrics 看延迟、Queue、Token、成本、失败率和 Retry。
+12.Evaluation 与 Replay：不只看“Agent 能不能跑”，还要判断任务是否真的完成正确，通过 Dataset、Rubric、Task Success Rate、Regression、Replay 和 LLM-as-Judge 做持续评估。
+
+recommend reading.
+
+---
+
+吴恩达把「构建和部署 AI 应用」拆成 6 项，只给其中一项加了「最重要」。
+
+先说他的前提。AI 应用和普通软件的区别只有一条，输出不可预测，你不知道模型会吐什么。所以过程必然是写一段、看结果、再定下一步，提前排不出计划。他这句是全文的核心：会判断下一步做什么，才能用不可靠的组件搭出可靠的系统。
+
+1\ LLM 基础。知道模型怎么切 token、怎么生成，才知道它什么时候会翻车。往下是一串具体决策，上下文里放什么、缓存命中、知识截止、推理强度档位、采样参数、什么时候该上多模态、什么时候该微调或自托管。
+
+2\ 给模型接上数据。向量 RAG 只是早期做法。现在要判断的是哪些直接写进 prompt、哪些让模型用工具现取，以及数据该用向量索引、知识图谱，还是结构化数据上的语义层。再往下是把 PDF、HTML、图片转成模型能吃的东西，和保证数据新鲜的管道。
+
+3\ 构建 agentic 系统。一端是固定顺序的 workflow，一端是让模型自己决定下一步的 harness。要选哪些串、哪些并行、什么用代码做什么交给模型，还得带兜底。agent loop 里要定工具（MCP、CLI、沙箱）、记忆结构、长会话怎么管上下文、什么时候必须上多 agent。生产化是另一道坎，护栏、对抗输入、数据外泄、治理。
+
+4\ 评测驱动开发。他唯一加了最高级的一项。区分 AI 系统高手的最重要特质，就是能不能跑一套有纪律的 evals 和误差分析循环。他还说这技能难练，因为正确做法随项目变，甚至随项目所处阶段变。具体是会看 trace、做探索性分析，判断什么时候用代码评测、什么时候上 LLM-as-a-judge、什么时候必须人在环，以及怎么评测你的评测。
+
+5\ 生产运维。和传统软件的差别来自不可预测、成本、延迟这三点。可观测性、漂移检测、prompt injection 响应之外，他提了一条我觉得容易被忽略的，测试投入要按出错风险校准，不是一刀切。成本和延迟这边给的手段是模型选型、蒸馏微调、简化 agentic workflow。
+
+6\ 机器学习基础。这条在现在的氛围里挺逆流的。原话是他认识的每一个擅长用 LLM 构建系统的工程师，都对 ML 和深度学习有一定深度的理解。bias/variance、误差分析、数据工程这三个概念他单独点名，理由是它们本来就是用来对付输出不确定的系统的。
+
+https://x.com/chenchengpro/status/2092608785584115811
+
+关于「让 AI 写的 PR 更好 review」，我的 Tips 。
+
+- 用 
+@dexhorthy
+ 的 /show-me 生成更好读的 diff
+- 附 mermaid 图讲架构或流程
+- 附复现步骤
+- 附测试日志，证明 TDD 真跑过
+- 附截图或视频，证明自己验证过
+- 附 design doc，包含每个决策点
+- 附测试步骤，方便 reviewer 自行验证
+- 重要改动自行跑一遍各 code agent 的 /review，并在 PR 里说明
+
+5 skills I've been using a lot lately:
+
+1/ diagram-design
+39 diagram types. Every one comes out as a single HTML file you can double-click.
+https://github.com/cathrynlavery/diagram-design
+
+2/ council
+Before your agent gives you a plan, it has to ask every other agent CLI on your machine what's wrong with it.
+https://github.com/kitze/council
+
+3/ Agent Reach
+15 platforms, 9 of them behind a login or a key. It picks a backend for each, installs it, and tells you which one is live.
+https://github.com/Panniantong/Agent-Reach
+
+4/ i-have-adhd
+Stops the agent burying the answer. Ships an eval harness and publishes the gate its own skill fails.
+https://github.com/ayghri/i-have-adhd
+
+5/ wait-what
+394 bytes. Type it when a message didn't land, and the agent re-pitches it.
+https://github.com/mattpocock/skills/tree/main/skills/productivity/wait-what
+
+
+Fable 5.1 tips for saving money:
+
+1. Don't run xhigh by default. Stay on high.
+On the Artificial Analysis index, xhigh burns about 2x the output tokens of high. $5.98 vs $3.91 per task, and 2 more points on the score. Those numbers drift, so check them before you copy me.
+
+2. Opus by default, then /advisor fable when you're stuck.
+Cheap model does the typing, expensive model reviews.
+
+3. Or flip it. Fable by default for design, then /model and press s to toggle to Opus for implementation.
+
+4. Or use fable xhigh to design, then /effort and press s to toggle down to high to implement.
+Changing thinking effort doesn't invalidate the prompt cache.
+
+5. /subtask for anything that spews output. Only the result comes back and the main session stays clean.
+
+Opus 5.5 用了一天，攒了 24 条 tips，分五块。
+
+一、怎么用
+
+1. 整个任务直接扔给它。说清什么算做完，什么时候要回来找你。
+2. 别写「think carefully」，它本来就会先想。思考模式也关不掉了。
+3. 长任务跑完，问它「还缺什么才能继续」，别急着自己接手。
+4. 长任务跑一半停下来汇报是前沿模型的通病。Anthropic 给了一段专门的提示词压住这个毛病。
+5. 默认 medium 就够。智能跟 Fable 5.1 差不多但更快，输出 token 比官方建议还少两成。
+6. 别开 max。有人两次测试都在思考阶段撞上 128K 输出上限，一个结果没出，每次 2.56 美元、20 分钟。Fable 5.1 的 max 反而没事。
+7. 简单活 medium，难活切 high。Claude Code 2.1.280 之后，会话中途切强度不再打掉缓存。
+
+二、把旧提示词清一遍
+
+8. 跑 /claude-api prompt-audit。skills、CLAUDE.md、AGENTS.md 里那些给旧模型写的保姆规则，现在只会拖累 5.5。
+9. 该删的典型句式：全大写 IMPORTANT、一刀切的 be concise、always ask、always summarize、be thorough / don't stop。
+10. 每次模型升级都重跑一遍，拿几个代表任务验证，只留有效果的改动。
+11. 反模式不只在 CLAUDE.md，工具描述里也有。有人把 12 个工具砍到 4 个，效果比改任何提示词都大。
+12. 让 audit 解释每一条删除理由。有些看着奇怪的行，是绕某个 bug 的 workaround。
+
+三、账单
+
+13. 几乎所有事都能用 Opus 5.5 干，Fable 那 50% 的上限可以不管了。只有「给我点惊喜」那种模糊的创意原型，我还是回去找 Fable。
+14. 多 agent 编排里，coordinator 和 worker 都换成 5.5，额度掉得明显慢了。
+15. 缓存读取从 0.5 降到 0.2 美元。编程会话缓存命中率一般 95% 以上，实际省的比标价多。
+16. 三家里只有 Anthropic 不对长上下文加价，到 1M 单价不变。OpenAI 过 272K 翻倍，Grok 过 200K 翻倍。
+17. banked reset 不会挪动每周重置时间。留到周期后半段额度见底再用。
+
+四、顾问模式
+
+18. /advisor fable 把 advisor 设成 Fable。Fable 出方案，5.5 执行，做完让 advisor 验收，按反馈返工到通过为止。配 /goal 更顺。
+19. Opus 和 Fable 的真正差距在找开关。Opus 被 auto-mode 拦住会让你手动粘命令，Fable 会去 settings.json 里翻出 autoMode.allow。所以 Opus 当主力，Fable 别关。
+
+五、它变了什么
+
+20. 只在该长的时候长。「Claude 腔」和破折号没了，结论放最前面。
+21. 「honest mistake」循环没了。以前是先下结论、走错、道歉、再花几轮修，现在一次做对。
+22. 会自己遵守 skill，不用你提醒。
+23. 3D、视觉、Blender、设计品味都明显强了。视频、Minecraft、3D 网页一次成型。
+24. 网络安全和生物任务会被自动转给 Opus 4.8。2026-08-31 后注册的 API 账号拿不到推理过程。输出带文本水印。
+
+入职 qoder 一周，写了 9 个 skill 帮我 onboard。7 个是给这份工作专门写的，2 个通用。
+
+1\ setup-mac：把一台新 mac 变回我的电脑。脚本分 8 段，跑几遍都不会坏。入职前 5 天写的，第一天领到机器就用上了。
+
+2\ qoder-commits：增量读 qodercli 的提交，按分支合并成中文的摘要。上次读到哪它自己记着，重跑只看新的。
+
+3\ qoder-feature-review：按功能拆分然后逐个评审实现。一个 agent 找问题，另一个专门去驳倒它，活下来的才留。
+
+4\ qoder-suggest-from：把 ai 新闻变成能落到代码上的改进清单。每条都得指到具体文件的哪一行，跨次去重后攒了 40 条。
+
+5\ qoder-expert：qoder 产品线的知识库。官方文档镜像一份，官方文档没写的自己喂进去。说实话现在基本还空着。
+
+6\ qoder-onboard：融入助理。工作日志、人物图谱、黑话表、周报、待办都在这。感觉这一周大部分时间都在和他聊天。
+
+7\ qoder-triage：把推特等渠道收来的 bug 和 feature request 去重、跟状态、对着代码库查是哪出的问题。收了 10 条，1 条变成了 pr，还有 1 条查完的结论是「这个不该我们修」。
+
+8\ qoder-resources：采集社区里别人写的 qoder 内容。文章推文视频播客都收，音视频自动转成文字，能全文搜。
+
+9\ me：我的简历和个人事实。写第一人称的东西时不用编，履历和时间线都能翻到出处。llm 知道我是谁才能给更好的 suggest 。
+
+找时间挑一些整理下开源，想看哪个可以说一声哈
+
+
+10 open-source repos that taught me more about agents than any course. Here's the one file to read in each.
+
+The file paths are in the image, in the order I'd read them.
+
+1. huggingface/smolagents
+The whole think, act, observe loop lives in one file. Start here.
+
+2. openai/openai-agents-python
+How a run moves between agents and where guardrails stop it.
+
+3. anthropics/claude-agent-sdk-python
+The harness behind Claude Code, callable from your own code.
+
+4. langchain-ai/langgraph
+How a run pauses for a human to approve a step and picks up later.
+
+5. modelcontextprotocol/servers
+A small, real tool server, including how it limits what an agent can touch.
+
+6. mem0ai/mem0
+The prompts that decide what's worth remembering do most of the work.
+
+7. browser-use/browser-use
+How a web page gets described to the model.
+
+8. openai/codex
+Which commands run on their own and which wait for your approval.
+
+9. NousResearch/hermes-agent
+An agent that turns its own work into skills, merges them, and archives old ones instead of deleting them.
+
+10. langfuse/langfuse
+The trace, observation and score tables are a good template for what to log.
+
+Short on time? Read 1, 5 and 10.
+
+Links are in the reply.
+
+https://x.com/sitinme/status/2107649428874285100
+
+
+反馈回路没毛病，但 loop 本身是五分钟的活，难的是 observation 质量：报错全不全、失败测试能不能定位、env 状态干不干净。反馈是垃圾，agent 会非常自信的收敛到错误答案。写 harness 大部分时间其实都花在喂给模型的 token 上 
+
+
+https://x.com/nicechencs/status/2107645095751360524
+
+
+https://github.com/nicechencs/AgentWatch
+
+关于 agent 测试部分，这块比较多人感兴趣，我说几句。第一，基于需求文档生成开发阶段自测用例，在搭建好的环境中让它走真实流程过一遍。第二，基于测试同学的测试用例丢给 agent，区分出可自动化测试的部分，写测试代码过一遍，生成测试报告。剩余要人工介入的部分再稍微过一下即可。
+
+核心就是文中提到的搭建好给 agent 访问测试环境的能力，把 log trace db config 等一切服务治理能力 cli➕skill 化
+
+
+回顾一下 harness engineering 发展的历史，至今似乎还没有一个边界清晰的解释，能说清楚它到底是什么。
+
+先是二月份，OpenAI 发布了 Harness Engineering 的 blog，介绍他们如何从一个 empty repo 出发，搭建可靠的文档、知识库、测试体系和日志环境，供 agent 开展开发工作。
+
+几乎同一时间，LangChain 通过修改提示词、工具和 middleware，将 Deep Agents 在 benchmark 上的成绩提升了 25%，随后提出了 Agent = Model + Harness 的公式。
+
+紧接着，三月份，Anthropic 发布了他们的 harness 方案：一个 Planner → Generator → Evaluator 的循环。
+
+到了四月份，Anthropic 跟吃错药一样，把定义改成了：harness = agent loop，工具环境 = meta-harness。然后再把 harness、meta-harness 和什么脑子啊、手啊拼起来，组成 Managed Agents。
+
+五月和七月，龙虾作者又出来谈 loop engineering 和 graph engineering。火了一小阵，随后又没什么声音了。
+
+八月份，DeepSeek Harness 带着 Everything is a Plugin 的概念横空出世。我当时就说，这就是个 UI harness。现在看来，时间也验证了我的判断。
+
+八月底，OpenAI 看到 DeepSeek Harness 爆火，也整出了一个“OpenAI Harness”的概念，实则就是 Codex。
+
+九月份似乎消停了一阵。到了十月，Pi 又带着 1.0 版本登场，自称 minimalist harness 😂。
+
+感觉 harness engineering 就像哈姆雷特一样：一千个人心中，有一千种 harness。定义越来越宽泛，也越来越离谱。
+
+
+分享12篇跟DeepSeek Harness相关的高质量学习资料，包括官方文档、Harness教程、插件文档、相关论文及解读等：
+
+1、DeepSeek Harness 官方仓库，关于源码、README、示例、架构、版本变化和社区入口的权威来源  
+https://github.com/deepseek-ai/deepseek-harness
+
+2、DeepSeek Harness官方Web UI教程，介绍安装、启动、模型配置、工作区设置和基本使用流程  
+https://deepseek-harness.github.io/deepseek-harness/guide/quickstart
+
+3、DeepSeek Harness第一个插件教程，从最小插件开始学习 `apply`、`inject`、配置、生命周期和 patch 加载  
+https://deepseek-harness.github.io/deepseek-harness/develop/basic/
+
+4、面向时空可组合性的编程范式，DeepSeek Harness底层Cordis 框架的理论基础，介绍 effect、响应式依赖、动态组合和热替换  
+https://github.com/cordiverse/paper
+
+5、分层自我改进：面向任务专属可演化智能体运行框架的方法，研究任务专属 Harness 的持续改进，并使用 DeepSeek-V4-Flash-Preview 进行实验  
+https://arxiv.org/abs/2608.08466
+
+6、二次元头像=技术大佬？DeepSeek Harness揭开AI圈隐藏规律
+https://mp.weixin.qq.com/s/5L3FMDHsKpOJ_2OjP4QMwA
+
+7、编程智能体如何工作，从模型、系统提示词、工具调用、状态和执行循环讲解Coding Agent的运行机制  
+https://simonwillison.net/guides/agentic-engineering-patterns/how-coding-agents-work/
+
+8、面向长时间应用开发的智能体运行框架设计，Anthropic的长任务 Harness 实践，介绍Planner、Generator、Evaluator、任务拆分和跨会话交接  
+https://anthropic.com/engineering/harness-design-long-running-apps
+
+9、Harness Engineering：六层检查框架、上下文管理与工程实践，中文系统教程，覆盖Harness分层、上下文管理、约束执行、观测和恢复  
+https://github.com/Snailclimb/JavaGuide/blob/main/docs/ai/agent/harness-engineering.md
+
+10、从 DeepSeek 招聘反推：Harness 研究员到底要会什么？从DeepSeek 岗位要求整理 Agent Loop、Memory、Tools、Eval、多 Agent 和自我改进能力  
+https://reelos.ai/articles/deepseek-agent-harness-researcher/
+
+11、智能体运行框架工程，关于Harness Engineering全景介绍，覆盖工具、上下文、Hooks、沙箱、记忆和验证
+https://addyosmani.com/blog/agent-harness-engineering/
+
+12、DeepSeek Harness：从入门到插件化实践，覆盖系统架构、Profile、Bundle、插件开发、工具设计、生命周期和排错方法  
+https://doc.laoyao.cn/wtknpy
+
+
+https://github.com/morluto/rea
+
+https://x.com/Zen_with_AI/status/2108707426564477181
+
+这女菩萨网站：https://nv-pu-sa.pages.dev真是好东西，解决了我不想关注福利姬还能找地方看片的需求
+
+PI durable 第 2 集 调用工具的背后 https://youtu.be/cKR6EsPu5sw?si=llZEtJ_vvwQTE0_O 来自 
+@YouTube
+
+https://x.com/uudonX/status/2108835661503730002
+
+https://x.com/AnnatarXBT/status/2108868206358085779
+
+https://x.com/fttt007/status/2108851708159811971
+
+https://x.com/sleepy0x13/status/2108815531365343733
+
+answer-me-with-html 越迭代越舒服了，这个 changes 的显示爽到我自己了
+
+
+KonghaYao - 江夏尧
+@konghayao
+·
+6h
+Agent 岗位面试题——子 Agent 什么时候自然结束，提交结果给父 agnet？这里考察人员基础理论：
+
+1. subagent 基础机制
+     main to sub 的控制原理，面向agent 的生命周期管理
+
+2. async task 的管理机制
+     async task 的归属管理，async task 结束之后的消息投递定位，保证回收和异常处理
+
+3. sub sub agent 的设计与权衡
+    是否支持 subagent 派发 subagent，核心讨论技术权衡和判断对方的思考深度和广度。是否了解 Dynamic Workflow 等拍平需求的解决方案。
+
+异常处理面——场景 subagent 执行时间为 6 个 h 以上咋办？
+
+1. 是否需要超时，最大步数限制？
+    最基础，但是也是最考虑设计哲学的点，是否需要化长时间为短时间？开放题
+
+2. subagent LLM 报错中断如何处理？（resume 的要点）
+    超过 retry 上限中断，直接回归父 agent，父 agent 发送 resume 命令，重新启动这个 agent。考验的是错误的返回提示词里面保留 resume 方式给主 agent，具备恢复能力。
+
+3. 执行超长时间的 shell 阻塞的如何控制？
+     考验同步 shell 转 bg shell 的关键点，保证 subagent 不阻塞。
+    引出一个关键问题，bg shell 是否阻塞 subagent 关闭时机。
+
+你们招聘的项目组是做什么的，可以远程面试吗？
+
+https://github.com/PacktPublishing/Cpp-in-Embedded-Systems
+
+https://x.com/huangtongxueh/status/2108577165306687938
+
+https://javranking.cc/zh-hans
+
+📌 Roadmap to Master Machine Learning in 6 Steps
+
+Whether you're just starting or looking to go pro in ML, this roadmap will keep you on track:
+
+1️⃣ Learn the Fundamentals
+Build a math foundation (algebra, calculus, stats) + Python + libraries like NumPy & Pandas
+
+2️⃣ Learn Essential ML Concepts
+Start with supervised learning (regression, classification), then unsupervised learning (K-Means, PCA)
+
+3️⃣ Understand Data Handling
+Clean, transform, and visualize data effectively using summary stats & feature engineering
+
+4️⃣ Explore Advanced Techniques
+Delve into ensemble methods, CNNs, deep learning, and NLP fundamentals
+
+5️⃣ Learn Model Deployment
+Use Flask, FastAPI, and cloud platforms (AWS, GCP) for scalable deployment
+
+6️⃣ Build Projects & Network
+Participate in Kaggle, create portfolio projects, and connect with the ML community
+
+https://x.com/mathemetica/status/2106887590599127472
+
+10 GitHub repositories to learn Machine Learning from scratch 👇
+
+If you're serious about learning ML, bookmark these:
+
+1- Machine Learning for Beginners
+https://github.com/microsoft/ML-For-Beginners
+
+2- Hands-On Machine Learning
+https://github.com/ageron/handson-ml3
+
+3- Made With ML
+https://github.com/GokuMohandas/Made-With-ML
+
+4- Awesome Deep Learning
+https://github.com/ChristosChristofidis/awesome-deep-learning
+
+5- Python Data Science Handbook
+https://github.com/jakevdp/PythonDataScienceHandbook
+
+6- 100 Days of ML Code
+https://github.com/Avik-Jain/100-Days-Of-ML-Code
+
+7- Practical Deep Learning for Coders
+https://github.com/fastai/fastbook
+
+8- Stanford CS229
+https://github.com/afshinea/stanford-cs-229-machine-learning
+
+9- Awesome Machine Learning
+https://github.com/josephmisiti/awesome-machine-learning
+
+10- ML From Scratch
+https://github.com/eriklindernoren/ML-From-Scratch
+
+From ML fundamentals and mathematics to algorithms, deep learning and practical projects.
+
+Save this for your Machine Learning journey.
+
+Follow for more AI resources, developer tools, interview prep, jobs & opportunities.
+
+https://www.mltut.com/best-certifications-for-machine-learning/
+
+https://github.com/harvard-edge/cs249r_book
+
+https://holon.run/zh-CN/blog/event-driven-kernel
+
+https://t.me/isaiahsystem/1602
+
+@木舟 https://github.com/zxcvbnmzsedr/alist-emby 方案开源了 自己慢慢玩吧
+
+
+https://github.com/shijianzhong/rea/blob/main/README_zh.md试试这个
+
+
+https://wy51ai.github.io/floorplan-3d/
+
+https://pi-school.ziki.boo/lessons/configuration/ 这课挺有意思，让 AI 教你学 AI
+
+https://x.com/Chenfacai0/status/2108329591836491830
+
+https://x.com/shao__meng/status/2104092484867703138
+
+
+章工
+@435hz
+·
+1h
+一个人能力强弱怎么判断?
+随便说一个吧，那些能自己
+
+1、独立搞定用上 ChatGPT
+2、搞定海外银行卡
+3、搞定海外手机号
+4、搞定美股开户、入金、出金
+5、搞定美债、美元、保险
+6、搞定身份、海外资产配置
+
+以及一个人能看到一个关键词就能自己通过各种途径找出答案、做出来的人，人生不会差的。
