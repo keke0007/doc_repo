@@ -1,5 +1,6 @@
 https://github.com/ForceInjection/awesome-skills/blob/main/docs/gstack-deep-dive.md
 
+https://github.com/yetone/magpie
 好多 AI 博主，你问他一个 Skill 是由什么构成的、每个模块的功能是什么，好多人其实都说不上来的。
 
 虽然 Skill 看似人人都能搓，但能搓和搓得好，是两回事。
