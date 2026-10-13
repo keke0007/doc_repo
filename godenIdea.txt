@@ -1,0 +1,5 @@
+yetone 自己恐怕都不知道自己是这样维护的，我先说下这个文章可能存在的问题。
+
+“AGENTS.md 是张路由表，自己不写规则，只告诉 agent 干什么活之前翻哪份文档：改子系统先看 docs/subsystems/，写代码、审代码照 docs/code-standards.md，审社区 PR 看 docs/contributors.md。”
+
+这个 Subsystem 文档和 Code Standard 的文档是我在 discord 艾特 yetone 加的。灵感来源于 dsh。但在这之前别人已经自动 review 管理了。
