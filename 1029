@@ -1,1 +1,380 @@
 https://github.com/Wake-C/inlineExplain
+
+https://x.com/SeanchenZ/status/2115319389448966260
+
+https://x.com/jamesgao_ai/status/2115599210104107238
+
+https://github.com/PGshen/vs-idea-gittool
+
+99% 的人都不知道 Codex 这个功能。 
+
+Codex 有个很值得养成的收尾习惯： 关掉长会话前，先让它写一份交接文档。 
+
+直接输入：“这个会话要结束了。 请写一份交接文档存到 HANDOFFtmd: 我们在做什么任务、已经完成了什么、当前卡在哪、下一步计划是什么、有哪些踩过的坑绝对不要再踩。 写给一个完全没有上下文的新会话看。” 
+
+下次开新会话，第一句话只要说：先读 HANDOFF.md
+
+https://x.com/tvytlx/status/2115319147919995345
+
+https://x.com/GitTrend0x/status/2115436049975443860
+
+https://x.com/yetone/status/2115516478254624914
+
+https://esp-labs-web.pages.dev/#/?lang=zh
+
+https://github.com/DetachHead/rebased
+
+Agent 工具领域实在太卷，Orca、Paseo、T3 Code、Rex、Lody，这里面大部分都还是开源的…
+如果要做商业化产品，我优先选择不懂技术，甚至不太用电脑的用户，理解并满足他们的需求，这才是普罗大众，这是真实的世界，X 上每天都在吹“软件马上消失了、每个人都可以做自己的 App”，也很真实，但脱离大众世界。
+
+https://x.com/phodal/status/2098752746379997601
+
+https://x.com/HiTw93/status/2115366100221501540
+
+https://github.com/luoling8192/skills
+
+https://x.com/HappyQQ_AI/status/2115353208054804533
+
+https://x.com/Aoyi21/status/2115444257792364789
+
+当前 codex 的最爽分工：
+
+唯一 Astra high 当大脑，指挥 sol xhigh 干体力活，前端、ui、文案、浏览器使用等文员的全交给 terra xhigh 飞速干完。
+
+体验比之前苦等 sol 好一百倍。
+
+https://x.com/snwiki238337/status/2115358658447970489
+
+https://x.com/shao__meng/status/2115428696672866729
+
+https://github.com/dualface/ste-zh
+
+给大家一个建议：
+
+如果你的朋友没有用过Claude，不要帮他装！不要告诉他！
+
+因为你要帮他解决vpn、vps、指纹浏览器、银行卡、海外电话卡漫游、还要教会他区分机房ip、双isp ip、家宽
+
+https://x.com/tvytlx/status/2115253465693737317
+
+https://x.com/aipgh6/status/2114940205794984018
+
+https://x.com/fttt007/status/2115241212722733230
+
+https://x.com/Zen_with_AI/status/2115222007935885813
+
+
+最近刚刚搞清楚：
+
+土豆淀粉是生粉，是用来打芡的，打出来芡又亮又光
+
+玉米淀粉是用来腌肉的，腌出来的肉又滑又嫩
+
+红薯淀粉是用来炸东西的，炸出来的东西又脆又酥
+
+家里有一盒木薯粉，这个做什么比较合适不知道了
+
+https://x.com/uudonX/status/2115224021109182584
+
+https://x.com/xiaoanlab/status/2115224171966054765
+
+https://x.com/realchendahuang/status/2115127451701698568
+
+https://x.com/Kay2289123/status/2115125125163233473
+
+https://x.com/Zen_with_AI/status/2115183070097842466
+
+https://x.com/longhaiqwe123/status/2115040813847884229
+
+兄弟们，JEV 这玩意儿，现在基本已经成我写任何工具的底层标配了。
+
+但凡遇到需要加速决策、把速度往上提的场景，我现在不管三七二十一，先接上 JEV 跑一遍再说。 而且它现在连图片视觉输入都支持了，实测效果非常顶。
+
+有图文判断、高光筛选或者流程卡点的，
+
+https://x.com/SeanchenZ/status/2115051215511793921
+
+纯浏览器操作 / 规模化 RPA 流程： 直接用 Claude Haiku 5.5（搭配 effort: low/medium 和上下文裁剪控制），以最低成本跑通高并发流水线。跨软件桌面 Agent / 复杂视觉与终端混合任务： 选择 GPT-6.1 Terra。用 Haiku 5.5 承担 80% 的常规页面跳转、元素点击和信息提取；当遇到复杂图表识别、跨应用拖拽或连续操作失败触发 Fallback 时，再动态路由切换给 GPT-6.1 Terra（或 Claude Sonnet 5.5，OSWorld 高达 83.9%）处理卡点。
+
+https://x.com/Morry4AI/status/2114959114107514885
+
+https://x.com/0xLogicrw/status/2115003558773084339
+
+https://x.com/SeanchenZ/status/2114939817352179839
+
+https://x.com/cxjwin/status/2114960651659661476
+
+
+https://x.com/shakesPills/status/2114962777177723237
+
+https://x.com/xiaoanlab/status/2114943673762709601
+
+https://x.com/cxjwin/status/2114948576157794344
+
+https://x.com/GitTrend0x/status/2114975429559771330
+
+https://github.com/anonymousjav/AvPlayRelease
+
+https://github.com/wanghongenpin/proxypin
+
+https://x.com/ClorisSignal/status/2114876818998337696
+
+https://x.com/Xudong07452910/status/2114876984304263464
+
+https://x.com/ReignSwords/status/2114652755046564221
+
+https://x.com/TiagerBao/status/2114846820023370100
+
+https://x.com/making_cindy/status/2113993797671801149
+
+https://x.com/IPrettho/status/2114696506129150370
+
+https://x.com/xiaomanotes/status/2114729935298523501
+
+https://x.com/n7wb1l/status/2114705654946598960
+
+https://x.com/AI_DVD6/status/2114543896487473377
+
+https://x.com/SeanchenZ/status/2114604099803267548
+
+https://x.com/guxiaochun888/status/2114728028815437870
+
+https://x.com/Ryrenz/status/2114675659096179050
+
+https://x.com/Huahuazo/status/2114786640745074953
+
+https://x.com/Zen_with_AI/status/2114752264674201841
+
+https://x.com/guxiaochun888/status/2114756850856157271
+
+https://x.com/turingbook/status/2114724007639392330
+
+Anthropic平台研发负责人Katelyn Lesse的文章，谈智能体时代，工程师不要觉得没事儿可做了，还有很多需要解决的问题：
+-智能体基础设施，类似传统软件中k8s，包括新的文件系统、沙箱服务、Agent Substrate这样的运行时。
+-智能体的身份验证与授权。问题可能很复杂：什么时候是智能体自己，什么时候它在代表人类？
+-安全与隔离。漏洞的发现比修补速度快，智能体本身也存在安全问题，在多智能体环境中更为严峻。
+-监控与停机。确保智能体在干好事儿，如果不及时发现并停止。
+
+AI岗位面试的时候，有5个算法需要熟练手写。
+1. Softmax
+2. Attention（含 Multi-Head）
+3. K-Means
+4. Adam 优化器
+5. Beam Search
+面之前现在纸上练熟悉
+
+https://www.v2ex.com/t/1251965#reply9
+
+https://x.com/Huahuazo/status/2114722969515864257
+
+https://x.com/xiaoanlab/status/2114715979146223641
+
+https://x.com/naki2012/status/2114715298058428764
+
+https://x.com/yibie/status/2114712183095624012
+
+https://x.com/chasen_liao/status/2114624470233358540
+
+其实我最近也发现了为什么大家老是觉得 Agent 不太顺手，而我为什么一直以来都用得特别顺手，就是因为我一直以来都用 --dangerously-skip-permissions 这个参数来启动 claude，这个参数很关键，因为它不只是影响到是否需要人批准，这个参数甚至会影响到 prompt（见截图）。也就是说不加这个参数，claude 基本上是一个半残废的状态，它的积极性和主动性会大大降低，导致很多事情它都不会自动帮你做。
+
+当然，你质疑安全性就当我没说。因为我用 Agent 的习惯就是把它放在一个单独的没有敏感信息的机器里放开手脚，让它去飞。
+
+https://x.com/cheery9998/status/2114601081598845227
+
+AI 时代，年轻人应该怎么办？很简单，几个关键词：
+
+1. Stranford CS336
+2. Sebastian Raschka:  Build a Reasoning Model 
+3. Nathan Lambert: Reinforcement Learning from Human Feedback
+4. 谭成义三分化
+
+https://x.com/shao__meng/status/2114615306908029337
+
+https://www.v2ex.com/t/1251749#reply96
+
+https://x.com/FrozenEel427/status/2114499749319729557
+
+https://x.com/yaojingang/status/2114576054018818536
+
+https://x.com/ding_liam/status/2114562663145443567
+
+https://github.com/czlonkowski/n8n-skills
+
+https://x.com/GitTrend0x/status/2114514868283826390
+
+https://x.com/bkdgiffug/status/2114493205962211507
+
+https://x.com/shao__meng/status/2114539832555065471
+
+https://x.com/fkysly/status/2114546068386136198
+
+https://x.com/alexlee20122022/status/2114502627673206802
+
+https://github.com/tailscale/tailcat
+
+https://x.com/GitTrend0x/status/2114205326752858193
+
+https://github.com/smhanov/agentloop
+
+https://x.com/Daklnl/status/2114417793156403286
+
+https://github.com/ix-infrastructure/Ix
+
+https://x.com/real_doctormin/status/2114412705767727547
+
+https://x.com/criscxuan/status/2114379305266659792
+
+https://github.com/OtterMind/Chat2DB
+
+https://github.com/Anduin2017/HowToCook
+
+https://x.com/hongseyanqiu/status/2114328601516810566
+
+Thariq宣布离开Anthropic，并称自己在Claude Code上工作了一年多。产品快速增长后，真正的考题不只是继续加功能：用户反馈、工程判断与产品经验能否沉淀为团队能力，决定了创新能否持续
+
+Figma 的 Chrome 插件太好使了，还原度 100%，这下真是干死了一堆第三方了，不只能复制设计稿还能复制代码，效果太好了
+
+https://x.com/interestxy/status/2114275017823248666
+
+https://x.com/RealYDT/status/2114382577721319622
+
+https://x.com/gefei55/status/2114229709034627293
+
+https://x.com/xoyif63862452/status/2114259164671209484
+
+https://x.com/Rakel076/status/2114326182397108356
+
+https://x.com/zjp1997720/status/2114331577924850046
+
+https://x.com/distance9909/status/2114357895248990443
+
+https://x.com/ai_edisonZ/status/2114278147084390455
+
+https://x.com/huangcheng943/status/2114337109733671235
+
+https://x.com/AISuperDomain/status/2114356516073488400
+
+https://x.com/Suercha007/status/2114296967685963935
+
+https://mp.weixin.qq.com/s/IIm-Yznjt7C0zjhU5rPrEg
+
+https://x.com/alacheng/status/2114327139181019309
+
+https://x.com/poolmoon6/status/2114348757890306547
+
+https://x.com/llllleo9/status/2114365358572548146
+
+https://x.com/cxjwin/status/2114363570649694504
+
+https://x.com/ScarletKc/status/2114225657651855608
+
+https://x.com/Mcfly2140/status/2114219654797459549
+
+https://x.com/yangleiocx3/status/2114337645148979380
+
+https://x.com/jolestar/status/2114344057975754754
+
+用 Tern
+
+https://github.com/punkpeye/awesome-remote-mcp-servers
+
+https://github.com/ombharatiya/ai-system-design-guide
+
+https://x.com/gkxspace/status/2114299595123773945
+
+https://github.com/backnotprop/plannotator
+
+https://github.com/amitshekhariitbhu/ai-system-design
+
+https://x.com/mylifcc/status/2114296157501260123
+
+同事盯着我们官网首页问，这版是找外包重做了吗，我说是Claude自己写的，他愣了得有三秒
+http://github.com/nutlope/hallmark
+
+一个让AI写页面别“AI味”那么重的规则包，装进Claude Code和Cursor里用
+
+以前AI写的页面，渐变大标题、三张功能卡片、结尾再挂个订阅框，全一个模子。装完这个，它每次先抽个风格再动笔，写完可以打开浏览器自己截图挑毛病
+
+我拿它重做落了个地页，最明显的感受是两个不同需求的页面，没有那种“换汤不换药”的感觉了
+
+装就一行命令，npx skills add nutlope/hallmark
+
+还可以给现有页面打分，列一份“哪里AI味很重”的清单，光看不改
+
+缺点也有，它只出网页那一套，你要React组件得自己拆
+
+https://github.com/storytold/cadcraft
+
+所有年轻人必备的八件套：
+1.普通护照原件
+
+2.往来港澳通行证原件（同时有：一年一次香港旅游签注（深圳户籍需要有1年多次赴港签注）
+
+3.招商万事达蓝葵花（绑定Apple Wallet就可以在境外去Apple Pay了）
+
+4.国行版iPhone Air（如果条件允许建议用iPhone 18 Pro韩国版）
+
+5. 韩国5年或10年eVisa
+
+6.Macbook Air笔电（如果条件允许建议用MacBook Pro韩国版）
+
+7.香港3 HK的eSIM（268港币1年套餐那个全球13GB即可），用护照实名即可
+
+8.雅思成绩单6.0（听说读写（ielts general training类（或者雅思成绩单6.5（听说6.0，读写6.5（ielts Academic类）
+
+翻墙别裸奔！！ WebRTC 泄露，怎么检测？！
+
+分享 3 个我觉得很好用的检测网站！
+
+1. https://browserleaks.com/webrtc
+
+2. https://ippure.com/Browser-WebRTC-Leak-Detect.html
+
+3. https://ip.net.coffee/webrtc/
+
+打开代理，任选一个网站检测！
+
+重点看 WebRTC 有没有暴露你的真实国内公网 IP！
+
+如果检测出来真实 IP，就要检查浏览器和代理设置了
+
+https://github.com/HarnessRouter/harnessrouter
+
+https://x.com/jamesgao_ai/status/2114293704009912351
+
+https://github.com/tianma-if/edgeever
+
+https://github.com/xingkongliang/skills-manager
+
+确实是这个道理。感觉打工这么多些年都没有积累，什么都是积累，积累的只是如何做一个更好的“牛马”。
+
+但是，关于真正的商业化能力，我是完全没有的：
+1. 如何谈判？
+2. 如何找到赚钱的市场？
+3. 如何理解一个业务能否赚钱？
+4. 如何真正学会这种商业化的能力？
+
+至少待在公司里，我都没有成功过。
+
+https://x.com/haoge6699/status/2114000207897571703
+
+https://github.com/zhuyansen/agent-skills-hub
+
+https://x.com/goan999999/status/2113927960650776889
+
+
+章工
+@435hz
+·
+1h
+一个人能力强弱怎么判断?
+随便说一个吧，那些能自己
+
+1、独立搞定用上 ChatGPT
+2、搞定海外银行卡
+3、搞定海外手机号
+4、搞定美股开户、入金、出金
+5、搞定美债、美元、保险
+6、搞定身份、海外资产配置
+
+以及一个人能看到一个关键词就能自己通过各种途径找出答案、做出来的人，人生不会差的。
