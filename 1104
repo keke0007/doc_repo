@@ -1,0 +1,173 @@
+https://x.com/MaxMa_27/status/2117650907630588200
+https://x.com/chenchengpro/status/2117845238786252885
+https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs%2Fgen-ai%2Fmcp.md
+https://kejun.github.io/cs-systems-design/
+https://github.com/Tencent/WeVisOne-VL
+https://github.com/zhuangzhaoyeye/llm_course
+https://x.com/ruyi3699/status/2117632905266835772
+https://x.com/snwiki238337/status/2117445911794061742
+https://github.com/open-wxa/wxa-runner
+https://x.com/snwiki238337/status/2117595900348416453
+
+@crazrinsane
+
+发给你的 gpt  Based on everything you know about me, roast and don’t hold back. Say it in Chinese slung just like this, but add way more Chinese swear words  根据过往对话回答我 
+
+腾讯云这个orcaterm
+
+https://fingerprint.hesusolution.com/
+
+https://x.com/PanXing0827/status/2117164001092092016
+
+https://x.com/PanXing0827/status/2117149134247596504
+
+各位，我从 Paseo 叛变到 T3 Code 了，原因:UI 好看，远程好用，支持多 Agent 角色，更重要的同一会话，支持各个Agent （Claude、Codex、Pi）进行切换，团队开发。
+
+https://x.com/nini_incrypto_/status/2117280572321980530
+
+https://x.com/meow2149/status/2117448048150548729
+
+https://x.com/xiaogaifun/status/2117183597362987304
+
+https://x.com/chenchengpro/status/2117452147822673956
+
+给 Codex 装永久记忆： 
+
+你帮我配置一个 Obsidian 知识库 作为 Codex 跨项目永久记忆。将我长期以来所有偏好、决策习惯、全部项目以及项目细节录入并整理归纳
+
+每日任务前按需读取 每晚十点整理 当日项目沟通记录 同步更新知识库 每周做一次复盘沉淀项目 信息减少冗余读取
+
+这样你的 Codex 就具备 永久记忆能力了。
+
+Agent 工程，我的感觉是七成后端，三成在处理不确定性
+
+七成后端很好理解
+主循环是状态机，工具调用是 RPC
+记忆是存储和缓存，长任务是队列和工作流
+再加上沙箱、权限、可观测性
+这也是为什么大厂的 Agent 工程师很多是后端转过去的
+
+三成的不确定性
+Agent 的核心组件是概率性的
+同一个请求跑十次，结果可能都不一样
+处理这种不确定性，主要靠两样东西
+1. Harness，运行时约束，让agent跑的稳
+2. Eval，用数据集打分，判断改动是变好了还是变坏了
+
+班。
+2019前后：Hadoop已死，数据上云。
+2022：大数据已死，单机就能干。
+
+https://xyz.sorosliu.xyz/
+
+cachy
+
+dms+niri 爽的飞起
+
+https://x.com/Khazix0918/status/2117054043868860521
+
+https://github.com/wanghao-SunSky/cs329z-chinese
+
+https://x.com/Ryrenz/status/2117196278941590005
+
+https://x.com/zhangmingran3/status/2116908889199514064
+
+https://x.com/openmys/status/2116911476422402222
+
+https://x.com/Zen_with_AI/status/2116955137881370865
+
+https://x.com/Manorgw/status/2116834633790914684
+
+https://x.com/bayaicircle/status/1845377415025131589
+
+https://x.com/PandaTalk8/status/1766741686128963802
+
+https://x.com/bi_9527zx/status/2084107330724200803
+
+https://x.com/123olp/status/2021600923290890403
+
+https://x.com/bayaicircle/status/1848091605921923307
+
+https://x.com/PandaTalk8/status/1875008370677010521
+
+https://x.com/xiaohua_888/status/1987096311817248876
+
+https://x.com/wshuyi/status/2014265957582315821
+
+https://scrapling.readthedocs.io/zh-cn/latest/index.html
+
+https://x.com/hiwise_aigc/status/2114287632683520385
+
+https://x.com/FinanceYF5/status/2114236309111992471
+
+https://x.com/vikingmute/status/2115073914271629814
+
+https://x.com/antiAIvo/status/2115755286967558317
+
+https://x.com/GitTrend0x/status/2114152481881989579
+
+https://m.youtube.com/playlist?list=PLangBM27OtEA
+
+https://x.com/HiTw93/status/2115366100221501540
+
+https://cs329z.stanford.edu/
+
+https://blog.fliaping.com/domain-agent-harness-engineering/
+
+https://x.com/cxjwin/status/2116824170621501625
+
+https://x.com/HiTw93/status/2116797957454401746
+
+https://x.com/Manorgw/status/2116522829780795573
+
+Pi 生态里有 5 个挺实用的扩展，分享一下：
+
+▪︎ pi-dynamic-workflows：编排多个 Agent 协作执行任务，支持动态工作流。
+
+▪︎ pi-goal-x：通过 /goal 设定目标，自动推进任务，跨会话保存进度，还能独立验收。
+
+▪︎ pi-tasks：任务看板、依赖管理，支持多个会话共享任务列表。
+
+▪︎ pi-tool-display：优化终端工具调用展示，支持折叠输出和代码 Diff。
+
+▪︎ postman-plugin：Postman 官方插件，让 Agent 参与 API 设计、测试和文档管理
+
+2.下载Kiro工具
+https://kiro.dev/
+
+3.下载Kiro切换账号工具
+https://github.com/chaogei/Kiro-account-manager/releases/tag/v1.7.5
+
+4.然后商家会让你加他微信，然后发给你一个json数据，发货
+
+5.桌面新建一个 account.json 文件，把商家发你的json内容粘贴进去，然后打开Kiro Account Manager工具导入，然后启用
+
+6.重启Kiro就可以了，右侧新建对话，使用 Claude Opus 5.5模型
+
+https://x.com/openmys/status/2116500645146685880
+
+https://x.com/tantanyuli/status/2116367557372559381
+
+https://x.com/yymhxie/status/2116342408938164557
+
+https://x.com/Karadokuy/status/2116475425916694997
+
+https://github.com/Orkas-AI/Orkas
+
+你们平时有没有遇到过这种情况啊：
+只是让 AI 看一下哪里有问题，它直接动手改了一堆，还顺手改了你没让它碰的地方。。。真的很让人无语
+
+我在全局的 ~/.claude/CLAUDE.md 里加了这两段：
+
+- answer、explain、review、diagnose、report 默认只检查并报告，change、build、fix、implement 授权任务范围内的本地修改与验证。
+- 以用户当前明确要求的结果为完成标准，只执行实现该结果所必需的操作，不擅自改变目标、扩大范围或添加替代方案。用户要求修改 A 时，只修改 A，不顺手调整 B。
+
+第一段是按动词分的，意思是说 review 就只给结论，说 fix 才动文件。Codex 的话放在 ~/.codex/AGENTS.md 里也一样，需要的朋友可以直接复制过去
+
+https://x.com/bkdgiffug/status/2116132507511046653
+
+https://x.com/antiAIvo/status/2116158775694647609
+
+https://x.com/antiAIvo/status/2116420397252116786
+
+
