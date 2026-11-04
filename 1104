@@ -286,3 +286,222 @@ https://x.com/goan999999/status/2113927960650776889
 6、搞定身份、海外资产配置
 
 以及一个人能看到一个关键词就能自己通过各种途径找出答案、做出来的人，人生不会差的。
+
+
+牛津大学放出了一套深度学习数学课程，2026–2027 学年开设，16 节课全部免费。
+
+课程叫《Theories of Deep Learning》，专门研究深度神经网络背后的数学原理。
+
+内容包括神经网络架构、非线性变换、卷积与池化、优化算法、字典学习、特征迁移、对抗样本、随机矩阵理论，以及模型如何学习不变性等。
+
+这些内容试图回答一些更底层的问题：神经网络为什么能学到有用的特征？深层网络的表达能力从哪里来？为什么模型会有这样的泛化表现？
+
+如果你不满足于调 API、调参数，想进一步理解现代 AI 模型的数学基础，这套课程很值得收藏。
+
+课程课件，作业，作业答案都有，适合自学能力强的收藏使用。
+
+课程链接：https://courses.maths.ox.ac.uk/course/view.php?id=XXXXX
+
+AI 课程推荐
+HuggingFace 社区计算机视觉课程 via 
+@huggingface
+ 
+
+本课程涵盖计算机视觉从基础知识到最新进展的所有内容，共十三个单元：
+第 1 单元 - 计算机视觉基础知识
+第 2 单元 - 卷积神经网络 (CNN)
+第 3 单元 - 视觉 Transformer
+第 4 单元 - 多模态模型
+第 5 单元 - 生成模型
+第 6 单元 - 基本计算机视觉任务
+第 7 单元 - 视频和视频处理
+第 8 单元 - 3D 视觉、场景渲染和重建
+第 9 单元 - 模型优化
+第 10 单元 - 合成数据创建
+第 11 单元 - 零样本计算机视觉
+第 12 单元 - 计算机视觉中的道德和偏见
+第 13 单元 - 展望和新兴趋势
+
+课程地址：
+https://huggingface.co/learn/computer-vision-course/unit0/welcome/welcome
+
+
+# Agentic AI: The Big Picture
+
+## 演进阶段与核心目标
+
+### 1. AI & ML (人工智能与机器学习)
+* 核心目标：将数据转化为决策
+* 关键技术与概念：
+    * 自然语言处理 (NLP)
+    * 推理与问题解决
+    * 监督学习
+    * 强化学习
+    * 无监督学习
+
+### 2. Deep Learning (深度学习)
+* 核心目标：用于复杂任务的多层神经网络
+* 关键技术与概念：
+    * 变形金刚架构 (Transformers)
+    * 大型语言模型 (LLMs)
+    * 注意力机制
+    * 迁移学习
+    * 循环神经网络 (RNNs) & LSTM
+    * 卷积神经网络 (CNNs)
+    * 深度信念网络
+
+### 3. Gen AI (生成式人工智能)
+* 核心目标：大规模生成内容和代码
+* 关键技术与概念：
+    * 多模态生成 (文本、图像、音频)
+    * 幻觉缓解
+    * 提示词工程
+    * 检索增强生成 (RAG)
+    * 语音接口 (TTS & ASR)
+    * 音频/音乐生成
+    * 视频生成
+    * 图像生成
+    * 代码生成
+
+### 4. AI Agents (AI 智能体)
+* 核心目标：自主执行复杂任务
+* 关键技术与概念：
+    * 规划 (ReAct, CoT, ToT)
+    * 任务调度与优先级排序
+    * 目标分解
+    * 工具编排 (操作/插件)
+    * 工具使用与函数调用
+    * 上下文管理 (状态与历史)
+    * 人机协同监督 (Human-in-the-Loop)
+    * 存储系统 (短期与长期)
+    * 自我反思与错误恢复
+    * 自主执行
+    * 输出验证
+    * 框架与运行环境
+
+### 5. Agentic AI (代理式/智能体化 AI)
+* 核心目标：利用 AI 实现整个流程的自动化
+* 关键技术与概念：
+    * 智能体协议
+    * 意图保留
+    * 自我改进的智能体
+    * 回滚机制
+    * 反馈循环与评估器
+    * 成本与资源管理
+    * 长期自主权与目标链
+    * 治理、安全与护栏
+    * 内存治理与保留策略
+    * 可观测性与追踪
+    * 委派与移交协议
+    * 风险管理与约束
+    * 智能体市场与合约
+    * 失败恢复与重新规划
+    * 动态工具化
+
+## 跨领域能力与特征
+* 个性化 (Personalisation)
+* 摘要提取 (Summarisation)
+* 智能体协调与通信
+* 多智能体协作
+* 状态持久化
+
+探索机器学习的宇宙：全面解析流行模型
+
+这幅图详细展示了各种流行的机器学习模型及其分类，帮助我们理解每种方法的应用场景和特点：
+
+1. 监督学习：
+   - 分类：用于将数据点分入预定义的类别中，如kNN、逻辑回归、朴素贝叶斯、决策树和支持向量机（SVM）。
+   - 回归：预测连续值输出，包括线性回归、多项式回归、Lasso和Ridge。
+
+2. 无监督学习：
+   - 聚类：将数据分组为自然形成的集群，如k-means、DBSCAN和模糊C均值。
+   - 模式搜索：如Apriori和ECLAT，用于发现数据中的频繁模式。
+   - 降维技术：PCA、LDA等，用于减少特征数量，提高计算效率。
+
+3. 强化学习：
+   - 使用如Q-Learning和深度Q网络（DQN），用于训练智能体在环境中通过奖励机制进行决策。
+
+4. 神经网络：
+   - 多层感知机（MLP）：基础前馈神经网络。
+   - 卷积神经网络（CNN）：擅长处理图像数据。
+   - 循环神经网络（RNN）：处理序列数据，如时间序列分析。
+   - 生成对抗网络（GAN）和变压器（Transformers）：用于生成数据和自然语言处理。
+
+5. 集成模型：
+   - 通过组合多个模型来提高预测性能，包括Boosting（如XGBoost）、Bagging（如随机森林）以及Stacking技术。
+
+每种模型都有其独特的应用场景，了解这些模型可以帮助你在不同的数据科学任务中选择最合适的方法。
+
+Post
+
+See new posts
+Conversation
+Mr Panda
+@PandaTalk8
+怎样学习深度学习
+1. 先学习数学基础：深度学习需要掌握线性代数、微积分、概率统计等数学知识，因此先学好这些基础知识是必要的。
+
+2. 学习机器学习：深度学习是机器学习的一个分支，因此了解机器学习的基本概念和算法是深度学习的基础。
+
+3. 学习Python编程：大部分深度学习框架都是基于Python编程语言开发的，因此学会Python编程是深度学习的必要条件。
+
+4. 学习深度学习框架：常见的深度学习框架有TensorFlow、Keras、PyTorch、Caffe、Theano等。选择一门框架学好，并熟练掌握其API。
+
+5. 学习深度学习模型：深度学习模型有很多种，例如卷积神经网络（CNN）、循环神经网络（RNN）、递归神经网络（Recurrent Neural Network）、生成对抗网络（GAN）等。选择一种模型开始学习，逐渐扩展到其他模型。
+
+6. 动手实践：深度学习需要大量的实践训练，可以通过解决实际问题或参加竞赛来提高自己的能力。
+
+https://github.com/0voice/learning-Journey-AI
+
+推荐一波学习AI的资源：
+
+吴恩达教授主讲，内容涵盖神经网络、CNN、RNN 等
+https://coursera.org/specializations/deep-learning
+
+基于 PyTorch 和 MXNet 的深度学习实践课程
+https://courses.d2l.ai/zh-v2/
+
+李宏毅教授的深度学习课程，内容深入浅出
+https://github.com/datawhalechina/leedl-tutorial
+
+适合机器学习初学者的入门课程
+https://developers.google.com/machine-learning/crash-course?hl=zh-cn
+
+提供深度学习、加速计算、数据科学等领域的开发培训
+https://nvidia.cn/training/
+
+斯坦福大学的深度学习课程，专注于计算机视觉和卷积神经网络（CNN）
+http://cs231n.stanford.edu
+
+由 Andrew Ng 主讲的经典机器学习课程，涵盖监督学习、非监督学习和其他基本概念
+https://coursera.org/learn/machine-learning?utm_source=chatgpt.com
+
+基于 PyTorch 的深度学习快速入门课程，旨在让每个人都能快速实践深度学习
+https://course.fast.ai
+
+Udacity 提供的深度学习计算机视觉课程，教授如何使用 PyTorch 实现图像分类、目标检测等任务
+https://udacity.com/course/deep-learning-pytorch--ud188
+
+Udacity 的深度学习纳米学位课程，覆盖神经网络、卷积神经网络、生成对抗网络（GAN）等内容
+https://udacity.com/course/deep-learning-nanodegree--nd101
+
+斯坦福大学的深度学习自然语言处理课程，重点讲解如何利用深度学习技术进行文本处理和分析
+https://web.stanford.edu/class/cs224n/
+
+edX 上的 TensorFlow 深度学习课程，适合想要学习使用 TensorFlow 进行深度学习的开发者
+https://edx.org/course/deep-learning-with-tensorflow
+
+http://Fast.ai 提供的在线课程，面向开发者，通过实践讲解深度学习的核心概念和应用
+https://course.fast.ai
+
+麻省理工学院的深度学习入门课程，涵盖基本的深度学习概念、卷积神经网络、生成对抗网络等
+http://introtodeeplearning.com
+
+Udemy 上的 R 语言数据科学和机器学习课程，适合想用 R 进行机器学习的开发者
+https://udemy.com/course/data-science-and-machine-learning-bootcamp-with-r/
+
+吴恩达教授的人工智能入门课程，旨在为没有技术背景的人提供 AI 基础知识。
+https://coursera.org/learn/ai-for-everyone
+
+
+https://x.com/Zen_with_AI/status/2117965838498287838
