@@ -501,3 +501,269 @@ https://github.com/RikkaApps/Shizuku/releases
 
 https://x.com/xiaoanlab/status/2118963036484690305
 
+ou
+Following
+费曼输出群
+
+See new posts
+Your Home Timeline
+Ethan 恩宇
+@UPing123zzz
+·
+14h
+很多人学 AI Agent，学习顺序完全是反过来的。
+
+昨天还在研究 Function Calling 是什么，今天就开始搞 Multi-Agent，明天又要研究 Self-Improving Agents，恨不得直接搭一套能够自主进化的智能体集群。
+
+结果真让他解释一次 Agent 从接收任务、选择工具、执行操作，到获取反馈、更新状态的完整过程，可能根本讲不清楚。
+
+这张 Agentic AI Knowledge Graph，我觉得所有准备学习 Agent、RAG、FDE 的人，都应该认真研究一下。
+
+因为它把 Agent 技术之间的依赖关系讲得特别清楚。
+
+最底层其实就是 LLM Reasoning、Prompt、Function Calling、Embedding、Context Window 这些基础能力。
+
+这些东西看起来很简单，但如果你连模型怎么调用工具、上下文怎么组织、Token 为什么会溢出都没搞明白，上来就研究复杂的 Agent 框架，很容易变成只会照着教程配置参数。
+
+往上一层是 RAG 和 Memory。
+
+从 Classical RAG、Graph RAG 到 Agentic RAG，再到短期记忆、长期记忆和情景记忆。
+
+这里真正值得学习的，不是哪个向量数据库更火，而是 Agent 应该在什么时候检索什么信息，怎么判断检索结果是否可信，以及哪些信息应该被长期保存。
+
+再往上才是 ReAct、Planner-Executor、Multi-Agent Orchestration、Tool Routing 和 Reflection。
+
+这些东西解决的是 Agent 怎么规划、执行、观察反馈，以及下一步该采取什么行动。
+
+但我觉得最容易被忽略的，反而是后面的生产环境治理。
+
+Confidence Scoring、Policy Gates、Audit Trail、Observability、Token Economics。
+
+说白了，就是系统凭什么相信这次结果？什么时候应该拒绝执行？出了问题能不能追溯？整个任务到底花了多少钱？
+
+一个 Agent 能连续调用十几次工具，不代表它就有多先进。
+
+如果它没有停止条件、没有权限控制、没有执行记录，调用错了还不断重试，那只不过是在自动化地制造更多问题。
+
+最上层才是那些听起来特别牛逼的东西。
+
+Self-Improving Agents、Memory & Learning Loops、Multi-Modal Reasoning，以及大规模 Agentic Workflows。
+
+但所谓自我改进，不是给 Agent 加一句你要不断反思、自主进化的 Prompt，它就真的能够越来越聪明。
+
+你至少得有可靠的反馈、评测标准、历史执行记录，以及能够验证改进是否有效的机制。
+
+否则所谓 Reflection，可能只不过是模型换一种方式重复自己的错误。
+
+所以真正学习 Agent，不应该从哪个框架最火、哪个项目 Star 最多开始。
+
+而是应该亲手跑通一条完整链路，弄明白每一次模型推理、工具调用、状态变化和错误恢复到底是怎么发生的。
+
+先把一个 Agent 做明白，再考虑多个 Agent 怎样协作。
+
+先把一次任务执行可靠，再研究怎么让它长期运行。
+
+先建立真正的评测和反馈机制，再讨论什么自主学习、自我进化。
+
+很多人天天追新技术，感觉自己每天都在进步，实际上只是不断增加自己接触过的技术名词。
+
+知道一个概念，和真正理解它在系统里解决了什么问题，根本是两回事。
+
+AI 可以帮我们跳过大量重复编码工作，但不意味着可以跳过对工程原理的理解。
+
+我觉得未来 Agent 工程师真正的差距，不会只体现在谁用了更多的框架，而是当一个复杂任务执行失败的时候，谁能够准确定位问题，理解系统为什么这样运行，并且知道应该如何修改。
+
+这张图最后的观点我特别认同。
+
+学习 Agent，不能一上来就从最顶层那些听起来特别先进的概念开始。
+
+得顺着底层依赖关系一步步往上走，再真正观察一条任务从开始到结束的完整执行过程。
+
+不然学了一堆 Multi-Agent、Harness、MCP、自我进化，最后连一个 Agent 为什么会反复调用同一个工具都解释不清楚。
+
+https://x.com/dualface/status/2121415861366108448
+
+强规则和工具驱动的 Agent 任务编排系统 https://github.com/dualface/kander 2.0 已经在路上了。
+
+核心改进：
+
+- 架构改为 client/server 模式，单一项目可以在多个机器上开发，共享同一份任务池，为团队协作提供支持。
+- 引入形式化证明，用于验证复杂的多层状态机
+
+https://x.com/TiagerBao/status/2121481428500418958
+
+https://x.com/shenxiankk/status/2121293766250107386
+
+https://x.com/yibie/status/2121447063762456743
+
+常驻 agent 的五个原语
+
+Anthropic 最近写了一篇工程文章，拆「常驻 agent」（always-on agent）怎么搭。这种 agent 会跨会话记住上下文，没人盯着也会自己动手，但它并不是真的一直跑，而是大部分时间在睡觉，收到事件就干一轮活（一个 run），存好信息再睡。
+
+让这套循环转起来的外围架构，Anthropic 归成五个原语：事件收件箱、定时器、记忆、权限、发件箱。
+
+事件收件箱解决「谁来叫醒它」。webhook、定时任务、后台作业都不直接调 agent，而是写进一个持久队列，由唯一的 worker 取出来开 run。直接调 agent 的麻烦是：两个事件同时到会开出互相竞争的 run，worker 崩了事件就丢了。收件箱是唯一事实来源，还能按来源 ID 去重，把用户连发的几条消息合并成一轮。
+
+定时器让 agent 能主动，分两种。跟进是 agent 给自己设的死线，比如过会儿看对方回没回；排期是固定周期的任务，比如每日简报。它们存在独立的表里，调度器定时轮询，到期了就往收件箱投一个事件。
+
+记忆要独立存储，比 worker 活得久。原则是只存查不到的东西：用户指令、用户偏好、已经说过什么、每个任务干到哪。如果信息本来就在 issue tracker 这类系统里，就存一个指针。
+
+权限是风险最高的一块，因为 run 带着用户的凭证、又没人盯。Anthropic 的做法是凭证不进 agent 环境，由外面的代理在请求发出时代为注入；高危动作用分类器拦截，重要决策挂起等用户批准。挂起时 run 结束、会话存到调用中途，用户的答复作为事件进收件箱，下一轮再接着跑，worker 期间可以去处理别的事。
+
+发件箱对应「怎么把活带给用户」。常驻 agent 在后台干活，用户只收结果和少量细节，不看全程推理。多数情况一个发送工具就够，只有要控消息节奏、或需要错误恢复时才值得做正式发件箱。Anthropic 建议先让 agent 安静一点，用评测慢慢调消息量。
+
+模型变便宜、判断力变好，是这类 agent 回潮的前提。文中给的数字是，Opus 5.5 在一个长周期编程基准上，每解决一个任务比 Opus 5 便宜 78%，而典型工作负载上只便宜 40%。长周期任务从降价里吃到的红利最大，只是模型这部分在文章里只是背景，主体讲的都是工程件。
+
+https://x.com/fanxing321/status/2121135217687818463
+
+所以我正在维护一套 test 规则库。我希望可以先覆盖：
+- 单元测试
+- 集成测试
+- e2e 测试
+
+这三种测试，我想要说明：
+1. 在什么时候使用单元测试、什么时候使用集成测试、什么时候使用 e2e 测试（route）
+2. 以及在对应的测试中应该如何工作
+
+Claude Code 每次开新会话都是空白上下文，靠 CLAUDE.md 把项目约定带进去。官方文档里挑六条。
+
+1. 项目级放 ./CLAUDE.md 或 ./.claude/CLAUDE.md，个人偏好放 ~/.claude/CLAUDE.md，只给自己用又不想进 git 的写在 CLAUDE.local.md。
+2. 懒得手写就跑 /init，它会读代码库生成构建命令和约定，已有文件就给改进建议。
+3. 写得要能验证。写用 2 空格缩进，别写代码格式要规范；写提交前跑 npm test，别写先测试一下。单个文件控制在 200 行以内，越长越不听话。
+4. 只对一部分代码有用的规则，放到 .claude/rules/ 里，文件头加 paths，比如 src/api/**/*.ts，Claude 碰到匹配文件时才会加载。
+5. 引用别的文件用 ＠路径，比如 
+@README
+ 或 ＠docs/git-instructions.md。注意被引用的文件也会一起进上下文，不省 token。
+6. 怀疑没生效，跑 /context all 看 Memory files 那一栏有没有它。必须每次都执行的事别靠 CLAUDE.md，写成 hook。
+
+https://x.com/NpieAI/status/2121455376604471586
+
+今天想到了一个奇特的点：Ultracode = CodeMode + Dynamic Workflow。
+
+CM 和 DW 本质上同源，都是脚本调用，手脑通过 ndjson 和 MCP 通道进行解耦，脑负责工具声明和调度，手负责 js runtime 和文件系统持久化。
+
+新版本的 Ultracode 可以同时具有 CodeMode 的工具执行灵活性和 DW 的稳定执行效率，这将会是 Peri V5 的一个改进方向。
+
+https://x.com/hungryturbo/status/2121456182183551028
+
+https://x.com/bkdgiffug/status/2121417330181964012
+
+https://x.com/shao__meng/status/2121427594260398327
+
+“你需要拥有哪些本事才可能让你成为远超同龄人的佼佼者。第一：你需要成体系地学习财务、税务、成本方面的知识，并且把节约这个习惯融入你的日常生活。
+第二：你需要成体系地学习逻辑学、组织行为学、心理学，这对你进行管理决策大有裨益。
+第三：你需要有一颗极为强大的内心，能够接纳任何事情的发生。
+第四：你需要极强的表达能力，完成上传下达，让别人能迅速理解你的话，并且按照你的话去执行。
+第五：你需要无可比拟的执行力和内在自驱力，可以理解为使命感，就是你究竟为什么而奋斗。
+第六：你必须持续不断的保持学习，保持开放的内心，从当下的信息茧房中获取你想要的信息。
+第七：你必须认识到，你需要有好的身体，你需要休息，因为适当的停下来也会让你很好的吸收思考和反思。
+最后，请把我讲的这些以身作则，不要用这些条条框框去约束别人，请用来约束自己。在成长的路上不必理会任何人异样的眼光，请记住，你只为你的目标服务。”
+
+
+For you
+Following
+费曼输出群
+
+See new posts
+Your Home Timeline
+Boosted
+Dave Robins
+@Evadekrub
+Here I am using our AI Coding AI Squared Agent Controller to have my cloned 
+@Autoline
+ TV agents create a TeaSlaw GUI in our Vehicle Spy Software.
+Show more
+
+如意｜Ruyi
+@ruyi3699
+·
+4h
+把几百页 PDF 直接丢给 AI，它吐出来的那份总结，你真敢一字不改照单全收？
+
+说实话我心里是打鼓的。就算读起来再顺，也分不清哪句是原文里的，哪句是模型自己编的。
+
+最近挖到一个 Agent Skill，名叫 learn-from-materials，专治这个毛病：
+1️⃣
+Show more
+自由散漫喵
+@a_free_cat00
+·
+10h
+介个就是中国版的《楚门的世界》，
+不信你问中国人。。😮‍💨
+Barret李靖
+@Barret_China
+·
+35m
+提供主动服务的 Agent，需要进行大量自主决策。在信息不足、环境动态变化的情况下，难免产生错误决策，甚至引发大量无效的行动和尝试。
+
+想要提高决策质量，降低无效决策和行动的成本，我认为需要做好几件事情：
+
+1）让 AI 在问题早期，甚至预防阶段就开始决策和产出，持续维护决策依据和结果。当问题暴露时，能够结合新增信息，快速补充和修正已有决策。
+
+2）系统具备所见即所得的能力，能够沿着不同决策路径进行分支推演，直观呈现结果，评估不同路径的收益、成本和风险，减少实际执行中的无效尝试。
+
+3）动态调整和更新目标，让 AI 根据目标和环境的变化，持续更新决策条件和逻辑，及时调整或终止偏离目标的行动。
+
+4）针对决策和执行，构建自验证的环境能力，持续对比实际结果与预期目标，发现偏差并修正决策。必要时，通过简洁的交互反馈机制，让人低成本地参与关键决策。
+
+更多的思考、推演和尝试，未必带来更好的结果。Agent 还需要学会判断何时继续探索、何时执行、何时停止，以及何时需要人介入。
+
+为系统构建 RSI 的能力，接下来会是一个火热得命题，也会是一件非常有趣且有挑战的事情
+
+https://x.com/gimcall/status/2121189282203439313
+
+本地 AI 的基石长大了：llama.cpp 正式发布 1.0.0。
+
+3 年半之后，这个能跑在 Ollama、LM Studio 和无数本地应用底下的 C/C++ 推理引擎，正式发行了 1.0版本！
+1.0 的核心承诺：公开 API 稳定了，以后不兼容的改动只会跟着大版本号走，ggml 也同步发了 1.0.0。
+
+对普通用户：Ollama、LM Studio 这些工具更稳了。对开发者：终于可以放心依赖它的接口，不用怕下次升级悄悄改坏你的代码。官方还说，现在支持 150 多种模型架构。
+
+https://x.com/savvy_luvvvv/status/2121335289746522242
+
+https://x.com/bkdgiffug/status/2121386376641818998
+
+目前本地部署的 AI 服务栈基本凑齐了，链路如下：
+ 
+🎙️ ASR：QwenASR + Whisper
+🗣️ TTS：IndexTTS + BreezyTTS
+🎵 音乐：Yue2 + MiniMax Music
+🖼️ 图像：QwenImage 2.1
+🧠 LLM：Qwen3.8 27B
+🎬 视频：MiniMax H3 + LTX 2.5
+ 
+从语音识别、语音合成、音乐、图像、大模型到视频生成，本地自建服务一条龙
+
+https://x.com/HeLi8866/status/2121278834654020020
+
+最近把业务系统的底层 Agent 框架换成 Pi  Durable 的好处又来了， 今天随便和 Gemini 4 Carbon 聊了下怎么做个类似Antigravity 上 Orchestrator 这样自动路由的模型，发现 Pi Durable 每次模型调用都是一个可配置的 GenerationTask ，这一抽象非常适合支持自动路由功能，于是花不到两小时，搞了个初版，大致先做了用 decision model 分流， 以及粗略的模型切换成本估算（随便切换会损失 Cache 命中），先用起来看看效果
+
+https://x.com/gimcall/status/2121111971286433899
+
+https://github.com/shiyiai/codex-phone
+
+https://x.com/leo_xiaolei/status/2120808164962525310
+
+https://x.com/SeanchenZ/status/2121252236240060472
+
+https://x.com/Manorgw/status/2120980955322044896
+
+https://x.com/UPing123zzz/status/2121256422981960185
+
+https://x.com/HeLi8866/status/2121239600786207023
+
+https://x.com/taozi0929/status/2121143778077737116
+
+https://x.com/savvy_luvvvv/status/2121183028080726086
+
+https://x.com/Chenfacai0/status/2120900172628500969
+
+https://x.com/Fred834567/status/2121212670372458960
+
+https://x.com/ErikAngeles18/status/2121206372775641351
+
+https://x.com/ShouChen_/status/2121168931532738868
+
+https://chatgpt.com/share/6af72cdd-9fe8-83ec-a292-09a635334ae8
+
