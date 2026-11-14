@@ -13,11 +13,11 @@ views: 37245
 # AI Will (@FinanceYF5)
 
 现在最值得做的创业方向，很多其实已经明显到摆在桌面上了。  
-  
+
 Greg Isenberg 一口气列出 39 个想法：围绕 AI Agent、数据、机器人和个人 AI，把已经验证过的商业模式重新做一遍。  
-  
+
 完整清单👇  
-  
+
 1. 企业数据版 Zestimate：估算一家公司数据对 AI 实验室值多少钱  
   
 2. Agent 版 Google Analytics：查看哪些 Agent 访问网站，以及它们想找什么  

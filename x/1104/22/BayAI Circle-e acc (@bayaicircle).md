@@ -13,9 +13,9 @@ views: 6029
 # BayAI Circle-e/acc (@bayaicircle)
 
 探索机器学习的多样化领域  
-  
+
 这张图展示了机器学习的主要分支及其相关算法：  
-  
+
 1. 监督学习 (Supervised Learning)  
 - 回归 (Regression)： 包括线性回归、岭回归、Lasso回归、多项式回归等。  
 - 分类 (Classification)： 涉及逻辑回归、朴素贝叶斯、K-NN、SVM、决策树等。  
@@ -36,6 +36,7 @@ views: 6029
 5. 神经网络与深度学习 (Neural Networks and Deep Learning)  
 - 包括卷积神经网络（CNN）、递归神经网络（RNN）、生成对抗网络（GAN）、自编码器等。  
   
+
 这张图全面概述了机器学习的广泛应用及其方法，为深入了解每个领域提供了清晰的路线图。
 
 ![Image](<BayAI%20Circle-e%20acc%20(@bayaicircle).assets/image-01.jpg>)

@@ -13,9 +13,9 @@ views: 281
 # 如意｜Ruyi (@ruyi3699)
 
 系统学 AI Agent，难道一定得先掏钱买课？Galileo 直接免费放出了 4 本相关电子书。  
-  
+
 加起来 500+ 页，内容覆盖：  
-  
+
 ① Mastering AI Agents：Agent 架构与实战  
 ② Mastering RAG：检索、向量库等核心知识  
 ③ Mastering Multi-Agent Systems：多智能体协作  

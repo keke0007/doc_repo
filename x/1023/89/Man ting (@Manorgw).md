@@ -8,9 +8,9 @@ type: tweet
 # Man ting (@Manorgw)
 
 LLM 原理还在零碎地东学一点西学一点？这个 LLM Internals 已经把整条学习路线给你铺好了。  
-  
+
 分词、BPE、Transformer 起步，中间覆盖训练、微调、RAG、Agent，最后落到推理优化。  
-  
+
 1️⃣ 注意力机制这块：Q/K/V、RoPE、因果掩码、GQA 等  
 2️⃣ 核心组件包括 Transformer、MoE、LoRA、归一化等  
 3️⃣ 反向传播、交叉熵、RLHF、推理模型也在列  
