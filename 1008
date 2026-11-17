@@ -1,0 +1,2039 @@
+好多年前年轻的时候学golang 的一个教程网站现在居然还在，非常推荐，都是例子：
+
+https://gobyexample.com
+
+
+Post
+
+See new posts
+Conversation
+旺旺
+@TiagerBao
+现在很多 Agent 所谓的“长期记忆”，其实只是把历史聊天存起来再搜一遍。
+
+Hindsight 想做得更深一点：
+
+让 Agent 不只是记住，而是从过去的经历里形成新的判断。
+
+核心就 3 个动作：
+
+Retain：记住事实和经历
+Recall：找回相关记忆
+Reflect：把多段记忆放一起分析，形成新的结论
+检索也不是只跑向量搜索，而是同时走：
+语义 / BM25 / Graph / 时间线
+
+更有意思的是，它会把长期积累的内容整理成：
+
+Observations → Mental Models → Knowledge Pages
+
+比如 Claude Code 用久了，可以逐渐记住这个仓库的架构、代码习惯、历史决策和正在做的事情，下次 Session 不用重新解释一遍。
+
+目前已经支持 Claude Code、Codex、Cursor、GitHub Copilot 等，还自带 MCP Server。
+
+Agent 真要长期干活，记忆不能只是“搜到以前说过什么”，还得知道这些经历最后说明了什么。
+
+GitHub：https://github.com/vectorize-io/hindsight
+
+
+
+向箔 Foil
+@heyfoil
+·
+2h
+一个暴论！！！
+很多人的 Agent 用着蠢，问题可能就出在 AGENTS.md 没配明白
+
+一份完善的 Agent 规则文档，至少也要写清楚这五个板块：
+
+① 优先读哪些文件：打开项目先看什么
+② 沟通规则：怎么配合，什么时候需要问你
+③ 交互风格：用什么语气，怎么表达
+④ Skill 触发：什么场景调用什么能力
+⑤ 安全边界：比如删文件、大规模修改前必须确认
+
+先把这五块写进项目根目录的 AGENTS.md，复杂项目再按目录补充规则
+
+否则连这里都没配好，AI 就是再厉害也白搭
+
+
+拥有闭环能力的职场人，更容易拿到更多合作机会与资源倾斜。闭环能力，就是接到任务主动同步进度，遇到问题带着方案沟通，任务结束主动复盘，对整件事全流程负责。
+
+它包含确认任务信息、执行同步进展、遇到问题准备两套备选方案、完工复盘四大环节，同时点明各阶段常见沟通误区。可以用三个问题自测：要不要别人追进度、汇报有没有备选方案、会不会主动复盘。Closure在职场上和一段合作关系中的确尤为重要。遇到那些总是烂尾或者虎头蛇尾咋咋呼呼的人，千万记得要远离
+
+
+https://x.com/Zen_with_AI/status/2107951349950185600
+
+https://x.com/Zen_with_AI/status/2107711717262459089
+
+ai 时代写后端代码需要人工 review 两个问题
+
+一个是表的设计  一个是代码里涉及时序的问题
+
+其他的 包括前端客户端都让 ai 自己去搞吧
+
+https://x.com/Zen_with_AI/status/2107544418202837489
+
+别再去买几千块的 AI 训练营被割韭菜了。
+
+谷歌刚刚放出一门 60 分钟的官方课，把生产级 Agent 的底层骨架彻底摊开了。
+
+很多人学 Agent 看了几十个小时零散教程依然搭不出可用的东西，核心是没有搞清玩具 Demo 与工业级架构的边界。
+
+谷歌这门 1 小时课程没有任何水分，只聚焦 5 个真正的工程核心：
+
+1. 从 0 跑通首个 Agent：拆解模型调用、工具绑定与执行环境的基础闭环。
+
+2. 状态持久化（Persistent Memory）：告别单次对话即失忆，构建跨会话的记忆索引与上下文回填。
+
+3. 长时自主循环（Agentic Loops）：摆脱线性问答，让 Agent 具备自我反思、容错重试与多轮状态流转能力。
+
+4. 吃透 MCP 核心架构：彻底理清 Model Context Protocol 与传统 API 的本质区别，学会构建标准化的上下文协议。
+
+5. 多智能体协同系统（Multi-Agent）：把分散的专职 Agent 串联成高协作度的自动化系统。
+
+60 分钟，足够帮你省下在各类碎片教程和付费水课里反复横跳的几十个小时。 https://x.com/Grow_withAI/status/2106731541221306757/video/1
+
+
+有人给 AI 系统底下垫了一层图谱基础设施，敢叫自己“Agent 版开源 Palantir”，Star 已经攒到 11000+，这项目就是 semantica。
+
+它的做法是把企业数据抽成知识图谱：每条事实都挂着来源，每个决策都是能查的对象，为什么做、依据什么、影响了啥，全都能追回去。
+
+GitHub：http://github.com/semantica-agi/semantica
+
+推理这块走的是规则引擎，不靠大模型，结果可复现；碰到互相矛盾的事实会直接标出来，而不是悄悄用新的盖掉旧的。
+
+Neo4j 在内的 8 种图数据库随便换，LangChain、CrewAI 能直接接，还带 MCP 服务，Claude 这类工具也能连上用。
+
+金融、医疗这些行业比较对口，普通项目拿它当 Agent 的长期记忆也够用，一条命令就装上
+
+用ai解决问题的各位，几个坑：
+1. 除非你在大厂或者你是极其牛逼的程序员，否则不要自己搭建harness，第一没人付费，第二很快你的harness就用不到了（我自己写了token计算器，任务完成的响铃，自动开发的工作流，现在狗屁不用了）
+2. 不要开发工作流！工作流就用大神的就好，superpowers，matt pocock（我自己写过一个文档驱动的工作流，打磨了一个月，屁用没有）
+3. 不要做给程序员使用的工具，程序员不会付费！他们除了会给大模型厂商付费，其他的他们都能自己复刻出来！
+
+另外，如果你要解决痛点，解决 命运级的痛点，不要解决工具集的痛点。命运级的痛点就几个：孩子上学，父母生命，结婚，找工作，搞钱。就这么几个场景，没了！
+
+Post
+
+See new posts
+Conversation
+摆烂程序媛
+@wanerfu
+AI 的记忆能力越来越离谱了。
+
+10 个开源 GitHub 项目，让你的智能体不再每次会话都像失忆一样醒来。
+
+1. Mem0
+为 AI 智能体提供持久记忆。66K+ 星。
+
+https://github.com/mem0ai/mem0
+
+2. Hindsight
+保留 → 回忆 → 反思。
+
+https://github.com/vectorize-io/hindsight
+
+3. memU
+智能体的长期记忆基础设施。
+
+https://github.com/NevaMind-AI/memU
+
+把记忆变成知识
+
+4. Cognee
+把文档、代码和对话变成知识图谱。
+
+https://github.com/topoteretes/cognee
+
+5. Graphiti
+记住事实，以及它们随时间如何变化。
+
+https://github.com/getzep/graphiti
+
+6. OpenViking
+为 AI 智能体提供上下文和记忆基础设施。
+
+https://github.com/volcengine/OpenViking
+
+让智能体有状态
+
+7. Letta
+跨会话的记忆 + 身份。
+
+https://github.com/letta-ai/letta
+
+8. Letta Code
+为编程智能体提供持久记忆。
+
+https://github.com/letta-ai/letta-code
+
+跨整个技术栈记住
+
+9. OpenMemory
+为 AI 应用提供的开放记忆基础设施。
+
+https://github.com/mem0ai/openmemory
+
+10. Agent Memory Benchmark
+测试智能体实际记得有多好。
+
+https://github.com/vectorize-io/agent-memory-benchmark
+
+这个循环：
+
+体验 → 记住 → 连接 → 检索 → 行动 → 更新
+
+3 套值得测试的组合：
+
+编程：Hindsight → Cognee → Letta Code
+个人智能体：Mem0 → Graphiti → Letta
+公司大脑：Cognee → Graphiti → Hindsight
+
+https://github.com/shangjianzz/agent-rules-zh
+
+https://chunxiang.space/geb-system
+
+代码写完怎么验证？  
+推荐一个近 5k star 的端到端测试框架，名字就叫 e2e，专为 AI Agent 设计，Web / 移动端都支持。 
+
+ 原理：AI用自然语言写 test case，AI 第一次生成 Playwright 脚本，第二次之后会直接跑脚本，不再调 AI了，省钱。
+
+https://github.com/tester-army/e2e
+
+https://x.com/HytidelLegend/status/2107058306183537140
+
+https://x.com/UPing123zzz/status/2106941694243717480
+
+https://x.com/Dipanshu_AI/status/2107008024833572946
+
+https://x.com/op7418/status/2106974366722662786
+
+搞定了 Muse 那个小玩具 哈哈
+
+我用的 M5 Stack 的 Stop Watch Meta 搞得
+
+这个 Muse Gadgets SDK 真的很方便
+
+而且已经内置了好几个常见 ESP 32 设备的固件，直接刷进去就行
+
+https://x.com/canghe/status/2106899000645607545
+
+Meta 把 Muse 的硬件 SDK 开源了，ESP32 和树莓派都能接。
+支持 11 款 ESP32 开发板，接屏幕、按键、传感器、执行器，Apache 2.0，同步发布 Muse Home Link 直接接管家里智能设备。
+ESP32 开发板最便宜不到 30 块，SDK 全开源，任何人拿去改。
+Muse 从聊天窗口变成了桌面小屏、门口按钮、家里的控制节点。
+上个月写过 Muse 教程，当时它还只是个 AI 助手，现在长出手脚了。
+
+下一个会火的 esp32 乐鑫科技
+
+Muse Gadgets 能引发下一波热潮
+
+https://x.com/shao__meng/status/2106944331345272997
+
+LiteLLM 推出了 Agent 轨迹智能分析功能「LiteLLM Lens」
+
+它让 Agent 自动审查海量生产运行轨迹、聚类问题并给出带证据的改进建议，数据自托管在用户自己的 ClickHouse 中，且通过无速率限制的 SQL/API 让 Codex、Claude Code 等编码工具直接消费轨迹数据。
+
+理解这个产品，关键在于理解 
+@LiteLLM
+ 的既有生态位：它已经是企业 AI 流量的主要入口，所有 LLM 调用都经过它的网关。Lens 是在这个数据优势之上叠加的新一层能力：对海量 Agent 运行轨迹做自动化分析与诊断。
+
+https://docs.litellm.ai/blog/litellm-lens-launch
+
+它针对的是一个新兴且真实的痛点「Agentic Swarm」开发者的观测困境：
+· 规模爆炸：成百上千个 Agent 并行运行，产生 20 万+ 条轨迹，人工审查在物理上已不可能。
+· 故障取证困难：当蜂群失效时，证据散落在数千次运行中，定位根因如同大海捞针。
+· 数据被平台锁定：传统 tracing 平台（暗指 Datadog、LangSmith 等）将数据锁在自家系统里，且施加 API 速率限制，这直接阻止了 Codex、Claude Code 这类 AI 编码工具去批量分析这些数据。
+
+工作方式：三步闭环
+1. 定义“什么是好/坏运行”：开发者针对每个 Agent 描述好坏标准，可细化到逐行提问，例如“找出 Agent 未能恢复的工具调用失败”。
+2. Lens 用 AI 分析轨迹：AI Agent 自动审查轨迹、深入调查运行、将相似问题聚类分组，最终产出带“下一步建议 + 支撑运行证据”的诊断报告。
+3. 人工复核与下钻：每条发现都链接回原始轨迹的确切步骤（输入、输出、属性）；Trace UI 采用左侧行为树 + 右侧步骤 I/O 的经典双栏布局。
+
+技术架构：数据主权是核心卖点
+· 轨迹存储在 ClickHouse，由用户自托管，与 LiteLLM 网关部署在一起。
+· 数据可用纯 SQL 直接查询，无黑盒。
+· 提供面向 Agent 的 Tracing API，无第三方速率限制，Codex/Claude Code 可自由拉取分析。
+
+https://x.com/ai_suxiaole/status/2106663866235261360
+
+机器学习教程多半只教你训模型，很少提怎么把它稳妥地送进生产环境。
+
+哈佛这套开源教材《Machine Learning Systems》恰好补上这块：从 0 到 1 把 AI 系统落地。
+
+内容覆盖边缘到云端的全栈，还配了实践项目和实验，帮你从“会训练”走到“能上线、可维护、可扩展”。
+GitHub：https://github.com/harvard-edge/cs249r_book
+
+
+如果你用 codex / claude code 落实文档驱动开发，你肯定会被技术文档搞的晕头转向。
+
+这不是你的问题，现在 AI 产出的技术文档就是多变且难读。
+
+海哥已严肃学习卡帕西 
+@karpathy
+  推荐的 ASD-STE100 技术文档写法，做了一个 hai-simplified-tenchnical - 一个专门用来规范/重写文档的 skill，大幅提升可读性，虽然篇幅有所增长，但每次只讲述一个点，没有太多理解上的障碍，读起来反而速度特别快。
+
+具体的比对案例可以看评论区。
+
+开源地址 https://github.com/hylarucoder/hai-stack/blob/main/skills/hai-simplified-technical/SKILL.zh_CN.md
+
+
+https://yuanchaofa.com/blog/2026-09-month-summary
+
+Go开发拙见 没参与大项目
+1.能使用开发工具生成类型安全代码的就不要自己写 让ai调用cli：cobra sql：sqlc等 优先级：成熟工具生成>ai 生成>人工手写
+2.其次减少返回给interface 我容忍不了boxing带来的内存分配问题
+3.门禁很重要 test/golangci 我偏向用mise搭配testcontainer做组合
+4.ast很重要
+
+https://x.com/jiangkoumo_/status/2106730488907936015
+
+最近把自己的 AI 工作流梳理了一下，整理成了一个网页，跟大家分享一下 👨‍💻
+🔗 http://ai-workflow.zuoluo.tv
+
+我是 Vibe Coding 的重度用户，订阅了 Claude、Codex、Kimi、Grok、Gemini。平时既要处理公司和团队的业务，也有自己的个人项目，每天都在用 AI 编排、处理各种任务，涉及不同端、多个场景和业务。
+
+有些事需要我参与、审核，有些可以交给 agent 自动值守：
+🔑 哪些权限能给，什么时候需要我介入
+🤝 几个模型之间怎么分工，怎么交叉验证
+🌙 我不在电脑前的时候，哪些任务能继续跑
+
+这些都是在实际工作里一点点调整出来的。随着个人项目和团队里用 AI 的地方越来越多，这套流程也迭代了好几轮。
+也希望和各位 AI 大大交流一下各自的最佳实践
+
+有人在 GitHub 上做了一个免费 AI 大学，重点是真上手做系统，不是光看教程。
+
+7 周内容：
+
+• Docker、FastAPI + 数据库
+• 自动化数据管道
+• BM25 搜索
+• 混合搜索
+• 完整 RAG 系统
+• 缓存 + 监控
+• 用 LangGraph 做智能体 AI
+
+你不是只学 AI，而是做生产级项目
+
+回看 Agent 的发展，基本是一路补短板：
+
+- 缺少当前事实，就加检索和数据接口
+- 长任务容易丢信息，就加状态保存和上下文管理
+- 工具调用会失败，就加重试、检查和恢复
+- 行动可能越权，就加权限隔离和审批
+- 结果看着对但不达标，就加测试和验收
+
+这些「支撑技术」决定了模型的原始能力能不能真正落进现实场景。
+
+但它们也带来自己的代价：延迟、维护成本、错误传播、协调开销。
+
+于是形成两股力量：外围不断加支撑系统来兜底，模型进步又把其中一部分能力吸收进去，让结构重新变简单。
+
+哪些留在模型里，哪些留在外面，会一直变
+
+做数据分析、训模型的时候，真正卡住你的，难道就是敲代码本身？很多时候最磨人的，是把那份对的数据给翻出来，既要紧又熬人。
+
+GitHub 上有份全球高质量公开数据集清单，名叫 Awesome Public Datasets，如今已经攒到 74 k+ Star。
+
+农业、生物、经济、气候、教育、医疗等几十个领域全都罩得住；每份数据都标了可用状态，还附上元数据链接，省得你四处乱摸。
+
+GitHub：https://github.com/awesomedata/awesome-public-datasets
+社区：https://awesomedataworld.slack.com
+
+https://x.com/KakaluoteW45042/status/2106544802439528617
+
+https://x.com/YuLin807/status/2106439028157604128
+
+Data lake“三驾马车”怎么选？
+
+在低成本对象存储上实现 ACID 事务与行级增删改（CDC），Apache Iceberg、Delta Lake 和 Apache Hudi 是当之无愧的绝对主力。
+
+🧊 Apache Iceberg（极度中立，开放至上）
+由 Netflix 主导，最大亮点是隐藏分区（改分区不伤伤筋动骨）和完美的引擎解耦。无论你用 Spark、Flink 还是 Trino、Snowflake，它都能提供同等丝滑的顶级支持。适合多引擎并存、拒绝被厂商绑架的企业。
+
+📐 Delta Lake（Spark 亲儿子，性能怪兽）
+Databricks 倾力打造，与 Spark 生态无缝绑定。商业化成熟度极高，内置 Liquid Clustering 等硬核优化。如果你的技术栈以 Spark 为绝对核心，闭眼选它，体验最省心、性能最极致。
+
+🦅 Apache Hudi（流批一体，实时流战神）
+Uber 开源，专为高频实时增量更新（CDC）而生。凭借强大的索引机制和读时合并（Merge-on-Read），能以极低延迟吞吐海量修改。适合深谙 Flink/Spark 调优、死磕实时入湖的硬核团队。
+
+最近有很多人问我从非 AI岗位如何转AI岗。
+
+首先。AI 岗位细分 也有 训练基础模型、研究算法、AI 基础设施， AI 应用层搭建，分发、应用层 Agent 等等。
+
+对候选人的要求差别很大。面试准备和转岗策略也应该完全不同。
+
+如果本来就是做云或者大数据后端的。转AI infra是最容易的。 需要补一些基本的AI系统架构的知识。了解一下基本的大模型训练流程和大模型推理架构。
+
+如果要找专门的 推理服务岗位。需要后端系统设计之外的模型推理知识，例如 Prefill 与 Decode 的区别、显存占用、量化、批处理和 GPU 利用率。
+
+如果去做Agent的话，需要 LLM API、Tool Calling、RAG、Agent Evaluation 等知识，同时仍然需要扎实的软件工程能力。
+
+如果想找ML engineer, Applied Scientist的话。你最好有 AI/ML/DL 的phd学历。 会考察统计学、机器学习基础、训练流程、指标设计，部分团队要求较强的数学与建模能力。
+
+如果要找Research Engineer / Research Scientist。我相信你们的研究能力就不需要我指导了 :D
+
+关于一些基本的 ML/ LLM knowledge 概念需要了解的：
+Transformer
+
+Attention、Self-Attention、KV Cache 的作用
+
+推理
+
+Prefill、Decode、TTFT、Inter-token Latency
+
+GPU
+
+显存带宽、计算吞吐、显存占用、GPU 利用率
+
+推理优化
+
+Continuous Batching、量化、PagedAttention
+
+分布式训练
+
+Data Parallel、Tensor Parallel、Pipeline Parallel
+
+模型评估
+
+Quality、Latency、Throughput、Cost 的权衡
+
+LLM 应用
+
+RAG、Tool Calling、Agent 状态管理和评估
+
+https://x.com/jiangkoumo_/status/2106317420961112392
+
+Pi 最近发布的 Pi Durable ，是给TypeScript/Node.js 开发者接入自建 Agent 的持久化运行时。日常 Pi CLI 里用 --continue 恢复聊天，仍可以照常用。
+
+   我写了一篇接入教程：用 SQLite 保存会话和任务，用 Doc 记录章节读取进度，再演示进程退出后的恢复。
+
+学 C 语言学到指针还行，一碰到进程、线程、锁这些操作系统的东西，课本讲得干巴巴，网上资料又东一块西一块。
+
+伊利诺伊大学的系统编程课 CS 341，把自己用的课本开源了，就叫 Coursebook。
+
+内容从 C 语言入门讲起，一路讲到进程、内存分配、线程、同步与死锁、进程间通信、调度、网络、文件系统、信号和安全，代码全部用 C 写。
+
+前身是一份公开的 wiki 教材，现在补上了引用、脚注和术语表，书后还附了复习题。
+
+GitHub：http://github.com/cs341-illinois/coursebook
+
+网页版可以直接在线读，也有 PDF 和 EPUB，下载下来放进阅读器里看。
+
+先学过一门编程语言、对汇编有点了解再看会比较顺。正在学操作系统、或者想补补底层功底的朋友，拿它当教材挺合适。
+
+如果你当下一无所有，想去欧美，就根据个人情况，死磕这两本证书。厨师证，雅思成绩。
+其中1:几乎是你润欧洲所有人发达国家，不至于流落街头，再如何肯吃苦包吃住就有2000欧的斩杀线以上生存必备。
+其中2:几乎是你在欧美起飞🛫，（尤其是英联邦国家），当然新加坡🇸🇬荷兰🇳🇱都认！各种沟通人脉，打开局面的必备。
+厨师证兜底保障良好的现金流，是生存的必备。英语保证今后切换赛道，和文明交流，甚至重读大学，拥抱高精尖蓝领技术，进入该国高薪岗位的必备。
+一无所有的人，就死磕这两本证！练到是你的本能！那样，曹哥虽不保证你大富大贵，哪怕走到欧美，也可立于不败之地！
+跟上曹哥的节奏🎶
+
+哈佛长达三十年的人群追踪研究，戳破了绝大多数人的努力假象。真正拉开人与人差距的，根本不是熬夜、体力劳累这种低级吃苦，这些只有消耗、没有复利。
+
+真正能让人跃迁的，是主动给自己找的三类高级痛苦：突破认知的成长之苦、直面批评修正自我的摩擦之苦、长期低回报坚持的延迟满足之苦。
+
+判断吃苦值不值很简单：是否主动选择、能否突破边界、能否迭代认知。就像芒格，把人生极致苦难，最终熬成了顶级认知。我个人觉得延迟满足感的能力培养实在太重要了，你在很多成功人士身上都能看到这一特质！
+
+月入10万美金的独立开发大佬告诉我:
+
+1.默认人人都可以把产品做出来
+2.永远不要以Coding为荣
+3.从小处入手
+4.永远不要晒收入
+5.8小时内必须上线MVP，否则放弃这个产品
+6.永远不要去发明创造需求，只做被市场验证的
+7.月入10万美金前，不要创新，狠狠的去抄
+8.不要老想着搞差异化产品
+9.SEO流量一上线就要开始布局
+10.一定要去做X/Youtube/Tiktok
+
+https://x.com/EqbymCi/status/2106279257488216334
+
+Andrej Karpathy观点：AI越来越能干之后，人的工作则提了一层，变成了审阅者，做监督和理解，而监督和理解这件事本身也能让AI搞，那就得让AI把东西做得更好看懂，他分享了四种方式
+
+比较新颖的是“软件用完即弃”的概念，这打开了一类新东西，非产品非工具，而是为沟通和思考而生的“软件”，未来汇报、讲解、方案沟通的默认形态可能不再是发PPT，而是现造一个小软件给你看
+
+另外，当生成变得便宜，人的消化能力则成了新瓶颈，AI产出过剩，人的注意力稀缺，“怎么让人看懂AI干的活”也尤为重要
+
+四种方式：
+1、写，让AI用ASD-STE100来解释某个概念，这样写出来的内容可读性好得多，也可以放宽要求，比如只要达到 ASD-STE100八成的程度即可
+
+2、不过与其用文字，不如让它“画”，让它生成一张图，图往往更容易处理、解析和理解
+
+3、还有更好的，让它生成HTML
+
+4、最好的还是让它生成“讲解视频”，针对任意主题完全量身定制。随着“智能”和“代码”日益充裕，完全可以用完即弃，这在过去做不到（为看懂一件事专门做个网页/视频太贵、不值得），现在来讲基本没这个约束了
+
+一些看人很准的微妙行为
+
+1. 看他怎么谈论不在场的人 当着你的面夸别人不算什么，重点看背后评价。习惯到处传话、抓别人短板吐槽的人，日后也容易在别人面前议论你；懂得不在背后落井下石、不随意定论他人，分寸感通常更稳定。
+ 
+2. 出错之后，第一反应是担责还是找借口
+事情顺利的时候人人都好相处。一旦出现失误、损失，立刻甩锅、修改说辞、优先证明自己没有问题，遇到更大矛盾时，大概率优先自保牺牲同伴。
+ 
+3. 观察对方能不能坦然接受你的拒绝
+你委婉拒绝请求，有的人可以理解、不再纠缠；有的人会道德绑架、说你疏远小气、不断施压。后者在意的不是你的难处，只是自己能不能拿到想要的结果。
+ 
+4. 留意无利益关系时，对待服务者的态度
+对领导、客户客气是社交本能；外卖员、司机、店员这类对自己没有价值的人，他说话的语气、耐心程度，才是不加修饰的真实修养。
+ 
+5. 记住别人随口一提的小事，是主动记住还是刻意表演
+有的人会悄悄记下你的喜好、烦恼，之后轻描淡写提起，不邀功；有的人刻意记细节只为换取好感、铺垫索取，两者长期相处很容易分辨。
+ 
+6. 压力突来时，情绪失控的底线在哪里
+不用等大事爆发，堵车、排队、计划被打乱这种小事最容易暴露本能。一点不顺就易怒、迁怒旁人，长期相处内耗会很重。
+ 
+7. 看承诺落空后的处理方式
+很多人随口答应很爽快。真正区分靠谱与否，是做不到的时候会不会主动提前说明、及时沟通，而不是等到你追问才回避、消失。
+ 
+8. 观察聊天习惯：是急于表达，还是愿意留白倾听
+一部分人永远抢话、急于输出大道理，很少留给别人表达空间；开口前愿意停顿半秒、不打断别人说话的人，共情和耐心通常更好。
+ 
+9. 看他如何对待曾经帮助过自己的人
+顺境发达之后，对旧人、贵人是保持尊重，还是开始不耐烦、刻意拉开距离；一个人如何对待“不再有用”的人，最能看清格局。
+ 
+10. 留意占便宜这件事是偶然，还是长期习惯
+偶尔省钱无可厚非，但习惯性蹭东西、默认别人该付出、心安理得接受馈赠却从不回馈，往往边界感弱，容易把他人善意当成理所当然。
+ 
+11. 区分客气是发自本能，还是看人切换脸色
+只对强者热情谦卑，对普通人冷淡敷衍，属于典型看人下菜。
+ 
+12. 看他如何处理亏欠与人情
+受人帮助之后，有的人记在心里、找机会回馈；有的人事情办完就断联，下次有事再来打感情牌。★
+
+https://github.com/ashishps1/awesome-engineering-articles
+
+A哥最近挖到的 Future AGI，把模拟、评估、防护、监控、网关、优化六个环节串成一条完整闭环流水线——AI Agent 工具链碎成一地的头疼事，是不是终于有解了？
+
+核心价值就一句话：让 Agent 的生产数据自己反哺自己，实现自我进化。
+
+Apache 2.0 自托管支持，免费云版也能用。
+
+几个关键能力，确实能打：
+
+模拟层：各种真实用户人设随手捏，对抗性输入也能塞，多轮对话批量跑（文本语音皆可），坑提前踩一遍。
+
+评估层：50 多个现成指标内置，幻觉、接地性、工具调用、PII 检测，一条 evaluate() 命令全办妥。
+
+防护层：18 个扫描器自带，外部厂商也能接，越狱、注入和隐私风险实时拦截。
+
+监控层：原生吃 OpenTelemetry 协议，50 多种框架覆盖，完整调用链和成本看板直接看。
+
+网关层：兼容 OpenAI 接口，100 多种模型对接，智能路由和语义缓存也做得来。
+
+优化层：6 种提示词自动调优算法在手，线上数据直接反哺线下迭代。
+
+说到底，它打通的是从模拟到优化的闭环，碎片化工具链一次收拢。
+🔗 GitHub：https://github.com/future-agi/future-agi
+
+https://github.com/Untrivial-ai/agent-orchestrator
+
+富人对子女的忠告
+
+1、永远别去上班。
+大生意做不成，就做小生意。小生意也做不了，那就去干销售。反正不能当干死活拿死工资的螺丝钉，不然到最后发现，一辈子活得一点自由都没有。
+
+2、学会理财，比学会赚钱更重要。
+金钱的增值比单纯的积累更为关键，掌握理财之道，让钱为你工作，而不是你为钱工作。
+
+3、别让学历限制你的视野。
+学历只是敲门砖，真正的能力在于不断学习和适应变化，终身学习才能不被时代淘汰。
+
+4、懂得合作，胜过单打独斗。
+在团队中找到自己的位置，与他人共同成长，团结协作往往能创造出更大的价值。
+
+5、保持谦逊，尊重每一个人。
+无论地位多高，都应保持谦逊，尊重他人，这是做人的基本原则，也是成功的重要因素。
+
+6、别怕失败，失败是成功的垫脚石。每一次失败都是一次宝贵的经验，勇敢尝试，不畏挫折，才能走向成功。
+
+7、健康第一，没有健康一切都是零。无论事业多成功，没有健康的身体，一切都是空谈，注重健康，才能享受人生。
+
+8、学会感恩，珍惜身边的人和事。感恩能让心灵更加丰富，珍惜拥有的一切，才能体会到生活的真谛。
+
+9、培养兴趣，让生活更有色彩。
+兴趣是最好的老师，它能让你的生活更加丰富多彩，也能在无形中提升你的个人魅力。
+
+10、敢于创新，不拘泥于传统。
+时代在变，敢于创新才能引领潮流，不被传统束缚，才能开辟新的天地。
+
+11、学会沟通，善于表达自己。
+有效的沟通能让你的人际关系更加和谐，善于表达自己，才能让你的想法被更多人接受。
+
+12、保持乐观，积极面对生活。
+乐观的心态能帮你克服困难，积极面对生活，才能在逆境中找到转机。
+
+13、珍惜时间，合理安排每一天。
+时间是最公平的资源，合理安排每一天，才能提高生活质量和工作效率。
+
+14、学会承担，责任重于泰山。
+敢于承担责任，是成熟的标志，也是成就事业的基础。
+
+15、保持好奇心，不断探索未知。
+好奇心是创新的源泉，不断探索未知，才能在变化的世界中找到自己的位置。
+
+瞅你咋了！网页一有变化就通知你，抢门票订对手找工作这下稳了！😄🔥
+
+想蹲的东西总错过：机票降价、岗位上线、门票开抢、对手改价！😭
+
+changedetection 这个免费工具的是最佳、最简单的网站变更检测、网页监控和网站变更警报工具。👇
+
+✅ 盯住任意网页，一变就通知你
+✅ 降价、上新、改价、放票，全都能蹲
+✅ 不用天天手动刷，省心省时间
+✅ 34.7K+ Star，开源免费自己部署
+
+你最想盯住什么？票价、岗位，还是对手网站？评论区聊聊👇
+
+🔗 https://github.com/dgtlmoon/changedetection.io
+
+⚠️ 需要自己部署，有基础就能跑
+
+搞电商、抢票、盯竞品的赶紧收！别再花钱订监控了！
+
+老家身家过亿的包工头前几天关于“在经济洗牌的这几年里，普通年轻人如何混出人头地，而不沦为底层炮灰”的回答——
+
+“我对混社会的建议是，要尽可能多地在不同阶层里摸爬滚打，了解法务合同、财务走账、甚至最底层的拉扯规矩，同时摸透三教九流的行事逻辑。
+
+想要知道如何让上游的甲方给你结款，你就得具备看穿利益交换本质的能力。踩过的坑越多，你就越擅长把握人性的软肋，这也就是大家常说的懂人情世故。
+
+关键是要毫不含糊地让别人知道你的底线和筹码。听上去或许有些现实残酷，但未来社会会涌现无数画大饼的公司与空头承诺，他们会迫切想要吞下你的廉价劳动力，并且能在你没有议价权时立刻把你踢出局。”
+
+https://x.com/chasen_liao/status/2106071767454531597
+
+Claude Code 刚推的 mods 架构，预示着终端 Agent 的扩展机制正在全面收敛
+
+以前 Claude Code 的 settings hooks 走的是外部 shell 管道。每触发一个事件就在系统里 fork 一个 bash 子进程，stdin 塞 JSON、stdout 读返回。冷启动有开销不说，进程随调随灭，内存里存不住跨 turn 的状态，也碰不到终端 UI
+
+从 2.1.287 开始支持的 mods 彻底放弃了管道方案，改成常驻会话的 TypeScript 模块。机制上直接借鉴了 Web 框架的洋葱模型，一个 ($, e, next) 函数，既能用 await next 旁路打点，也能篡改参数做 rewrite，或者返回 deny 阻断工具调用
+
+Anthropic 官方自己在做减法。他们把 AGENTS.md 解析器和 Review 侧边栏全部重构成了内置 mods，源码直接开在开源仓库里。主程序正在收缩成一个只管基础调度的微内核
+
+这套逻辑和 Pi 的 Extension 体系几乎同构。两边主要的分歧在权限边界。Claude Code 为了企业合规，给 mods 套了一个没有原生 Node 环境的轻量沙箱，系统调用必须经过注入的 $ 句柄，还默认置顶加载 security-default；Pi 走的是极客单兵路线，jiti 零编译直接跑在宿主进程，npm 生态随便装，机器权限全交给开发者自己
+
+终端里的 Agent 靠拼装 Markdown 提示词和外挂 bash 脚本的阶段基本翻篇了，常驻内存的微内核加中间件拦截成了标准形态。
+
+https://x.com/huxlab/status/2106027067527901393
+
+Anthropic 的工程师说：我们内部已经不怎么写 prompt 了，写的是循环。
+
+她在台上花了半小时，展示了 Claude 团队如何创建能够自我提示的循环。
+
+如果这堂课卖 400 刀，今年 Agent 课的榜单大概就是它。但它是免费的。
+
+真正拉开代际差距的，不是谁的 Prompt 写得好，而是Agent系统架构彻底换了：
+
+1. 记忆从一份 CLAUDE.md，进化成 Agent 自己读写的 memory/ 目录
+
+2. 记忆待在对话里会烂掉：注意力被劈开，规律被埋住，旧笔记还在自信地用错
+
+3. 白天各 Agent 把进展写进团队记忆
+
+4. 夜里再跑一轮 dreaming：核对、整理、补全。第二天开工的那个，自动比昨天聪明一点
+
+数据结果也很直观：一次通过的错误少了 97%，验收快了 30%。人回去看产品，不再一直盯着提示词。
+
+提示词是一次性的，而循环能够持续执行。
+
+差的不是你会不会问。
+
+是你的 Agent 睡一觉之后，还记不记得昨天学到的东西。 https://x.com/Dhruvkumar16797/status/2105343744342216900/video/1
+
+Agent 剪片子还在凭文件名猜帧率和编码器的，ffmpeg-skill 把这步掐掉了。
+
+它装进 Claude Code、Cursor、Codex，本机跑 FFmpeg。先 probe 时长、帧率、分辨率和音轨，再剪。剪切、拼接、去静音、字幕和卡拉 OK、画幅、响度、HDR 转 SDR 都有对应脚本，仓库现在是 42 个。
+
+写完会再探一遍输出，对不上时长或分辨率就算失败。
+
+素材不上传，不需要 API key。一行 npx ffmpeg-skill 安装。本机没有 ffmpeg 时，doctor 会告诉你缺哪个组件。
+
+🔗https://github.com/kajisho5/ffmpeg-skill
+
+AI Agent拼模型，Harness怎么搭同样关键。
+
+JIT-Agent 走了条不太一样的路：先让一个 27B 模型按任务当场生成专属 Harness，再交由另一个模型去跑。
+
+换句话说，模型不必换，任务一变，就重新生一套执行框架。
+
+官方实验里，这种动态 Harness 在部分任务上能逼近甚至压过人工设计，Token 消耗还明显降了下来。
+
+全套开源，想琢磨 Agent 工作流的可以翻翻。
+🔗 https://github.com/bingreeky/JIT
+🔗 https://arxiv.org/abs/2608.25593
+
+真正开窍之后，人会有这6种核心变化
+
+很多人都不知道什么是觉醒，开悟。实际上开悟就是大脑开窍，对一切事物有自己的逻辑，包括处理任何事，任何关系。
+
+开窍那一刻，你会有一种非常明确的“醒过来”的感觉。无论你多少岁开窍，都会发自内心觉得：前面几十年，好像白活了。
+
+不是否定过去，而是你终于看清：之前的你，一直活在无明里，像一个被程序驱动的NPC；开窍之后——你切换到了玩家视角，真正升维了。你会一边心疼从前懵懂的自己，一边深深感恩所有磨难、伤害与低谷——正是它们，把你硬生生“疼醒”。
+
+一、开始观察自己的起心动念，自动修正自己
+开窍最直观的改变，是你拥有了“观心”的能力。你能清晰看见：自己为什么生气、为什么焦虑、为什么执着、为什么攀比。以前你是陷在事里，被情绪带着走；现在你是站在事上，看见情绪背后的执念与虚妄。
+你会不自觉修正自己：不再争对错、不再辩输赢、不再向外抓取证明。因为你一眼就能看透：大多数矛盾，无关事情本身，只关小我面子、恐惧与匮乏。
+当你能看清自己，再看身边人，会发现：绝大多数人，仍被小我遮蔽、被欲望驱动、被情绪操控，活在无明里而不自知。而这时候，你新的对手出现了——觉醒后的傲慢。觉得自己懂了、看透了、高人一等，这是最隐蔽、最容易卡住人的一关。
+
+二、你明确知道：不能再像以前那样活了
+内心会升起一股强烈的力量：我要换一种活法。
+你开始真正理解古圣先贤、高级灵魂的选择：为什么有人能放下名利、放下争斗、践行无我利他。不是被迫，不是懦弱，而是认知到本质后的自然选择。
+你会在生活细微处，体会到“合道”带来的安宁与幸福：做事更顺、关系更松、内心更定。哪怕只是运动、工作、做饭、待人接物，你都会突然发现：我怎么这么顺、这么稳、这么通透？
+以前拼命求、用力抓、焦虑内耗，却总得不到；现在顺应本质、守住本心、放下执念，结果反而水到渠成。你终于明白：一个人的行为，源于认知；一个人的认知，源于起心动念。事物的本质，从来不是表象，而是人背后的心念与格局。
+王阳明说的心即理、心外无物、心生万法，不再是书本道理，而是你真实可用的：人生指南、事业指南、生活指南。
+
+三、内在极度喜悦，同时又感到拉扯与分裂
+觉醒不是一劳永逸的天堂，而是清醒的阵痛。鲁迅先生说：面具戴太久，就会长在脸上；再想揭下来，必是撕皮扯肉的疼。
+你明明知道什么是对、什么是真、什么是虚妄，但旧习惯、旧圈子、旧思维、旧情绪，仍会反复拉扯你。意志稍不坚定，身边的人事物、世俗的评判、小我的不甘，就会把你重新拉回混沌、内耗、攀比、焦虑的低维状态。
+这种清醒与沉沦的拉扯，是觉醒路上最真实、最磨人的一关。熬过去，才是真通透；退回去，又会重新迷。
+
+四、渴望寻找同类，又常常不被理解
+开窍后，你会本能地想：有没有人和我一样？
+你说的话、你的三观、你的选择，身边人很难理解，甚至觉得你变了、你疯了、你不合群、你太佛系。你很清楚：不是你怪异，是他们仍困在表象里；你看见的是本质，他们看见的是情绪与利益。
+孤独是觉醒者的常态，但这份孤独，不是寂寞，而是清醒后的独立。
+
+五、话越来越少，不是沉默，是深知“言不尽意”
+你会明显变得：不爱争辩、不爱解释、不爱炫耀、不爱说教。
+不是冷漠，而是越来越懂：
+层次不同，不必强融 认知不同，不必争辩 心念不同，不必说服
+你会深刻体会到：《道德经》里的那句：道可道，非常道。一切能用语言说清的，都只是道理；真正悟到的“道”，是体验、是心境、是本能，无法完全言传。
+话少，是因为心定；心定，是因为看清。你会第一次真切尝到：真正成长的滋味，安静又强大。
+
+六、开窍，是一群人的终点，也是另一群人的起点
+对浑浑噩噩过一生的人来说，开窍，是这辈子都未必抵达的终点。
+对真正觉醒的人来说，开窍，只是修行的真正起点。
+醒过来，只是第一步；守得住、行得正、修得稳、渡得稳，才是往后一生的功课。
+人一觉醒，万法自通；心一归位，万事顺遂。
+
+AgentHarness 的第一个 6 周时间也结束了，其实过程中我自己也一直在学习和沉淀，准备写一本小册子，叫做《Agent Harness 工程：从最小执行循环到自主运行系统》（结构如图）
+——
+10 月份要进入到简单快乐的 Vibe coding 实践营，这次是给欧洲的华人们开设，如果有在欧美的朋友们想跟着我从零完成 AI 的学习到 idea->product 的过程，加我微信！
+
+可以关注一下最近出的一个 测试框架 e2e 
+https://github.com/tester-army/e2e 你没看错，名字就是叫 e2e （这名字真的不是碰瓷吗？），很火，而且它最有趣的是创新是：测试用例里面是自然语言驱动 + 传统断言混写
+
+自然语言就是表示它是面向LLM 的测试框架 Agent 步骤可缓存回放 被后续断言验证过的 agent.act 会记下操作 下次直接重放 不再调模型 
+
+还有就是 Web 和移动同一套 API Web 引擎走 Playwright，移动引擎通过 agent-device 驱动 iOS 模拟器和 Android 模拟器 还可以托管别的模拟器
+
+大家可以看一下测试用例，很有趣 agent.act('upgrade the workspace to the Pro plan') 这个就是自然语言的方式，第一次会让 agent 自己去探索去缓存，假如有变化再次更新。
+
+表面上看，TDD红绿重构的流程能将 测试 作为需求实现的硬门槛（红灯没法继续推进），但实际情况是：agent 为了推进实现，有强烈意愿去构造 expect(true) 的废用例
+
+核心问题在于 —— 你不能将用例当作代码实现的免费添头
+更具体来说，代码是在 spec 指导下实现的。类似的，用例也需要在指导下实现
+
+不同类型用例的来源不同，单测的来源是“代码实现”，e2e 的来源是用户行为。
+
+如果你采用 BDD 的开发模式，那 spec 中确定的用户行为天然可以作为 e2e 的指导，这样生成的用例才是可用的
+
+
+小墨同学
+@xiaomovps
+·
+2h
+Pi 新出的 Pi Durable，分享一些实战案例🔥
+
+Pi 我觉得最大的问题长时间运行，尤其是在做长任务的时候容易卡死，社区一直没修复
+
+Durable 更像是一套长期运行的解决方案：
+
+“如果这个 Agent 要连续干几天，甚至我关掉终端以后还得继续，它怎么办？”
+
+我觉得最适合的有几个场景。
+
+1、长期 Personal Agent
+
+每天查邮件、整理任务、跑总结，第二天继续昨天没干完的东西。
+
+普通 Pi 更像你叫它出来干一次活。
+
+Durable 则是 Task、Conversation、State 都一直留着，进程挂了还能从 Checkpoint 接着跑。
+
+2、Slack / Discord / 微信机器人
+
+一个长期 Agent 可以同时存在很多 Conversation。
+
+群聊是一条，Thread 再 Fork 一条，后台任务又是另外一条。
+
+大家可以同时找它干不同的事情，不需要全部挤在一个 Session 里面。
+
+3、真正适合跑长任务
+
+比如部署、跑测试、查日志、等 CI。
+
+这类任务最怕不是失败，而是：
+
+“刚才到底执行到哪了？”
+
+Durable 会记录任务状态，还能区分哪些 Tool 可以安全重跑，哪些有副作用不能随便再执行。
+
+这个比单纯 Resume Session 实用很多。
+
+4、多 Agent 工作流
+
+Main Agent 负责整体任务，Research 查资料，Coding 写代码，Review 检查结果。
+
+在 Durable 里面 Subagent 甚至不用单独设计，本质上就是另一条独立 Conversation，各自有自己的模型、Context、Tools 和状态。
+
+所以我现在对这两个东西的理解很简单：
+
+Pi：适合人一直在旁边，陪你把这一轮任务做好。
+
+Pi Durable：适合你人不在，它还得自己继续活着、继续干活。
+
+我不知道它会不会慢慢变成跟小龙虾或者是 Hermes 类似的东西，但是在执行长任务内容的时候，他是有很大的改善
+
+但是现阶段也存在一些问题，等官方慢慢的迭代即可
+
+这两天在看 Pi 0.99 的 MCP 实现。
+https://x.com/pidotdev/status/2104992471155696120
+
+注意到 Deferred 模式里一个容易被忽略的问题：工具按需加载，可以减少首轮 Schema；但工具在第二轮加入后，会不会导致 Prompt Cache miss？
+取决于模型 API 是否支持对话中途增加工具。
+
+`toolsAdded` 只是 Pi transcript 里的内部状态。真正提交给模型时，存在两条路径：
+
+1. 支持 Tool Addition
+
+Pi 会把新增工具转换成 `additional_tools`、`tool_search_output.tools` 或 `tool_addition`，插入工具被发现的位置。
+
+已缓存的对话前缀
+→ tool_search
+→ search result
+→ 新增工具
+→ 后续对话
+
+已有前缀仍然可以 cache hit。首次 miss 的主要是新增工具及其后的内容，不是整段 Prompt。
+
+2. 不支持 Tool Addition
+
+Pi 只能重算当前完整工具集合，把它重新放进请求顶层的 `tools`：
+
+上一轮：tools[A]
+下一轮：tools[A, B, C]
+
+工具列表在靠近请求开头的位置发生变化。对于前缀匹配式 Prompt Cache，后面的对话历史很可能无法继续复用，形成大范围甚至完整的 cache miss。
+
+工具删除或同名 Schema 重新定义也有类似问题。此时 Pi 无法安全地把变化追加在原来的时间位置，只能重新提交当前完整工具集合。
+
+Deferred 节省的是首轮工具上下文。它能否同时保住缓存收益，还要看 Provider 有没有原生的 Tool Addition 能力。
+
+按 Pi 当前的模型兼容目录，原生 Tool Addition 还不是通用能力。
+OpenAI Responses 的 GPT-5.4、5.5、5.6、GPT-6 和 6.1 系列可以通过 additional_tools 或 tool_search_output 加载工具。
+Anthropic 直连的较新 Claude 模型支持 tool_addition 和 tool_removal。
+Kimi K3 在 Moonshot、Fireworks 和 OpenCode 上也支持对话中途增加工具。
+多数旧模型、普通 OpenAI-compatible endpoint 和部分代理仍然不支持。
+即使底层模型具备能力，代理不透传相应格式时，Pi 也只能退回完整 tools 列表
+
+假期第二天，继续学习阿里发布的「AI Native 研发范式实践手册」
+
+今天细看「企业级 AI 研发基础设施」这一章中最重要的「企业级 Agent Harness」
+
+从大型企业内部视角，把很多平时熟悉或不熟悉的技术点串起来，算是系统复习吧(主要是陪孩子上课有连续时间 😂)
+
+在常规的 Agent Harness 运行机制之上，企业软件怎么跟它做集成，企业安全能力怎么正确适度的运行发挥作用，是主要差异。
+
+企业软件的集成分为两种: 程序性机制和模型推理机制，给 llm 提供指引和外部运行能力。
+
+企业安全能力主要从三个方面发挥作用: 
+身份 - 识别不可信输入，阻断恶意诱导
+审计 - 在行动前进行动态审查
+权限 - 以最小权限约束实际运行
+
+斯坦福把 2026 年最新的 LLM 全套课程，免费放出来了。
+
+CME 295：Transformers & Large Language Models
+
+从 Attention 一路讲到 AI Agent，共 9 讲：
+
+Transformer、MoE、RoPE
+LoRA、RLHF、DPO
+PPO、GRPO 强化学习
+KV Cache、FlashAttention
+MCP、Skills、Coding Agent
+LLM-as-a-judge、扩散语言模型
+
+第 1 讲的视频和 slides 已经上线，后面每周更新。第一讲在youtube的视频我已经看完了
+
+想系统补 LLM 基础，这份大纲直接当学习路线用：
+ https://cme295.stanford.edu/syllabus/
+
+trpc-agent-go
+
+https://x.com/yibie/status/2105816871132119255
+
+pi 终于 1.0 版本了
+
+我现在的企业版本 pi work 内核选择 pi 目前来看非常正确
+
+以下是最新特性
+
+- TUI 现在默认全屏运行；设置 tuiMode: "regular" 以保留正常滚动缓冲
+- Codemode 使用约 40% 更少的提示令牌，并带有命名恢复方法的错误
+- 在 codemode 脚本中添加了 models.generateImages()，使用量计入会话成本
+- MCP OAuth 加强：每个服务器的凭据、RFC 9207 iss 检查，以及保持授予作用域的逐步登录
+
+VerySmallWoods
+@verysmallwoods
+·
+1h
+Pi agent 从 0.99 开始在内核提供对 MCP 的支持，以及 direct、deferred、codemode 和 hidden 四种工具露出模式。
+
+这些模式如何工作，有何区别？今天就来简单聊聊。
+
+相关链接
+- Earendil 官方文章：https://earendil.com/posts/you-said-no-mcp/
+- Pi Agent：https://pi.dev
+- Pi 源码：https://github.com/earendil-works/pi
+- Filesystem MCP Server：https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem
+
+⏱ 章节
+00:00 开场：Pi 为什么对 MCP 改口
+03:02 实测环境与 exposure 配置
+04:58 Direct：工具全部进入上下文
+05:47 Deferred：按需发现与 toolsAdded
+08:52 MCP Code Mode：模型写代码，QuickJS 执行
+13:17 总结一波
+
+我过去用过 redis 来做单机程序的行情，但是 redis 适合的场景是一个进程产生，多个进程消费。具体 pub/sub 应该是消息不留存、中间可缺失，要查的数据另外放着；streams 场景是消息留在流里、中间不可缺失，重启后还在不在看 RDB 或 AOF。单进程是没必要用 redis 的。
+
+用 postgres 的前提是重启后已提交的还要在，或者必须原子变动，其次是同一份结果在下一次写之前被反复读。而高频更新的最新价是不适合放数据库，并且同步更新其他业务的。
+
+数据湖这边，比较大的数据，写入了就不用再改的，用 parquet，duckdb 来查。写入还要改的，用 duckdb 自己的文件。给人看的导出用 csv。一个人、本机、几十到几百 GiB，不装 hive、hadoop、spark、tez。
+
+今天在 GitHub 榜上看到个好东西，rohitg00/ai-engineering-from-scratch。
+
+总有人想搞 AI 应用但觉得门槛高无从下手，这个项目直接把底层原理到实际交付的链路给拆开了，纯代码手敲。
+
+想转 AI 方向或者正琢磨做独立产品的，这周花点时间泡杯咖啡敲一遍，绝对能少走很多弯路
+
+https://x.com/geoqiao/status/2098084791191310694
+
+Pi 的作者 Mario Zechner 早期是死硬派的「No MCP」代表：核心只留 4 个工具，公开把 MCP 当反面教材。
+
+结果在逼近 1.0 的 0.99 大版本里，Pi 突然把 MCP 设为了内置功能。
+
+这看起来像妥协，但翻完源码就会发现：Pi 根本不是向 MCP 低头，而是用一层 Codemode 把 MCP 彻底降维驯服了。
+
+传统 MCP 为什么是灾难？直给两组数字：
+
+1. Token 炸弹：挂个 Playwright 吃 13.7k token，Chrome DevTools 吃 18k token。还没开始聊，3 万 token 先没了，首字延迟崩盘，工具疯狂选错。
+
+2. 调度极慢：查 50 个 Issue，传统 ReAct 循环要跑 50 轮完整大模型往返，几十万字节原始 JSON 垃圾全挤进上下文。把大模型当单步 CPU 用，又贵又脆。
+
+Pi 0.99 给出的解法非常干脆：代码即编排（Code-as-Orchestration）。
+
+- Schema 零注入：MCP 工具默认 exposure 全是 codemode，工具定义根本不给大模型看，Prompt 仅留一行摘要，按需用 BM25 在沙箱里搜。几万 token 预载成本瞬间归零。
+
+- 调度权收回代码：大模型不再发单步指令，而是直接写一段 JS 脚本，扔进 QuickJS 沙箱跑。循环、并发（Promise.all）、异常处理毫秒级完成。
+
+1MB 的原始数据在沙箱内存里直接 filter/map，最终只有清洗后的 3 行有效结果才会回到大模型上下文。
+
+MCP 只适合做能力的标准化暴露，从来不该直接当交互界面。
+
+未来的 Agent 架构很明确了：大模型当编译器（自然语言编译成脚本），轻量沙箱当 CPU（跑并发与清洗），MCP 退回底层当系统函数库。
+
+
+Restate my intent before continuing
+
+判断你英文好不好。很简单
+1:用英文打客服电话，换套餐，打医生电话，口述症状和预约时间，打市政厅电话，陈述当下问题。Indeed找到雇主电话，直接陌生电话自我介绍，工作。二手跳蚤市场直接电话联系，当面交易。
+比较同样的问题，你和母语者花费的沟通时间。你约等于母语者的什么程度。
+很多华人寸步难行，压根离不开翻译。荷兰倒是客气，配了不少华人翻译，但是别忘了这对大家都是成本。迟早取消。
+2:Yutube打开直接上BBC，VOA，原速听完一遍立刻和英语母语者讨论这个话题。（你们曹哥就这个水平略低）
+你越能够详细阐述自己的观点，用上精准的词汇，你的听力越接近于母语者的程度。
+
+其他都没有意义！没有意义！
+
+
+迪迪Didi
+@didicvj7
+·
+23h
+这篇POST会在你最需要的时候找到你
+
+分享生活中一些非常好用的sop
+
+1️⃣ 跨部门对接SOP
+ 1 讲清楚需求：背景目标、交付物、截止时间、验收标准。
+ 2 找对的人：对接人、负责人、决策人；拉群定牵头。
+ 3 文字留痕：事项+需你方做什么+截止+格式+风险，同步所有相关人。
+ 4 确认：收到+预计完成+疑问；24h未回跟进，必要时抄送主管。 
+5 同步：节点更新，卡点预警，避免杯甩锅。 
+6 归档：按标准验收，邮件确认，沉淀复用。  
+
+2️⃣ 向上汇报 SOP
+1 先结论：结果/进度/风险/需支持，30秒说清。 
+2 结构：结论→进展→问题→方案→请求。
+ 3 摆数据：数字、对比、趋势。
+ 4 提方案：至少2个+建议，让领导做选择题。
+ 5 频率：日常简短，里程碑正式，风险立即报。 模
+板：目标…当前…偏差…原因…方案A/B…建议…需支持…截止…  
+
+3️⃣ 日常工作 SOP
+1 早启动：列今日3件最重要事，标优先级和截止。
+ 2 拆任务：拆成30—60分钟动作，先做最难。 
+3 留痕：文件命名“日期-项目-版本-姓名”；关键决策邮件/群确认。 
+4 日复盘：5分钟写完成/未完成/原因/明日调整。
+5 周复盘：30分钟写成果/问题/下周计划。
+ 6 防遗漏：待办、等待、跟进三栏清单。 
+
+ 4️⃣ 吵架SOP 
+1 停：情绪上头先闭麦，不行声音大点（气势不能输）
+ 2 定：明确争什么：事实、目标、责任、资源。
+ 3 听：让对方说完，复述确认：“我理解你是说……” 
+4 摆：只讲事实、数据、影响，说“这事导致…”。 
+5 提：给方案和底线，问对方诉求：“你希望怎样？”
+ 6 选：达成一致，写纪要：谁、做什么、何时、验收。 
+7 升：无法一致时，找上级看怎么推进。
+
+
+迪迪Didi
+@didicvj7
+·
+23h
+这篇POST会在你最需要的时候找到你
+
+分享生活中一些非常好用的sop
+
+1️⃣ 跨部门对接SOP
+ 1 讲清楚需求：背景目标、交付物、截止时间、验收标准。
+ 2 找对的人：对接人、负责人、决策人；拉群定牵头。
+ 3 文字留痕：事项+需你方做什么+截止+格式+风险，同步所有相关人。
+ 4 确认：收到+预计完成+疑问；24h未回跟进，必要时抄送主管。 
+5 同步：节点更新，卡点预警，避免杯甩锅。 
+6 归档：按标准验收，邮件确认，沉淀复用。  
+
+2️⃣ 向上汇报 SOP
+1 先结论：结果/进度/风险/需支持，30秒说清。 
+2 结构：结论→进展→问题→方案→请求。
+ 3 摆数据：数字、对比、趋势。
+ 4 提方案：至少2个+建议，让领导做选择题。
+ 5 频率：日常简短，里程碑正式，风险立即报。 模
+板：目标…当前…偏差…原因…方案A/B…建议…需支持…截止…  
+
+3️⃣ 日常工作 SOP
+1 早启动：列今日3件最重要事，标优先级和截止。
+ 2 拆任务：拆成30—60分钟动作，先做最难。 
+3 留痕：文件命名“日期-项目-版本-姓名”；关键决策邮件/群确认。 
+4 日复盘：5分钟写完成/未完成/原因/明日调整。
+5 周复盘：30分钟写成果/问题/下周计划。
+ 6 防遗漏：待办、等待、跟进三栏清单。 
+
+ 4️⃣ 吵架SOP 
+1 停：情绪上头先闭麦，不行声音大点（气势不能输）
+ 2 定：明确争什么：事实、目标、责任、资源。
+ 3 听：让对方说完，复述确认：“我理解你是说……” 
+4 摆：只讲事实、数据、影响，说“这事导致…”。 
+5 提：给方案和底线，问对方诉求：“你希望怎样？”
+ 6 选：达成一致，写纪要：谁、做什么、何时、验收。 
+7 升：无法一致时，找上级看怎么推进。
+
+
+你看一下身边层次高的人，你就会发现，他们都有一个共同的特点，就是即使深知他人不足，他们仍保持沉默，不指正，不教导，不好为人师。即便自身认知与经验远超对方，他们也绝不轻易给予建议。
+
+你知道为什么吗？因为不论是知道还是说教，都是需要耗费大量精力的，情商最低的行为就是不停的讲道理。萧伯纳说，强者选择原谅，智者选择忽略，智者惜口，愚者指点江山，尊重他人命运，放下助人情节。
+
+你要明白，能打动人心的并非道理，而是经历劫难的磨砺，唤醒他人的并非说教，而是磨难历练、觉悟与经验，若非亲身领悟，即便给予也难以把握
+
+
+Man ting
+@Manorgw
+·
+3h
+2026 年想混成世界级软件工程师，难道只顾埋头敲代码就够了？得摸清圈里人都在琢磨什么。
+
+刷到一位博主整理的 Newsletter 清单，五个方向，我扫了一遍覆盖面还挺全，从基本功到带团队再到 AI，几乎一条龙。给你挖出来：
+
+1️⃣ 系统设计
+The System Design Newsletter，弄明白大系统怎么搭，这属于硬功夫，绕不开。
+🔗 http://newsletter.systemdesign.one
+2️⃣ 给工程师用的产品思维
+Product for Engineers，PostHog 出品，写代码的也得懂点产品，否则永远只是执行的角色。
+🔗 http://newsletter.posthog.com
+3️⃣ 工程管理
+Engineering Leadership，Gregor Ojstersek 写的，想从写代码的爬到带人的，看这个。
+🔗 http://newsletter.eng-leadership.com
+4️⃣ 搞懂 AI
+Decoding AI Magazine，Paul Iusztin 出品，2026 年还不沾 AI，那可真要被落下了。
+🔗 http://decodingai.com
+5️⃣ 每周科技精选
+Hungry Minds，一周挑几篇值得读的，省得你自己满世界翻。
+🔗 http://hungryminds.dev
+说句实在的，光收藏不读跟没看一样。挑一两个你最缺的，先订上，每周抽点时间扫一遍，一年下来差距就拉开了。
+
+社会上混欲成大事，需要学会的十五大城府： 
+1、第一城府：      少言
+2、第二城府：      慎行
+3、第三城府：      藏拙
+4、第四城府：      观色
+5、第五城府：      谦逊
+6、第六城府：      忍耐
+7、第七城府：      圆融
+8、第八城府：      守口
+9、第九城府：      稳重
+10、第十城府：    知退
+11、第十一城府： 善谋
+12、第十二城府： 识势
+13、第十三城府： 装傻
+14、第十四城府： 留余
+15、第十五城府： 静心
+
+
+https://x.com/Jerry_fsy/status/2105612519050227818
+
+感谢
+@KakaluoteW45042
+和
+@yifanxu_ephai
+ 等人的支持，今天先写Agent Infra需要的分布式知识的基础篇：
+我在学习AI Infra/Agent Infra的时候发现，在这些领域涉及到很多分布式方面的知识，如果对分布式这块不是很了解的话，很多AI Infra/Agent Infra的设计和取舍可能比较难以理解。为了帮助想入门AI Infra/Agent Infra的朋友更好的学习这些领域，我整理了一些最好能提前理解的分布式知识。
+
+这是第一篇，涉及到分布式的基础知识，这是后续学习其他分布式概念的根基：
+
+1.Process / Node
+Process即进程，就是正在运行的一个程序实例，比如我们在终端中执行”codex”就是启动了一个CodeX的process。如果我们再执行”claude”的话，则是启动了一个Claude Code的process。
+
+在一台服务器中可以同时运行很多进程，不同进程拥有各自独立的虚拟地址空间，默认不能直接访问彼此的内存。
+
+那么进程间想通信怎么办呢？如果进程之间需要交换数据，就需要使用进程间通信机制。这里面会涉及到IPC / RPC / HTTP / gRPC / Message Queue这些概念。
+
+Node一般指整个分布式系统中的一个计算节点，它可以是一台服务器或者虚拟机。
+
+例如下面的一个简单的架构图，就涉及到4个node，每一个node都有各自的职责：感谢
+@KakaluoteW45042
+和
+@yifanxu_ephai
+ 等人的支持，今天先写Agent Infra需要的分布式知识的基础篇：
+我在学习AI Infra/Agent Infra的时候发现，在这些领域涉及到很多分布式方面的知识，如果对分布式这块不是很了解的话，很多AI Infra/Agent Infra的设计和取舍可能比较难以理解。为了帮助想入门AI Infra/Agent Infra的朋友更好的学习这些领域，我整理了一些最好能提前理解的分布式知识。
+
+这是第一篇，涉及到分布式的基础知识，这是后续学习其他分布式概念的根基：
+
+1.Process / Node
+Process即进程，就是正在运行的一个程序实例，比如我们在终端中执行”codex”就是启动了一个CodeX的process。如果我们再执行”claude”的话，则是启动了一个Claude Code的process。
+
+在一台服务器中可以同时运行很多进程，不同进程拥有各自独立的虚拟地址空间，默认不能直接访问彼此的内存。
+
+那么进程间想通信怎么办呢？如果进程之间需要交换数据，就需要使用进程间通信机制。这里面会涉及到IPC / RPC / HTTP / gRPC / Message Queue这些概念。
+
+Node一般指整个分布式系统中的一个计算节点，它可以是一台服务器或者虚拟机。
+
+例如下面的一个简单的架构图，就涉及到4个node，每一个node都有各自的职责：
+
+
+
+焦土客
+@jiaotuke
+·
+1h
+我刚刚问了gpt，它说要按照这个路线来学
+
+Python →  → NumPy/Pandas → 机器学习 → PyTorch → 深度学习 → Transformer → LLM → RAG/Agent → 微调 → 部署 → 多模态 
+
+时间大概要花十二个月，也就是刚好我大四开学不久
+
+为什么要现在开始学，因为我已经大三了，马上要毕业了，总不能毕业之后什么都不会吧，总要有一项可以立身的技术
+
+今天是学习的第一天，先学python
+
+https://x.com/fttt007/status/2105561984536089047
+
+Agent学习步骤：
+第一步：Python
+第二步：Transformer
+第三步：提示词工程
+第四步：RAG
+第五步：LangChain
+第六步：LangGraph
+第七步：Agent
+第八歩：多Agent系统
+第九歩：私有化部署
+第十歩：微调
+第十一步：量化
+第十二步：多模态口 
+第十三步：项目实战
+
+pi v0.99 的 codemode 真好用
+
+AI时代，最容易被淘汰的不是不会用AI的人。
+
+而是只会「让AI帮自己干活」的人。
+
+真正有价值的是：
+
+发现问题 → 拆解问题 → 设计流程 → 调用AI → 验证结果。
+
+工具会越来越便宜。
+
+真正贵的，是定义问题的能力
+
+真正有效的学习，不是收藏100篇文章。
+
+而是：
+
+看一个观点 → 找一个案例 → 自己做一次 → 得到反馈 → 修改。
+
+很多人学了三年还不会。
+
+不是因为学得少。
+
+而是从来没有进入过「输入—实践—反馈」这个循环。真正有效的学习，不是收藏100篇文章。
+
+而是：
+
+看一个观点 → 找一个案例 → 自己做一次 → 得到反馈 → 修改。
+
+很多人学了三年还不会。
+
+不是因为学得少。
+
+而是从来没有进入过「输入—实践—反馈」这个循环。
+
+
+想90天内快速成为AI工程师，别先着急报课。直接拿这10个开源 GitHub 项目开练就行！🔥👇
+
+1️⃣ LangChain：相当于搭AI应用的“乐高积木箱”。你想做聊天机器人、智能客服、文档问答，很多现成模块都能直接拼，招聘里几乎必提。
+https://github.com/langchain-ai/langchain
+
+2️⃣ LangGraph：专门用来做“会记住上下文、能一步步干活”的智能体。不是一问一答就结束，而是能按流程图一直往下执行任务。
+https://github.com/langchain-ai/langgraph
+
+3️⃣ LlamaIndex：专门处理“把公司文档喂给AI，让它按资料回答”这件事。招人说的检索、知识库问答，基本都指向它。
+https://github.com/run-llama/llama_index
+
+4️⃣ CrewAI：让多个AI各司其职，像一个小团队。有人负责调研，有人负责写，有人负责检查，一起把活干完。
+https://github.com/crewAIInc/crewAI
+
+5️⃣ Qdrant：给AI存“语义记忆”的数据库。不是按关键词搜，而是按意思找最相关的内容，很多公司会拿它做知识检索。
+https://github.com/qdrant/qdrant
+
+6️⃣ Ragas：专门给AI答得准不准打分。比如有没有胡说、有没有忠于原文、回答和问题对不对得上，都能量化看出来。
+https://github.com/vibrantlabsai/ragas
+
+7️⃣ Ollama：一行命令就能在自己电脑上跑开源大模型。不用把数据丢上云，也更省钱，适合本地试用和隐私场景。
+https://github.com/ollama/ollama
+
+8️⃣ Awesome MCP Servers：MCP可以理解成AI连接外部工具的“统一插头”。这个仓库把市面上能用的生产级MCP服务都整理好了。
+https://github.com/punkpeye/awesome-mcp-servers
+
+9️⃣ Awesome LLM Apps：里面有100多个能直接跑的完整项目，覆盖问答、智能体、多Agent协作、语音Agent等，适合照着改。
+https://github.com/Shubhamsaboo/awesome-llm-apps
+
+🔟 AI Agents for Beginners：微软出的免费入门课，一共12课，从零讲清楚智能体怎么做，不用付费，也不用注册。
+https://github.com/microsoft/ai-agents-for-beginners
+
+2026年就剩三个月了，狠狠干，入职 AI 岗位就从现在开始。💪
+
+收藏，然开干。
+
+实践性MES导入指南
+
+
+
+《实践性MES导入指南》目录（中文翻译）第1章 为什么现在需要MES？ 制造DX与智能工厂的本质与课题  1.1 用例(1)：来自总部的指示  
+1.2 用例(2)：来自现场的提案  
+1.3 MES导入与本书的作用：如何跨越反模式  
+1.4 为什么现在需要MES  
+1.5 MES作为课题解决手段的意义  
+1.6 智能工厂就是活用MES的工厂
+
+第2章 MES是什么？  2.1 MES是什么  
+2.2 日本制造IT的发展与课题  
+2.3 定义制造IT框架的ISA-95  
+2.4 ISA-95中MES的定位与定义  
+2.5 MES与MOM
+
+第3章 MES如何改变公司？  3.1 MES如何改变公司？  
+3.2 MES投资回报的思考方式  
+3.3 MES导入效果的思考方式  
+3.4 MES对解决经营课题的贡献
+
+第4章 MES能做什么？  4.1 本章的构成与阅读方法  
+4.2 从“MES的11大功能”到“MES/MOM导入标准业务清单”  
+4.3 MES/MOM导入标准业务清单  
+4.4 MES功能介绍  
+4.5 MES与相邻领域的联动
+
+第5章 各行业MES的特点  5.1 组装  
+5.2 航空航天  
+5.3 汽车  
+5.4 汽车零部件（供应商）  
+5.5 食品  
+5.6 医药  
+5.7 半导体  
+5.8 化学
+
+第6章 MES导入的推进方法  6.1 构想制定的推进方法  
+6.2 MES导入的执行  
+6.3 按规模划分的MES导入
+
+第7章 工厂硬件与MES  7.1 作为生产系统的工厂  
+7.2 工厂硬件与MES的关系
+
+第8章 数据驱动制造与MES  8.1 MES的数据模型  
+8.2 MES数据的应用  
+8.3 数据驱动制造的实现
+
+第9章 MES的未来：从制造执行系统到中央管制系统  9.1 让工厂成为利润中心  
+9.2 从制造执行系统到中央管制系统  
+9.3 未来某天，在俯瞰制造现场的中二层
+
+以上是完整的中文目录翻译，已尽量保持原意并使之通顺易读。
+Explain ISA-95 standards
+
+Explore MOM vs MES
+Explore MOM vs MES
+Thought for 13s
+MES 与 MOM 的核心区别与关系在智能制造和工厂数字化（尤其是本书《实践性MES导入指南》的语境中），MES 和 MOM 是两个高度相关但范围不同的概念。它们都处于 ISA-95 标准的 Level 3（制造运营与控制层），位于 ERP（Level 4）与 SCADA/PLC（Level 2）之间。基本定义MES（Manufacturing Execution System，制造执行系统）
+是一种软件系统，专注于生产现场（Shop Floor）的实时执行与监控。它负责工单下发与执行、数据采集、设备监控、OEE（设备综合效率）计算、追溯、操作员指导等，确保生产计划在现场被正确、高效地落地。
+MOM（Manufacturing Operations Management，制造运营管理）
+是一种更宽泛的管理框架/架构概念（由 ISA-95 正式定义），覆盖整个制造运营的四大领域：  生产运营（Production）  
+质量运营（Quality）  
+维护运营（Maintenance）  
+库存/物料运营（Inventory）
+
+MOM 本身不是一个可直接购买的单一软件产品，而是通过整合 MES + QMS（质量管理系统）+ CMMS（计算机化维护管理系统）+ WMS（仓库管理系统）等系统来实现。
+
+关键对比维度
+MES
+MOM
+本质
+软件系统
+管理框架 / 架构模型
+范围
+主要聚焦生产执行（四大领域之一）
+覆盖生产 + 质量 + 维护 + 库存（全四大领域）
+重点
+实时执行、数据采集、现场透明度
+跨领域协同、整体优化与战略对齐
+ISA-95位置
+Level 3 中的生产运营子系统
+整个 Level 3 范围
+能否单独购买
+是（市面上有大量 MES 软件）
+否（通常通过系统集成实现）
+典型功能
+工单管理、实时跟踪、OEE、追溯
+MES 全部功能 + 质量、维护、库存协同与分析
+目标
+提升现场执行效率与透明度
+实现端到端运营优化与跨部门协同
+
+关系总结MES 是 MOM 的核心组成部分。大多数情况下，MES 被视为 MOM 中“生产运营”领域的具体实现。
+MOM 是 MES 的自然扩展与上位概念。早期人们更多说“MES”，后来随着功能扩展（加入质量、维护、库存等），行业逐渐用 MOM 来描述更全面的制造运营管理。
+在实际项目中，企业很少直接买“一个 MOM”，而是先上线 MES（解决生产执行问题），再逐步整合其他系统，形成完整的 MOM 架构。
+
+在本书中的体现本书标题以 MES 为主，但反复提到「MES/MOM導入のための標準業務一覧」（MES/MOM 导入标准业务清单）。这说明作者把 MES 作为切入点与核心，同时将其放在更广阔的 MOM 框架下讨论，帮助读者从单纯的“现场执行”升级到“整体制造运营管理”。简单类比：
+MES 像工厂的“现场指挥官”（盯着生产线怎么跑）；
+MOM 像整个制造运营的“作战指挥部”（统筹生产、质量、维护、库存四大战场）。如果你想深入某个具体方面（比如四大领域的详细功能、ISA-95 模型、或者如何从 MES 演进到 MOM），可以继续告诉我。
+Explain ISA-95 production operations
+
+Explore QMS integration with MES
+Explain ISA-95 production operations
+Thought for 29s
+ISA-95 Production Operations (more precisely called Production Operations Management) is one of the four core domains defined in ISA-95 Part 3 (Activity Models of Manufacturing Operations Management).Context in ISA-95ISA-95 (also known as IEC 62264) is the international standard for integrating enterprise systems (like ERP) with manufacturing control systems. It uses a hierarchical model:Level 4: Business planning & logistics (ERP)
+Level 3: Manufacturing Operations Management (MOM)
+Level 2–0: Control, sensing, and physical processes (SCADA, PLC, equipment)
+
+At Level 3, ISA-95 divides Manufacturing Operations Management into four symmetrical domains:Production Operations Management ← (the focus here)
+Quality Operations Management
+Maintenance Operations Management
+Inventory Operations Management
+
+Production Operations is the primary domain that traditional MES systems implement.DefinitionProduction Operations Management consists of the activities that coordinate, direct, manage, and track the functions that use raw materials, energy, equipment, personnel, and information to produce products — while meeting required cost, quality, quantity, safety, and timeliness targets.In short: it is everything needed to turn a production order into actual finished goods on the shop floor in a controlled, visible, and optimizable way.Key Activity ModelISA-95 Part 3 defines a generic activity model that applies to Production Operations (the same structure is reused for the other three domains). The main activities typically include:Activity
+Description
+Product Definition Management
+Managing recipes, BOMs, work instructions, process segments, and production rules
+Resource Management
+Managing availability and capability of equipment, personnel, materials, and energy
+Detailed Production Scheduling
+Creating finite-capacity, executable schedules from higher-level plans
+Production Dispatching
+Releasing and assigning work orders/jobs to specific resources and work centers
+Production Execution Management
+Guiding and controlling the actual execution of work on the shop floor
+Production Data Collection
+Gathering real-time data from machines, operators, and processes
+Production Tracking
+Tracking progress, genealogy, material consumption, and as-built records
+Production Performance Analysis
+Calculating KPIs such as OEE, throughput, yield, and identifying losses
+
+These activities form a closed loop: define → schedule → dispatch → execute → collect data → track → analyze → improve.Relation to MES and MOMMES primarily implements the Production Operations domain.
+MOM is the broader umbrella that includes Production Operations plus the other three domains (Quality, Maintenance, Inventory).
+In the book we discussed earlier, the “MES/MOM導入のための標準業務一覧” is built on this ISA-95 structure — treating MES as the practical entry point into the full Production (and eventually full MOM) activity set.
+
+Would you like a deeper dive into any specific activity (e.g., Detailed Production Scheduling or Production Tracking), a comparison with the other three domains, or how this maps to typical MES functionality?
+Explain Production Dispatching
+
+Discuss Quality Operations
+ISA-95是那个单位发行的
+Thought for 8s
+ISA-95 是由 国际自动化学会（International Society of Automation，简称 ISA） 制定并发布的标准。详细说明：发布机构：International Society of Automation（ISA）
+完整名称：ANSI/ISA-95（Enterprise-Control System Integration，企业-控制系统集成）
+国际对应标准：同时被国际电工委员会（IEC）采纳，对应为 IEC 62264
+
+ISA 是一个非营利性专业协会，成立于1945年，专注于自动化领域。ISA-95 系列标准由 ISA 的 ISA95 标准委员会负责开发与维护，最早版本在2000年左右发布，之后持续更新（最新如2025年的 Part 1 更新）。简单来说，ISA-95 = ISA 发布的标准，国际通用版本就是 IEC 62264。
+ISA-95数据模型详解
+
+IEC 62264标准内容
+ISA-95数据模型详解
+Thought for 19s
+ISA-95 数据模型详解ISA-95（ANSI/ISA-95 / IEC 62264）的数据模型（也称为对象模型或信息模型）是其核心内容之一，主要定义在 Part 1（Models and Terminology） 和 Part 2（Objects and Attributes） 中，Part 4 则进一步扩展了制造运营管理（MOM）内部活动之间的对象模型。这些模型用于标准化企业系统（Level 4，如 ERP）与制造控制系统（Level 3，如 MES/MOM）之间交换的信息，确保不同系统能用“同一语言”沟通。1. 数据模型的整体结构ISA-95 采用 面向对象的建模方法（基于 UML），核心特点是：使用 Class（类） 和 Instance（实例） 的概念
+大量使用 Property（属性） 机制，允许灵活扩展
+强调“角色”与“物理实体”的分离（例如设备角色 vs 具体物理资产）
+
+主要分为两大类：资源模型（描述“用什么”）
+运营信息流模型（描述“做什么、做得怎样”）
+
+2. 核心资源模型（Resource Models）这是整个数据模型的基础，定义了生产所需的四大资源：资源类型
+英文名称
+主要作用
+关键概念
+人员
+Personnel
+定义人员及其能力、资质
+Personnel Class（人员类别/角色）、Person（具体人员）、资质测试结果
+设备
+Equipment（Role-based）
+定义设备在生产中的角色与能力
+Equipment Class、Equipment、能力测试
+物理资产
+Physical Asset
+定义具体的物理设备（带序列号）
+Physical Asset Class、具体资产实例、制造商信息
+物料
+Material
+定义原材料、半成品、成品
+Material Class、Material Definition、Material Lot（批次）、Material Sublot
+
+关键设计思想：Class（类别）：描述一类资源的通用属性和能力（如“焊接工”“数控机床”）
+Instance（实例）：具体的人或设备（如“张三”“机床编号 CNC-001”）
+支持能力测试、有效期、位置等属性
+
+3. 过程段模型（Process Segment）过程段是 ISA-95 非常重要的概念，它把人员、设备、物料和过程逻辑组合在一起，描述“一段可执行的工作”。Process Segment：定义一段生产过程需要哪些资源、消耗/产生什么物料
+可嵌套，支持复杂工艺路线
+是连接产品定义与实际执行的桥梁
+
+4. 四大核心信息流模型（Level 3 ↔ Level 4 交换的关键）这是 ERP 与 MES 之间最常用的数据交换内容：信息类别
+方向
+内容说明
+对应 B2MML Schema
+Product Definition
+（产品定义）
+Level 4 → Level 3
+如何生产：BOM、工艺路线、配方、工作指令
+ProductDefinition
+Production Capability
+（生产能力）
+Level 3 → Level 4
+当前能生产什么：可用资源、产能、能力
+ProductionCapability
+Production Schedule
+（生产计划）
+Level 4 → Level 3
+要生产什么：生产订单、数量、交期
+ProductionSchedule
+Production Performance
+（生产绩效）
+Level 3 → Level 4
+实际生产了什么：产量、消耗、质量、OEE 等
+ProductionPerformance
+
+这四个模型形成了完整的闭环：
+定义 → 能力确认 → 下发计划 → 执行反馈。5. 其他重要模型Hierarchy Scope（层级范围）：企业 → 工厂 → 区域 → 工作中心 → 工作单元
+Operations Definition / Operations Schedule / Operations Performance（对应 MOM 四大领域的通用结构）
+Test Specification / Test Result（质量测试相关）
+Operations Event（后期版本增加的事件模型，支持更实时的交互）
+
+6. 实际实现方式B2MML（Business To Manufacturing Markup Language）：MESA 维护的 XML Schema 实现，是目前最常用的具体数据交换格式
+OPC UA Companion Specification：把 ISA-95 对象模型映射到 OPC UA 信息建模中，便于实时数据交换
+
+总结ISA-95 数据模型的核心价值在于：提供统一的“词汇表”和结构
+分离“角色”与“物理实体”，提高灵活性
+通过四大信息流实现 ERP 与 MES 的标准集成
+支持从简单生产执行扩展到完整的 MOM（生产+质量+维护+库存）
+
+如果你需要更深入的内容，比如：某个具体资源模型的详细属性表
+Product Definition 或 Production Performance 的结构
+与 B2MML 的对应关系
+实际 UML 类图示意
+
+可以告诉我，我继续展开讲解。
+除了ISA-95还有其他版本吗
+Thought for 14s
+是的，ISA-95 不是单一文件，而是一个多部分（Multi-part）的系列标准。ISA-95 目前的主要组成部分（Parts）根据 ISA 官方最新信息，ISA-95 系列目前主要包括以下部分：部分
+全称
+主要内容
+当前主要版本
+Part 1
+Models and Terminology
+模型与术语、层级模型、功能模型
+2025（最新）
+Part 2
+Objects and Attributes for Enterprise-Control System Integration
+对象模型与属性（数据模型核心）
+2018
+Part 3
+Activity Models of Manufacturing Operations Management
+制造运营管理活动模型（含生产、质量、维护、库存）
+2013
+Part 4
+Objects and Attributes for Manufacturing Operations Management Integration
+MOM 内部活动间的对象模型与属性
+2018
+Part 5
+Business-to-Manufacturing Transactions
+业务与制造之间的交易/消息交互
+2018
+Part 6
+Messaging Service Model
+消息服务模型
+2014
+Part 7
+Alias Service Model
+别名服务模型
+2017
+Part 8
+Information Exchange Profiles
+信息交换配置文件
+2020
+
+另外还有技术报告（Technical Report），例如：ISA-TR95.01：Master Data Profile Template（主数据配置模板）
+
+版本说明ISA-95 是美国国家标准（ANSI/ISA-95），由国际自动化学会（ISA）发布。
+国际对应版本是 IEC 62264（内容基本一致，由 IEC 发布）。
+每个 Part 都会不定期更新。例如 Part 1 在 2000 → 2010 → 2025 进行了较大修订。
+
+总结所以“除了 ISA-95 还有其他版本吗？”的准确回答是：ISA-95 本身就是一个系列标准，目前有 8 个主要部分 + 技术报告。
+每个部分都有各自的版本年份。
+国际通用名称是 IEC 62264。
+
+如果你想了解某个具体 Part 的内容、最新变化，或者它和 IEC 62264 的对应关系，可以告诉我，我再详细展开。
+Compare ISA-95 Part 2 and Part 4
+
+Explore IEC 62264 standard
+如何查看ISA-95的文档
+Thought for 12s
+如何查看 ISA-95 的文档ISA-95（以及对应的国际标准 IEC 62264）是受版权保护的正式标准，完整文档不能免费公开下载，需要通过正规渠道获取。1. 官方购买（最直接的方式）ISA 官网（推荐）：
+访问 https://www.isa.org/standards-and-publications/isa-standards/isa-95-standard  可以单独购买各个 Part  
+也有 ISA-95 Bundle（打包购买可优惠约 8%）  
+支持 PDF 下载
+其他正规渠道：ANSI 网店（webstore.ansi.org）
+IEC 官方商店（购买 IEC 62264 系列）
+各国国家标准机构（如中国可关注国家标准馆或相关代理）
+2. 加入 ISA 会员（性价比最高的方式）ISA 会员可以在 ISA Pub Hub 中免费在线阅读（Read-Only）大部分 ISA 标准。
+这是目前获取完整文档最经济的方式之一。
+注册地址：isa.org 官网 → Membership
+
+3. 免费可获取的内容目录（Table of Contents）和部分预览：在 ISA 和 ANSI 官网可以免费下载部分 Part 的目录和前言。
+B2MML（Business To Manufacturing Markup Language）：这是 ISA-95 数据模型的 XML 实现，由 MESA International 维护，相对更容易获取，很多公司实际使用的是这个。
+ISA 官网有免费的入门培训模块（如 IC55M01 Overview of ISA-95）。
+
+4. 其他途径公司或大学的标准订阅库（很多大型制造企业、咨询公司、高校图书馆都有购买）
+购买解读书籍，例如：The Road to Integration: A Guide to Applying the ISA-95 Standards in Manufacturing
+建议先去 ISA 官网查看最新 Part 列表和价格。
+如果只是学习理解，优先考虑加入 ISA 会员或先看免费预览 + B2MML。
+如果是企业正式项目使用，建议直接购买正版 PDF，并注意版权合规。
+
+需要我帮你整理目前各 Part 的购买链接、大概价格范围，或者推荐相关免费学习资源吗？可以告诉我你的具体需求。
+了解B2MML数据模型细节
+
+探索ISA-88批次控制标准
+ISA-95具体包括哪些内容
+Thought for 13s
+ISA-95 具体包括哪些内容ISA-95（完整名称：Enterprise-Control System Integration，企业-控制系统集成）是一个多部分系列标准，目前主要包含 8 个正式部分 + 相关技术报告。它系统定义了企业业务系统（如 ERP）与制造控制系统（如 MES/MOM）之间的集成框架。以下是各部分的核心内容：一、核心基础部分（最常用）部分
+名称
+主要内容
+Part 1
+Models and Terminology
+（模型与术语）
+- 五层功能层级模型（Level 0~4）
+- 设备层级模型（Enterprise → Site → Area → Work Center 等）
+- 功能数据流模型
+- 基本术语定义
+- 企业与制造控制域的边界划分
+（最新版：2025）
+Part 2
+Objects and Attributes
+（对象与属性）
+- 详细的对象模型（人员、设备、物料、物理资产、过程段等）
+- 每个对象的属性定义
+- 四大核心信息流：产品定义、生产能力、生产计划、生产绩效
+Part 3
+Activity Models of Manufacturing Operations Management
+（制造运营管理活动模型）
+- Level 3（MOM）的活动模型
+- 四大运营领域：生产、质量、维护、库存
+- 每个领域的通用活动（定义、资源管理、详细排程、派工、执行、数据采集、跟踪、绩效分析）
+
+二、扩展与实现部分部分
+名称
+主要内容
+Part 4
+Objects and Attributes for Manufacturing Operations Management Integration
+MOM 内部各活动之间（生产↔质量↔维护↔库存）的对象模型和属性
+Part 5
+Business-to-Manufacturing Transactions
+（业务到制造事务）
+定义 Level 4 与 Level 3 之间具体的事务/消息交互方式（如何请求、响应、变更数据）
+Part 6
+Messaging Service Model
+（消息服务模型）
+定义信息交换的服务模型和传输机制
+Part 7
+Alias Service Model
+（别名服务模型）
+处理不同系统间命名不一致的问题（别名映射）
+Part 8
+Information Exchange Profiles
+（信息交换配置文件）
+定义针对特定场景或行业的信息交换配置文件，提高可实施性
+
+三、补充文件ISA-TR95.01：Master Data Profile Template（主数据配置模板）
+
+总结：ISA-95 主要解决什么问题？统一语言：定义了制造领域通用的术语、层级和对象模型
+明确边界：清晰划分 ERP（Level 4）与 MES/MOM（Level 3）的职责
+标准化数据交换：规范了产品定义、计划、能力、绩效等核心数据如何在系统间传递
+支持完整 MOM：不仅覆盖生产执行（MES），还扩展到质量、维护、库存管理
+
+实际应用中最核心、最常被引用的是 Part 1、Part 2 和 Part 3。需要我针对某一个 Part（比如 Part 1 的层级模型，或 Part 2 的对象模型）做更详细的展开吗？
+Explain ISA-95 Part 1 hierarchy
+
+Explore ISA-95 vs ISA-88
+Fast
+《实践性MES导入指南》目录（中文翻译）第1章 为什么现在需要MES？ 制造DX与智能工厂的本质与课题  1.1 用例(1)：来自总部的指示  
+1.2 用例(2)：来自现场的提案  
+1.3 MES导入与本书的作用：如何跨越反模式  
+1.4 为什么现在需要MES  
+1.5 MES作为课题解决手段的意义  
+1.6 智能工厂就是活用MES的工厂
+
+第2章 MES是什么？  2.1 MES是什么  
+2.2 日本制造IT的发展与课题  
+2.3 定义制造IT框架的ISA-95  
+2.4 ISA-95中MES的定位与定义  
+2.5 MES与MOM
+
+第3章 MES如何改变公司？  3.1 MES如何改变公司？  
+3.2 MES投资回报的思考方式  
+3.3 MES导入效果的思考方式  
+3.4 MES对解决经营课题的贡献
+
+第4章 MES能做什么？  4.1 本章的构成与阅读方法  
+4.2 从“MES的11大功能”到“MES/MOM导入标准业务清单”  
+4.3 MES/MOM导入标准业务清单  
+4.4 MES功能介绍  
+4.5 MES与相邻领域的联动
+
+第5章 各行业MES的特点  5.1 组装  
+5.2 航空航天  
+5.3 汽车  
+5.4 汽车零部件（供应商）  
+5.5 食品  
+5.6 医药  
+5.7 半导体  
+5.8 化学
+
+第6章 MES导入的推进方法  6.1 构想制定的推进方法  
+6.2 MES导入的执行  
+6.3 按规模划分的MES导入
+
+第7章 工厂硬件与MES  7.1 作为生产系统的工厂  
+7.2 工厂硬件与MES的关系
+
+第8章 数据驱动制造与MES  8.1 MES的数据模型  
+8.2 MES数据的应用  
+8.3 数据驱动制造的实现
+
+第9章 MES的未来：从制造执行系统到中央管制系统  9.1 让工厂成为利润中心  
+9.2 从制造执行系统到中央管制系统  
+9.3 未来某天，在俯瞰制造现场的中二层
+
+以上是完整的中文目录翻译，已尽量保持原意并使之通顺易读。
+Explain ISA-95 standards
+
+Explore MOM vs MES
+Explore MOM vs MES
+Thought for 13s
+MES 与 MOM 的核心区别与关系在智能制造和工厂数字化（尤其是本书《实践性MES导入指南》的语境中），MES 和 MOM 是两个高度相关但范围不同的概念。它们都处于 ISA-95 标准的 Level 3（制造运营与控制层），位于 ERP（Level 4）与 SCADA/PLC（Level 2）之间。基本定义MES（Manufacturing Execution System，制造执行系统）
+是一种软件系统，专注于生产现场（Shop Floor）的实时执行与监控。它负责工单下发与执行、数据采集、设备监控、OEE（设备综合效率）计算、追溯、操作员指导等，确保生产计划在现场被正确、高效地落地。
+MOM（Manufacturing Operations Management，制造运营管理）
+是一种更宽泛的管理框架/架构概念（由 ISA-95 正式定义），覆盖整个制造运营的四大领域：  生产运营（Production）  
+质量运营（Quality）  
+维护运营（Maintenance）  
+库存/物料运营（Inventory）
+
+MOM 本身不是一个可直接购买的单一软件产品，而是通过整合 MES + QMS（质量管理系统）+ CMMS（计算机化维护管理系统）+ WMS（仓库管理系统）等系统来实现。
+
+关键对比维度
+MES
+MOM
+本质
+软件系统
+管理框架 / 架构模型
+范围
+主要聚焦生产执行（四大领域之一）
+覆盖生产 + 质量 + 维护 + 库存（全四大领域）
+重点
+实时执行、数据采集、现场透明度
+跨领域协同、整体优化与战略对齐
+ISA-95位置
+Level 3 中的生产运营子系统
+整个 Level 3 范围
+能否单独购买
+是（市面上有大量 MES 软件）
+否（通常通过系统集成实现）
+典型功能
+工单管理、实时跟踪、OEE、追溯
+MES 全部功能 + 质量、维护、库存协同与分析
+目标
+提升现场执行效率与透明度
+实现端到端运营优化与跨部门协同
+
+关系总结MES 是 MOM 的核心组成部分。大多数情况下，MES 被视为 MOM 中“生产运营”领域的具体实现。
+MOM 是 MES 的自然扩展与上位概念。早期人们更多说“MES”，后来随着功能扩展（加入质量、维护、库存等），行业逐渐用 MOM 来描述更全面的制造运营管理。
+在实际项目中，企业很少直接买“一个 MOM”，而是先上线 MES（解决生产执行问题），再逐步整合其他系统，形成完整的 MOM 架构。
+
+在本书中的体现本书标题以 MES 为主，但反复提到「MES/MOM導入のための標準業務一覧」（MES/MOM 导入标准业务清单）。这说明作者把 MES 作为切入点与核心，同时将其放在更广阔的 MOM 框架下讨论，帮助读者从单纯的“现场执行”升级到“整体制造运营管理”。简单类比：
+MES 像工厂的“现场指挥官”（盯着生产线怎么跑）；
+MOM 像整个制造运营的“作战指挥部”（统筹生产、质量、维护、库存四大战场）。如果你想深入某个具体方面（比如四大领域的详细功能、ISA-95 模型、或者如何从 MES 演进到 MOM），可以继续告诉我。
+Explain ISA-95 production operations
+
+Explore QMS integration with MES
+Explain ISA-95 production operations
+Thought for 29s
+ISA-95 Production Operations (more precisely called Production Operations Management) is one of the four core domains defined in ISA-95 Part 3 (Activity Models of Manufacturing Operations Management).Context in ISA-95ISA-95 (also known as IEC 62264) is the international standard for integrating enterprise systems (like ERP) with manufacturing control systems. It uses a hierarchical model:Level 4: Business planning & logistics (ERP)
+Level 3: Manufacturing Operations Management (MOM)
+Level 2–0: Control, sensing, and physical processes (SCADA, PLC, equipment)
+
+At Level 3, ISA-95 divides Manufacturing Operations Management into four symmetrical domains:Production Operations Management ← (the focus here)
+Quality Operations Management
+Maintenance Operations Management
+Inventory Operations Management
+
+Production Operations is the primary domain that traditional MES systems implement.DefinitionProduction Operations Management consists of the activities that coordinate, direct, manage, and track the functions that use raw materials, energy, equipment, personnel, and information to produce products — while meeting required cost, quality, quantity, safety, and timeliness targets.In short: it is everything needed to turn a production order into actual finished goods on the shop floor in a controlled, visible, and optimizable way.Key Activity ModelISA-95 Part 3 defines a generic activity model that applies to Production Operations (the same structure is reused for the other three domains). The main activities typically include:Activity
+Description
+Product Definition Management
+Managing recipes, BOMs, work instructions, process segments, and production rules
+Resource Management
+Managing availability and capability of equipment, personnel, materials, and energy
+Detailed Production Scheduling
+Creating finite-capacity, executable schedules from higher-level plans
+Production Dispatching
+Releasing and assigning work orders/jobs to specific resources and work centers
+Production Execution Management
+Guiding and controlling the actual execution of work on the shop floor
+Production Data Collection
+Gathering real-time data from machines, operators, and processes
+Production Tracking
+Tracking progress, genealogy, material consumption, and as-built records
+Production Performance Analysis
+Calculating KPIs such as OEE, throughput, yield, and identifying losses
+
+These activities form a closed loop: define → schedule → dispatch → execute → collect data → track → analyze → improve.Relation to MES and MOMMES primarily implements the Production Operations domain.
+MOM is the broader umbrella that includes Production Operations plus the other three domains (Quality, Maintenance, Inventory).
+In the book we discussed earlier, the “MES/MOM導入のための標準業務一覧” is built on this ISA-95 structure — treating MES as the practical entry point into the full Production (and eventually full MOM) activity set.
+
+Would you like a deeper dive into any specific activity (e.g., Detailed Production Scheduling or Production Tracking), a comparison with the other three domains, or how this maps to typical MES functionality?
+Explain Production Dispatching
+
+Discuss Quality Operations
+ISA-95是那个单位发行的
+Thought for 8s
+ISA-95 是由 国际自动化学会（International Society of Automation，简称 ISA） 制定并发布的标准。详细说明：发布机构：International Society of Automation（ISA）
+完整名称：ANSI/ISA-95（Enterprise-Control System Integration，企业-控制系统集成）
+国际对应标准：同时被国际电工委员会（IEC）采纳，对应为 IEC 62264
+
+ISA 是一个非营利性专业协会，成立于1945年，专注于自动化领域。ISA-95 系列标准由 ISA 的 ISA95 标准委员会负责开发与维护，最早版本在2000年左右发布，之后持续更新（最新如2025年的 Part 1 更新）。简单来说，ISA-95 = ISA 发布的标准，国际通用版本就是 IEC 62264。
+ISA-95数据模型详解
+
+IEC 62264标准内容
+ISA-95数据模型详解
+Thought for 19s
+ISA-95 数据模型详解ISA-95（ANSI/ISA-95 / IEC 62264）的数据模型（也称为对象模型或信息模型）是其核心内容之一，主要定义在 Part 1（Models and Terminology） 和 Part 2（Objects and Attributes） 中，Part 4 则进一步扩展了制造运营管理（MOM）内部活动之间的对象模型。这些模型用于标准化企业系统（Level 4，如 ERP）与制造控制系统（Level 3，如 MES/MOM）之间交换的信息，确保不同系统能用“同一语言”沟通。1. 数据模型的整体结构ISA-95 采用 面向对象的建模方法（基于 UML），核心特点是：使用 Class（类） 和 Instance（实例） 的概念
+大量使用 Property（属性） 机制，允许灵活扩展
+强调“角色”与“物理实体”的分离（例如设备角色 vs 具体物理资产）
+
+主要分为两大类：资源模型（描述“用什么”）
+运营信息流模型（描述“做什么、做得怎样”）
+
+2. 核心资源模型（Resource Models）这是整个数据模型的基础，定义了生产所需的四大资源：资源类型
+英文名称
+主要作用
+关键概念
+人员
+Personnel
+定义人员及其能力、资质
+Personnel Class（人员类别/角色）、Person（具体人员）、资质测试结果
+设备
+Equipment（Role-based）
+定义设备在生产中的角色与能力
+Equipment Class、Equipment、能力测试
+物理资产
+Physical Asset
+定义具体的物理设备（带序列号）
+Physical Asset Class、具体资产实例、制造商信息
+物料
+Material
+定义原材料、半成品、成品
+Material Class、Material Definition、Material Lot（批次）、Material Sublot
+
+关键设计思想：Class（类别）：描述一类资源的通用属性和能力（如“焊接工”“数控机床”）
+Instance（实例）：具体的人或设备（如“张三”“机床编号 CNC-001”）
+支持能力测试、有效期、位置等属性
+
+3. 过程段模型（Process Segment）过程段是 ISA-95 非常重要的概念，它把人员、设备、物料和过程逻辑组合在一起，描述“一段可执行的工作”。Process Segment：定义一段生产过程需要哪些资源、消耗/产生什么物料
+可嵌套，支持复杂工艺路线
+是连接产品定义与实际执行的桥梁
+
+4. 四大核心信息流模型（Level 3 ↔ Level 4 交换的关键）这是 ERP 与 MES 之间最常用的数据交换内容：信息类别
+方向
+内容说明
+对应 B2MML Schema
+Product Definition
+（产品定义）
+Level 4 → Level 3
+如何生产：BOM、工艺路线、配方、工作指令
+ProductDefinition
+Production Capability
+（生产能力）
+Level 3 → Level 4
+当前能生产什么：可用资源、产能、能力
+ProductionCapability
+Production Schedule
+（生产计划）
+Level 4 → Level 3
+要生产什么：生产订单、数量、交期
+ProductionSchedule
+Production Performance
+（生产绩效）
+Level 3 → Level 4
+实际生产了什么：产量、消耗、质量、OEE 等
+ProductionPerformance
+
+这四个模型形成了完整的闭环：
+定义 → 能力确认 → 下发计划 → 执行反馈。5. 其他重要模型Hierarchy Scope（层级范围）：企业 → 工厂 → 区域 → 工作中心 → 工作单元
+Operations Definition / Operations Schedule / Operations Performance（对应 MOM 四大领域的通用结构）
+Test Specification / Test Result（质量测试相关）
+Operations Event（后期版本增加的事件模型，支持更实时的交互）
+
+6. 实际实现方式B2MML（Business To Manufacturing Markup Language）：MESA 维护的 XML Schema 实现，是目前最常用的具体数据交换格式
+OPC UA Companion Specification：把 ISA-95 对象模型映射到 OPC UA 信息建模中，便于实时数据交换
+
+总结ISA-95 数据模型的核心价值在于：提供统一的“词汇表”和结构
+分离“角色”与“物理实体”，提高灵活性
+通过四大信息流实现 ERP 与 MES 的标准集成
+支持从简单生产执行扩展到完整的 MOM（生产+质量+维护+库存）
+
+如果你需要更深入的内容，比如：某个具体资源模型的详细属性表
+Product Definition 或 Production Performance 的结构
+与 B2MML 的对应关系
+实际 UML 类图示意
+
+可以告诉我，我继续展开讲解。
+除了ISA-95还有其他版本吗
+Thought for 14s
+是的，ISA-95 不是单一文件，而是一个多部分（Multi-part）的系列标准。ISA-95 目前的主要组成部分（Parts）根据 ISA 官方最新信息，ISA-95 系列目前主要包括以下部分：部分
+全称
+主要内容
+当前主要版本
+Part 1
+Models and Terminology
+模型与术语、层级模型、功能模型
+2025（最新）
+Part 2
+Objects and Attributes for Enterprise-Control System Integration
+对象模型与属性（数据模型核心）
+2018
+Part 3
+Activity Models of Manufacturing Operations Management
+制造运营管理活动模型（含生产、质量、维护、库存）
+2013
+Part 4
+Objects and Attributes for Manufacturing Operations Management Integration
+MOM 内部活动间的对象模型与属性
+2018
+Part 5
+Business-to-Manufacturing Transactions
+业务与制造之间的交易/消息交互
+2018
+Part 6
+Messaging Service Model
+消息服务模型
+2014
+Part 7
+Alias Service Model
+别名服务模型
+2017
+Part 8
+Information Exchange Profiles
+信息交换配置文件
+2020
+
+另外还有技术报告（Technical Report），例如：ISA-TR95.01：Master Data Profile Template（主数据配置模板）
+
+版本说明ISA-95 是美国国家标准（ANSI/ISA-95），由国际自动化学会（ISA）发布。
+国际对应版本是 IEC 62264（内容基本一致，由 IEC 发布）。
+每个 Part 都会不定期更新。例如 Part 1 在 2000 → 2010 → 2025 进行了较大修订。
+
+总结所以“除了 ISA-95 还有其他版本吗？”的准确回答是：ISA-95 本身就是一个系列标准，目前有 8 个主要部分 + 技术报告。
+每个部分都有各自的版本年份。
+国际通用名称是 IEC 62264。
+
+如果你想了解某个具体 Part 的内容、最新变化，或者它和 IEC 62264 的对应关系，可以告诉我，我再详细展开。
+Compare ISA-95 Part 2 and Part 4
+
+Explore IEC 62264 standard
+如何查看ISA-95的文档
+Thought for 12s
+如何查看 ISA-95 的文档ISA-95（以及对应的国际标准 IEC 62264）是受版权保护的正式标准，完整文档不能免费公开下载，需要通过正规渠道获取。1. 官方购买（最直接的方式）ISA 官网（推荐）：
+访问 https://www.isa.org/standards-and-publications/isa-standards/isa-95-standard  可以单独购买各个 Part  
+也有 ISA-95 Bundle（打包购买可优惠约 8%）  
+支持 PDF 下载
+其他正规渠道：ANSI 网店（webstore.ansi.org）
+IEC 官方商店（购买 IEC 62264 系列）
+各国国家标准机构（如中国可关注国家标准馆或相关代理）
+2. 加入 ISA 会员（性价比最高的方式）ISA 会员可以在 ISA Pub Hub 中免费在线阅读（Read-Only）大部分 ISA 标准。
+这是目前获取完整文档最经济的方式之一。
+注册地址：isa.org 官网 → Membership
+
+3. 免费可获取的内容目录（Table of Contents）和部分预览：在 ISA 和 ANSI 官网可以免费下载部分 Part 的目录和前言。
+B2MML（Business To Manufacturing Markup Language）：这是 ISA-95 数据模型的 XML 实现，由 MESA International 维护，相对更容易获取，很多公司实际使用的是这个。
+ISA 官网有免费的入门培训模块（如 IC55M01 Overview of ISA-95）。
+
+4. 其他途径公司或大学的标准订阅库（很多大型制造企业、咨询公司、高校图书馆都有购买）
+购买解读书籍，例如：The Road to Integration: A Guide to Applying the ISA-95 Standards in Manufacturing
+建议先去 ISA 官网查看最新 Part 列表和价格。
+如果只是学习理解，优先考虑加入 ISA 会员或先看免费预览 + B2MML。
+如果是企业正式项目使用，建议直接购买正版 PDF，并注意版权合规。
+
+需要我帮你整理目前各 Part 的购买链接、大概价格范围，或者推荐相关免费学习资源吗？可以告诉我你的具体需求。
+了解B2MML数据模型细节
+
+探索ISA-88批次控制标准
+ISA-95具体包括哪些内容
+Thought for 13s
+ISA-95 具体包括哪些内容ISA-95（完整名称：Enterprise-Control System Integration，企业-控制系统集成）是一个多部分系列标准，目前主要包含 8 个正式部分 + 相关技术报告。它系统定义了企业业务系统（如 ERP）与制造控制系统（如 MES/MOM）之间的集成框架。以下是各部分的核心内容：一、核心基础部分（最常用）部分
+名称
+主要内容
+Part 1
+Models and Terminology
+（模型与术语）
+- 五层功能层级模型（Level 0~4）
+- 设备层级模型（Enterprise → Site → Area → Work Center 等）
+- 功能数据流模型
+- 基本术语定义
+- 企业与制造控制域的边界划分
+（最新版：2025）
+Part 2
+Objects and Attributes
+（对象与属性）
+- 详细的对象模型（人员、设备、物料、物理资产、过程段等）
+- 每个对象的属性定义
+- 四大核心信息流：产品定义、生产能力、生产计划、生产绩效
+Part 3
+Activity Models of Manufacturing Operations Management
+（制造运营管理活动模型）
+- Level 3（MOM）的活动模型
+- 四大运营领域：生产、质量、维护、库存
+- 每个领域的通用活动（定义、资源管理、详细排程、派工、执行、数据采集、跟踪、绩效分析）
+
+二、扩展与实现部分部分
+名称
+主要内容
+Part 4
+Objects and Attributes for Manufacturing Operations Management Integration
+MOM 内部各活动之间（生产↔质量↔维护↔库存）的对象模型和属性
+Part 5
+Business-to-Manufacturing Transactions
+（业务到制造事务）
+定义 Level 4 与 Level 3 之间具体的事务/消息交互方式（如何请求、响应、变更数据）
+Part 6
+Messaging Service Model
+（消息服务模型）
+定义信息交换的服务模型和传输机制
+Part 7
+Alias Service Model
+（别名服务模型）
+处理不同系统间命名不一致的问题（别名映射）
+Part 8
+Information Exchange Profiles
+（信息交换配置文件）
+定义针对特定场景或行业的信息交换配置文件，提高可实施性
+
+三、补充文件ISA-TR95.01：Master Data Profile Template（主数据配置模板）
+
+总结：ISA-95 主要解决什么问题？统一语言：定义了制造领域通用的术语、层级和对象模型
+明确边界：清晰划分 ERP（Level 4）与 MES/MOM（Level 3）的职责
+标准化数据交换：规范了产品定义、计划、能力、绩效等核心数据如何在系统间传递
+支持完整 MOM：不仅覆盖生产执行（MES），还扩展到质量、维护、库存管理
+
+实际应用中最核心、最常被引用的是 Part 1、Part 2 和 Part 3。需要我针对某一个 Part（比如 Part 1 的层级模型，或 Part 2 的对象模型）做更详细的展开吗？
+Explain ISA-95 Part 1 hierarchy
+
+Explore ISA-95 vs ISA-88
+Fast
+
+
+ISA-95
+
+我们组在多人合作时遇到了 agent 环境下的数据同步问题，这时候和 agent 互通的 saas leapworld 有效地解决了燃眉之急。前提是这个 saas 需要做的足够灵活，模块化和 ai native, 我不认为 saas 在AI时代已死，但是我认为所有的旧 saas 需要在 agent 定义下重构或重新进行产品设计。
+
+
+以前翻过的PDF、Word、网页，过段时间再找，跟大海捞针一样？
+
+OpenKB 换了个玩法：把源文档直接编译成一套能互相跳转的 Wiki 知识库，摘要、概念、实体、引用自动织到一起。
+
+1️⃣ 不碰 Vector DB，靠 PageIndex 树索引啃下长文档
+2️⃣ 多模态原生支持，图表内容也照吃不误
+3️⃣ 知识持续沉淀，不用每次把资料重翻一遍
+4️⃣ 自带 Web UI，还能导出 Agent Skill 供 Claude Code、Codex 调用
+一句话，就是把“看过但忘了”的东西，一点点养成自己的可检索知识库。
+🔗 https://github.com/VectifyAI/OpenKB
+
+
+https://x.com/shao__meng/status/2104092484867703138
+
+
+章工
+@435hz
+·
+1h
+一个人能力强弱怎么判断?
+随便说一个吧，那些能自己
+
+1、独立搞定用上 ChatGPT
+2、搞定海外银行卡
+3、搞定海外手机号
+4、搞定美股开户、入金、出金
+5、搞定美债、美元、保险
+6、搞定身份、海外资产配置
+
+以及一个人能看到一个关键词就能自己通过各种途径找出答案、做出来的人，人生不会差的。
+
+
+AI最严厉的父亲
+@dashen_wang
+·
+3h
+构架师 · 人性卷，三篇写完了。
+
+01｜为什么你带出来的人，最后都看不起你
+教，是一种上位。距离带来敬畏，亲近产生轻视。
+
+https://x.com/dashen_wang/status/2104033205578068162
+
+02｜拆
+毁灭和创造是同一股能量。你不给它找靶子，它就会找上你。
+
+https://x.com/dashen_wang/status/2104036973854040143
+
+03｜最先撤离的人，不会告诉你他去了哪里
+钢琴从阶梯变成陷阱，用了二十年。AI 把所有技能变成钢琴，只要两三年。
+https://x.com/dashen_wang/status/2104037472036434393
+
+三篇连起来读：
+别人怎么拆你，你怎么拆世界，世界怎么拆掉所有人。

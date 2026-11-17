@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="Flink">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/bigdata/Flink/多易教育-FlinkSQL.zip!/" />
+      <root url="jar://$PROJECT_DIR$/bigdata/Flink/一文搞定Flink.zip!/" />
+      <root url="jar://$PROJECT_DIR$/bigdata/Flink/07 StreamPark.zip!/" />
+      <root url="jar://$PROJECT_DIR$/bigdata/Flink/02 Flink的窗口.zip!/" />
+      <root url="jar://$PROJECT_DIR$/bigdata/Flink/03 状态和容错.zip!/" />
+      <root url="jar://$PROJECT_DIR$/bigdata/Flink/01 Flink基础 .zip!/" />
+      <root url="jar://$PROJECT_DIR$/bigdata/Flink/[多易教育]-Flink-1.16.1文档.zip!/" />
+      <root url="jar://$PROJECT_DIR$/bigdata/Flink/06 FlinkSQL.zip!/" />
+      <root url="jar://$PROJECT_DIR$/bigdata/Flink/05  部署与监控.zip!/" />
+      <root url="jar://$PROJECT_DIR$/bigdata/Flink/04 高级编程.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

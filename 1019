@@ -1,0 +1,253 @@
+https://x.com/Manorgw/status/2111844502868791736
+
+https://x.com/xqliu/status/2112106038292000934
+
+https://x.com/TiagerBao/status/2112064032345604189
+
+https://x.com/Gorden_Sun/status/2112066561964130734
+
+https://x.com/Jerry_fsy/status/2112149107863392401
+
+https://x.com/alswl/status/2112111190096928930
+
+https://x.com/wquguru/status/2112084878842085436
+
+Qwen 千万级文档 RAG 流水线：四层防线把不可回答问题的幻觉率压到 2%，p95 延迟 18ms。
+
+▸ 混合检索（稠密 + BM25）
+▸ 引用约束生成 + 原子声明验证
+▸ 校准弃权：拿不准就拒答
+▸ 千万级向量仍保 18ms p95
+
+四层防幻觉的姿势很标准，没什么花活，但拼在一起就是生产级。多数团队卡在"加个向量库就完事"，没人愿意做"声明级验证"和"弃权"那两步——前者工程量大，后者要说服产品方接受"模型会说不知道"。2% 不是天花板，是工程纪律的回报。这套架构值得照抄。
+
+https://x.com/snwiki238337/status/2112135419731026041
+
+https://x.com/cxjwin/status/2112056767702286396
+
+https://x.com/Huahuazo/status/2111944662646960432
+
+https://x.com/kun70706/status/2111995411384689041
+
+https://x.com/Huahuazo/status/2112006822035148954
+
+https://x.com/don_tech1/status/2112020065331851504
+
+https://x.com/bkdgiffug/status/2111964291951989026
+
+https://x.com/antiAIvo/status/2112031880082244044
+
+https://x.com/MaxMa_27/status/2112024591766000108
+
+https://x.com/kejunz/status/2112001895032315994
+
+https://x.com/cxjwin/status/2111850759600197648
+
+https://x.com/yyyouweichen/status/2111967864299364366
+
+学习一个课程的最好状态就是你大概知道怎么回事，但是你说不出来。
+今天学 CS336，整理笔记时写下 LLM 的 evaluation 为什么要分 internal 和 external、为什么要砸这些资源,怎么砸；LLM 的 perplexity 就像 vision 的 CAM 一样 是为了侧面理解 AI。写完的瞬间才发现自己其实已经大概懂了，之前只是说不出来。
+而只有做到能说出来，才能和非技术背景的 key stakeholder 沟通好 convince audience，
+
+
+韩先师
+@DAIaf889
+·
+1h
+Claude Code 约 90% 的代码是 Claude 写的
+
+官方博客：6 到 9 月合并的 PR 翻了一倍多，要回滚的比例降了 4 成以上。不是不审，是机器先审
+
+能抄的 3 步：
+1. CLAUDE.md 写清能跑的检查
+2. 提 PR 前跑 /code-review、/security-review
+3. 反复出现的审查意见写进 REVIEW.md
+
+你有 REVIEW.md 吗？
+
+之前和 Yifan 聊 Multi-Agent Harness，听到了一个很有意思的设计。
+
+他想让多个 Coding Agent 基于同一份项目状态协作，但不依赖 Git Worktree 来隔离每个 Agent。
+
+他的思路是把沙箱隔离粒度缩小到每次 Tool Call。
+
+每次工具调用都有独立的临时 Workspace，执行完可以保存为 Commit，也可以直接丢弃。底层通过 Zero-copy fork、COW 和内容去重，让不同 Agent 共享已有文件状态。
+
+我第一反应是：你干脆重新发明 Git 吧。
+
+但看完他的 LayerFS 设计文档，发现还真有点东西。
+
+现在常见的 Agent 沙箱主要按 Task 隔离，而他希望做到 Tool Call 级别，让每一步操作都能独立执行、追溯、回滚和分叉。
+
+这样不仅能支持更细粒度的多 Agent 协作，还能让 Agent 从任意保留的中间状态继续探索其他方案。
+
+更有意思的是，他说这个想法半年前就写进 README 了。
+
+
+找AI/ML工作的，这个网站你开始用了么？ http://trentorch.com
+
+看懂 ≠ 会写。
+
+很多人能把 Softmax、反向传播讲得头头是道，可一让从空白文件开始敲，立刻卡壳：数值溢出怎么防？张量维度怎么对？
+
+#GitHub情报 #AI
+
+📩 接读者来稿，TA 向我们投稿了自己开发的 Git 工作流 Skill
+
+🐱 GitX：面向 AI Coding Agent 的 Git 工作流 Skill
+
+🔗：GitHub
+
+GitX 是一个面向 Claude Code、OpenAI Codex、Cursor 等 AI Coding Agent 的 Git 工作流 Skill。让 AI 编程 Agent 能够更规范、安全地管理 Git 仓库，最终得到一套干净、可维护的 Git 历史
+
+⚙️ 安装
+
+npx skills add musoyangrigor/gitx-skill
+
+💡 GitX 能做的事
+
+Conventional Commit、自动拆分提交、Branch、Pull / Push、PR、GitHub Issue、冲突解决、Git 状态/历史和 Commit plan
+
+🧠 新增 gitx scan
+
+在 Commit / Push 前，只读扫描工作区和本地 Git 历史中的潜在敏感信息，包括 API Key、Token、Private Key、.env 等。它可以区分风险目前处于：
+
+- UNCOMMITTED
+- STAGED
+- COMMITTED LOCALLY
+- PUSHED TO ORIGIN
+
+同时会隐藏完整密钥，只输出风险等级和处理建议
+
+频道：@NewlearnerChannel
+
+https://github.com/Delusions6515/test-audit
+
+@今晚吃什么 重生了 https://github.com/Agent2API/agent2api
+
+https://github.com/Wake-C/peekturn/blob/main/README.zh-CN.md
+
+https://x.com/hyh1564069/status/2111774982892404902
+
+https://x.com/cxjwin/status/2111644503341953409
+
+https://x.com/XShude/status/2111696476602794431
+
+https://x.com/kqyno7/status/2111671686391296437
+
+https://x.com/cxjwin/status/2111644503341953409
+
+https://x.com/XShude/status/2111696476602794431
+
+TrenTorch（http://trentorch.com）就是专治这个的：一个免费的 AI / ML 实战刷题站，题量 1600+，覆盖线性回归、神经网络、强化学习、模型推理，一直到底层 Kernel。
+
+流程你很熟悉：读题，写代码，提交，系统用隐藏用例判分。
+
+LeetCode 练的是算法和数据结构
+TrenTorch 练的是亲手实现机器学习的核心组件
+
+连 Softmax、交叉熵这种库里一行调用的东西，这里都要自己写。
+
+备战 AI / ML 面试，或者自学想验证"我真的会了吗"，都可以拿来试试。
+
+据站上展示，注册用户里有来自 OpenAI、Anthropic 的从业者，也有哈佛、斯坦福的同学。
+
+出门在外，想用手机微信或飞书唤醒家里的电脑写代码、查本地 Obsidian 笔记、填网页表单，甚至直接远程看一眼桌面？
+以前你得分别折腾内网穿透、IM 机器人框架、RAG 知识库和远程桌面软件。
+现在装一个开源的 
+
+https://x.com/lee04052822/status/2111618612158935467
+
+https://x.com/realWeZZard/status/2111539613508731296
+## Output Style
+
+You **MUST** be my brutally honest, high-level advisor and mirror.
+You **MUST NEVER** agree for comfort or flatter.
+You **MUST** challenge my thinking, question assumptions, and expose blind spots.
+You **MUST** dissect why and provide a sharper reframe or better alternative when reasoning or questions are weak
+You **MUST** balance critique with construction: offer clearer models, reframed questions, and strategic options I haven’t considered.
+You **MUST** teach me to think better, not just differently.
+You **MUST** call it out and explain the opportunity cost, if I’m avoiding discomfort, lying to myself, or wasting effort.
+You **MUST** Be objective, rational, and unfiltered.
+You **MUST** show where I’m making excuses, playing small, or underestimating risks. Then give a precise, prioritized plan for how to change thought, action, or mindset to reach the next level.
+You **MUST** treat my growth as dependent on truth, not comfort.
+You **MUST** exhaust every options, resources and avenue to help me achieve my goal.
+You **MUST** figure out why but not stopped at knowing about what.
+
+OpenCode 2.0 正式发布
+( 其实感觉用 Opencode 的人已经不多了..... )
+
+重大架构升级：
+• 终端 / 桌面 / Web 共享同一后台服务
+• Code Mode：代理写 JS 一次调用多个 MCP 工具，大幅减少 token 开销
+• 后台子代理 + 异步 shell，边审查边继续干活
+• 全新插件系统（80+ 内部插件）+ 热重载
+• 可嵌入 SDK，能直接嵌进自己的应用
+
+1.0 插件和旧 API 不兼容，升级用：
+`opencode upgrade --major`
+
+文档：http://opencode.ai/v2/docs
+
+https://x.com/cxjwin/status/2111818642954588419
+
+https://x.com/lxfater/status/2111810791661781365
+
+https://x.com/BaiBtw/status/2111737816535212112
+
+https://x.com/kqyno7/status/2111831664796258460
+
+我发现用一台 Linux 主机（或虚拟机），加上 tailscale docker 和 GitHub actions，就可以做出一套纯云端 vibe coding web 项目的全自动预览和迭代环境。
+也就是说，你的主机上可以有一个通过 tailscale 访问的项目上线地址；然后每次项目迭代，可以给每个 PR 或分支一个预览地址（就像 Cloudflare 那样）。
+这个配合任意 Agent 使用都非常好用且简单。而且不挑技术栈，只要是 web 应用能通过 docker 部署都可以。
+而且这一切非常轻量级，非常简单……
+等我打磨好了就开源。
+Infra 如此简单啊……
+
+看到大家在讨论 Dify/N8N 之类的工作流类产品，我这周末刚好在天津 GDG 做 N8N 的 workshop。刚好也说说我的看法：
+
+1. Agentic App 很好，但现在远没有快到能 take over 所有；
+2. N8N / Dify  之类的产品在大多数业务场景下依然是好用的。
+3. 相比于全 Agentic 的方案，Workflow + LLM 的方式，反而能让整体方案可能会体验更好和稳定性更好。
+4. Agentic Solution 的方案需要有人来值守，把最后一道关；成本相对更高； Workflow +LLM 的方案算是个中间态，能提供很好的价值。
+5. 对于绝大多数企业来说，先做好 N8N 这种的工作流，处理掉企业内的绝大多数的 Dirty  Work ，再去探索 Agentic App 会是更好的解决方案。
+6. 真实世界上的绝大多数业务都还没做好数字化和自动化，直接上智能化容易预期太高出问题。还不如先把数字化和自动化做好，释放人力和精力后再做智能化。不要好高骛远。
+
+https://x.com/xiqingongzi/status/2111803935103091130
+
+
+溺心海·Aven
+@NIxinhai0
+·
+7h
+你需要知道的几个AI助手：
+
+1.Claude（解决任何事情）
+2.NotebookLM（学习任何东西）
+3.Perplexity（研究任何事情）
+4.ChatGPT（生成图像）
+http://5.Google Omni（编辑任何视频）
+6.ElevenLabs（创建声音和音乐）
+7.Gamma（即时PowerPoint）
+8.Obsidian（构建你的第二大脑）
+9.n8n → （自动化任何事情）
+10.Granola → （记住会议中的绝对一切）
+
+
+章工
+@435hz
+·
+1h
+一个人能力强弱怎么判断?
+随便说一个吧，那些能自己
+
+1、独立搞定用上 ChatGPT
+2、搞定海外银行卡
+3、搞定海外手机号
+4、搞定美股开户、入金、出金
+5、搞定美债、美元、保险
+6、搞定身份、海外资产配置
+
+以及一个人能看到一个关键词就能自己通过各种途径找出答案、做出来的人，人生不会差的。
+
+

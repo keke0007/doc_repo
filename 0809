@@ -1,0 +1,98 @@
+https://github.com/pguso/ai-agents-from-scratch
+Following
+费曼输出群
+
+See new posts
+Your Home Timeline
+
+Show 35 posts
+Vince 聊开发
+@vincemask
+·
+18h
+Claude 用久了，我发现 Prompt 只解决了一半问题。
+
+另一半，是你的文件系统。
+
+文件乱，Claude 的上下文就容易乱。
+
+我现在基本固定成这 5 个目录：
+
+[01] system/
+放规则和约束，Claude 必须遵守。
+
+[02] context/
+放长期稳定上下文，比如工作方式、写作风格、参考资料。
+
+[03] projects/
+放正在推进的任务和项目。
+
+[04] outputs/
+放已经完成的产物。
+
+[99] archive/
+放旧内容。退出活跃上下文，但依然可以搜索。
+
+项目内部再按流程编号：
+
+00_BRIEF
+01_SOURCES
+02_NOTES
+03_DRAFTS
+04_VISUALS
+05_FINAL
+
+这样 Claude 基本不用猜：
+什么最重要、先看什么、哪些还在进行、哪些已经结束。
+
+文件名也别再用：
+
+final.docx
+final_v2.docx
+final_REAL.docx
+
+命名最好直接回答：
+
+什么时候？
+是什么？
+什么状态？
+
+最后记住 5 条就够了：
+
+Markdown 写规则
+数字定义顺序
+名字表达含义
+日期负责检索
+Archive 隔离噪音
+
+AI Agent 的上下文工程，不只发生在 Prompt 里。
+
+文件系统本身，就是 Context Engineering
+
+https://ecn1dvdwnqas.feishu.cn/docx/Umm9dPLOqo1WPzxBAMScsVqYnsd
+
+我发现常用的几种agent工具，它们都有一套通用的命令，这里我总结成了四类：
+
+   / 斜杠 —— 打开命令面板，挑命令用
+   @ 艾特 —— 把文件递到 AI 面前，也能调插件和 skill
+   ! 感叹号 —— 跳过 AI，直接执行命令
+   扩展命令 —— 用 Skill / Plugin / MCP 给 Agent 加能力
+
+   具体来说，以下是我常用的几种：
+
+   init —— 给项目生成提示词，以后不用反复交代背景
+   plan —— 长任务先探索对齐，再开始做
+   clean —— 直接清空上下文，不用新开对话
+   compact —— 压缩长对话（会丢细节，重要任务建议做
+ handoff）
+   permission —— 决定 Agent 什么时候该先问你
+   fork —— 开个分支，几条线并行推进
+   goal —— 设个长期目标，让模型跑完为止
+   review —— 让 Agent 自己审查一遍改动
+   btw —— 不打断主线，在旁边问问题
+
+https://github.com/j20cc/agent-learn
+https://learn.shareai.run/en/
+https://www.dgzhuya.com/modules/ch01-overview
+https://github.com/tsonglew/git-repo-chronicle
+https://tv.dogegg.online

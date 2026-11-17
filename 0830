@@ -1,0 +1,190 @@
+https://github.com/warpdotdev/common-skills
+这些年我在硅谷各种大厂加起来，面试的也有上百人了，最近我喜欢在一面考察一下 candidate 对 AI 推理内部流程的认知。浓缩成了一张图，建议收藏，如果彻底搞懂，不论是搞股市投资，还是想转 AI 肯定都有帮助
+
+起因是：我的投研团队一位成员最近在从 SDE 转 AI infra，经常跟我聊职业发展的事，我跟他讲完全搞懂了这张图，AI 这扇门才算踏进了半只脚，仅仅是半只，未来道阻且长
+
+你是否好奇，当你给 AI 发一句话，后面到底发生了什么？
+
+很多人以为，点下「发送」后，模型马上开始“吐字”
+
+其实一条流式请求，先要经过：
+HTTPS / 鉴权 → 模板化和分词 → 路由、排队与 KV 容量
+等 Prefill 处理完未缓存的 Prompt，首个 Token 才出现
+之后才进入真正的循环
+
+Decode + sampling → 增量反分词 → 封装成事件 / SSE 分块 → 客户端
+
+所以 AI 推理这件事，不只是 GPU 算得快不快
+首 Token 需要看如何均衡高并发排队和 Prefill，持续输出看 Decode，如何在有限的硬件资源（算力、存储）下服务更多人，需要优化 KV Cache
+
+这里边门道很深。因此，我说搞懂这张图才算踏进了半只脚
+
+今天下午坐在咖啡厅，我找了好多资料，帮我投研团队的成员规划了未来 12 周的学习路线
+
+我在想要不要让ta开一个 X 的账号，把他每天学习的课程路径和好的资源都整理下来。如果他 12 周之后能找到不错的工作，相信大家跟完这个也可以
+
+https://luvus.dev/
+https://github.com/Agents365-ai/drawio-skill
+https://github.com/BytePioneer-AI/codex-host
+https://github.com/livialima/linuxupskillchallenge
+https://github.com/sandroandric/AgentHandover
+https://www.warp.dev/skill-doctor
+https://github.com/nashsu/llm_wiki
+https://github.com/happier-dev/happier
+标OpenAI 高级软件工程师面试体验 ：只有 4 轮，但没有一轮是简单的。
+
+面试总结：
+
+OpenAI 的现场面试（Onsite）包含四轮：编程算法（Coding）、系统设计（System Design）、行为面试（Behavioral）以及技术演讲（Technical Presentation）。
+
+编程轮侧重于实现一个工业级（生产环境风格）的工作队列，支持预订、失败处理、超时、重试和死信队列（Dead-Letter Queue）；系统设计轮则以“填字游戏”为场景，重点深入探讨了如何防止重复计算/工作。
+
+在确定架构之前，一定要仔细明确需求，尤其是当面试官意在
+
+https://github.com/xingkaixin/codesesh
+最好的是 Orca
+https://github.com/tma1-ai/tma1
+https://github.com/tommy0103/obelisk
+佬相信我，试一试 Firstmate + Herdr
+https://github.com/danielwanwx/am-memory
+https://github.com/siteboon/claudecodeui
+https://github.com/CheerChen/session-index-viewer
+https://github.com/kenn-io/agentsview
+ELI3 — Visual Deep Explainer
+
+   Explain the topic as if I know nothing about it, then take me to real depth.
+   Use this method for big or complicated concepts. Build one self-contained
+   single-file HTML page with four layers, top to bottom.
+
+   Language: write all explanations in the same language I used for the topic.
+
+   LAYER 0 — Mental model (top of the page)
+   - Start with one large visual that communicates the whole concept at a glance.
+   - Use diagrams, SVG illustrations, flows, timelines, maps, or spatial layouts instead of paragraphs.
+   - Show relationships with position, arrows, grouping, scale, and motion.
+   - Use very few words. Short labels and one-sentence explanations only.
+   - The most important idea must be the biggest visual element.
+
+   LAYER 1 — Beginner version
+   - Walk through the same visual step by step with one concrete everyday example,
+     in plain life language a child could follow.
+   - Step-through controls animate each transition. Never swap content instantly.
+   - Use concrete visual analogies for abstract concepts.
+   - For processes, animate the flow from beginning to end.
+   - Keep words minimal: the example lives in the picture, not in paragraphs.
+
+   LAYER 2 — Professional version, collapsed by default
+   - Hidden behind a click (tabs, accordion, or expandable sections).
+   - Contains: accurate terminology, the core mechanism, where the model applies
+     and where it breaks (boundaries and limits), and common misconceptions.
+   - Every professional term must be findable in the Layer 0/1 diagram:
+     hovering a term highlights the related part of the visual.
+   - Misconceptions are shown as wrong picture vs right picture, click to compare.
+   - This layer may use full paragraphs, but only after the user clicks.
+
+   LAYER 3 — Self test
+   - A mapping table: beginner wording ↔ professional terms. Each row highlights
+     the matching spot in the diagram on hover or click.
+   - "Where people get it wrong": list the traps for this specific topic.
+   - 3 check questions that test real understanding (not memory of the page),
+     each with a click-to-reveal answer.
+
+   Motion for explanation (not decoration):
+   - Load Motion One with one script tag: <script src="https://cdn.jsdelivr.net/npm/motion@12/dist/motion.js"></script>. Plain HTML, no
+ React.
+   - Animate the diagram itself:
+     - Draw connection lines progressively (SVG stroke-dashoffset), not all at once.
+     - Move dots or tokens along paths to show data or tasks traveling.
+     - Highlight each step in sequence when a flow plays.
+   - On first load, reveal the overview quickly with a stagger (0.3–0.6 seconds total). No slow or looping entrances.
+   - If an animation does not explain something, cut it.
+   - No product-UI decoration: no tilt cards, no glass, no hover shadow effects.
+   - After all animations finish, the final state must show the complete diagram.
+     Animation reveals information, never hides it.
+
+   Keep the page clean:
+   - Layers 0–1 are almost wordless. All long text lives collapsed in Layers 2–3.
+   - The page must pass the glance test: main idea clear in 10 seconds, before
+     opening anything.
+   - Avoid decorative dashboards, unnecessary cards, gradients, and visual clutter.
+
+   After creating it, check:
+   - Can someone understand the main idea in 10 seconds?
+   - Is the most important idea the biggest visual element?
+   - Does every animation explain something (a movement, a change, a sequence)?
+   - Does the explanation still work after all animations have finished?
+   - Does every Layer 2 term connect back to the diagram?
+   - Do the 3 questions test understanding, not page memory?
+
+
+
+https://github.com/evoiz/Agentic-Design-Patterns
+我一直建议，想真正学大模型的人，最好自己本地部署一次。
+这是给大模型祛魅最快的方法。
+
+平时我们在网页里用 ChatGPT、Claude，很容易产生一种错觉：后面好像藏着一个会思考、会记忆、会使用工具的“智慧大脑”。
+
+但你真把一个模型下载下来，用 vLLM 甚至ollama跑起来，再自己接 API、调上下文、设并发、看显存、搞量化、接工具调用，很多东西一下就明白了。
+
+你会发现，大模型所谓的“记忆”，其实就是每次对话把前面的上下文重新塞进去；所谓工具调用，是它按格式吐出一段内容，再由外面的程序真正执行；所谓并发，本质上也是 batch、KV Cache、显存和调度这些工程问题。
+
+再往下，你会开始知道一个模型有多少参数，权重文件是怎么回事，BF16、FP8、量化到底在干什么，一次请求从输入到输出，中间究竟发生了什么。一切帽子下的神秘一览无余。
+
+这些东西看十篇文章，都不如自己部署一次来得直接。
+
+等真正折腾完以后，大模型还是很强，但那种神秘感没了。
+
+你会知道并不是服务器里住着一个“小人”。
+
+它就是一个极其庞大、极其复杂的输入输出函数。只是复杂到这个程度以后，居然让人觉得它在思考了
+
+https://github.com/omnigent-ai/omnigent
+https://github.com/penpot/penpot
+今天和学员聊到「AI 设计还原」话题，在我看来这不是个技术问题，而是工作交接问题。最高保真的方式是设计一个「设计同学使用的工作流」：
+1. RD 提供一个原型环境
+2. 设计靠 agent 拉取原型环境代码，本地打开 dev，然后vibe coding 原型
+3. 满意后提交分支到远端，再在 issue 中更新 分支信息
+
+接下来 RD 根据分支的代码重构成符合项目规范即可
+
+https://www.v2ex.com/t/1237777#reply23
+
+又一个免费的搜索工具！
+以前 Exa / Tavily / Brave 一千次要 $5–$8。
+现在 Search + Fetch 不要订阅、不要绑卡、钱包 $0 也能打。
+人搜 Google 免费，agent 不该另外交税。
+给 Claude Code 丢这行就能用：
+https://monid.ai/SKILL.md
+大家可以玩玩，我晚点测试一下
+
+如果习惯human in the loop的话我觉得
+@mitsuhiko
+ 的配置挺好用的
+
+https://github.com/mitsuhiko/agent-stuff
+
+我是感觉可以从最基本的pi开始用，而不是先想着去装很多拓展，为了习惯去照搬其他harness的功能的话不太值得（第三方插件多了也是一种维护的风险）
+
+
+peakviber
+@peakviber
+·
+3h
+pi适合自己配，选插件。我之前用过omp，觉得东西配的太多了，就回到原生pi。
+
+目前装了
+pi-mcp-adapter
+pi-web-access
+pi-hashline-edit-pro（omp 的功能，我觉得不错就装了插件）
+pi-interactive-shell（可以操控交互式终端）
+
+另外为了复刻一些 claude code 里比较喜欢的功能，装了：
+pi-background-tasks
+pi-lens（LSP 相关功能）
+pi-subagents
+pi-hermes-memory
+@ juicesharp/rpiv-ask-user-question
+@ juicesharp/rpiv-todo
+
+https://github.com/matomo-org/matomo
+https://github.com/browser-use/browser-use

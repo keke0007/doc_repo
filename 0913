@@ -1,0 +1,577 @@
+https://tuicr.dev/#features 
+这个是真的可以，完全适合在终端里review，然后再产生一份 summary 给 Agent。
+
+https://tuicr.dev/#features
+
+
+章工
+@435hz
+·
+49m
+绝大部分事情进入瓶颈期的时候，通过大力改变以下三项，便能取得进一步突破：
+生活习惯，思维方式，更加积极的心态。
+
+改变生活习惯可以提高精力和复原力，改变思维方式可以拥有更好的策略，改变心态可以坚持下去。
+
+在瓶颈处大力最容易出奇迹。
+
+
+贪婪：欲望之岛
+
+https://furong-huang.com/blog/self-improving-agents-learning-how-to-work/
+
+https://github.com/max-sixty/worktrunk
+
+https://github.com/WenyuChiou/awesome-agentic-ai-zh
+
+
+想系统学 Agent，最近这个刚开源的项目我很推荐收藏学习一下。
+
+它做了一张挺完整的 AI Agent 学习地图，而且不是简单堆一堆论文和链接。
+
+你可以直接选两条路线：
+
+想把 Codex、Claude Code 这类 CLI Agent 用好，就走 Track A。
+
+想自己搭 Agent，就走 Track B，从 Tool Use、Agent Loop、Workflow Graph，一路学到 Skills、MCP、Memory / RAG，再到 Eval、Harness、人工审批和失败恢复。
+
+这个项目没有上来就教你堆 Multi-Agent，而是先把「一个 Agent 怎么稳定把事情做完」讲清楚。
+
+每一阶段还有练习、官方资料和完成条件，研究人员、开发者、老师也有单独的学习分支。
+
+如果最近想系统补一下 Agent Engineering，这份路线图挺适合拿来当目录慢慢刷。
+
+https://github.com/max-sixty/worktrunk
+
+
+
+lifcc
+@mylifcc
+·
+10h
+Claude Code 开始给 Plugin / Skill 引入“单元测试 + Benchmark”。
+
+以前你写一个 Skill，比如：
+code-review skill
+Rust expert skill
+security review plugin
+frontend design skill
+migration plugin
+
+测试方法通常是：
+
+「我用了几次，好像挺聪明。」
+
+或者：
+
+「这个 prompt 加进去之后感觉 Claude 稳了一点。」
+
+问题是这种东西几乎没办法量化。
+
+现在可以变成：
+Plugin
+   ↓
+准备 50 个测试任务
+   ↓
+claude plugin eval
+   ↓
+Claude Code 执行
+   ↓
+grader 打分
+   ↓
+JSON / HTML Report
+
+最后你拿到的不是“感觉更好”，而是一个可重复跑的结果。官方 release notes 明确强调的是 scored + reproducible results。
+
+
+https://github.com/llwslc/grammar-club
+
+
+
+纳米AI
+@antiAIvo
+·
+13h
+如何从零手写一个大模型？
+也适合新手LLM入门的学习路径
+我的实践路线是（GPT-2）：
+
+1. 分词器/字节对编码： Tokenizer / BPE
+2. 词嵌入： Embedding
+3. 位置编码 ：Positional Encoding
+4. 自注意力（单头）： Self-Attention
+5. 多头注意力 ：Multi-Head Attention
+6. 残差连接 ：Residual Connection
+7. 层归一化（独立篇）： LayerNorm
+8. 前馈网络 ：Feed-Forward Network (FFN)
+9. Transformer块（组装Attention+FFN+残差+LN，堆叠12层）：Transformer Block
+10. 输出层（最终LayerNorm+线性层+Softmax）：Output Layer
+11. 加载预训练GPT-2权重：Load Pretrained GPT-2 Weights
+12. 推理/文本生成 ：Inference / Text Generation
+
+一共12期，从零到能跑起来生成文本，完整覆盖GPT-2架构
+
+
+https://engsence.now-then.dev/en
+
+
+CMU这学期开了一门agent课,主讲人是OpenHands的作者。
+
+𝟭𝟭-𝟳𝟲𝟴: 𝗔𝗜 𝗔𝗴𝗲𝗻𝘁𝘀
+
+Graham Neubig(OpenHands作者)和Daniel Fried(前Meta agent团队)主讲,讲义和视频全部免费公开
+
+这门课把"怎么搭agent"这件事拆成了三层,业内很少有人系统讲全:
+
+→ 怎么搭scaffold:工具调用、上下文管理、记忆、规划
+→ 怎么做评测:agent的eval到底该怎么设计
+→ 怎么用RL训练:不是调prompt,是真的训一个agentic policy
+作业也对应三块,外加一个期末研究项目。
+已经更新4讲,YouTube同步。 
+https://youtube.com/watch?v=UwfjzyLnvMg
+想认真补agent这块知识,这门课目前是我看到覆盖最全的一个。
+
+
+目前为止，我总结出的最大人生经验有：
+
+1:在重大决策，尤其是重要人生节点，千万不要妥协，退而求其次。
+
+2:不要闭门造车，我遇到的问题百分之百别人都遇到过。
+
+3:认识到语言只能表征现实，它本身并不是现实
+
+4:除去维持生命体征的必需品，人其实可以脱离其他绝大部分生活，所以失去这些并不会那么致命。
+
+5:意识到意义的建构源于对死亡的定义。自己相对于他人，任何情况下，都要以自己为优先。否则，是对自己存在的亵渎
+
+
+
+AI Agent 大量写代码后软件工程质量怎么保障？
+
+来自 Claude Code 核心开发者 Boris Cherny 和 Addy Osmani 的一手经验 + 资深工程领导者的操作化提炼，非常值得学习。
+
+# Boris Cherny 的核心贡献是“分层”和 Anthropic 的真实做法：
+
+1. 一次性代码可以完全黑箱：反正要扔、出错影响小，不必追求完美。
+2. 生产代码的标准要高于人写的。他在邮件中列出了 Anthropic 内部的实际护栏：大量 lint 规则、大量测试、Claude 驱动的端到端测试、每天运行的 Claude 驱动模糊测试、自动化代码评审和安全评审、自动化重构。
+3. 他还给出了一条升级阶梯：换最新前沿模型（Opus 5 / Fable 5.1）→ 调高 effort（high/xhigh）→ 投入 CLAUDE.md 和 Skills 教会 Claude 在你的代码库工作 → 更强的人工引导 / 让 Claude 偿还技术债、重写代码库 → 等下一个模型。
+
+# Addy Osmani 是把理念落成四个可执行动作：
+
+1. 先对齐结果与约束：定义“完成”、划定不可触碰区域、判断复用是否优于新写，然后放手。他明确说最新模型不需要冗长的规划仪式——但要在坏改动变成 PR 前拒绝它。
+2. 给 AI 自检手段：把确切的 build/test/lint 命令写进配置，把评审中反复拒绝的问题变成 Skills（/verify、e2e、schema 检查），开 PR 前运行。
+3. 按 blast radius 分配审查深度：影响范围决定阅读投入；涉及 money、auth、用户数据的代码标准要高于人写的。
+4. 出错不要悄悄手动修：让模型把教训写进 CLAUDE.md 或 Skills，这是最反直觉也最重要的一条。
+
+# 把 Boris Cherny 和 Addy Osmani 两人观点合在一起看，有三个层次：
+
+第一，质量保障的对象从“代码”变成了“系统”。 Boris 列出的那些护栏（lint、测试、fuzzer、自动评审）本质上都是自动化约束，而 Addy 点破：“质量现在存在于你围绕 agent 设置的约束中。”人不再审查产物本身，是设计让 AI 自我纠错的闭环。Anthropic 的做法证明这条路在工业规模上是可行的。
+
+第二，审查资源按风险分配，而非平均分配。 “黑箱 vs 高标准”的分界线不是代码是谁写的，是 blast radius。这其实是对传统“所有代码都该被认真评审”理念的修正——AI 时代反而逼出了更理性的审查经济学。
+
+第三，错误是资产而非麻烦。 Addy 第 4 条与 Boris 的升级阶梯形成互补：出错后第一反应不是人去修，是沉淀为 CLAUDE.md 规则或 Skills；若仍不行，再沿阶梯升级模型、调高 effort、偿还技术债。手动悄悄修复等于丢弃了最有价值的反馈信号
+
+
+Grok Bot 工程实践指南：如何让 AI Bot 团队管理 200 个 Coding Agent
+
+来自 SpaceXAI 团队 
+@lingxi
+ 分享的三层 Agent 组织，用于替代人工管理大规模 Coding Agents，人类只在顶端处理高风险审查和优先级判断。
+https://x.ai/bot/guides/grok-bot-for-engineering
+
+三层 Agent 组织
+1. 执行层：Cursor Cloud Agents - 短生命周期，按需启动，携带个性化技能执行具体任务
+2. 管理层：5 个常驻工程师 bot - 各管一块领地：Baltata（iOS/移动共享层）、Shaoruru（桌面端/CI-CD）、Hogan（基础设施）、Craig（Android）、Quill（harness），各有独立记忆，只在单一领域表现最佳
+3. 运营层：Jenny - 唯一不写代码的 bot：每天 5 点与各 bot 开 1:1 过 playbook；错误做根因分析、更新制度并广播；负责新 bot 入职
+
+关键机制
+绕过上下文限制是技术核心，解法不是更大的模型，是把记忆问题转化为组织问题：
+· Notion 数据库作共享状态：每 30 分钟巡检 PR，核实 Bugbot/安全发现、CI 失败、合并冲突，有问题打回跟进，干净的进入 review。
+· 分级合并门禁：高置信度、低爆炸半径的 PR 自动合并，其余等人审。
+· 周期例行代替持续记忆：凌晨 3 点夜间审计（死代码、包体积）、每晨 1:1、半小时巡检；用外部重复提醒弥补上下文装不下整个工作流的缺陷。
+· P0 模式：每 5 分钟检查一次进度并主动纠偏，代价是烧 token 极快。
+
+能学到的经验
+1. 反馈回路必须完整：agent 要端到端驱动全栈（DevTools、CLI、Accessibility）并自行验证产出，经验沉淀为可复用的 repo skill。
+2. 委托标准是“重复”而非“难度”：每天一次以上、有固定模式的事就该自动化。
+3. 信任渐进建立：像自动驾驶，安全区放手，高风险区谨慎，失败不停试。
+4. 像带聪明实习生一样交互：无需长 prompt，让它自己研究陌生领域。
+5. 错误不重演靠制度：复盘 → 改 playbook → 广播，把个体错误变成组织记忆。
+
+
+https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra
+
+
+https://github.com/mksglu/context-mode
+
+
+这次 OpenAI 开始亲自下场教大家怎么写 Skills 和 AGENTS. md 了，这篇最新 Blog 非常值得看。
+
+一个很明显的信号是，模型变强以后，Agent Engineering 也得跟着升级。很多以前为了旧模型加上的规则，到了 Astra 这里可能已经成了负担。
+
+几个实践建议我想可以直接抄：
+
+Skill 尽量做窄，描述里重点写清楚「什么时候该调用」，复杂说明等真正用到时再加载。
+
+AGENTS. md 少写那种一刀切的规则，比如「每次先读完整 Repo」「所有改动都跑全量测试」「任何不确定都先问人」。这些很容易让 Astra 过度搜索、过度验证。
+
+同时把「什么算完成」「哪些事情可以自主决定」「什么时候需要人介入」提前讲清楚，反而更容易让它放开手干活。
+
+我现在甚至觉得，每次换一代模型，都应该顺手给自己的 AGENTS. md 和 Skills 做一次大扫除。
+
+模型升级了，之前给旧模型搭的脚手架也该拆一拆。
+
+OpenAI 现在亲自开始讲这些，很推荐做 Coding Agent / Harness 的人看。
+
+
+
+结果 Alexandr Wang 极其直白地用了几个最土的词把它打回了原型：
+“Markdown files, cron jobs, goal, metrics, data.”
+（Markdown 文件、定时任务、目标、指标、数据。）
+
+
+
+
+https://github.com/Nicolepcx/ai-agents-the-definitive-guide
+
+
+https://github.com/Niklaus88/Clash-Config
+
+
+https://github.com/ever-co/ever-gauzy
+
+普通人的黄金翻身法则
+
+“雅思7.0+任意技能＞985”
+
+
+https://x.com/huxlab/status/2098612843826548862
+
+看到一个超赞的英文原著精读 YouTube 博主！readingwitheric 📖https://youtube.com/@readingwitheric/videos
+
+他带大家从《绿野仙踪》《动物农场》一路读到《了不起的盖茨比》，把语法、生词和表达融进原汁原味的情境里逐句剖析，听着既享受又能真切感受到词汇量爆发式增长。
+
+声音温柔清
+
+
+大失业时代，我给家长一些真诚的建议：
+
+1.把给孩子报补习班、兴趣班的钱，换成 Claude、GPT 订阅
+
+2.给孩子做饭，尽量用橄榄油、零添加调味品，无抗肉蛋
+
+3.主动培养一个运动习惯：足球、篮球、跑步、游泳
+
+4.不要害怕孩子玩游戏，而是教他怎么管理自己的欲望
+
+5.从小让孩子知道：老师说的、父母说的，也不一定永远正确
+
+6.有条件的，带孩子出趟国；没条件的，带孩子去趟香港迪士尼，让他用几句简单英语，去和米老鼠、唐老鸭聊两句。在孩子心里埋下一颗对英语的种子，而不是从小逼着他学英语
+
+
+2026年想赚到钱，需要掌握这些：
+
+- 用Astra 6 High做规划，Low负责执行
+- 用Grok Bot管理日常事务
+- Coding Loops
+- 用好Codex的电脑操作能力
+- 用Herd管理大量Agent
+- /goal
+- 运行本地模型
+- Karpathy的Autoresearch
+- 在X上建立受众
+- 制作视频
+- 理解机器学习
+- 理解数据库，最近在用Convex
+- 使用API
+- 训练自己的LoRA
+- 停止无休止地刷信息流
+- 最重要的是：专注
+
+
+
+每天打开笔记本，第一件事起就是打开herdr
+
+herdr配合omarchy非常不错
+
+https://github.com/victordibia/designing-multiagent-systems
+
+
+https://github.com/nuver-labs/vps-audit
+
+https://github.com/skalesapp/skales
+
+别再把所有背景和约束，每次都往 Codex 的聊天框里硬塞了。
+
+真正高效的玩法，是用结构化文件（.toml）直接给 Codex 固化一套「常驻 Agent 预设」。
+
+你可以用它一次性锁死四件事：
+
+- 角色边界：定义它是架构师、Code Reviewer 还是单纯的 Refactor 工具，禁止它越界发散。
+
+- 规则铁律：把你的工程规范（比如类型约束、禁用的第三方库、命名约定）写成固定 Schema，彻底杜绝幻觉。
+
+- 输出格式：强制要求仅返回差异补丁（Diff）、纯代码块或特定的 JSON 结构，方便直接自动化对接。
+
+- 上下文注入：挂载本地关键项目的路径索引，让它启动即自带全局视野。
+
+怎么调用？ 把写好的 .toml 丢进配置目录，给每个 Agent 起个短别名。终端或 IDE 里一条快捷指令或  Agent名 唤起，秒级切换工种。
+
+真正的工程化提效，核心不是你多会打字，而是你把多少重复沟通做成了「静态基建」。 写代码不需要每次都开荒，把规矩写进配置文件，进场就能直接出活。
+
+
+https://github.com/VoltAgent/awesome-agent-skills
+
+做 AI Builder / agent 工程的，可以看看这门课：CMU 11-768《AI Agents》，研究生级，比较适合有基础、想系统化在进一步的人。
+
+模块地图：
+
+基础：Tool Use / 长上下文 / Skills & Memory / Planning & 多 Agent 协作
+Domains：Coding Agents / GUI Agents / Deep Research Agents
+训练：SFT / RL 基础 / Advanced RL / RL Systems
+安全：沙箱 & 凭证管理 / 可观测性监控
+框架：OpenHands / LangGraph
+交互：多 Agent 交互 / 人机交互 / Future of Work
+推理：Reranking & Critic / Tree Search
+
+youtube链接：
+
+
+这才是今天真正重要的AI新闻。
+
+今天凌晨，OpenAI 正式发布了 Agents API。
+
+这次不是又多了一个 Agent SDK。
+
+而是 OpenAI 直接把 Codex 背后那套 Agent Harness，做成 API 卖了。
+
+以前你自己做 Agent，要处理一堆东西：
+
+上下文怎么续、快爆了怎么压缩、工具怎么调用、任务怎么拆、子 Agent 怎么协作、代码在哪跑、环境挂了怎么恢复……
+
+现在 OpenAI 基本准备全部接管。
+
+开发者只需要告诉它：
+
+任务是什么、用什么模型、有哪些工具、在哪个环境执行。
+
+剩下的 Agent Loop、Context Management、Tool Calling、Multi-Agent、Sandbox，都可以交给 OpenAI。
+
+这个API核心提供这几个能力：
+
+1. 支持长任务，自动做上下文压缩和恢复
+2. 原生支持 MCP、自定义工具、Web Search
+3. 支持主 Agent 创建多个 Sub-Agent 并行干活
+4. 自带 Linux Sandbox，可以直接跑 Python / Node / CLI
+5. 执行环境也可以接自己的机器和私有网络
+
+换句话说，OpenAI 现在提供的已经越来越不像一个单纯的模型 API。
+
+而是一套完整的 Agent Runtime。
+
+我之前一直在说模型正在从产品本身，变成 Agent 里的一个组件。
+
+现在更进一步。
+
+未来可能连 Harness 都不需要每家公司自己造了。
+
+模型、Context、Tools、Memory、Sub-Agent、Sandbox、Verifier……
+
+这些通用能力，正在一层层被云厂商吃掉，最后变成像数据库、对象存储一样的基础设施。
+
+Agent 创业真正需要自己做的东西，也会越来越往上走：
+
+业务、数据、工具和 Workflow。
+
+
+让 agent 自己维护 skills、随工作流进化，这个方向是对的。但每 session 重写要小心：高频指令不断被强化，低频 edge case 慢慢被修剪。用得少 ≠ 没用。更稳的做法是 agent 出 diff、人扫一眼再合。把 skills 当你的 codebase 对待
+
+
+官方内部实测 PR 合入量直接飙升 6 倍。
+
+今天 Cursor 发布的 Projects，撕开了 2026 年软件开发最残酷的分水岭：会写代码已经不稀奇了，能不能驾驭一座个人软件工厂才是拉开百倍差距的真正底牌。
+
+Cursor 不只是出了个管理文件夹的侧边栏，今天正式上线的 Projects，直接宣告了传统“聊天框写代码”时代的终结：
+
+为什么顶级工程师从来不跟 AI 逐行抠代码？
+前 Cursor 核心架构师 poteto 刚晒出用它合入几千个 PR 的战绩：Cursor 这次把产品形态从“单聊客服”直接做成了“常驻项目组”，编程的瓶颈从今天起彻底变了。
+
+以前你每做一件事都要新开一个 Chat，像在给失忆的实习生重新做入职培训；
+
+现在你直接雇了一个长期在岗的“项目经理 Agent”，它自己拆任务、自己派子 Agent、自己盯 CI，你把笔记本合上它还在云端干活。
+
+官方内部统计：主力用 Projects 的工程师，PR 合入量直接干到了原来的 6 倍。
+
+看懂这个架构，你会明白它把整个开发流程推到了一个全新的维度：
+
+1️⃣ 协调者（Coordinator）绝不下场写代码：
+这是最聪明的设计——负责统筹的 Agent 故意不碰代码文件，它唯一的职责是理解你的宏观意图、拆解任务清单、派出几十上百个子 Agent 去分别改前端、修接口、补测试；因为“思考层”不被长篇代码阻塞，你随时插话改方向它都能秒级响应；
+2️⃣ 软件开始拥有“制度记忆”：
+以前 Agent 关了窗口就失忆；现在整个 Project 沉淀一套全局上下文文件——这个仓库怎么测试、设计系统哪些写法会被你否决、踩过什么坑，全被固定下来。时间越长，它越懂你的系统；
+3️⃣ 永远在线（Always-on）的事件驱动：
+它不用等你每次手动下指令，可以直接挂载“订阅”：盯紧 Slack 频道有人报 Bug 就自动派人修，盯紧 GitHub PR 只要 CI 挂了自己去看报错重试。
+
+正如前 Cursor 架构师 poteto 评价的：这就像一家米其林后厨，你负责点菜定验收，后厨自己排班、备料、流水线出餐。
+
+过去两年，全网都在卷大模型“能不能写出这段函数”；
+而 2026 年残酷的现实是：单点代码生成早就够用了，真正卡死独立开发者的是“谁来替我管理几十个并发任务”。
+
+编程的瓶颈，今天起正式从“会不会写”，变成了“会不会管”。
+会用普通 Chat 的人还在手搓零件，
+而看懂 Projects 的人，手里已经攥着一座永不熄火的个人软件工厂了。 https://x.com/cursor_ai/status/2098162488013455784/video/1
+
+
+
+SpaceXAI 工程师 Lauren Tan（
+@poteto
+）一场 AMA 对谈，基本是她本人出镜答问。中间闪过六人视频会议画面。没有白板、没有录屏。
+
+她讲的核心不是逐个催 Bot。多个 Bot 可以共用一台底层电脑，但记忆和聊天记录分开。
+
+复杂活适合专岗小队；Chief of Staff 当唯一入口，负责分派。她的 Bot 当外环：接 Slack、邮件、日历这类外部集成，再触发 Cursor 里的内环，拉起 cloud agents。
+
+Bot 里暂时不能随意换模型，派出去的 cloud agents 可以用任意模型。举例：盯 Slack 反馈频道 → 触发 Cursor 内环 → 用 potato mode 开云 Agent。
+
+Agent 团队先养参谋，再扩工人。别把自己变成催办员
+
+https://x.com/0xCodila/status/2098090927403216964/video/1
+
+
+
+一大批做 Agent 基础设施的公司，今天都该重新看一遍自己的护城河了。
+
+OpenAI 今天发布了 Agents API，把 Codex 背后那套 Agent harness 直接开放出来了。
+
+以前你想做一个真正能干活的 Agent，光接模型远远不够。你还得自己处理长任务怎么一直跑、上下文爆了怎么办、几十个工具怎么选、任务失败怎么恢复、多个子 Agent 怎么分工、代码到底放在哪个沙箱里执行。
+
+现在开发者给任务、模型、工具和运行环境，Agents API 负责会话编排、上下文压缩、工具调用和多 Agent 协作。甚至可以直接把任务扔给 Codex 同款 harness 跑几小时甚至几天。
+
+我觉得这件事对 Agent 行业的影响会很直接。
+
+过去很多所谓的 Agent 创业公司，本质上卖的就是给模型套一层壳，接工具，管上下文，再做一套工作流编排。
+
+现在模型厂商开始把这些东西做成基础能力了。
+
+如果你的产品价值还停留在「我能让模型调用十几个工具」「我能让几个 Agent 一起工作」，那这个故事已经越来越难讲。
+
+最后真正还能留下价值的，大概率会往两头走：
+
+一头是 E2B、Cloudflare、Vercel、Modal 这种真正提供运行环境的基础设施；
+
+另一头是掌握行业数据、权限和真实工作流的垂直应用。
+
+Agent 的门槛又被打低了一截。
+
+
+Codex 的架构设计，5层：
+
+Layer 1 AGENTS md — 团队共识，写死不动
+Layer 2 skills/ — 最佳实践沉淀，按需调用
+Layer 3 hooks/ — 危险命令拦截，操作留痕
+Layer 4 subagents/ — 子智能体并行，主线程保持干净
+Layer 5 plugins/ — NPM 分发，一键全队同步
+
+从规则到执行到安全到协作，每层职责清晰。
+
+这不只是工具配置，是 AI 团队的工程规范
+
+
+subagent 最佳实践
+Top
+Latest
+People
+Media
+Lists
+
+See new posts
+Search timeline
+Ruifeng
+@liruifengv
+·
+Dec 11, 2025
+Agent 开发实战文章又来啦～
+这次使用 Claude Agent TS SDK 写了个 DeepResearch Agent。
+
+使用 Subagents 实现多 Agent 协同系统，可以像真正的研究团队一样工作。
+
+- Lead Agent（协调者）：负责分解研究任务，调度其他 Agent
+-  Researcher（研究员）：负责搜索网络、收集资料
+- Report Writer（报告编写）：负责将研究结果整理成报告
+
+使用 Subagents 的好处
+- 子代理与主代理保持独立的上下文，防止信息过载并保持交互的专注。这种隔离确保了专门的任务不会将无关的细节污染到主对话上下文中。
+- 多个子代理可以同时运行，显著加快复杂工作流程。
+- 每个子代理都可以拥有定制化的系统提示词，包括特定领域的专业知识、最佳实践和限制。
+- 子代理可以被限制在特定的工具上，以降低意外行为的风险。
+From liruifengv.com
+Berryxia.AI
+@berryxia
+·
+Jun 19
+搭一个AI Agent团队，到底有多难！5分钟搭的是玩具，不是员工。
+你大概也刷到过那种教程——“5分钟搭一个 AI Agent 团队”，评论区清一色“收藏了”“这就去试”。你收藏了，你也试了，然后卡在了第一步。
+不是因为你不够聪明。
+从“看懂教程”到“跑通一个能干活的 Agent...
+Bohu
+@BohuTANG
+·
+4h
+现在大部分模型都对并行做了强化，所以 agent 只要实现一个能力就够了:
+把耗时的 bash 自动切到后台，再唤醒一次 LLM 调用，前台和后台就这么并行跑起来了。不需要 subagent，也不用自己写调度。
+
+这是我目前发现最简洁的并行模式，而且非常好用。再配个快模型，非常无敌
+Bosn Ma
+@xiaomabosn
+·
+9m
+Replying to 
+@BohuTANG
+如果只是希望在当前的 session 状态下继续跑别的东西，比如我经常用来分析任务健康度：
+Claude有/btw
+ChatGPT有/side
+但是这和 sub-agent 并不存在替代关系Sub-agent 和主 agent 是要互通的，非常适合隔离大文件拆分后的 context。
+
+比如你 sub-agent 可以有 10
+Show more
+烟花老师
+@teach_fireworks
+·
+Sep 6
+对于一个 vibe coding 项目，
+是开一个 Session 开 N 个 Subagent，还是 N 个 Session？
+
+我的原则是：
+
+评估后，如果可以共享一个目标、共享大量上下文、生命周期短 → Subagent。
+
+反之如果任务需要独立交付、有自己的代码状态、要跑很久 → 独立 Session + Worktree。
+
+这是我最近正在实践的一套重型 vibe coding harness, 覆盖了完整的生命周期，目标是达到专业研发团队的交付和上线标准。还在不断打磨和实践中，等成熟后开源出来（又给自己挖了一个大坑🕳，今年任务艰巨啊😅）：
+
+这套研发 Harness 面向复杂、长周期、多人并行式的软件工程任务。
+
+前沿模型负责主控 Agent，承担架构设计、任务拆解、模型路由、跨模块决策和最终集成；
+
+具体开发任务则分发到多个独立 Session 与 Worktree，由中高端模型作为 Lead Agent 执行，并调用更快的 Subagent 完成检索、测试、评审等工作。
+
+整个系统通过 Project State、Task DAG、Task Contract 和 Handoff Protocol 保持长期项目状态与任务边界，避免多 Agent 并行时出现上下文污染、接口漂移和重复修改。
+
+最终由独立的 Integration Session 完成架构检查、契约校验、回归测试和 Merge Gate，再进入 Release Session 执行发布准备、部署验证、Smoke Test 与可观测性检查，形成从设计、开发、集成到上线的完整工程闭环。
+
+
+https://github.com/shanraisshan/claude-code-best-practice
+
+如果只是希望在当前的 session 状态下继续跑别的东西，比如我经常用来分析任务健康度：
+Claude有/btw
+ChatGPT有/side
+但是这和 sub-agent 并不存在替代关系Sub-agent 和主 agent 是要互通的，非常适合隔离大文件拆分后的 context。
+
+比如你 sub-agent 可以有 10 个，各自去阅读一些资料并整理，这样就不会把一个巨大任务所有的内容都塞到一个 context，让它反复的压缩
+
+
+https://github.com/jjyaoao/HelloAgents/blob/main/docs%2Fsubagent-guide.md
+
+
+https://github.com/luongnv89/claude-howto/blob/main/zh%2F04-subagents%2FREADME.md
+
+https://github.com/VoltAgent/awesome-claude-code-subagents

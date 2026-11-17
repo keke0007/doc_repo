@@ -1,0 +1,56 @@
+https://github.com/analyticalrohit/pytorch_fundamentals
+https://github.com/Blue-B/WhisperSubTranslate
+我的问题列表：
+
+需求调研
+1、当前流程是怎么解决的，遇到了什么问题
+2、是否搜索过相关解决方案？在哪里搜索的，搜索词是什么，找到了什么结果，这个结果你认为哪里不满足你的要求？
+3、如果现在有这么一个产品，你愿意先支付19美金吗，下个月它就会发布，赠送你3个月会员，如果没发布，我会给你退款
+
+新用户调研
+1、你是做什么的，需要它帮你达成什么？
+2、听到这个产品的时候，你第一想法是什么？
+3、从哪儿知道这个产品的？
+4、你一般在哪儿发现这类信息？
+5、你觉得最吸引你的是什么
+
+忠诚用户调研
+1、你将产品推荐给朋友时，会说什么？
+2、如果你帮我邀请20个和你一样的用户，我们愿意奖励你3年的会员，你会去哪里邀请？
+3、选择这个产品而不是竞品的原因是什么？
+4、竞品做了什么，你可能会放弃使用我们，而选择他们？
+https://kongpinglab.feishu.cn/wiki/OEnlwtSLDihsoPkqN8PcoDjWnCt?from=from_copylink
+https://tympanus.net/codrops/2026/08/15/inside-haoqi-design-letting-dom-and-webgl-share-a-retro-futurist-stage/
+https://github.com/jdx/mise
+https://x.com/chengyongru/status/2090485758528508250
+https://github.com/Panniantong/Agent-Reach
+https://github.com/ayi-ai/nie-grassroots-logic
+https://github.com/antinomie-lab/pi-book
+https://github.com/SaladDay/pi-from-scratch
+https://api.justwoker.icu/dashboard/overview
+https://github.com/shaogefenhao/life-game-book
+https://github.com/shaogefenhao/a-programmer-s-cognitive-experience
+总结一次软件工程研讨会10条关于 AI Native 的共识：
+
+1. BA比开发更稀缺，供需比从1:5降至1:2甚至1:1，AI加速编码但需求产出跟不上。
+
+2. 用户故事（粒度3-5天）已过时，AI一日完成，改用Feature粒度+验收标准，取消故事写法。
+
+3. 需求文档改用Markdown存放于代码仓库，与代码统一版本管理，AI可直接读取。
+
+4. 测试岗数量减少，但保留至少一位专业测试专家指导，开发无法完全替代测试判断。
+
+5. B端项目不再配UI/UX设计师，BA用组件库出原型，AI生成HTML，同构框架直接复用前端组件。
+
+5. 每位开发须具备方案设计与Code Review能力，Tech Lead转向方案管理、谈判与业务对接。
+
+7. AI时代沟通能力优于纯技术，角色边界模糊，所有人向沟通与人际侧迁移。
+
+8. 团队缩至4-5人：BA、全栈开发、测试专家、Tech Lead级方案谈判人员，运维渐被Agent化。
+
+9. 纯技术执行层非护城河，AI优先替代；安全感源于业务理解与方案转化能力。
+
+10. 长期出路在业务侧：软件工程师→Tech Lead→产品/业务，方案咨询与需求挖掘最稀缺，全行业向需求侧集中
+
+https://github.com/walkinglabs/learn-harness-engineering
+https://github.com/shareAI-lab/learn-claude-code

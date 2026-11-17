@@ -1,0 +1,34 @@
+https://github.com/walkinglabs/hands-on-modern-rl
+分享一套很适合补「现代强化学习」的开源教程：Hands-On Modern RL。
+
+它的学习路线很完整，从 CartPole、DQN、PPO 这些经典 RL，一直讲到 RLHF、DPO、GRPO、RLVR，再往后延伸到 Agentic RL、工具调用、多轮信用分配和 VLM RL。
+
+我比较喜欢它的一点，是「实践优先」。很多章节都配了可以直接运行的代码、训练曲线和失败案例，比如从零实现 PPO、数学推理 GRPO、Mini Deep Research Agent，以及 VLM 的 GRPO 训练。训练崩溃、Reward Hacking、KL 漂移这些实际问题也被当成正式内容来讲。
+
+尤其 Agentic RL 部分很值得看。它把训练对象从一次回答扩展成完整 trajectory，讨论工具调用、环境反馈、多轮信用分配和异步 rollout，而这些正是 Agent 从「会回答」走向「会长期行动」之后绕不开的问题。
+
+现在很多 RL 教程还停留在经典控制，这套资源已经把学习路线一路接到了今天的大模型后训练和 Agent 研究。
+
+不过项目自己也提醒，目前仍在快速迭代，而且有 AI 协助生成，部分内容尚未全面审稿，阅读时最好结合论文和代码一起验证。
+
+
+两个终端里的 Claude Code 能互相发消息了，2.1.224 加的，感觉可以和 herdr 搭配使用。
+
+5 步尝鲜。
+
+1、先升级，claude update 升级到 2.1.224
+2、敲 /peers 看有没有这个 command，没有就往 ~/.claude/settings.json 的 env 块里加 "CLAUDE_CODE_HARBOR_KITE":  "1"，不需要等官方开 feature flag
+3、推荐 ~/.claude/settings.json 里再加个 "crossSessionInbound": "accept"，不加的话消息会先 hold 等确认
+4、开 claude 进程，此时在 /tmp/cc-socks/ 会看到每个回话一个 0600 的 socket 文件
+5、然后可以就可以相互发消息了，比如。
+用 ListAgents 列一下现在有哪些 peer 会话
+给 review session 发消息：帮我看下 src/db.ts 的连接池配置，回给我
+
+
+今天建立三个关键认知：
+1.梯度是所有偏导数组成的向量，描述的是多参数系统的最陡上升方向。
+2.梯度下降沿着梯度反方向更新参数，是神经网络训练和许多优化算法的核心。
+3.工业自动化中的多参数调优（曝光、光源、焦距、机器人补偿）与梯度优化具有相同的数学思想，但必须同时考虑学习率、约束和系统稳定性。
+
+
+https://github.com/shareAI-lab/shareAI-skills/blob/main/skills/skill-judge/SKILL.md

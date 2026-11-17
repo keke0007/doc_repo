@@ -1,0 +1,316 @@
+如果你正在学习英文， 一定不要错过 Rey 这个号， 他之老号4万多人关注， 后来无故被封号了。  
+很快重新又起来了， 都是老粉支持， 他分享的内容我觉得是很开智的 
+Rey 是青岛人， 十一这趟回山东老家， 准备去青岛爽几天。
+
+https://x.com/ReynoldDai/status/1891715569629659298
+
+https://github.com/cilium/cilium
+
+太强了，Cilium 让 Kubernetes 集群里每条流量都看得见、管得住，连 kube-proxy 都能整个替掉
+
+Cilium 是 CNCF 的毕业项目，GitHub 上 2.5 万 star、四千多个 fork，一千多个 issue 开着，v1.20、v1.19、v1.18 三条稳定分支在 9 月 15 号同一天发了补丁版本。
+
+集群一上规模，最难受的是搞不清「服务之间到底谁在跟谁说话」。排查一个跨命名空间的调用，得在几台节点上抓包、翻 iptables 规则、对着一堆 IP 猜是哪个 Pod，Pod 一重建 IP 就变，猜到一半线索就断了。
+
+Cilium 的思路是把数据平面放进内核的 eBPF：负载均衡用哈希表做，策略按身份而不是 IP 判，L3 到 L7 都能管；配套的 Hubble 给你一张实时服务地图，每条流量都带着身份和标签，连 DNS 都能按域名过滤。跨集群可以走原生路由或者覆盖网络，出入口网关、带宽管理和服务网格都在里面，还能直接当 Gateway API 的数据平面。
+
+网络这层东西，看得见比什么都重要
+
+
+好的谢谢，目前在用 Deepseek Harness 搭配 Loop X，用于整理数据库，设定目标后连续跑了 3 天，效果很好，并且节省了我很多注意力，但是目前已经陷入了效率的焦虑。冒昧问一下作者，怎么更高效率？比如是否有更好的 harness 模型组合替代， 非常渴望用 loopx 节约我更多注意力并产出更高高质量成果
+
+
+
+陈大黄
+@realchendahuang
+·
+1h
+前几天发了一条关于 Git Worktree 的讨论，评论区有很多具体的经验分享。
+
+我把核心内容整理了一下，附上各自的链接方便大家查看：
+
+1. 固定分支与工位复用，来源：
+@sjdhoome
+
+很多人觉得 Worktree 繁琐，主要是每次新建都要重新安装依赖，用完还要清理。
+
+这位朋友的做法是不做频繁的创建和销毁，而是在本地常驻 8 个固定编号的分支（比如 worker-1 到 worker-8），统一跟踪主分支：
+
+有新需求时，挑选一个空闲分支，开启会话进行开发；
+完成后提交 PR 合并到主分支；
+
+在该目录下执行一次 git rebase origin/main，这个工位就恢复成了最新的干净状态，可以直接留给下一个任务使用。
+这样依赖（如 node_modules）只需要安装一次，省去了反复增删目录的麻烦。
+
+2. 软链接配置与端口自动分配，来源：
+@dlzhou2
+
+使用 Worktree 最常见的实际问题是未追踪的文件不会同步，比如 .env 丢失，以及同时启动服务时的本地端口冲突。
+
+比较通用的解法是通过脚本自动化：
+创建新目录时，脚本自动把主项目的 .env 和 node_modules 软链接（ln -s）过去，既保证配置同步，又不重复占用磁盘空间；
+启动服务时，脚本根据目录编号动态分配不同的端口号（比如 3001、3002），避免本地服务相互抢占。
+
+3. 严格控制合并权限，来源：
+@tootoocvc
+ 与 
+@ysj_aaron
+
+
+多分支或多个 Agent 并行开发时，容易出现“谁提交快谁就不用处理冲突”的赛跑问题，后提交的人往往要承担沉重的合并成本。
+
+这里的建议是：分支可以根据任务多开，但主干的合并入口只保留一个。
+
+各个工位完成的代码，先统一合入本地的验证分支进行集成测试，确保整体逻辑正常后，再规范合入主干，避免各分支之间随意交叉合并。
+
+4. 社区提到的辅助工具与自动化流
+
+@samzong
+ 开源的 gmc：
+项目地址：https://github.com/samzong/gmc
+支持一行命令批量创建多个工位，并内置了跨工位共享 .env 和依赖目录的功能；
+
+@roylee0x
+ 推荐的 worktrunk：
+项目地址：https://worktrunk.dev
+使用 Rust 编写，支持通过钩子在创建新工位时自动复制配置和执行依赖安装；
+
+@shukebeta
+ 的 Agent 自动任务框架：
+文档地址：https://mat-docs.shukelabs.com
+实现从 GitHub 自动认领任务、开 Worktree、干完自动合入清理
+
+
+在计算机视觉领域，YOLO 能做到实时检测和跟踪，SAM3 擅长按提示分割，LocateAnything 还能直接用自然语言定位目标，但在机器人视觉任务上还有更现实的问题：怎么让机器人持续看见目标、精准找到它，还要能在端侧实时推理？
+
+VLX 系列开源模型就是为了解决这类问题！
+
+1️⃣ VLX-Flow 是面向连续视频理解的流式多模态模型，它能把边缘设备的连续输入拆成片段，每来一个新片段就编码一次，再增量更新到模型的流式记忆里，相当于边看边记；
+它用 Linear Attention 加增量状态更新，解决了长视频带来的上下文增长问题。
+
+2️⃣ VLX-Seek 是面向细粒度感知的端侧多模态模型，它会把候选物体区域编码成 Region Token，更适合机器人抓取、巡检这类需要精确定位的任务；
+1.5 版本还专门加入了缺失目标拒识训练，看不到目标时可以明确输出 None，减少机器人因为视觉幻觉抓错物体、找错目标的风险，同时它还针对推理速度和显存做了优化，这种设计更接近机器人端侧运行的真实需求。
+
+官方接下来还会推出内置 VLX-Seek 和 VLX-Flow 的 AI 开发模组，给开发者提供完整的端侧多模态 AI 能力，把模型、算力和推理能力都预先集成好，开发者不用从零搭建复杂的部署环境，拿到设备就能直接开始体验和开发，正式发布后有望成为业界首个端侧多模态开发套件。
+
+
+https://byoungd.github.io/up/
+
+Andrej Karpathy认为，孩子80%的教育都该放在数学、物理和计算机上。
+不只是为了找工作，更是为了尽早建立认知结构。
+
+在AGI之前，它帮人获得工作；在AGI之后，它让人保持独立思考和行动能力。其他知识可以以后再补，但认知基础很难重来。 https://digg.com/tech/zgfh1211
+
+
+昨晚用 Codex 帮我写的 waitlist 申请今早就通过了，刚好今天可以来测一下这个 Jev 模型
+
+这个模型它不写字，只做判断，非常适合放进系统里做分类器
+
+给已经拿到 API、但还不知道先装什么的人，按实用性整理了 10 个仓库
+
+1️⃣typesafe-ai/skills
+官方 skill。给 Claude Code、Codex 用，覆盖 Choice / Score / Noul、state 怎么写、概率怎么接到代码里。先装这个。
+https://github.com/typesafe-ai/skills
+
+2️⃣building-with-jev-skill
+专门教代理怎么写好 Jev 调用：问题设计、置信度阈值、低置信该怎么排查。装完官方 skill 接着用这个。
+https://github.com/dbreunig/building-with-jev-skill
+
+3️⃣jev-mcp
+MCP server，把 Jev 接到 Cursor / Codex 循环里，用来做 review、verify、筛选和排序。现有编码工具里最快能用上的一层。
+https://github.com/burnigtm/jev-mcp
+
+4️⃣jev-judgment
+把编码代理的封闭判断交给 Jev：要不要问用户、这条命令会不会毁数据/泄密、失败后该重试还是改环境。
+https://github.com/HyunjunJeon/jev-judgment
+
+5️⃣jev-skill-gate
+给 Claude Code 裁 skill 清单。Jev 给每个已安装 skill 打相关性分，隐藏无关项，manifest token 可砍掉约 75%。
+https://github.com/ShivamPansuriya/jev-skill-gate
+
+6️⃣jev-ultrafast
+Browser Use 做的高速浏览器 Agent。Jev 每步判断「做什么、点哪个元素」，只有打字才调小 LLM。Google Flights 苏黎世→伦敦约 7.1 秒。
+https://github.com/browser-use/jev-ultrafast
+
+7️⃣jev-review
+用 Jev 做分阶段代码审查。可以审 Git diff 或扫仓库，先筛正确性、安全、可靠性，再把重点交给更重的模型或人。
+https://github.com/devagrawal09/jev-review
+
+8️⃣jev-browser
+不自己控浏览器，而是用 Jev 在现有 computer-use 工具上选元素。已经有浏览器工具时，这个比从零搭循环更省事。
+https://github.com/vlad-terin/jev-browser
+
+9️⃣jev-trader
+Monad 上的交易机器人。每个区块让 Jev 对 MON-USDC 做一次买/卖判断，再挂 post-only 限价单。看高频决策环怎么接 Jev，看这个最直接。
+https://github.com/jarrodwatts/jev-trader
+
+🔟Awesome Jev
+社区目录，大约 410 条，按官方、SDK、agent tooling、浏览器、应用分类，星标每日刷新。上面没覆盖到的去这里找。
+https://github.com/hellogumbo/awe
+
+
+现在很多 skill 已经开始暴露典型的“配置漂移”问题了。
+
+能下载到的大量 skill，本质上是 agent 自动生成的 markdown 工作流，没人 review，也没有最小可运行示例。结果就是文档里引用了不存在的 API、参数写错、依赖漏写，agent 真跑到那一步才发现异常。
+
+这种问题跟后端接口治理其实很像。接口文档没人校验、mock 和真实服务不一致、依赖版本漂移，最后都会变成线上故障，只不过现在故障对象换成了 agent workflow。
+
+所以判断一个 skill 能不能进生产，不是看 README 写得多热闹，而是看三件事：有没有最小可运行示例、边界条件有没有写清、维护者自己有没有 review 过。
+
+skills 现在最大的问题已经不是“能不能生成”，而是缺少一套像接口规范、CI 校验、版本管理那样的工程约束。
+
+
+Post
+
+See new posts
+Conversation
+梭哈.AI
+
+@SUOHA_AI
+连 JEV 的联合创始人 
+@CompleteSkeptic
+ 都亲自下场转发点赞：这是 JEV 正确的打开方式！
+
+大家在 Claude Code 里写长代码，最恶心的就是上下文一满，系统就卡住 10 秒去写总结小作文
+
+开发者 
+@tamarajtran
+ 刚刚开源了这个插件：利用 JEV 的打分能力，几十毫秒内精准识别并清空所有没用的终端垃圾与冗余日志
+
+Github：https://github.com/tamaratran/fast-jev-compaction
+
+它的作用是：
+• 彻底治好 Agent 失忆症：几千行终端废话和文件内容让 JEV 毫秒级打分，没用的直接扔，核心代码与状态 100% 原样保留
+
+• 彻底消灭卡顿与账单：几十毫秒无感完成瘦身，不花一分钱废话 Token
+
+@typesafeai
+ 的联合创始人 Diogo Almeida 也公开实名认可：这就是编码 Agent 绕过传统 KV 缓存的最佳解法
+
+
+Jev 这个接口设计最有意思的点：把「判断」变成了可测试的函数签名。state 放上下文，questions 定义判断标准和候选项——LLM 的输出第一次有了稳定的输入契约，可以写单测了。agent 系统最缺的就是这种把模糊判断收敛成可验证接口的原语。
+
+
+现在 agent 的记忆系统都在重演数据工程的老路：原始轨迹存下来，定期 rollup 成分层摘要，检索时只看视图。作为写过 ETL 的后端看着挺亲切，但有个坑必须提醒：分层越多，"记住的"和"实际发生的"偏差越大。先把 L1 原始轨迹做成可回放、可审计，再谈分层压缩。
+
+
+https://taylorfourier.github.io/ielts-listening-practice/
+
+https://github.com/browser-use/jev-ultrafast
+
+Post
+
+See new posts
+Conversation
+思维怪怪
+@0xLogicrw
+Jev 这个 waitlist 还是很给力的，昨天申请，今天就能用上。
+
+给已经拿到 API、但还不知道怎么玩的人整理了一份 Awesome Jev，目前我能确认到的 Jev 项目基本都在这里：
+
+1. jev-ultrafast
+Browser Use 做的高速浏览器 Agent。Jev 负责每一步判断「做什么、点哪个元素」，需要输入文字时才调用小模型。Google Flights 搜航班完整跑完约 7.1 秒。
+https://github.com/browser-use/jev-ultrafast
+
+2. typesafe-mcp
+把 Jev 直接接进 Claude Code、Claude Desktop 和 Codex。Agent 可以随时调用 Jev 做 Choice / Score / Noul 这类结构化判断。
+https://github.com/itsmostafa/typesafe-mcp
+
+3. jev-mcp
+另一个更偏实用工具的 MCP，已经封装好事实核验、Prompt Injection 检测和语义排序。
+https://github.com/jkudish/jev-mcp
+
+4. SemDecide
+把 Jev 做成 Unix 命令行工具，可以直接拿来做语义判断、分类、打分、过滤和 Guard。很适合塞进脚本、CI 和数据流水线。
+https://github.com/sharziki/semdecide
+
+5. Jev Codex Router
+先让 Jev 判断每一轮编程任务有多难，再自动决定交给便宜模型还是更强模型。作者用 237 个真实 turn 回放，自测成本降低约 60%。
+https://github.com/0xNatoshi/jev-codex-router
+
+6. Winnow
+给 Claude Code 做「上下文垃圾回收」。Read、Bash、Grep 输出太长时，先让 Jev 判断哪些内容真的跟当前任务有关，再决定哪些需要进上下文。
+https://github.com/GhalebDweikat/winnow
+
+7. Jev Review
+用 Jev 做代码审查前置筛选，先判断 correctness、security、reliability、兼容性和测试风险，再把重点问题交给更重的模型处理。
+https://github.com/devagrawal09/jev-review
+
+8. Blink
+用 Jev 在代码库里做语义寻路。每到一层目录，就判断哪些文件或文件夹最可能和问题有关，再把更多 walker 分配过去。
+https://github.com/ellipsis-dev/blink
+
+9. neo4jev
+把同样的思路用到知识图谱。Jev 给每条候选边打概率，再用 beam search 一步步找到最可能的路径。
+https://github.com/jexp/neo4jev
+
+10. jev-desktop
+把 Jev 接到桌面自动化里。它读取 Accessibility Tree，判断该操作哪个控件、执行什么动作，再交给本地执行器。
+https://github.com/lahfir/agent-desktop
+
+11. TypeSafe AI Playground
+一个专门拿 Jev 做实验的 Rust CLI，已经做了 PHI 检测、代码注释审查、实时语气分析、职业和行业分类等玩法。
+https://github.com/markjaquith/typesafe-ai-playground
+
+12. Prism
+目前我看到最接近量化/交易场景的项目。它让 Jev 判断流动性池的 toxic flow、市场压力、均值回归可能性和流动性分布方式，目前默认还是 shadow/advisory，不直接驱动交易。
+https://github.com/irfndi/prism-liquidity-agent
+
+13. 1v1 Jev
+直接做了一个 FPS，让 Jev 大约 9Hz 判断移动、瞄准、ADS、开枪和跳跃。属于最直观展示 Jev 低延迟决策能力的项目之一。
+https://github.com/emrickgarrett/OneVOneJev
+
+14. TypeSafe on Neon
+拿 Jev 做模型 Router。请求先由 Jev 判断属于哪种任务，再转给 Grok 4.6 或 GPT-6 Astra 等模型执行。
+https://github.com/andrelandgraf/typesafe-on-neon
+
+看完这些项目，你大概也知道 Jev 可以怎么玩了，就是拿它反复做「要不要、选哪个、打几分、下一步干什么」。
+
+真正需要生成代码、写文章和复杂推理时，再把任务交给传统大模型。
+
+
+我也是，沉迷于 DuckDB
+
+CloudBridge，用 DuckDB 和 GPUI 做云账单和llm账单分析
+https://github.com/JetSquirrel/cloudbridge
+
+DuckLocal，DuckDB 的桌面端
+
+还有用 DuckDB 来做 AIOps 时序和图数据的分析
+
+
+Jev 太屌了！！！完全是模型的新方向+新范式。带来了太多不一样的东西。
+用 OpenCLI 配合了下 Jev，爽到飞起。
+以后其他大规模召回、AI推荐系统、实时交易，都可以用这个模型。
+玩法太多了！
+
+
+https://learnai.selfworks.ai/topics/pi/questions
+
+
+以前说到高并发就是 MQ + Redis + MySQL，然后为了保持最终一致，搞各种兜底任务。
+
+现在 Shopify 把 Redis 去掉，并抗住了黑五，且高峰时期数据库实例 CPU 均低于 50%。
+
+以后做相关零售系统、但没有 Shopify 并发高的，都可以考虑下这套方案。当然，业务层面的分库逻辑也很重要。
+
+
+最近沉迷 DuckDB，设计太优雅了，感觉找到了让 AI 参与到数据循环中的好办法。不是给 AI 各个平台的 MCP 让它去查数据，而是自建数湖，所有数据都导进去。AI 想要什么自己就可以随时去查去分析，数据能够非常简单的参与到决策中，成本还极低
+
+
+我用的rilldata做本地BI
+
+
+我们内部走的也是这条路：把各系统的数据按天导进 DuckDB 文件，agent 只拿到一个只读 SQL 接口，查什么自己决定。比一堆 MCP 好在权限只有一处、查询可审计、成本几乎为零，而且 SQL 是模型最熟的语言之一。
+
+
+Karpathy 入职 Anthropic 后的首次讲座
+
+1. Agents
+2. Loops
+3. Harness
+4. Self-Improving Systems
+
+新手老手都要认真学习
+
+

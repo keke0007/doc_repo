@@ -1,0 +1,775 @@
+https://github.com/lukeTheNeuromancer/system-design-notes-zh
+
+躺在床上，用阔折叠手机上打开 Paseo 进行 Vibe Coding，这就是 Paseo 移动端的宽折叠显示的界面，清晰明了，简洁爽朗，爽。
+
+https://x.com/DFarm_club/status/2102748265796235301
+
+https://x.com/lifesinger/status/2102772248985870349
+
+https://x.com/chenchengpro/status/2102782934189252662
+
+真正把互联网当成信息工具，而不是单纯刷 X/YouTube
+
+外网 = 搜索引擎 + Reddit + GitHub + YouTube + Discord + X + 长文博客 + 专业社区。
+
+真正有价值的是形成自己的信息流：
+
+Google → Reddit 找真实经验 → GitHub 找项目和代码 → YouTube 看实操 → Discord/论坛找圈内人 → X 跟踪高手和一手动态 → Substack/博客读深度内容 → 回到 Google 验证。
+
+最关键的一点是：
+
+不要只看“别人翻译给你的外网”，要尽量直接进入原始信息。
+
+比如你想研究 AI：
+
+X：看模型公司、开发者、独立开发者正在讨论什么
+Reddit：看普通用户实际踩了什么坑
+GitHub：看项目到底有没有东西
+Discord：进入项目/模型的真实用户群
+YouTube：看完整实操
+Google：查官方文档、论文、教程
+Hacker News：看技术圈对产品和趋势的讨论
+
+然后再把这些东西沉淀成自己的认知。
+
+外网最值钱的不是“墙外内容更多”，而是你终于可以自己顺着信息源一直追下去。
+
+你以前那种 “Reddit 找真实讨论 → GitHub 找项目 → Google 搜资料 → Discord 进社区” 的思路，其实已经接近正确打开方式了。区别只是：别把它当成几个网站，而要把它变成一套信息获取系统
+
+我的 agent 代码规矩：注释只准写 why + issue 链接，禁止写 what。
+
+agent 写的 what 注释烂得最快——十有八九是在给短期 hack 找补。
+
+真要锁住行为就写测试，别指望注释替你背锅
+
+再次推荐一下 
+@realcoreychiu
+ 写的这个 Agent 会话管理工具：Wake，我平时 Claude Code、Codex、Cursor，Pi 等等混着用，会话散在十几个目录里，想找上周的某个会话基本靠猜。直到用上 Wake。
+
+Rust + GPUI 写的原生桌面应用，把 20 多个 agent 的会话收进一个窗口：全文检索速度飞快，可以一键在原对话上面继续对话，还能镜像 SSH 远程主机上的记录。
+
+最近还上线了统计页——GitHub 风格的活跃热力图和连续天数，按小时、星期、月份拆开看；Agents / Projects / Models 三个榜单能在会话数、token、prompt 之间切换。哪个模型用得最多、哪些项目最烧 token，一眼明明白白。
+
+简单小巧，全程本地运行，不联网不上传。MIT 开源。
+
+https://github.com/iAmCorey/Wake
+
+https://x.com/KakaluoteW45042/status/2102711712172630100
+
+https://x.com/bojie_li/status/2102737510145429617
+
+https://x.com/IrisXnotes/status/2102766140477104228
+
+https://x.com/GoSailGlobal/status/2102745333167997403
+
+https://twittermark.com/
+
+https://x.com/yibie/status/2102573965470241100
+
+https://x.com/AYi_AInotes/status/2102670620102189457
+
+https://x.com/sanvibyfish/status/2102580312261976389
+
+https://x.com/rwayne/status/2102732096909537515
+
+https://x.com/xaiwind/status/2102419733601783872
+
+有人晒了自己的 agentic coding 工作流：先花 10 到 30 分钟写一份设计文档，交给一个协调者 agent（顶配模型、推理拉满），让它把活拆开、并行分给下面的 agent。4.5 万浏览。
+
+看完最大的感受是顺序对了。大多数人（包括以前的我）是先让 agent 写，写崩了再回头补需求，来回烧 token。他反过来：人只做那 20 分钟最贵的思考，剩下全是体力活。
+
+我这两天照这个改了下：写一个 md，写清目标、边界、验收标准、不许碰的文件，然后让协调者带两个子 agent 并行改，我只审 diff。返工次数肉眼可见地少。
+
+今天就挑个小项目试一次。写文档花掉的半小时，一般能省下一整个下午。
+
+反过来说，如果你根本写不出这份文档，说明这事还没想清楚；这时候交给 agent，只会更快地跑偏
+
+https://bojieli.github.io/ai-agent-book/astro/
+
+https://chatjevs.com/
+
+想动手学大模型，有没有一本开源实战书能直接跟着跑？《Hands-On Large Language Models》（《动手学大模型》）可以看看。
+
+全书 12 章，从语言模型基础讲到提示词工程、语义搜索、模型微调，再到多模态应用，一步步来，把大模型落地的关键路径都铺开了。
+
+GitHub：https://github.com/HandsOnLLM/Hands-On-Large-Language-Models
+
+官网：https://llm-book.com
+配套代码示例量大还能直接跑，Colab 上就能开工，原理讲得透，应用也做得出来。
+
+目前看 Harness 要想实现自我进化，首先得足够模块化。
+
+Prompt、Tool、Memory、Context、Verifier、Agent Loop 最好都能独立修改、评估、回滚。
+
+昨天看了论文有发现很多技巧值得学习，其中一部分就是可观测，可评估。
+
+不然最后很可能只是分数涨了，Harness 并没有真的变强。
+
+因为从我上个月做大量的 benchmark 经验来看，防模型作弊也很重要。
+
+回过头看 DeepSeek Harness 的插件化设计、pi agent 这种轻量可组合架构，感觉很适合往 RSI 这条路继续走，想象空间很大。
+
+https://x.com/Jerry_fsy/status/2102699787082698758
+
+对于想入门AI领域的朋友们，我筛选出一些适合入门的资料，我会附上领域以及对应的资料：
+
+Agent闭环迭代：
+1.https://engineering.fb.com/2026/09/02/ml-applications/organizational-second-brain-ai-learns-from-experts/ 
+Meta的这一篇讲了对于历史case，经过专家纠正后，系统深入调研Agent执行/回答有偏差的原因，然后进行Agent的迭代。
+我认为是Agent迭代的一个很重要的组成。
+我自己有在做这块的试验，后面可以分享一下效果
+cc: 
+@AIatMeta
+ 
+
+2.https://mp.weixin.qq.com/s/5VDN-T9K8Wr-DaQ15-I6CA?poc_token=HMWWs2qjZrx5OjySGOfgpNvZEGXXFWJf6ZAdudBB
+腾讯的这篇分享系统讲了Agent闭环迭代飞轮的4要素：评测->知识（历史case算其中的一部分）->Harness改进->人review。
+是一篇很好的闭环迭代的启蒙文章。
+cc: 
+@TencentGlobal
+ 
+
+Agent上下文工程：
+1.https://medium.com/@peakji/context-engineering-for-ai-agents-lessons-from-building-manus-71883f0a67f2
+Manus对上下文的理解，在当时确实很领先的，在这篇文章中能看到很多对于Agent工程的思考，尤其是对KV Cache命中率的深入理解。
+cc: 
+@peakji
+ 
+
+AI Infra：
+1.https://aleksagordic.com/blog/vllm
+这篇是看到
+@Kay2289123
+ 的推荐，确实是适合作为Infra的第一篇入门文章。主要围绕vLLM讲了很多推理的概念。感谢推荐。
+
+2.还有下面这篇，深入浅出讲GPU如何工作
+
+https://x.com/syyw1234/status/2102615419114901507/mediaViewer?currentTweet=2102615419114901507&currentTweetUser=syyw1234
+
+我现在的终端方案是herdr+wezterm， 有人跟我是一样吗
+
+收敛不是巧合，这三样就是 stateful agent 的最小架构：heartbeat 是事件循环 + 自调度，editable memory 是状态管理，send_message 是统一 I/O 边界。还没收敛的反而是工程侧：memory 版本控制、审计、权限门。这些标准化之后，agent runtime 才算真正的基础设施
+
+https://github.com/CopilotKit/openmuse
+
+开源个人 Agent 终于有了更贴近实际生产力的参考形态！CopilotKit 刚开源的 OpenMuse 迅速冲上千星，它的定位是一个拥有专属浏览器、Linux 终端、文件系统且能持久化运行的个人 AI Agent。
+
+如果你厌倦了只能在网页端纯聊天的玩具 Agent，这个项目的架构设计非常值得拆解：
+
+🔹 自带“Agent 计算机”（Agent Computer）它不仅会调用 API，还拥有一个常驻的真实计算环境：
+持久化 Chromium 浏览器：通过独立 Worker 运行 Playwright，可抓取公开网页、检索信息，并支持用户在前端随时一键“接管控制”（Take Control）。
+
+隔离的 Linux 终端沙箱：基于 Docker 运行非 root 容器，Agent 可以执行命令行任务、读写工作区文件，同时配有超时与操作凭证（Receipts）机制。
+
+🔹 具备韧性的后台任务流采用 durable task worker 与 SQL 租约机制，即便会话关闭或中断也能继续处理长链路工作，支持任务的暂停、恢复、重试、人工审批（Human-in-the-loop）及执行回执。
+
+🔹 开箱即用的实用工作流
+文档与办公流：邮件附件解析、PDF 表单自动填报、回信拟定及全流程归档。
+
+生态对接：支持 Gmail 与 Google Calendar 真实账号授权，处理日程与邮件往来。
+
+生活助手与追踪：支持 CSV 账单导入分析、网页价格/文本变动监控警报等。
+
+🔹 现代化全栈架构基于 React Native 构建多端客户端（iOS、Android、Web），服务端采用 Hono + CopilotKit 运行时，底层持久化支持轻量级 PGlite 或 PostgreSQL，适配 OpenAI、Anthropic 及 Google 等主流模型后端，采用 MIT 协议开源。
+
+想探索个人助理 Agent 落地、AG-UI 交互范式或多端 Agent 架构的开发者，建议直接克隆 OpenMuse 体验试用。
+
+吴恩达建议每一个人都学习编程。固然是为了解决自己的问题，但更大的意义在于“在 AI 时代不掉队”。
+
+这其实暴露出一个挺严重的问题：自从 2025年 AI 编程崛起，整个 AI 发展的前沿都由编程驱动，绝大多数新工具、新方法、新思想，全都在这个领域发生。我认识的很多非技术人，在 2025 年下半年之前还是基本能够跟上 AI 的进展，也能保持积极的学习态度。自从 AI 编程成为焦点，他们就开始掉队了，技能水平被卡在 chatbot 提示词这个层次无法进步。
+
+现在还只是刚刚开始，AI 编程的发展正在形成一套新的 AI 行话。说行话不说人话，是专业人士制造壁垒，阻挡和区别非专业人士的主要机制。按照这样的速度发展下去，用不了多久，不玩 AI 编程的人，不要说动手能力，连 AI 人讲的话都听不懂了。
+
+所以吴恩达建议人人学编程。但是以我这些年的所见所闻，这真的是不可能的，绝大多数人面对这样的建议，并不会发奋图强，而是会灰心放弃，累了，毁灭吧，爱咋地咋地吧。
+
+我认为还是要把 AI 的一些重要的进展主动引入到其他专业领域，比如能不能用 multiagent workflow 去写作、设计，做企业战略规划，能不能搭建可自动测量财务和数字营销效果并改进的 agentic loop，等等。要等着他们过来，恐怕是没戏。
+
+ 炸裂！Hindsight 让 AI agent 真的记住你说过的话，下次开新会话不用再从头交代一遍。
+
+GitHub 揽获 2.5 万 stars，仓库 2025 年 10 月才建，不到一年涨到这个数，最近一个月连发了三个版本。
+
+平时用 agent 最烦的一件事：今天把项目背景、代码规范、你的偏好全交代了一遍，明天换个会话它又一问三不知，你只能把那段话原样再粘一次。Hindsight 不走「把聊天记录塞回上下文」这条路，它把交互沉淀成能检索的经历和心智模型，存、取、反思三件事分开做，用得越久它对你越熟。
+
+自己托管的话 Docker、pip、Kubernetes 都行，存储用 PostgreSQL 配 pgvector，接了六十多个集成，Claude Code、Cursor、GitHub Copilot 这些编码 agent 连上就能用。还有个可选的敏感信息扫描，写进记忆之前先过一遍，免得把密钥顺手存了进去。
+
+https://github.com/lilinji/ai-infra-odyssey
+
+如果你希望 Agent 编码时遵循规则，不要在 AGENTS.md、Skill 或 各类文档中写规则（类似：当 xxx，你应该 yyy），模型底层是概率，长程执行中规则被执行的概率会越来越低
+
+正确做法：用工程化的确定性对抗概率的不确定性。
+
+举例：你希望“测试时不要一个测试失败，修复后就从头跑，应该从失败的开始继续跑”，那不应该在文档里许愿，而是改造测试脚本，每当 agent 执行测试时，脚本会输出 agentHint 参数，指导 agent 测试时应遵守的约束。
+
+举例：
+agentHint：“如果当前 session 反复执行多次测试，当修复失败用例后，应该从失败用例继续跑，最终全部通过后再整体跑一遍”
+
+甚至更进一步，记录项目的测试执行情况，当发现符合上述调用规律时，agentHint 直接要求从失败用例继续跑。
+
+编码各种流程的约束都收敛到脚本的 agentHint 参数中，
+AGENTS.md 及各类文档中只需要强调一句话：执行过程中遇到 agentHint，要参考他的建议
+
+https://github.com/Joker-smile/FundBoard
+
+最近摸索了一种新的节约 Token 但是效果不错的模式（都是被逼的，Token 太贵）：
+
+Fable 写设计方案 -> 
+（Loop 开始）
+Opus 执行 -> Advisor（Fable） 验收
+（Loop 结束）
+
+步骤是这样的：
+
+1. 先 Claude 里面设置一下 advisor 为 Fable
+> /advisor fable
+
+这样在使用 Opus，Sonnet 模型的时候，遇事不决它会请教 Fable，可能会有无谓的 Fable 消耗，但还是可以接受也值得
+
+就好比请了个高级工程师当顾问
+
+2. 复杂一点的问题先让 Fable 出方案，最大化利用 Fable 的能力。
+
+就好比你让一个高级工程师写一个技术方案，让普通工程师去执行
+
+3. 方案写好了确认了，让 Opus 去执行，但是执行的时候，加一句提示词：
+
+> 完成后让你的 advisor 验收一下，如果验收有问题就按 advisor 的反馈修复，修复完成后再让 advisor 验收，直到通过 advisor 的验收为止
+
+可以配合 /goal 使用效果更佳
+
+这样 Opus 在实施完成后就会找 Advisor 验收，通过 Advisor 就会给出反馈，然后 Opus 继续修改。
+
+这样的好处就是整个过程你不需要人工去用 Fable 确认—— 以前我就是这么干的，Opus 执行完，我得回到之前 Fable 的会话去让它验收，或者新开一个会话，把文档发给 Fable 验收。
+
+现在 Agent 自己就能形成闭环，不用你自己参与。
+
+就好比你请了个高级顾问，复杂问题找顾问出方案，执行让你的工程师去按照方案执行，每次工程师做完自己去找顾问验收，顾问不仅验收还会告诉工程师哪里不对，然后工程师自己改，不用说每次做完找你，你再找顾问。
+
+多个 Agent 一起干活，最怕的不是能力不够，而是互相不知道对方干了什么。
+
+Block 开源的 Buzz，就是把这群 AI 放进同一个工作区里。
+
+消息、代码提交、Review、合并等操作都会留下记录，Agent 之间不用靠人肉复制上下文。
+
+而且 Agent 可以直接加入频道，拥有独立身份和权限，能自己建仓库、提交代码、跑任务、参与审查。
+
+支持 Windows、macOS、Linux，还提供专门给 Agent 用的 CLI。
+
+如果你正在折腾多 Agent 协作开发，这个可以研究一下。
+🔗 https://github.com/block/buzz
+
+如何成为AI Agent工程师？面试前你必须掌握的6大核心概念是什么？
+
+Agent形态千千万，但从我入门到现在研究了很多Agent后，发现Agent核心正如“三元同学”所说就6个，掌握了这6个，你就打开了学习AI Agent的大门，其他的概念就一通百通了。
+这6个概念是：
+1.Agent Loop
+2.Tool Systems 
+3.Context Engineering 
+4.Memory 
+5.Multi Agents
+6.Harness Engineering 
+
+这6个概念看似难懂，但作为一个从对这些懵懂，到能交付生产级Agent的“学生”来说，看“三元同学”的公众号文章，辅助AI询问，进一步可以系统学习她的课程。1个月即可掌握这些概念，在开源项目基础上定制自己需要的Agent。
+
+如果大家对AI Agent感兴趣，可以在公众号上关注“三元同学”，下面附一些我感觉不错的文章：
+http://1.mp.weixin.qq.com/s/h5QyZ07G7Kj9…
+2. http://mp.weixin.qq.com/s/ViQU8mCuLFjL…
+3. http://mp.weixin.qq.com/s/N1WgUN8ddXrw
+
+
+有需要的朋友可以自行领取：https://gitee.com/hhf_qy/henfon-shop；制作不易，求个3连~~
+
+https://github.com/dair-ai/ML-YouTube-Courses
+
+https://rdi.berkeley.edu/adv-llm-agents/sp25
+
+https://github.com/greyhatguy007/Machine-Learning-Specialization-Coursera
+
+https://github.com/elicit/machine-learning-list
+
+https://github.com/openobserve/openobserve
+
+https://x.com/e_opore/status/2102136657864429603
+
+SemiWiki 是半导体行业中极具影响力的专业社区和技术博客平台
+https://semiwiki.com
+被誉为“半导体专业人士的开放论坛”
+The Open Forum for Semiconductor Professionals
+这里汇集了芯片设计、晶圆制造、EDA 工具及 IP 领域的工程师、高管、分析师和行业资深人士
+
+SemiWiki 由硅谷半导体行业资深人士 
+@DanielNenni
+ 于 2011 年创立
+
+SemiWiki 讨论涵盖了整个半导体产业链
+* 芯片设计与 IP
+* 晶圆制造与工艺
+* EDA 工具与设备
+* 行业趋势与市场预测 ...等
+
+导航栏内容分类也全面，是非常好的资源站和行业信息来源
+Company Wikis、Industry Wikis、Semiconductor IP Wikis 清晰组织
+
+Hermes Agent 终于有个像样的控制台了。
+
+Hermes Studio 是一个本地优先的 Web / 桌面端管理工具，把 Agent 的聊天、任务和工作流集中到一个界面。
+
+几个比较实用的功能：
+① Telegram、Discord、飞书、钉钉、微信等多平台接入
+② 可视化工作流、定时任务、Kanban
+③ 会话、模型、Profile、用量统一管理
+④ 支持桌面端、Docker、npm
+
+如果你正在折腾 Hermes Agent，这个可以一起收藏。
+🔗 https://github.com/EKKOLearnAI/hermes-studio
+
+
+卧靠，GitHub 真把 AI 圈底裤都掀了
+
+这 7 个开源项目，正在把一堆每月收费几十、上百美元的 AI 软件，直接干成免费，天花板的存在
+
+1、Hermes + Jev Skills
+
+直接给 Codex / Agent 加上路由、记忆、技能选择和 GUI 点击能力
+
+很多原本几秒到几十秒的判断，能压到亚秒级，复杂 Agent 工作流体感能快 10 倍
+
+https://github.com/kerpopule/hermes-jev-skills
+
+2、typesafe-ai/skills
+
+直接拖进 Codex 或 Cursor，补上决策、工具调用和评估循环
+
+最大的价值不是多几个 Skill，而是少乱调用、少走弯路，复杂任务返工时间能少 70%。
+
+https://github.com/typesafe-ai/skills
+
+3、OpenHands
+
+原本要你盯 1 小时 的开发任务，现在可以直接交给它连续跑，人只负责最后验收
+
+开源 AI 编程 Agent，自己读代码、改代码、跑命令、排查问题
+
+https://github.com/OpenHands/OpenHands
+
+4、MoneyPrinterTurbo
+
+以前一条视频要折腾几个小时，现在一套流程能压到 10～20 分钟，做内容效率直接起飞
+
+https://github.com/harry0703/MoneyPrinterTurbo
+
+5、TradingAgents
+
+查新闻、看财报、整理观点这一整套流程，能直接压缩到原来的 1/5
+
+https://github.com/TauricResearch/TradingAgents
+
+6、LibreChat
+
+一个界面统一接 ChatGPT、Claude、Gemini 和各种 API 模型
+
+如果你每天来回切模型、复制上下文、找历史对话，这种纯损耗基本能省掉 80%
+
+https://github.com/danny-avila/LibreChat
+
+7、OpenBot
+
+给每个 AI Agent 一台自己的“电脑”，直接操作网页和软件
+
+真正离谱的是，不是陪你聊天，而是能替你点、填、跑流程，把大量重复操作直接交给 AI。
+
+https://github.com/CopilotKit/OpenBot
+
+
+
+Viking
+@vikingmute
+·
+30m
+这个 tip 很有用，帖子的回复质量也很高
+
+OP 会在 AGENTS.md 前面加三条和测试相关的规则：
+
+1 禁止写完实现再写 unit test：
+我发现好几次 agent 为了通过而通过的现象，补 10 个单测去断言一个常量字符串里有没有某段子串 纯纯的表演型人格 各种模型都有会这种问题
+
+2 测试尽量只用 E2E 
+用 E2E 验证复杂功能真能跑通，当然 E2E 很耗费时间，开发阶段先跑和这次改动相关的那几条，我是准备开 PR 以后全量在本地跑，CI 上就跑几条关键路径。
+
+3 如果必须单独测一块系统 先列出它可能失败的方式 再写代码 这个有意思 感觉像变种 TDD
+
+https://github.com/rahulnyk/knowledge_graph
+
+https://x.com/huangjinbo/status/2102347538238222571
+
+https://x.com/wanerfu/status/2102239976587157653
+
+最近在学 agent 的知识。huggingface 和 ai engineering from scratch 的质量非常高，推荐给大家。
+https://huggingface.co/docs/smolagents/index
+https://aiengineeringfromscratch.com/index.html
+
+https://xqy2006.github.io/ModelTrace/
+
+https://github.com/jev-chat/jev-chat-jarvis
+
+https://github.com/huiyadanli/revokemsgpatcher
+
+https://pan.quark.cn/s/5bd0f7556b50
+
+https://www.yfsp.tv/
+
+https://iui.su/531/
+
+https://www.olevod.com/
+
+https://github.com/bojieli/ai-agent-book
+
+UCFP:9c1929b5-c3eb-4691-b32c-b5fa0cd32876-1790056879438
+
+我看到 OMP 本身具有这样的一套决策系统。以前它是基于普通的模型来写一个 SP，来达到一样的效果，但因为llm本身只是做预测，所以没有接 JEV 这么好。
+
+现在我看到 OMP 已经内置了这一套系统，如果你配置了 JEV 的 Key，它就直接用它来做决策。比如：
+1. 什么时候开  subagent；
+2. 开几个 subagent；
+3. 开什么思考级别；
+4. 用哪个模型。
+
+
+https://jev.kuhung.me/
+
+领导：过去半年的工作，经过半年的ai开发和学习，如果同样的任务效率是否可以提高1倍开发效率？如果非要裁1个人，除了你，会选谁？你能接替他的工作？
+
+
+https://github.com/qianniancn
+
+https://github.com/xiaoqi-web
+
+https://github.com/shiyiai/wechat-pet-source/invitations
+
+天佬 拉我一个 https://github.com/x-wuxl
+
+https://github.com/liaowl163
+
+https://github.com/Sajor-x
+
+https://github.com/misaya98
+
+如果我们前面的推演成立，那么未来真正容易贬值的是：写代码的能力 → 调 Agent 的能力 → 编排 Agent 的能力。
+
+而更难贬值的是：定义世界、拥有状态、建立约束、判断结果。
+
+建立属于自己的高质量私有 Context / Data / Ontology，这一点可能最终比模型本身更值钱。
+
+大家都可以买 GPT-X、Claude-X。
+
+真正拉开差距的是：AI 到底认识你多少？
+
+不是“记住你喜欢喝什么”的那种 Memory。
+
+而是你的完整工作世界，以及它们之间的关系。
+
+AI 越懂你， 你呼风唤雨的能力就越牛逼
+
+企业做 Agent，我越来越觉得关键不是再造一套能力，而是把已有能力重新封装。
+
+Context / Skill / Tool 分别回答：AI 需要知道什么、应该怎么做、实际能做什么。
+
+MCP 把 Tool 的访问方式标准化，App / Connector 做产品化，Plugin 再负责打包和分发。
+
+原来的数据、系统、流程都还在，只是多了一层 AI-native capability layer。
+
+https://www.v2ex.com/t/1243898#reply0
+
+https://x.com/ricouii/status/2102208311026418144
+
+https://www.v2ex.com/t/1243823#reply5
+
+如果一台设备被封过 Claude号，完全不需要换设备，清除掉设备指纹记录就可以了
+
+用我的这个 skill 可以搞https://github.com/suyuan2022/suyuan-skill/blob/main/claude-cleanup/SKILL.md
+
+亲测两台封过号的 macbook 都没问题
+
+Post
+
+See new posts
+Conversation
+旺旺
+@TiagerBao
+现在 Coding Agent 越用越多，但有个问题一直没解决：
+
+Claude Code 学会的东西，换到 Codex 或 Cursor 后，基本又得重新来一遍。
+
+Agent Beacon 做的就是这一层。
+
+它会把不同 Agent 的完整 session history 收集起来，再把里面有用的调试路径、修改习惯、项目规则和纠错记录提取成可以复用的知识。
+
+目前支持 Claude Code、Cursor、Codex、OpenCode、Cline、Hermes、Pi、Gemini CLI 等 20+ Agent / harness。
+
+它主要做几件事：
+
+>把不同 Agent 的历史统一成一套格式
+>记录 prompt、response、tool call、command、文件修改、审批、MCP、token 使用
+>可以完整回放一次 Agent session
+>从历史会话里提取可复用的项目知识
+>通过 MCP 或 Agent Skills 再提供给后面的 Agent
+>默认本地写入 JSONL，不强制绑定某个 Agent 平台
+数据模型基于 OpenTelemetry。
+本地可以直接看：
+beacon traces
+或者打开 dashboard：
+beacon endpoint dashboard
+
+底层原始记录也直接放在：
+
+~/.beacon/endpoint/logs/runtime.jsonl
+
+除了本地，它还能把同一份 Agent telemetry 发到 Splunk、Datadog、Elastic、Sentinel、S3、GCS、CloudWatch 等现有日志系统里。
+我觉得它比较实际的一点是：
+它把“Agent Memory”和“Agent 可观测性”放在了一起。
+
+你不仅能让下一个 Agent 复用之前踩过的坑，还能知道之前那个 Agent 到底执行了什么命令、改了什么文件、调用了哪些工具、花了多少 token。
+
+对同时用 Claude Code、Codex、Cursor 这类工具的人来说，这比给每个 Agent 单独维护一套 Memory 更省事。
+
+github:https://github.com/Asymptote-Labs
+
+https://x.com/3three_AI/status/2101953327609385263
+
+https://console.typesafe.ai/home
+
+https://x.com/gkxspace/status/2101993381303820704
+
+我把折腾大半年的全套海外基础设施，一次性整理成了一篇保姆级教程。
+
+1、一个真实的美国手机号：red pocket，10分钟搞定
+
+2、网络：自建 VPS + 住宅IP + 节点住宅二合一
+
+3、网络环境配置：TUN 模式、分流规则、防直连兜底
+
+3、支付：美卡、美区 PayPal、门槛最低的实体卡，从"我有美卡"到"我啥都没有"，每种情况都有对应方案
+
+4、还有设备清理、时区、邮箱，以及注册之后怎么用不被盯上
+
+而且这就是一整套干净的海外环境，Claude 之外，以后订阅任何海外服务都直接用得上
+
+Codex 别再裸着用了！！
+
+同一个模型，别人已经让它自己规划、联网、排错、修 CI，你还在一句一句问代码
+
+真正拉开差距的，不是提示词，而是 Skill
+
+下面这8 个，建议 Codex 新手直接装
+
+planning-with-files
+https://github.com/OthmanAdi/planning-with-files
+把计划、进度和任务写进 Markdown，减少跨会话失忆和任务跑偏
+
+agent-reach
+https://github.com/Panniantong/Agent-Reach
+
+给 Codex 补上联网搜索，能查文档、Issues、报错和技术资料
+frontend-design
+https://github.com/anthropics/skills
+
+提升 UI、布局和视觉规范，减少一眼 AI 的廉价感。
+
+ECC
+https://github.com/affaan-m/ECC
+内置 249 个技能，覆盖开发、测试、调试、重构和文档
+
+Trail of Bits Security Skills
+https://github.com/trailofbits/skills
+
+专门做代码安全审计，辅助发现漏洞、危险依赖和安全隐患
+gh-fix-ci
+https://github.com/openai/skills
+
+自动读取 GitHub Actions 日志，定位并修复 CI 失败
+
+second-brain-skills
+https://github.com/coleam00/second-brain-skills
+沉淀项目规范、知识库和 SOP，让 Codex 越用越懂你的项目
+
+stop-slop
+https://github.com/hardikpandya/stop-slop
+
+清理 AI 味、模板话和废话，适合 README、注释和文档
+别再只研究提示词了
+
+Codex 的下限由模型决定，上限由 Skill 决定
+
+把这8个装上，它才真正从“聊天工具”变成“干活的 Agent”
+
+沟通能力强的人，讲话都是有先后顺序的
+
+1、先讲对方想听的
+一开口先说对方爱听的话，能马上抓住他的注意力，让他更愿意听你往下说。可以先夸夸对方身上的优点，或者聊点你们共同关心的话题。
+2、再讲对方能接受的
+为了让对方更容易接受你的看法，可以拿他熟悉的例子或事实来撑你的观点，让他理解起来、接受起来都更顺。
+
+3、接着讲你该讲的
+这一步才是你真正要传递的核心信息。有了前两步打底，你就能更笃定地说出自己的观点和想法，因为沟通的基础已经铺好了。
+
+4、最后讲你想讲的
+到这一步，就可以把你的建议摆出来，把期望讲明白，让对方清楚你的目标和意图。这个顺序之所以管用，是因为它顺着人的心理和情绪反应走。先照顾对方的需求，再表达自己的需求，这样更容易换来对方的理解和支持。
+
+
+https://x.com/charliejhills/status/2101340060931203351
+
+Your Claude Code install is missing a few things.
+
+Here are 40 additions (grouped by what they do):
+
+I've hoarded over a hundred Claude repos this year.
+
+These cover workflows, skills, memory and tools, plus reference libraries worth keeping open.
+
+BUILD A WORKFLOW
+
+1. learn-claude-code → Learn how agents work.
+2. karpathy-skills → Cut common coding mistakes.
+3. superpowers → Plan, build and test.
+4. ponytail → Keep the code simple.
+5. gstack → Add planning and review workflows.
+6. ECC → Add skills, memory and checks.
+7. oh-my-claudecode → Coordinate agent teams.
+8. Archon → Build repeatable coding workflows.
+
+ADD SKILLS
+
+ 9. taste-skill → Improve your designs.
+10. anthropics skills → Browse official skills.
+11. mattpocock skills → Add engineering skills.
+12. wshobson agents → Find specialist agents.
+13. claude-plugins → Browse official plugins.
+14. addyosmani skills → Add engineering checks.
+15. ui-ux-pro-max → Get interface design guidance.
+16. awesome-claude-skills → Find more skills.
+
+KEEP THE CONTEXT
+
+17. planning-with-files → Keep plans in files.
+18. claude-mem → Carry context across sessions.
+19. codegraph → Map the code's connections.
+20. graphify → Connect code and documents.
+21. repomix → Pack a repo into one file.
+22. agentmemory → Give agents persistent memory.
+23. beads → Track work across sessions.
+
+CONNECT TOOLS
+
+24. multica → Assign issues to coding agents.
+25. firecrawl → Turn websites into usable text.
+26. cc-switch → Manage your coding tool setup.
+27. context7 → Fetch current code documentation.
+28. vibe-kanban → Manage agent tasks on a board.
+29. github-mcp → Work with GitHub from Claude.
+30. playwright-mcp → Let Claude use a browser.
+31. serena → Find and edit relevant code.
+32. claude-code-router → Route model requests.
+33. awesome-mcp-servers → Find more connectors.
+
+PROMPTS & USAGE
+
+34. system-prompts-ai → Study AI tool prompts.
+35. best-practice → Read Claude Code practices.
+36. codex-plugin-cc → Add Codex reviews in Claude.
+37. claude-hud → See your session usage.
+38. rtk → Trim command output.
+39. headroom → Compress what the model reads.
+40. caveman → Get shorter replies (much shorter).
+
+So pick one for the job you're doing.
+
+Open its repo, follow the setup instructions and try it on a real task before adding the next one.
+
+My Claude resource vault 
+
+→ https://charliehills.substack.com/p/resource
+
+Repost ♻️ to help someone in your network.
+
+Stop asking which AI model is best.
+
+Build these:
+
+• MCP server
+• RAG pipeline
+• AI coding agent
+• Voice assistant
+• Browser automation agent
+• Multi-agent workflow
+• AI search engine
+• AI copilot
+• AI eval framework
+• Production AI SaaS
+
+The future belongs to builders.
+Not prompt collectors.
+
+https://lilianweng.github.io/posts/2026-07-04-harness/
+
+最会写博客的AI研究员 莉莉安.翁 关于Harness的博客 不得不读！
+如果你真的没时间读 不防看看我的总结
+
+《Harness Engineering for Self-Improvement》
+作者：Lilian Weng
+原文链接：https://lilianweng.github.io/posts/2026-07-04-harness/
+
+核心观点
+文章聚焦递归自我改进（Recursive Self-Improvement, RSI） 的近中期实现路径。作者认为，当前真正可落地的 RSI 不太可能从模型直接改写自己的权重开始，而更可能先从Harness（部署层/编排层） 的工程优化入手。
+
+Harness 的定义：围绕基础模型的外围系统，负责编排执行、思考与规划方式、工具调用与行动、上下文感知与管理、产物存储、结果评估等。它相当于模型与真实世界之间的“运行时 + 操作系统”。
+成功的 coding agent（Claude Code、Codex 等）已经证明：Harness 的重要性并不亚于模型本身的原始智能。
+
+三大设计模式
+1Workflow Automation（工作流自动化）
+目标导向的循环：计划 → 执行 → 观察/测试 → 改进 → 再执行，直到目标达成。模型会分析自身轨迹和失败案例，通过“agent runtime”迭代，而不是静态 prompt。
+2File System as Persistent Memory（文件系统作为持久记忆）
+长视野任务中，日志、代码 diff、实验记录、错误轨迹等远超上下文窗口。把状态和产物持久化到文件系统（通过 bash 等工具读写），是当前最实用的记忆方案。
+3Sub-agent and Backend Jobs（子代理与后台任务）
+主代理可并行生成多个子代理，并管理后台任务。关键是把并行过程做成显式、可检查的（日志、状态文件），而不是把所有东西塞进临时对话上下文。
+Coding Agent 案例
+主流 coding agent 的工具接口已相对稳定，主要包括：
+•文件系统操作（glob、grep、read、edit、apply_patch 等）
+•Shell 执行
+•Git / LSP
+•Web 搜索与浏览器
+•产物生成
+•后台任务与子代理管理（spawn/resume/wait/interrupt agent 等）
+Harness 层 vs 核心智能
+
+作者的近中期预测：
+1Harness 会朝着元方法论方向进化（优化“如何得到更好答案的机制”，而不只是答案本身）。
+2成熟的 Harness 反过来支持自动研究循环，让模型持续改进，同时更强的模型又会防止 Harness 过度工程化。
+最终很多 Harness 技巧可能被模型内化（类似 prompt engineering 的演变），但与外部上下文、工具、评估的接口会长期存在。
+
+Harness 优化方法（文章重点）
+
+优化对象从简单到复杂大致演进：prompt → 结构化上下文 → 工作流 → Harness 代码 → 优化器代码本身。
+•Context Engineering
+◦ACE（Agentic Context Engineering）：把上下文当作不断演化的“playbook”，用 Generator / Reflector / Curator 维护条目化记忆。
+◦MCE（Meta Context Engineering）：双层优化——外层进化“如何管理上下文的技能”，内层优化具体上下文内容。
+◦Meta-Harness：直接优化“决定如何存取信息”的代码本身。
+•Workflow Design
+手工设计（AI Scientist、ScientistOne、Autodata）+ 自动搜索（ADAS 用元代理搜索 agent 工作流代码；AFlow 用 MCTS 优化图结构工作流）。
+•Self-Improving Harness
+把整个 Harness 当作可优化的代码。经典例子是 STOP（Self-Taught Optimizer）：优化“改进器”本身。后续工作进一步强调可观察性和 harness 更新能力 vs 利用能力的分离。
+•Evolutionary Search（进化搜索）
+AlphaEvolve、Darwin Gödel Machine（DGM）等：维护候选程序/Harness 池，用 LLM 生成修改，按性能筛选。DGM 允许 agent 修改自己的 harness 代码，在 SWE-bench 等任务上取得明显提升。
+•Joint Optimization with Model Weights
+尝试同时更新 Harness 和模型权重（SIA、Continual Harness 等），但目前证据仍较初步，训练稳定性和 Goodhart 效应是主要挑战。
+
+未来挑战
+1评估器太弱（尤其是主观任务如新颖性、品味）。
+2长视野任务的记忆与上下文管理。
+3对负面结果的忽视与偏差。
+4进化过程中多样性崩溃。
+5奖励黑客（reward hacking）。
+6长期可维护性 vs 短期任务表现。
+7人类监督的介入时机与方式。
+
+总体结论
+Harness Engineering 是当前通往 RSI 最现实、最可操作的路径之一。它把“如何让模型更好地工作”本身变成可搜索、可优化、甚至可自我改进的对象。代码是通用表示语言，文件系统是实用记忆层，进化搜索和元优化是主要方法论。
+近中期更可能看到的是：更强的模型 + 不断自我改进的 Harness 形成正反馈，而不是模型直接重写权重。真正的科学发现级 RSI 仍面临评估、可靠性和长期一致性等根本难题。

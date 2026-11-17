@@ -1,0 +1,791 @@
+https://github.com/arnegiacomo/fugleramme
+
+给 agent 记忆选向量库折腾了一圈（Qdrant/Chroma/pgvector 都试过），最后还是回到 SQLite：加个 FTS5，关键词检索覆盖八成需求，还少一个要运维的 service 😅 真碰到语义检索再上 embedding 也不迟，一上来就全套 vector stack 属于过度设计。
+
+
+AGENTS.md 用了三个月的心得：真正起作用的就那几行——跑测试的命令、不许碰的目录、commit 规范；写成大而全最佳实践的版本，agent 反而开始忽略。规则要像 lint config：短、可执行、进 git 才有用。
+
+
+https://github.com/modelscope/ms-cookbook
+
+
+https://x.com/run_maotui/status/2100156767137415210
+
+
+跟一个AI组织负责人聊项目合作
+分享迸发的一些感悟
+
+1. AI领域的团队协作更接近真正的扁平
+
+不纠结坐班、不提倡内卷，基本都是自己卷自己，招募成员时也没有设置明确的岗位能力边界和职责边界
+
+这里面一方面是不想设置，一方面是不好设置，机动性程度很高。那么这也就倒逼团队里的单兵作战能力必须很强
+
+2. AI领域接下来的一个趋势是：更期待过往行业中业务能力强的人加入
+
+因为当生产数量和速度已经饱和，质量必须严控，产品、设计、运营、营销推广等等，需要注入更优质的「闭环流程和验收标准」
+
+3. AI行业内的人和非AI行业内的人交流沟通的gap会越来越大，所以一定要时刻保持学习和交流
+
+行业内的人要保持对外感受，理解盲区
+行业外的人要保持学习，哪怕只是最简单的知识：各种名词、工具的意思，再到了解AI行业的生态、趋势、机制…
+
+我不敢想象：即便我做了再多年品牌内容，如果我今天完全没接触过AI，我跟各位有什么机会沟通、要怎么沟通，合作的「有效性」一定会被无限降低
+
+这个问题冒出来的那瞬间震撼到我了
+联想到我之前codex超小白教程的逆天数据，可见整个生态的gap无比巨大
+
+落后就要挨打，并且要花你想象不到的指数级的精力去弥补才能重新拉齐
+
+
+
+https://x.com/KakaluoteW45042/status/2099995524804026801
+
+
+同感。给自己的 agent 写过 SQLite 长期记忆，早期什么都存，两周后它开始复读旧结论、自相矛盾。真正难的从来不是存储，是遗忘：什么该衰减、什么该合并、什么该直接删。记忆工程的本质是遗忘工程。这份白皮书把 memory 生命周期拆得挺清楚，值得读。
+
+Agent 开发者这波免费羊毛，错过可就亏了❗
+
+O'Reilly 那本《AI Agents - The Definitive Guide》名气不小，作者干脆把全套配套代码搬上了 GitHub，12 个章节配 35 个 Jupyter notebook，思维链、思维树、ReAct 模式这些入门功底，多 Agent 协作，还有记忆管理、效果评估、成本核算这些上生产才遇到的深坑，通通覆盖到了。
+
+每个 notebook 还自带 Colab 一键运行按钮，浏览器打开即跑，本地 Python 环境免装，懒人狂喜。
+
+我扫了眼目录，末章专门讲 Agent 系统威胁建模，这类入门内容市面上几乎见不到，光吃透这一章就赚了。
+
+没买书也照样能把代码从头跑到尾。
+🔗 https://github.com/Nicolepcx/ai-agents
+
+
+我在当前运行环境里下载并运行了 faster-whisper 的 Whisper large-v3-turbo 模型，在 CPU 上完成整段约 27 分钟录音的 ASR。
+
+
+语音智能体如何评估？
+
+智能体是否按规范执行了？用户的问题真的解决了吗？通话听感是否自然流畅？这三个问题分别对应三个评估维度——执行、结果、体验。
+
+@LangChain
+ 的分享很深入、值得学习：
+https://langchain.com/blog/how-to-evaluate-voice-agents-execution-outcomes-and-experience
+
+维度一：执行，智能体是否遵守了指令
+衡量智能体对设计规范的遵从程度：工具是否以正确参数、正确顺序调用；是否遵守隐私与披露政策；是否在行动前确认了必要信息；是否基于可用上下文给出准确回答。
+
+评估手段分两层：
+· 确定性评估器（代码评估器）：适合可机器验证的硬性规则。
+· LLM 评审（LLM-as-judge）：适合语义性要求，如"是否清楚解释了下一步""是否对模糊请求提出澄清"。
+
+维度二：结果，交互是否真正达成了目标
+一个容易被忽视的失败模式，智能体完美遵守了指令，用户的任务却失败了。
+
+关键区分：指令遵从性 ≠ 结果有效性。执行维度的满分不能推出结果维度的合格，这也是为什么两个维度必须独立评估。
+
+结果评估同样分两层：
+· 定性层：用 LLM 评审判断来电者的根本请求是否被解决、智能体是真的完成了任务还是只解释了怎么做、无法完成时兜底是否恰当。
+· 定量层（更重要）：尽量度量真实世界的下游业务信号，而非从对话推断。排程场景看预约的时间/时区是否正确；客服场景看工单是否重开；转接场景看目的地是否接听。指标包括预订成功率、解决率、升级率、重开率、放弃率等。
+
+维度三：体验，对话对来电者是否顺畅
+这也是语音特有的维度，分三块：
+1. 响应速度。核心用户感知指标是轮次结束延迟：从用户说完话到智能体开口的间隔。关键做法是分段测量管道各组件——VAD、STT、模型推理、工具调用、TTS——各自统计 P50/P95/P99。同一段尴尬停顿可能源于模型慢、工具阻塞或 TTS 等待完整响应，只有 trace 才能定位到具体组件。
+
+2. 自然度与清晰度。发音可懂度、节奏、语调、表现力、语气是否匹配语境。这些属性存在于录音里而非文本里，所以必须用音频感知模型评审——只看转录的评审者原理上就无法判断声音是否友好。
+
+3. 对话摩擦。要求重复、反复澄清循环、互相打断、异常长通话、提前放弃等。这些信号需要语境解读：打断本身不必然是坏事，关键看智能体被打断后是否立即停止、保留上下文并恰当接话。
+
+持续评估闭环
+七步实操工作流，本质是一个循环而非上线前的检查清单：完整追踪交互（录音 + STT + 模型 + 工具 + TTS）→ 对代表性样本跑三类评估器 → 仪表板追踪趋势 → 变更后用相同评估器对相同数据集重跑对比 → 结合 trace 和录音定位失败组件 → 用标注队列校准 → 迭代。
+
+数据集应刻意包含：常见请求、已知生产失败、模糊请求、工具错误、转接升级、以及困难音频条件下的通话。
+
+一个容易被忽略的深层洞察：正因为三个维度独立，实验才会暴露出权衡关系。例如新提示提升了指令遵从却降低了解决率；更快的模型降低了延迟但处理打断更不可靠。这些取舍会被任何单一的聚合质量分掩盖——这是“不要只看一个总分”的工程化论证
+
+
+我看见的世界
+
+
+https://github.com/evoiz/Agentic-Design-Patterns
+
+
+https://github.com/lightpanda-io/browser
+
+
+https://www.tgnav.org/
+
+
+https://github.com/eternity4719/HowToLiveBetter
+
+
+调了半天才发现 subagent 烧 quota 的根因：它继承了整个 session 的 context。跟后端调用不做输入隔离一个道理。
+
+现在每个 subtask 我单独写 spec，只给必需的文件路径和验收标准。quota 是省了，更意外的是输出反而更稳。
+
+
+GitHub上这5个神级Skill，能解决Agent乱写代码90%的问题
+
+别再瞎装一两星的 SKILL.md。
+下面全是高星、能说明白「干什么」的（星数以 GitHub 实时为准）：
+
+1. https://github.com/mattpocock/skills（约 26.3 万⭐）
+正经工程 Skill 包：先 grill 对齐意图，再 TDD、出 spec、拆 ticket、做 code review。专治「Agent 自信乱写」。
+
+2. https://github.com/anthropics/skills（约 17.7 万⭐）
+Anthropic 官方示例 + Skill 规范。文档、设计、测试、企业沟通都有样板，装之前先看官方怎么写 SKILL.md。
+
+3. https://github.com/addyosmani/agent-skills（约 9.5 万⭐）
+生产级工程流程：接口设计、质量门禁、CI/CD、发版上线。给 Cursor / Claude 当施工手册，不是聊天话术。
+
+4. https://github.com/nextlevelbuilder/ui-ux-pro-max-skill（约 12.8 万⭐）
+UI/UX 设计智能 Skill。专治「能跑但丑爆」：布局、组件、多端观感有章法。
+
+5. https://github.com/JuliusBrussee/caveman（约 10.6 万⭐）
+用极简「洞穴人」对话砍 Token，实测可砍掉一大截上下文浪费。贵的时候先省，再谈聪明。
+
+Skill 不是装饰。
+是把 Agent 从「会聊天」拧成「会干活」
+
+
+https://x.com/AYi_AInotes/status/2100174252326457522
+
+https://x.com/KakaluoteW45042/status/2100079578077384754
+
+Agent 中协议相关操作的学习：
+
+MCP（垂直层）：Agent ↔ 工具。学 Server 开发、工具发现、鉴权；理解它与 Function Calling 的边界（MCP 解决 "工具硬编码在应用里"，FC 是模型原生能力）
+
+A2A（水平层）：Agent ↔ Agent。Agent Card、任务生命周期、跨组织委托
+
+LangGraph（编排层）：组织内状态化执行
+
+验收：把自己的工具封装成 MCP Server，被任意 MCP 客户端发
+
+
+https://higan-sakura.com/sakura-lens/
+
+
+
+Otter
+@otterpal24
+·
+3h
+这是我review 代码最需要的工具。我觉得看源代码文件是一件非常低效的事情，应该可视化排查架构、调用链、依赖关系、模块后，再去具体的模块和文件里查看具体的问题。赚不赚钱我不知道，但是这块肯定接下来有不少人做。
+
+
+https://www.awqaq.com/register
+
+https://github.com/jasonbitsmith/vps-first-steps
+
+https://github.com/kdsz001/typefree
+
+看到很多人已经有运行 e2e 测试都意识了，大家也都会碰到一些问题，比如运行时间长、成本高，简单说一些我们的缓解措施：
+
+1. 使用本地 runner，搞一些配置好点的机器来跑测试，成本比 github cloud runner 便宜很多。同时需要控制一下测试并发度，避免打满了机器谁也跑不过。
+
+2. 尽量设置精准的代码依赖，测试进行相对细粒度的分组，代码改动的时候只运行受影响的测试组
+
+3. 测试分层。我们把测试分成了 P0/P1/P2，CI 过程改动多一般只跑 P0 的测试，merge queue 里跑的多一点 P0+P1，P2 的测试则是有一个定时任务每半个小时才执行，这种方式能够砍掉大半的测试负载。如果 P2 测试有失败会有 agent 自动介入处理，如果是 flaky test 默认就直接先注释掉，如果是逻辑错误就自动创建 fix pr 然后通知 owner 处理。
+
+4. 我们的测试都是 BDD 驱动的，除了 PR 里要求带上测试都相关修改，每天晚上 agent 会自动扫描过去一天修改的所有逻辑和测试，重新整理一遍，调整测试级别，删除冗余或者低效的测试，避免整个测试集无序膨胀
+
+
+https://x.com/leoshen0/status/2099641267726758095
+
+舒服了 生肉交给hermes 自动制作中英字幕
+
+想学习 Coding Harness 的朋友，可以看下《Pi 学习蓝皮书》这本开源免费的开源书籍。
+
+共 5 个模块 14 课外加 8 个配套案例，从检查 Node.js 到跑长时间任务一路学习下来。
+
+每节课都按场景、概念、实操、验收四步走，Agent 说「完成了」不算数，得自己验收过才算。
+
+GitHub：http://github.com/xiaomoBoy/pi-bluebook
+
+版本、登录方式、模型这类容易变的信息都标了核验日期，以官方文档为准。macOS 是主线，Windows 走 Git Bash 有单独一条路径。
+
+还收了 11 篇经 Pi 官方（Earendil）授权的中文译文，讲会话机制、代码质量这些。
+
+有在线版可以直接读。想上手 Pi 又被英文文档挡在外面的，从这本开始比翻源码顺。
+
+
+太牛逼了，这个相当于有前沿智能的纯分类器，凡是需要理解输入然后纯粹做判断的场景都可以换成它，极快极便宜，0 输出 token……
+
+这样至少在 workflow 编排和 E2E 测试里都会特别有用呀
+
+以及 TypeSafe 这公司名字真有 taste 啊
+
+
+https://x.com/Kay2289123/status/2099899114087682126
+
+
+继续上个帖子把 AI Agent 强化学习的学习材料补齐了，按入门 → 动手 → 进阶 的顺序, 推荐收藏阅读搞懂
+
+① 基础循环｜HF 的 RL 入门
+学什么：观察 → 行动 → 环境反馈 → 奖励，先弄懂模型怎样与环境互动。
+https://huggingface.co/learn/deep-rl-course/en/unit1/rl-framework
+
+② 奖励与训练｜How frontier models train on outcomes
+学什么：怎样把任务结果变成奖励，再用奖励训练模型；评分方式会影响模型学到什么。
+https://huggingface.co/blog/sergiopaniego/agentic-rl-2026
+
+③ 更新模型｜GRPO Trainer
+学什么：同题生成多份回答、比较得分，再用评分更新模型参数。TRL 就是 Hugging Face 的模型训练工具库。
+https://huggingface.co/docs/trl/main/en/grpo_trainer#looking-deeper-into-the-grpo-method
+
+④ 训练环境｜One sandbox per rollout
+学什么：任务与验收规则、Agent 的操作程序、沙箱和训练器怎样配合，为什么每次尝试需要独立的运行空间。
+https://huggingface.co/blog/sergiopaniego/rl-environments-2026
+
+⑤ 动手实战｜TRL＋OpenEnv 训练编程 Agent
+学什么：让现成 Agent 在沙箱里做任务，把模型回答和工具调用整理成训练数据，检查结果，再接回训练程序。
+https://huggingface.co/blog/sergiopaniego/trl-openenv-harness-training
+
+⑥ 验证效果｜Evaluating agents with Inspect AI
+学什么：用未参与训练的任务做评估，检查训练中的进步能不能用到新题上。
+https://huggingface.co/docs/openenv/tutorials/evaluation-inspect
+⑦ 规模化进阶｜Keep the Tokens Flowing
+学什么：让产生尝试和更新模型并行，减少等待；同时处理旧模型产生的数据。
+https://huggingface.co/blog/async-rl-training-landscape
+
+
+
+https://x.com/leoshen0/status/2099641267726758095
+
+
+indexing是没有技术含量的，真正有技术含量的是static analysis，但是这样的产品往往卖的比较贵，“独立开发者”如果过去没有在大型软件公司上过班的话，可能一辈子都没机会见识其威力，这不是几个模型能碰瓷的
+
+
+https://x.com/tspy/status/2099891676609470543
+
+
+Karpathy 入职 Anthropic 后的首次讲座
+
+1. Agents
+2. Loops
+3. Harness
+4. Self-Improving Systems
+
+新手老手都要认真学习
+
+四大神级实用思维：
+第一性原理，贝叶斯思维，复利思维，逆向思维
+
+
+这两年 Agent 架构层出不穷：Reflexion、GraphRAG、MemGPT……真到选型那一步，反而更没底。
+
+all-agentic-architectures 直接把 35 种主流架构做成可运行的 Python 类，接口统一，想换方案基本就是换个类名。
+
+更关键的是它不让你猜：内置排行榜，用 17 个任务把 35 种架构拉到同一赛道跑一遍，强弱一眼可见。
+
+GitHub：http://github.com/FareedKhan-dev/all-agentic-architectures
+
+每种架构都配教程，而且结果来自真实大模型实跑，不是编出来的演示样例。
+
+同时支持 9 家模型服务（含 OpenAI、Anthropic、Ollama 等），换模型不必改代码。
+
+如果你在做 Agent 开发、卡在架构选择上，动手前先看一眼它的排行榜，少走很多弯路
+
+
+上一条说，只靠测试不能保证软件质量。这条先聊也应该怎么写测试，因为这是基础。下次聊关键设计，以及 review 应该看什么。
+
+针对业务项目，我的理解大概是这么几条：
+
+1 测试行为，不测试实现。比如重复下单不会重复扣款，而不是某个方法调用了几次。业务没变，重构一下测试就碎一地，那多半写错了。AI 特别容易写这种测试。
+
+2 用 BDD，先写验收场景，再写代码。测试描述统一用 user 开头，用 Given / When / Then 描述，用户和 PM 也能看懂。别让 AI 写完代码，再照着自己的实现证明自己没错。
+
+3 禁止 mock。Redis、PostgreSQL 能用真的就用真的，外部系统不好接就注入 fake，但要校验它和真实系统的契约。时间逻辑用 fake timer，别 sleep 几秒再祈祷。AI 真的太喜欢随手 mock 了。
+
+4 我倾向大部分写 E2E，从用户入口走到可见结果，外部依赖可以 fake，实在不合适再写其他测试。测试多了就分级，按改动和依赖关系精准测试，定期完整跑。别改两行代码，等 CI 半天。
+
+5 前面做好了，再看分支覆盖率，先定个 90%。但重点是剩下的为什么没测，尤其是失败路径，别让 AI 为了凑数字再写一堆垃圾测试。
+
+6 前边的规则尽量都写成 lint
+
+https://github.com/skalesapp/skales
+
+https://x.com/coder_left/status/2099832596196913336
+
+
+刚发现一个宝藏项目system-design-101，84.1k star，看完README我就star了
+
+1️⃣ 用图解把复杂系统拆成大白话，缓存、消息队列、数据库分片这些平时看文档头大的概念，一张图给你讲明白，比啃几十页PDF快多了
+
+2️⃣ 覆盖系统设计面试的高频考点，从限流到一致性哈希全有，面试前刷一遍心里有底，不用再东拼西凑找资料
+
+3️⃣ 完全免费开源，图都是现成的，直接拿去当团队内部培训材料都行，省得自己画架构图
+
+建议先收藏，下次搞AI直接抄作业。
+这项目是ByteByteGo团队出的，就是那个做系统设计面试课火起来的团队，84.1k star不是刷的。
+是真有人在面试前拿来救命。
+我翻了下，里面不少图直接对应大厂真实架构场景，拿来准备面试或者给团队做技术分享都够用，等于把别人整理好的知识库白送你。
+你们平时准备系统设计面试都看啥资料，有比这更狠的吗？
+
+🔗 https://github.com/ByteByteGoHq/system-design-101
+
+
+https://nexttoken.tv/weekly/002/transcript/#chapter-09
+
+
+Post
+
+See new posts
+Conversation
+Mengqi Pei
+@daqi029
+最近在用的两套还挺顺的 AI 产品工作流，发现它们其实对应两种不同的 UX 密度。
+
+UX 密度高的产品：
+我和GPT定需求 → 我和GPT拆模块 → GPT 给我竞品的页面参考推荐→我和 ChatGPT 逐个聊 UX → GPT生图验证 → Figma 精修 → Codex 实现。
+
+像 onboarding、homepage、paywall 这种，我还是希望先把 UX 想清楚。UI 可以后面慢慢磨，但 UX 一旦没想清楚，后面改的可能就是整个产品架构。
+
+UX 密度没那么高的 Web 产品，我现在会直接：
+我和GPT需求 → Gemini 生成 HTML → 我在浏览器里实际操作和修改 → 我把 HTML 丢给 Codex → Codex拆任务 → Codex按任务难度分配模型实现。
+
+甚至可以让 Codex 自己判断每个 task 用 high 还是 low，省不少 token。
+
+所以现在越来越觉得，Figma 不一定是所有产品开发的必经之路。
+
+UX 密度高，值得走一遍 Figma；
+UX 密度低，HTML prototype 可能反而更快、更接近真实产品。
+有一件事没变：需求要先聊清楚
+
+
+
+https://3.jetbra.in/
+
+
+pi 在 terminial 可以渲染 mermaid
+
+
+想系统学"Agent 工程"的可以看看这个项目，项目主张"Building AI agents is engineering, not magic."（造 Agent 是工程，不是魔法）
+
+他这个里面内容非常全面完整，几乎涵盖了Agent的所有路径：
+
+01  Foundations：单次调用 → Prompt → Chat → Tool Use → Agent Loop → Codebase Navigator（RAG+工具+记忆的集大成）
+
+02  Effective Agents Patterns：直接以 Anthropic《Building Effective Agents》为蓝本做实操（Prompt Chaining / Routing / Parallelization / Orchestrator-Workers / Evaluator-Optimizer / HITL）
+
+03  Advanced Techniques：Context Engineering / Memory / RAG / 多模态 / Guardrails —— 你最关心的"上下文工程"在这有整章
+
+04  Testing & Evaluation：Mock LLM 单测 / Evals / Tracing / Red Teaming —— Agent 非确定性，这章是生产化必修课
+
+05  Loop Engineering（coming soon）：Skills / Hooks / Sandbox / MCP / Subagents / Compaction——零件和 learn-claude-code 的 s03–s17 一一对应
+
+06  Frameworks（coming soon）：同一 agent 用 9 个框架各实现一遍对比（LangGraph / Pydantic AI / CrewAI / AutoGen…）
+
+07  Production（coming soon）：12-Factor Agents / 部署 / 可观测 / 成本 / 安全 / 容错
+
+比较适合想系统学 Agent 原理 + 上下文工程的人
+
+
+
+https://github.com/agenticloops-ai/agentic-ai-engineering
+
+
+做协作类 agent 的关键点之一是，如何把多个不同能力的 agent 拉到同一个群组，让他们在无人干预的状态下，自主分工，协作完成复杂的任务。
+
+要实现无监督自主运行，需要保证群组的整体可用性。比如一个群里面有 claude、codex、gemini、grok、openclaw、harmes 等 10  余个 agent，晚上睡觉前往群聊丢个任务：帮我写个对标 codex 的桌面 agent，明早起来验收。
+
+要完成这个任务，首先需要有个任务协调者，也可以叫做 leader，由这个角色来负责理解任务，拆解任务，分配工作给群里的其他 agent。leader 自身可以不参与具体的工作，但是需要监控其他成员的工作状态，适当干预、调配工作。比如 claude 做 leader，让 codex、gemini、harmes 等成员分工去写代码，并要求他们每五分钟报告一次任务进度。期间 gemini 因为模型限额罢工了，leader 需要把罢工 agent 没干完的活分给其他空闲 agent 接着干。
+
+协作类 agent 产品的设计难点和重点一定是群组的整体可用性建设问题。
+
+多 agent 协作过程容易遇到的问题包括：
+
+1. 某个成员 agent 因为模型限额或封禁、工具调用异常、网络等问题导致罢工
+2. leader 不靠谱，分配任务不合理，成员 agent 之间容易干重复或者冲突
+3. leader 自己挂了，缺了协调者，其他 agent 干完一轮不能继续干下去
+4. 其他外部依赖异常（比如定时任务）导致整体进度没有往前推进
+
+要通过 agent 协作实现全自动无人值守干活（比如建个群，让群里的 agent 每天晚上自己干 8 小时，去找到一些热点需求，做出产品，推给目标用户，让用户付费，实现产品商业闭环，人类群主躺着赚钱），需要一些关键的设计来保证群组的可用性：
+
+1. 冗余机制。群内的 agent 成员，在条件允许下尽可能多配置，同类型的 agent 互为备份，按能力等级分组排序，比如 claude、codex 为一组，gemini、grok 为一组，kimi、zhipu 为一组，openclaw、harmes 为一组
+
+2. 协调与监控。先指定一个 leader，比如 claude，由 leader 来理解任务、拆解任务、分配任务。发到群里的任务，leader 首先处理，从 agent 分组中按能力组合选择部分 agent 作为 worker 来执行任务。leader 需要定时查看群内的 agent 进度，如果发现某些 agent 进度异常或超时无响应，就从备份 agent 中挑选替换者，来接替异常 agent 继续完成任务
+
+3. 进度上报。作为 worker 的 agent 需要定时把自己的任务进度上报到群组，方便 leader 和其他成员感知任务进度。
+
+4. leader 选举。leader 跟所有的 worker 之间保持定时心跳，在 leader 挂了的情况下触发选举或由底层程序指定新的 leader，由新 leader 继续组织工作
+
+5. 恢复机制和结果一致性。agent 协作过程中肯定会遇到各种异常问题，需要设置很多个 checkpoint（检查点），任务状态和依赖关系需要明确，支持断点恢复和幂等重入。继任的 worker 需要延续前任 worker 的工作进度继续推进，最终需要通过测试和验收来确认结果，不能只依赖 agent 自己报告完成
+
+---
+
+最近在做协作类agent 产品，感觉分布式系统的可用性架构设计理论有很多可以参考的思路，我在 http://termany.sh 里面也实现了很多的策略，目标还是要把本地的多个 agent 聚合在一起，在无人值守模式下实现自主协作，共同完成复杂任务。
+
+欢迎试用与交流。👇
+
+https://termany.sh
+
+
+家里那台 USB 打印机终于不用插电脑才能打了。
+
+我用 CUPS Web 挂到 NAS 上，手机浏览器上传 PDF、Word、OFD 就能打，还能预览、选双面和份数，打印记录也清清楚楚。
+
+🔗：https://github.com/hanxi/cups-web
+
+
+想给 agent 加长期记忆？一搜就是一堆路线：Mem0、MemGPT、知识图谱各说各的好，学哪个、怎么选常常卡住。
+
+Agent_Memory_Techniques 直接把 30 种记忆技术拆成 30 个可运行的 notebook：从最基础的对话缓存，到可落地的生产级方案，一路带你跑通。
+
+每种技术一个独立目录，向量库、知识图谱、情景记忆、语义记忆等主流路径全覆盖；Mem0、Letta、Zep、Graphiti 等热门框架也都有实操示例。更关键的是还配了长对话记忆的评测基准，选型不靠感觉，用数据说话。
+
+README 里还有一张决策树：按你的场景一路回答，就能定位该从哪个 notebook 开始看，不用 30 个挨个啃。
+
+GitHub：http://github.com/NirDiamant/Agent_Memory_Techniques
+
+正在给 agent 设计记忆层的开发者，把这个仓库跑一遍，能少走不少弯路。
+
+
+这作者标题很爆，上来就说 Subagent 是错的，我来讲讲我的想法。
+
+作者想表达的核心问题是 Subagent 的 Handoff 有损，Multi-Agent 架构里每经过一次 Handoff，都可能丢失原始 Evidence 和推理路径。局部 Agent 能力再强，信息在链路中损失后，最终仍可能只解决表象，没有解决根因。
+
+但是他内容里的 Subagent 只有 Fresh Context 的 Subagent，而现在的 Subagent 既可以 Fresh 又可以 Fork。
+
+如果是 Fork 的 Subagent，就不会有这么严重的 Handoff 问题，当然在 Subagent 把结果回传到 Main Agent 时会有，但也比作者描述的问题轻了很多。
+
+所以 Agent 的正确拆分边界不是 Role Boundary，而应该是 Context Boundary。不应该根据 Plan / Code / Review 就直接拆分 Agent，更应该去判断哪些任务需要完整继承已有 Context？哪些探索会产生大量临时 Context？哪些判断需要 Fresh Context 保持独立性？ 于是同一个 Session 里可以同时存在 Single Agent、Fork Subagent 和 Fresh Subagent，分别承担连续执行、分支探索和独立验证的功能。
+
+
+
+系统设计面试最怕两件事：没框架，背了也不敢画。
+
+这份笔记把 Alex Xu《System Design Interview》卷一、卷二拆成 28 章。第 1 章就是从单机扩到百万用户，限流在第 4 章。仓库自己标了 work in progress。
+
+面试题长什么样、设计该怎么开口，主要落在第 3 章那套框架，各章也沿用了原书的开场方式——这句是项目自述，我没实测。
+
+星数在1.9万上下。目录被反复对照过，不等于内容都校对过；它整理的是原书，不是替代原书。
+
+🔗https://github.com/liquidslr/system-design-notes
+
+
+
+2023 年我还认为 Human Review 是 AI 编程最后一道防线。三年后，我已经很少 Review 自己两个复杂项目的大部分代码，连测试、故障分析和修复也越来越多交给 Agent。
+
+软件越来越复杂，但人类工程劳动没有同比增长。
+
+那软件工程师还剩下什么？
+
+
+https://www.bmpi.dev/dev/agent-era-software-engineering/
+
+
+我最近在做这个工作。
+
+整体思路上分成设计和验证两个步骤。设计阶段收集上下文，理解意图，澄清问题，然后根据代码设计出 e2e 测试。验证阶段在未修复分支上重现，同时在修复分支上测试。整个过程都是真实调用 API，操作也是通过 playwright 操作浏览器执行。
+
+为了减少幻觉，每一个测试都是一个 reviewer agent 和一个 test agent。reviewer 会将测试细化到每一个小步的前置条件、测试方法、验证条件，和最后的清理步骤。test agent 会具体执行。
+
+这样细化的另外一个好处，就是在需要的时候可以人工介入。比如我经常需要 AI 一步一步帮我解释这个测试在测什么，为什么这样测试就可以保证正确等等。我也可以中途自己去验证。
+
+完成之后，可以再考虑将哪些测试写入代码
+
+
+https://github.com/rlaope/oh-my-hermes
+
+《吴恩达指出的4项最值钱的AI技能》
+
+吴恩达（Andrew Ng）这份报告刷屏了。关于到底要不要转AI.
+他给的回答其实挺实在：别纠结改不改行，先看自己身上这四项能力缺不缺。
+
+这份东西是怎么来的? 他们团队扒了一万多条招聘要求，找了AI专家、HR和猎头聊了几十场，加上问卷调查，最后把这些数据做了一次“聚类”,看看真正被高频提及、且短期内不会过时的技能到底有哪些。
+
+具体是哪四项技能
+
+1. 构建与部署
+AI 应用AI 软件和传统软件最大的区别，在于它的输出有随机性。输入同一个东西，模型给的反馈可能每次都不一样。所以这项技能绝不是会调 API 那么简单，而是得理解上下文、RAG 和 Agent 工作流这些机制。更关键的是学会用统计方法去管这种“不确定性”，老老实实做评估和错误分析，而不是凭感觉“看着顺眼”就上线。
+
+2. 软件工程基本功
+成本、扩展性、稳定性、响应速度，加上安全和隐私，这些指标永远在拉扯。不懂这些底层逻辑的人去“vibe coding”（凭感觉让 AI 写代码），写出来的东西基本是一团糟，因为你自己都不知道该给 AI 喂什么上下文。相反，底子扎实的人，是在用工程规范精准指挥 AI 办正事。
+
+3. 用好编码 Agent（智能体）
+
+这现在已经是基本操作了。关键不在于你会不会用工具，而是你知不知道它的边界在哪里——什么时候该盯紧，什么时候能放手。盯太紧，你自己干活省下的时间又赔进去了；放太松，轻则烧 token，重则删库跑路。这里面涉及怎么管上下文、怎么平衡“先规划还是直接干”、要不要加自动校验机制，以及多 Agent 怎么协同。
+
+4. 定义和塑造需求（Shaping the build）
+
+当 Agent 只要拿到清晰的需求文档（spec）就能把代码写出来时，工程师的重心自然就前移了：重点是“这个需求到底该怎么定”。吴恩达那句被疯狂转发的话翻译过来就是：以后不会再有人甩给你一份像素级完备的设计文档让你照着敲代码了。你得懂业务、懂产品、懂用户痛点，主动决定“做什么”，同时还要拿捏好什么时候该发 MVP 快速验证，什么时候该精细打磨。
+
+最后这四项技能都不是学一次就能一劳永逸的。AI 这行变化太快，今天的最佳实践可能半年后就过时了。这份清单比起“毕业考题”，更像是一个定期拿
+
+
+AI Agent最麻烦的，很多时候不是模型，而是工具太碎。
+
+Future AGI 把模拟、评估、防护、监控、网关、优化全塞进了一套平台，省得 Langfuse、Eval、Guardrails 各自折腾。
+
+能批量模拟用户和对抗输入，50+ 评估指标、18 个安全扫描器，还支持 OpenTelemetry、100+ 模型和提示词自动优化。
+
+简单说，就是让 Agent 从测试、上线到迭代形成一套闭环。
+
+Apache 2.0 开源，支持自托管，也有云版。
+🔗 http://github.com/future-agi/fut
+
+
+
+这是我用 Qoder + Remotion 基于 
+@qoder_ai_ide
+  最新上线的新功能制作的一条创意短片：
+
+让电脑端的Qoder帮我整理一份我的家乡宿迁的旅游攻略，手机端的Qoder 可以同步接收到制作完成的PDF文件
+
+最后 Qoder 分析输出了一份图文并茂的旅游指南，作为一个老宿迁人，我还是比较认可的
+
+
+AI Agent总忘事？Memvid可以看看。
+
+以前搞RAG，向量库、索引、部署一套折腾下来够呛。Memvid 的思路简单很多：把历史记忆存进一个文件，丢进项目就能让Agent随时检索。
+
+它主打长上下文记忆和时间推理，官方也放出了 LoCoMo 等测试数据，方便自己验证。
+
+更关键的是追加式存储，历史记录一直保留，不用频繁维护数据库。
+
+想给本地 Agent 加长期记忆的，可以研究下。
+🔗 http://github.com/memvid/memvid
+
+
+最近终于把 Codex 里的 工作树worktree 理顺了。
+
+它可以理解成：
+
+给同一个项目里的另一项任务，单独开一个独立施工现场。
+
+比如你正在主线开发，
+但又想顺手修 bug、试新功能、跑另一套方案。
+如果全塞在当前环境里，后面基本都会乱。
+
+这时候就适合：
+
+分一个聊天分支，或者直接在新工作树里开做。
+
+我现在的理解是：
+
+聊天 = 一次任务讨论
+分支 = 一条新的代码方向
+工作树 = 一套独立的实际工作环境
+所以工作树最有用的地方，是能让你：
+
+在不打乱当前进度的前提下，单独开一份独立上下文，去做另一件事。
+主线继续做，支线单独跑，互不打架
+
+
+Agent Handoff，不该只是把消息转给另一个 Agent。
+
+RFC 全文（中英双语）：
+https://github.com/huangruiteng/loopx/pull/4330
+
+换一个 Agent 接手，不该让人重新解释一遍：为什么做、哪些路试过、什么才算完成。
+
+多 Agent 的分工可以动态变化，已接受的目标、约束与承诺不该在交接中丢失。
+
+我希望 LoopX 管家成为数字团队的协作入口：人定义目标、提供判断，Agent 自主调查、分工和推进，控制面维护跨角色、跨会话的工作状态。
+
+我的设计判断是：把调查、工具使用和路线选择交给 Agent；把授权边界、已接受的工作、证据和回报义务交给可靠的系统机制。
+
+LoopX 新的「强能力管家与语义工作交接」RFC，围绕 Semantic Handoff（语义工作交接）提出三个方向：
+
+• 管家复用成熟 runtime 的普通工具和 skills，在已有授权内调查、做事，不为每种资源再造一套专用接口。
+• Agent Handoff 交接的不只是消息，还包括目的、纠正、失败方案、约束、证据和验收要求。接收方结合自己的工作判断如何承接，而非收到消息就自动改计划。
+• 分开记录“收到请求”“接受工作”“完成工作”“结果送达”，让未结工作可在重启后恢复，让已保存的结果可重试送达，而不重跑已经完成的操作。
+
+RFC 文档已合入；上述完整管家与通用交接链路仍待实现和端到端验证。这次公开的是设计方向，欢迎一起挑毛病。
+
+也感谢 xiaods（Deshi Xiao）的显式跨 Agent 接续贡献 #4094，它是这次演进的已有基础之一。
+https://github.com/huangruiteng/loopx/pull/4094
+
+你遇到过 Agent 忘记纠正、重复失败方案，或做完却不回报吗？哪些状态需要共同维护，哪些决策应留给各自的 Agent？欢迎带着场景、反例或实现想法参与 LoopX Discussions #4340。
+https://github.com/huangruiteng/loopx/discussions/4340
+
+
+查一个网站，以前要开十几个标签页。现在丢一个网址进去就行。
+
+ 把公开信息摊在一张仪表盘上：IP 和地理位置、DNS、证书链、HTTP 头、Cookie、技术栈、跳转路径、WHOIS。
+
+适合先摸清自己的站配没配好，或做公开资料调研的第一步。
+
+源码：https://github.com/Lissy93/web-check
+
+
+
+昨天看到又有人在推荐设计的 Skill。诚然，设计 Skill 是有用的；但是，如果你想做出来一个好的东西，至少看起来不丑气的东西。请先看这本书。
+https://ituring.com.cn/book/1757
+这本书我是看的实体书。
+
+你先看一遍，至少知道什么是「美」；什么是「不美」，再看去很多设计，用很多 Skill，才是「如有神助」。不然，拼接一堆 Skill，也不过是东施效颦，很丑。
+
+
+https://github.com/Talljack/echo-type/blob/main/README.zh-CN.md
+
+
+想要系统啃下 Harness 架构的朋友，http://DAIR.AI 官方精选论文库务必收好：
+http://DAIR.AI 创始人 Elvis 整理的必读论文合集：http://academy.dair.ai/papers/collect… （涵盖 Agent 状态机、工具门禁设计、长周期记忆持久化等核心底层文献）。
+
+提炼构建专属 Harness 的 3 个起步心法：
+1. 先定义“什么绝不能让 AI 擅自决定”：把不可逆权限卡死，是 Harness 的第一道桩；
+2. 上下文按任务隔离：拒绝把所有设定一股脑塞进 System Prompt，用代码做动态装载；
+3. 建立领域专属的评估集（Evals）：没有自己的评分裁判，你的 Harness 永远无法脱机狂奔。
+
+大家目前在自己的业务场景里，觉得最需要给 AI 套上一层“紧箍咒/脚手架”的，是哪个行业环节？欢迎分享交流
+
+
+
+GlowJames 追光🐬
+@jameszz343698
+这条帖子说的不是「让 Agent 自己点浏览器做 E2E」，而是反过来：**Agent 只负责写可重复跑的 Node.js + Playwright 脚本，真正执行测试交给 Playwright，不要让 Agent 用浏览器工具/MCP 一轮轮点页面。**
+
+核心对比很简单：
+
+- Agent 自己测：看截图 → 思考 → 点一下 → 再看截图，token 贵、慢、不稳定，测完也留不下资产
+- Playwright 测：写一次脚本，`npx playwright test` 几秒跑完，稳定、可回归、几乎不花 token
+
+下面是可以落地的做法。
+
+## 1. 在项目里先把 Playwright 装好
+
+```bash
+npm init playwright@latest
+# 或
+pnpm create playwright
+```
+
+常见结构：
+
+```text
+tests/
+  auth.spec.ts
+  checkout.spec.ts
+playwright.config.ts
+```
+
+`playwright.config.ts` 里让它自己起本地服务，例如：
+
+```ts
+import { defineConfig } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './tests',
+  use: {
+    baseURL: 'http://localhost:3000',
+    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+  },
+  webServer: {
+    command: 'pnpm dev',
+    url: 'http://localhost:3000',
+    reuseExistingServer: !http://process.env.CI,
+  },
+});
+```
+
+## 2. 把规则写进 AGENTS.md / CLAUDE.md / .cursorrules
+
+这是这条推特真正要你「怎么做」的部分。可以直接贴类似规则：
+
+```md
+## 测试规则
+
+1. 禁止给 UI 写单元测试（按钮渲染、className、快照这类）。
+2. 禁止用 browser MCP / Playwright MCP / computer use 自己点页面做 E2E。
+   原因：浪费 token、速度慢、结果不稳定。
+3. 任何新功能或 bugfix，必须同时补 Node.js Playwright 脚本（tests/**/*.spec.ts）。
+4. 验证方式只能是：
+   - npx playwright test
+   - 或跑指定文件：npx playwright test tests/xxx.spec.ts
+5. 测试失败时：
+   - 先保证脚本能稳定复现问题
+   - 再给页面/接口加日志、把步骤拆小
+   - 然后改业务代码，直到脚本变绿
+6. 选择器优先用 getByRole / getByTestId，不要用脆弱的 CSS 层级。
+```
+
+对应原帖语境：
+
+- 
+@meetqy
+：禁止 UI 单测，只列出受影响 UI + Todo，人来验
+- 
+@supezen
+：不要让 Agent 主动做 E2E
+- 
+@xicilion
+：E2E 用 Node.js + Playwright；并且**每个功能和修复都要写脚本**。脚本能复现后，Agent 自己加日志、拆步骤、修到过。
+
+## 3. 让 Agent 写的是这种脚本，不是「自己去点」
+
+比如登录：
+
+```ts
+import { test, expect } from '@playwright/test';
+
+test('用户可以登录并进入工作台', async ({ page }) => {
+  await page.goto('/login');
+
+  await page.getByLabel('邮箱').fill('demo@example.com');
+  await page.getByLabel('密码').fill('password123');
+  await page.getByRole('button', { name: '登录' }).click();
+
+  await expect(page).toHaveURL(/\/dashboard/);
+  await expect(page.getByRole('heading', { name: '工作台' })).toBeVisible();
+});
+```
+
+复杂交互也一样，写成确定步骤，不要让模型现场探索页面。
+
+前端最好补稳定锚点：
+
+```tsx
+<button data-testid="checkout-submit">提交订单</button>
+```
+
+测试里：
+
+```ts
+await page.getByTestId('checkout-submit').click();
+```
+
+## 4. 实际工作流（这就是「具体怎么做」）
+
+1. 你提需求：加一个「忘记密码」功能。
+2. Agent 改业务代码，同时新建 `tests/forgot-password.spec.ts`。
+3. 你或 Agent 只跑命令：
+
+```bash
+npx playwright test tests/forgot-password.spec.ts
+```
+
+4. 失败了，不要让它开浏览器 MCP 瞎点。
+   正确做法是让它：
+   - 看 Playwright 失败截图 / trace
+   - 给关键请求、状态、时序打日志
+   - 把一个大测试拆成更小步骤
+   - 修代码后再跑同一条脚本
+
+这就是他后一条说的：
+
+> 以前手测，回归一堆细节问题，复杂 UI 时序几乎没法迭代。后来要求 Agent 任何功能和修复都必须写 Node.js Playwright 脚本；只要能复现，它就会自己加日志、拆分，最后修好，人不用参与。
+
+## 5. 和「Playwright Agents」区分开
+
+Playwright 新版本有 Planner / Generator / Healer 这类 Agent，那是「帮你生成/修复测试代码」。
+
+这条推特反对的是另一件事：
+
+- 让编码 Agent **当场扮演测试员**，用工具一轮轮操作真实页面来验证
+
+你要的是：
+
+- Agent = 写测试代码 + 改产品代码
+- Playwright runner = 执行测试
+
+## 6. 一个可直接用的提示词
+
+下次让 Agent 开工，可以在需求后面加上：
+
+```text
+不要自己打开页面点来点去验证。
+请直接写 Playwright 测试到 tests/ 目录，用 npx playwright test 验证。
+如果失败，先让脚本稳定复现，再加日志/拆步骤，然后修代码，直到测试通过。
+不要写 UI 单元测试。
+```
+
+一句话总结：**别让模型当点击员，让它当测试脚本作者。** 脚本能复现，后续修复、回归、CI 就都便宜且稳定了。

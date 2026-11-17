@@ -1,0 +1,426 @@
+https://github.com/Tencent-Hunyuan/Hy-Memory
+https://x.com/xiaoanlab/status/2114229731558392256
+https://x.com/antiAIvo/status/2114222781479133673
+https://x.com/xulijian1994/status/2114193959916560721
+https://x.com/SeanchenZ/status/2114171363569377475
+https://x.com/SeanchenZ/status/2114173775336120612
+四条经久的处世心法。
+别主动挑别人毛病、好为人师，对方不问就不说，对应道德经不言之教；
+不要随便给建议，认知差太大说了也没用，成年人只筛选不教育；
+别执着当众讲道理，智者习惯忽略，多听多夸，少说硬理；
+真正让人醒悟的从来不是说教，是亲身撞南墙，吃过亏才容易成长。
+
+很多道理，得自己经历过才能接住
+
+https://github.com/tester-army/e2e
+
+写 E2E 测试最烦的，是写一堆定位器和等待？
+
+e2e 是自然语言目标驱动的测试框架：说一句目标，agent 自己操作应用，定位器和断言写在同一个测试里。
+
+对写测试的人来说，复跑不调模型比每次都烧 token 实在。
+
+你会让 agent 替你写 E2E，还是坚持手写定位器？
+
+https://x.com/lannieFaFa/status/2113918566424883408
+
+https://x.com/GitTrend0x/status/2114152481881989579
+
+https://x.com/123olp/status/2114123178981376203
+
+https://x.com/realchendahuang/status/2114067148242895226
+
+https://x.com/shao__meng/status/2113635635705921655
+
+https://x.com/slashui/status/2114135503750500838
+
+https://github.com/zenghui-li/yuxi
+
+https://x.com/CosmicUndercurr/status/2114044888648204473
+
+https://x.com/longhaiqwe123/status/2114031712430948410
+
+https://x.com/Zen_with_AI/status/2114073942696816762
+
+https://x.com/bkdgiffug/status/2113752576097145116
+
+https://github.com/tashfeenahmed/freellmapi
+
+https://github.com/arxhr007/Aliens_eye
+
+https://x.com/ModengSir/status/2113812725952372777
+
+https://learn-arduino-red.vercel.app/zh/
+
+https://github.com/freestylefly/wesight-obsidian
+
+https://github.com/vercel-labs/agent-browser
+
+https://github.com/opentrap/opentrap
+
+https://github.com/AsaSuisei/four-powers
+
+https://x.com/asa_suisei/status/2113260016648290693
+
+https://github.com/Duoasa/DSH-to-Figma
+
+https://github.com/deepfounder-ai/desigma
+
+https://x.com/slashui/status/2113999944797323642
+
+https://x.com/akitabtc/status/2113995848975589651
+
+https://x.com/TiagerBao/status/2113759355879436760
+
+https://x.com/intentplex/status/2113660294987661530
+
+https://x.com/SeanchenZ/status/2113952702095147060
+
+https://x.com/Liu_zhongxisn/status/2113976299928555600
+
+https://x.com/huihoo/status/2113960750771479000
+
+https://github.com/anthropics/sandbox-runtime
+
+https://x.com/GitTrend0x/status/2113986396062925178
+
+https://x.com/UPing123zzz/status/2113986416728518677
+
+https://x.com/LinearUncle/status/2113943764821774743
+
+https://github.com/langfuse/langfuse
+
+https://github.com/nashsu/llm_wiki
+
+https://github.com/kajisho5/ffmpeg-skill
+
+https://x.com/shao__meng/status/2113970197161988276
+
+https://x.com/vikingmute/status/2113965773534400682
+
+https://x.com/vikingmute/status/2113982577925353743
+
+https://github.com/Asymptote-Labs/agent-beacon
+
+https://x.com/GitTrend0x/status/2113790101264232913
+
+https://github.com/Tencent/teamai-cli
+
+https://github.com/microsoft/skill-recorder/releases/tag/v0.7.0
+
+https://github.com/quickwit-oss/tantivy
+
+https://github.com/iflytek/astron-agent
+
+https://github.com/browser-act/skills
+
+https://x.com/Bluke520/status/2113836298167611588
+
+https://x.com/snwiki238337/status/2113841427600044379
+
+https://x.com/Xudong07452910/status/2113800139005460534
+
+https://x.com/dandanetha/status/2113526334932816303
+
+https://x.com/vikingmute/status/2113600909574037911
+
+Codex 有个很适合长期项目的玩法：
+给它写一份 AGENTS.md。
+直接输入：
+「请根据当前项目，帮我生成一份简洁实用的 AGENTS.md。内容包括项目结构、运行命令、测试命令、代码风格、禁止事项、完成标准和 review 标准。不要写空，只写会影响你之后行为的规则。」
+这一步做完后，后面每次开新任务，Codex 通常会稳一点。
+因为你不用反复解释：
+测试怎么跑；
+哪些文件别动；
+PR 要注意什么；
+这个项目有哪些默认约定。
+很多时候，AI coding 不稳定，不是模型不会写代码，而是项目规则每次都要重新猜。
+AGENTS.md 的价值就在这里：
+把容易反复说的，沉淀成项目级工作约定。
+本质上，这是给 coding agent 写一份「项目说明书」。
+
+https://x.com/canghe/status/2113498230583599196
+
+https://x.com/cxjwin/status/2113503891174420770
+
+https://x.com/xiaoanlab/status/2113627415583043810
+
+https://x.com/snwiki238337/status/2113626998182416451
+
+https://x.com/vikingmute/status/2113615617958002698
+
+他们现在搞的是加了管理平台：他们在那些 agents 里面，每一次提交都加了一层约束，比如跑全量测试，或者跑这类验证，再跑这一套 skill
+
+现在代码就是运营什么的，所有都往这个里面写代码了
+
+https://x.com/elioex0/status/2113534964063145993
+
+https://x.com/Alinsees/status/2113489592439681204
+
+https://x.com/bkdgiffug/status/2113484307863925134
+
+https://x.com/JayForParking/status/2113304457668874406
+
+https://x.com/liangzhu_AI/status/2113523566314447119
+
+https://x.com/JayForParking/status/2113304457668874406
+
+https://x.com/lukasen_xyz/status/2113532144287150367
+
+RSI（递归自我改进）的讨论挺启发人
+Anthropic 那边已经让 Claude 承担写代码、设计实验的活儿，OpenAI 则搞出了人在一旁指导的自动研究实习生。国内 MemT 1.0 走的路子是把经验存进模型记忆，让模型从经验里学会反思，用来处理新的编程任务
+如果真跑通，软件和新药研发都会提速。到时候人干嘛，当甩手掌柜？
+
+https://x.com/snwiki238337/status/2113586733560328459
+
+https://x.com/jiangkoumo_/status/2113537635956449291
+
+https://x.com/dongxi_nlp/status/2113541703231566184
+
+https://x.com/chenchengpro/status/2113567114544263591
+
+https://github.com/peach-mitao/peach
+
+https://x.com/Xudong07452910/status/2113415101877559707
+
+https://x.com/Charles77xixi/status/2112862713340735681
+
+Agent跑完的流程，Matt  的提示词：
+/grill-me on how a /software-factory might help us
+他不是在教我怎么自动化，
+而是在问我：你现在的痛点，真的需要做成流水线吗？
+有些重复，是该交给系统；
+有些犹豫，其实是我自己还没想清楚。
+试完才发现，很多时候不是缺工具，
+是缺一次被问明白的机会。
+黑盒感还在，但至少可以先决定，哪些事值得画成流水线。
+
+https://x.com/chenchengpro/status/2113243170788278767
+
+https://x.com/vikingmute/status/2113259609746289086
+
+https://github.com/Renhuai123/ziwei-doushu
+
+1. Numerologist_skills
+奇门遁甲 + 紫微斗数，适合研究传统术数怎么被拆成可执行流程。
+https://github.com/FANzR-arch/Numerologist_skills
+
+2. mingyu
+八字、紫微、奇门、六爻、梅花、大六壬一站式排盘，适合做综合命理数据接口。
+https://github.com/Brhiza/mingyu
+
+3. bazi-skill
+对话式八字分析 Skill，适合用来体验四柱、五行、流年分析的 AI 工作流。
+https://github.com/jinchenma94/bazi-skill
+
+4. gaoxin492/bazi-skill
+偏长期命盘存档和复盘，适合把八字分析做成持续对话工具。
+https://github.com/gaoxin492/bazi-skill
+
+5. horosa-skill
+本地离线术数能力层，适合想把八字、紫微等算法接进本地 AI 的人。
+https://github.com/Horace-Maxwell/horosa-skill
+
+6. yinyuan-skills
+专攻姻缘、合婚、生肖配对和求签，适合做感情类娱乐测算。
+https://github.com/Ming-H/yinyuan-skills
+
+7. Master-skill
+偏佛学和文化典籍学习，适合拿来做原典问答和宗派知识辅助。
+https://github.com/xr843/Master-skill
+
+8. fengshui.skill
+易经风水和阳宅分析 Skill，适合把户型、方位、办公桌布局拿来做趣味分析。
+https://github.com/voidforall/fengshui.skill
+
+9. cyber-fortune-telling
+赛博算命趣味项目，适合做每日运势、桌面风水建议和轻量娱乐应用。
+https://github.com/zhaoolee/cyber-fortune-telling
+
+10. tarot-skill
+塔罗抽牌和牌阵解读，适合纠结选择时拿来触发多角度思考。
+https://github.com/daman-ovo-0404/tarot-skill
+
+11. taibu
+六爻、梅花易数和周易解读，适合研究起卦、用神、世应、体用生克。
+https://github.com/hhszzzz/taibu
+
+12. meihua-yishu
+专注梅花易数，适合想系统了解邵雍体系和趋势解读的人。
+https://github.com/muyen/meihua-yishu
+
+13. meihua-divination
+另一套梅花易数 Skill，适合对比不同项目的结构化占卜表达。
+https://github.com/qiyan233/meihua-divination
+
+14. ZhouYiLab
+周易综合计算引擎，适合做大六壬、六爻、紫微、八字、奇门等算法研究。
+https://github.com/banderzhm/ZhouYiLab
+
+
+https://v0.app/students
+
+https://x.com/nuannuan_share/status/2113060985967882503
+
+https://github.com/tigerless-labs/autoharness
+
+https://x.com/Xudong07452910/status/2113228875040010566
+
+https://x.com/bylixing/status/2106757373834780723
+
+https://x.com/Manorgw/status/2113093734262874146
+
+https://x.com/ZacharyZhang/status/2113123951538811366
+
+https://x.com/Yayoi_no_yume/status/2112943942467809640
+
+https://x.com/aehyok/status/2113083667417608344
+
+https://x.com/shao__meng/status/2113095303973028269
+
+https://x.com/Easycompany333/status/2112848115761897667
+
+https://x.com/ClorisSignal/status/2113091543884251153
+
+https://x.com/intentplex/status/2112661310009729098
+
+https://x.com/huxlab/status/2112777956640932330
+
+https://github.com/jhaizhou-ops/d2r-mobile
+
+https://x.com/duange6099/status/2112722090348663274
+
+https://x.com/momoai_daily/status/2112511571733975321
+
+https://x.com/Smartpigai/status/2112767455391256723
+
+https://x.com/AetherKernelX/status/2112756654563557392
+
+https://x.com/xaiwind/status/2112758783529439337
+
+https://x.com/Ryrenz/status/2112832533339464009
+
+https://x.com/chenchengpro/status/2111287348986307017
+
+https://x.com/gengdaJ/status/2111344530490552560
+
+https://x.com/xfgong/status/2111002582311149742
+
+https://x.com/xu_paco/status/2112852650186383807
+
+https://x.com/qingke_ai/status/2112893332351599076
+
+https://github.com/ninetyhe-90/dsh-decision-review
+
+https://x.com/_ninetyhe/status/2112841822229934336
+
+打造优秀团队的9大铁律
+1.不培养不匹配的人
+2.不挽留要离职的员工
+3.制度在先，有规矩有纲领，奖罚必须分明
+4.相信天赋，不要试图改变别人
+5.不要主动劝回已离职的员工
+6.不指望懒人变勤快
+7.自律者服众，先做榜样，再做管理
+8.用人之长，天下无不用之才
+9.先计划再行动，先策划再沟通，服从总是没有错
+
+https://x.com/Xudong07452910/status/2112841593346552236
+
+https://x.com/Jerry_fsy/status/2112844396316213433
+
+https://x.com/victor_wu/status/2112841337695543458
+
+https://x.com/kfhshl/status/2112681770252423260
+
+https://x.com/xiaomovps/status/2112803313272156437
+
+https://x.com/realfxw/status/2112755763466895600
+
+https://x.com/TiagerBao/status/2112774693954470048
+
+https://x.com/Zen_with_AI/status/2112775410228630000
+
+https://x.com/MaxMa_27/status/2112769831048974722
+
+https://x.com/Manorgw/status/2112749717721407604
+
+https://x.com/GitHub_Daily/status/2112695371118080053
+
+https://x.com/Zen_with_AI/status/2112679456246735315
+
+我自己常用的提示词：
+1. 不急着动手，结构化复述我的需求
+2. 我对这个一窍不通，理解我的核心诉求后忽略我所有细节描述，重新设计一个方案
+3. 网上看看有没有其他人有类似问题，怎么解决的
+4. 优先使用广泛使用的成熟类库或工具，不要自己造轮子
+5. 所有新测试针对的问题必须在实际使用中出现过
+
+https://x.com/MinLiBuilds/status/2112551705896440238
+
+https://x.com/dongxi_nlp/status/2112652766997103016
+
+https://x.com/jiumeng8852/status/2112420911710150856
+
+https://x.com/vincemask/status/2112506002193141950
+
+https://x.com/liangzhu_AI/status/2112431369548652835
+
+https://x.com/fttt007/status/2112464236676850078
+
+https://x.com/shao__meng/status/2112512042771116533
+
+https://x.com/snwiki238337/status/2112514723875016946
+
+https://x.com/antiAIvo/status/2112471209787220462
+
+https://x.com/kafkaup/status/2112440187666001936
+
+https://x.com/realfxw/status/2112201440294789432
+
+https://x.com/alacheng/status/2112384579504070751
+
+https://x.com/shao__meng/status/2112371729276563825
+
+https://x.com/bojie_li/status/2112365793526845735
+
+中兴一面连着问了两句：为什么 RAG 既要 embedding 又要 rerank？为什么不能全部 rerank？答案在召回和重排用的两种结构上。
+
+双塔：问题和文档分开编码，文档向量提前算好，查得快，几百万条里也能找；代价是两段文本编码时互相看不见，否定、条件、数字对不对得上，这类细节容易丢。 交叉编码器：把问题和文档拼在一起送进模型，逐对打分，更准，但每个候选都要现算。
+
+所以先用便宜的召回把范围缩到几十条，再用贵的重排把这几十条排准。全库都做 rerank，计算量跟着库的大小线性增长，做不下去。
+
+这是下面这篇里的一环。从解析、切分到评测，每一环都这么拆：解决什么问题，原理是什么，怎么取舍，面试会怎么问。
+
+RAG 效果差、召回不准从哪排查，是题单第 15 题，后面单独写。
+
+https://x.com/realchendahuang/status/2112161057485807742
+
+https://x.com/antiAIvo/status/2112187842919268835
+
+https://x.com/chasen_liao/status/2112174241093226846
+
+用的omp的advisor，太耗token了，但还可以
+
+我就是用这个，我有点傻逼了，task 用 deepseek， 给 task 来了 sol 做 advisor ，浪费了，还不如直接 sol task
+
+cc的advisor是主模型主动询问，omp的是侧边监控，一直在只读沉默或给出意见
+
+advisor用ultracode实现也行，只不过是完成代码后统一交叉review下，而不是实时的
+
+
+章工
+@435hz
+·
+1h
+一个人能力强弱怎么判断?
+随便说一个吧，那些能自己
+
+1、独立搞定用上 ChatGPT
+2、搞定海外银行卡
+3、搞定海外手机号
+4、搞定美股开户、入金、出金
+5、搞定美债、美元、保险
+6、搞定身份、海外资产配置
+
+以及一个人能看到一个关键词就能自己通过各种途径找出答案、做出来的人，人生不会差的。

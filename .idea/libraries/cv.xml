@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="cv">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/cv/project.zip!/" />
+      <root url="jar://$PROJECT_DIR$/cv/opencv.zip!/" />
+      <root url="jar://$PROJECT_DIR$/cv/cv.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
